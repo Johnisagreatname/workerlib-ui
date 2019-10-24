@@ -1,14 +1,13 @@
 <template lang="pug">
     #app
-        Home
+        router-view
 </template>
 <script lang="ts">
 
-    import Home from '@/components/Home.vue';
+    import "@/assets/css/common.css";
     import { Vue, Component } from 'vue-property-decorator'
     @Component({
         components: {
-            Home
         }
     })
     export default class App extends Vue {}
