@@ -3,7 +3,7 @@
         Sider(collapsible, :collapsed-width="78",v-model="isCollapsed")
             Menu(active-name="1-2",theme="dark", width="auto", :class="menuitemClasses")
                 MenuItem(name="1-1")
-                  .logo
+                    .logo
                 MenuItem(name="1-2")
                     Icon(type="md-home")
                     span 首页
@@ -24,8 +24,69 @@
                     span 设置
 
         Layout
-             .body
-                 .header
-                     .circle
+            Content
+                Header
+                .mainBodyOne
+                    .top
+                      #myEcharts(:style={ height:'400px'})
+                    .box
+                        .minOne
+                           h3 工程总数
+                           .hrOne
+                        .minTwo
+                            span(:style={'font-size': '40px','line-height':'65px','padding-left':'10px'}) 1
+                            span(:style={'font-size': '15px'}) 个
+                        .hrOne
+                        span(:style={'padding-left':'10px','line-height':'35px'}) 在建工程：10
+                        span(:style={'padding-left':'20px','line-height':'35px'}) 未开工：0
+
+
+                    .box
+                        .minOne
+                            h3 在职工人总数
+                            .hrOne
+                        .minTwo
+                             span(:style={'font-size': '40px', 'line-height': '65px', 'padding-left': '10px'}) 10000
+                             span(:style={'font-size': '15px'}) 人
+                        .hrOne
+                             span(:style={'padding-left': '10px', 'line-height': '35px'})
+                             span(:style={'padding-left': '20px', 'line-height': '35px'})
+                        .minTwo
+                    .box
+                        .minOne
+                            h3 离职工人总数
+                            .hrOne
+                        .minTwo
+                            span(:style={'font-size': '40px', 'line-height': '65px', 'padding-left': '10px'}) 100
+                            span(:style={'font-size': '15px'}) 人
+                        .hrOne
+                    .footerOne
+                        .countOne
+                            h2 建筑工人总数
+                        .countTwo
+                            .byOne
+                                span 工种
+                                span 自有
+                                span 外部
+                            .byTwo
+                                span 10种
+                                span 100人
+                                span 100人
+                    .footerOne
+                        .countOne
+                            h2 承建队伍总数
+                        .countTwo
+                            .byOne
+                                span 工种
+                                span 自有
+                                span 外部
+                            .byTwo
+                                span 10种
+                                span 100只
+                                span 100只
+                .mainBodyTwo
+                    .topTwo
+                        p(:style={'text-align':'center','font-size':'20px','line-height':'80px'}) 技能工种评定系统
+                    .level
 
 
