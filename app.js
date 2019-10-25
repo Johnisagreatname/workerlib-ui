@@ -1,21 +1,38 @@
 const config = require('./package.json');
-//引入express中间件
+
 const express = require('express');
+const timeout = require('connect-timeout');
+const proxy = require('http-proxy-middleware');
 const app = express();
 
-//指定启动服务器到哪个文件夹
-app.use(express.static('./dist'));
+// 超时时间
+const TIME_OUT = 30 * 1e3;
 
-if(!config || !config.server || !config.server.port) {
-    console.log('Set server.port on package.json pls.');
-}
+// 设置端口
+app.set('port', config.server.port);
 
-else {
-    //监听端口建议为3000
-    const server = app.listen(config.server.port, function () {
-
-        console.log('Web App listening at http://localhost:%s', config.server.port);
-    });
-}
+// 设置超时 返回超时响应
+app.use(timeout(TIME_OUT));
+app.use((req, res, next) => {
+    if (!req.timedout) next();
+});
 
 
+proxyOption = {
+    target: 'http://localhost:8888',
+    pathRewrite: {
+        '^/api/' : '/api/' // 重写请求，api/解析为/
+    },
+    changeOrigoin:true
+};
+
+// 反向代理
+app.use('/api/*', proxy(proxyOption));
+
+// 静态资源路径
+app.use('/', express.static('./dist'));
+
+// 监听端口
+app.listen(app.get('port'), () => {
+    console.log(`server running @${app.get('port')}`);
+});
