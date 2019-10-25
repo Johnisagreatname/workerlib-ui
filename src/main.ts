@@ -16,6 +16,11 @@ Vue.config.productionTip = false
 import store from './store';
 
 /* eslint-disable no-new */
+//全局配置消息
+Vue.prototype.$Message.config({
+  top: 120,                                      //设置高度
+  duration:3                                   //设置3秒后消失
+});
 
 new Vue({
   store,
