@@ -1,28 +1,52 @@
 <script lang="ts">
 
-    import { Component, Vue, Prop } from 'vue-property-decorator';
-    import store from '../store/index';
+    import { Component, Vue, Prop, Model } from 'vue-property-decorator';
     import { getModule } from 'vuex-module-decorators';
     import LoginStore from '../store/modules/loginStore';
-    
+
+    import {
+        State,
+        Getter,
+        Action,
+        Mutation,
+        namespace
+    } from 'vuex-class'
+
+    const Module = namespace('LoginStore')
+
     @Component({
-        components:{
-        },
-        directives: { // 自定义指令
-        },
-        mounted() {
+        computed: {
+            username: {
+                get:() => {
+                    return this.username
+                },
+                set: (data) => {
+                    this.username = data
+                }
+            }
         }
     })
     export default class Login extends Vue {
 
+        @namespace('LoginStore').State('username')
+        private username!: String;
+
+        @namespace('LoginStore').State('username')
+        private password!: String;
+
+        private module: any;
+
         constructor() {
             super();
-            this.module = getModule(LoginStore, store)
+            this.module = getModule(LoginStore)
         }
-        module;
-        public login() {
 
-            this.module.login();
+        public login() {
+            this.module.login()
+        }
+
+        public usernameChange() {
+            console.log('66666666666666666666')
         }
     }
 </script>
