@@ -58,19 +58,8 @@ service.interceptors.response.use(
         // 移除队列中的该请求，注意这时候没有传第二个参数f
         removePending(response.config);
         // 获取返回数据，并处理。按自己业务需求修改。下面只是个demo
-        const res = response.data;
-        if (res.code !== 200) {
-            if (res.code === 401) {
-                if (location.hash === '#/') {
-                    return res;
-                } else {
-                    location.href = '/#/';
-                }
-            }
-            return Promise.reject('error');
-        } else {
-            return response;
-        }
+        const data = response.data;
+        return data;
     },
     (error: any) => {
         // 异常处理
