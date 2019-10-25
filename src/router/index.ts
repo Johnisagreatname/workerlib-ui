@@ -6,6 +6,7 @@ import Login from '@/components/Login.vue';
 import Router from 'vue-router';
 Vue.use(Router);
 
+// @ts-ignore
 export default new Router({
 
       // mode: 'history',  // Disabled due to Github Pages doesn't support this, enable this if you need.
@@ -28,5 +29,5 @@ export default new Router({
               name: 'Login',
               component: Login
           }
-      ]
+      ],
 })
