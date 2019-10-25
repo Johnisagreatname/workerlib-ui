@@ -12,3 +12,9 @@ declare module 'tinymce' {
   import tinymce from 'tinymce/tinymce'
   export default tinymce;
 }
+
+declare module 'vue/types/vue' {
+    interface Vue {
+        $echarts: any
+    }
+}
