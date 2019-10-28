@@ -9,7 +9,7 @@ const app = express();
 const TIME_OUT = 30 * 1e3;
 
 // 设置端口
-app.set('port', config.server.port);
+app.set('port', config.listen);
 
 // 设置超时 返回超时响应
 app.use(timeout(TIME_OUT));
@@ -19,7 +19,7 @@ app.use((req, res, next) => {
 
 
 proxyOption = {
-    target: 'http://localhost:8888',
+    target: `http://${config.proxyServer.host}:${config.proxyServer.port}`,
     pathRewrite: {
         '^/api/' : '/api/' // 重写请求，api/解析为/
     },
@@ -34,5 +34,5 @@ app.use('/', express.static('./dist'));
 
 // 监听端口
 app.listen(app.get('port'), () => {
-    console.log(`server running @${app.get('port')}`);
+    console.log(`server running http://localhost:${app.get('port')}`);
 });

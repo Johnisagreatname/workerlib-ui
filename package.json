@@ -95,8 +95,9 @@
   "config": {
     "forge": "./config/forge.config.js"
   },
-  "server": {
-    "port": 3000
+  "proxyServer": {
+    "port": 8888,
+    "host": "localhost"
   },
   "engines": {
     "node": ">= 4.0.0",

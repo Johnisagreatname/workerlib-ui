@@ -2,7 +2,7 @@
     .loginBox
         .inputName
             h3 请输入账号密码
-            Input(prefix="ios-contact", v-model="username", :onChange="usernameChange(this)")
-            Input(prefix="md-unlock",type="password", :value="password")
+            Input(prefix="ios-contact", v-model="username")
+            Input(prefix="md-unlock",type="password", v-model="password")
             Button(@click="login") 立即登录
     footer

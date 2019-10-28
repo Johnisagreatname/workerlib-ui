@@ -4,16 +4,6 @@
     import { getModule } from 'vuex-module-decorators';
     import LoginStore from '../store/modules/loginStore';
 
-    import {
-        State,
-        Getter,
-        Action,
-        Mutation,
-        namespace
-    } from 'vuex-class'
-
-    const Module = namespace('LoginStore')
-
     @Component({
         computed: {
             username: {
@@ -28,25 +18,31 @@
     })
     export default class Login extends Vue {
 
-        @namespace('LoginStore').State('username')
-        private username!: String;
-
-        @namespace('LoginStore').State('username')
-        private password!: String;
-
-        private module: any;
+        private store: any;
 
         constructor() {
             super();
-            this.module = getModule(LoginStore)
+            this.store = getModule(LoginStore)
+        }
+
+        get username() : String {
+            return this.store.username
+        }
+
+        set username(data: String) {
+            this.store.setUsername(data)
+        }
+
+        get password() : String {
+            return this.store.password
+        }
+
+        set password(data: String) {
+            this.store.setPassword(data)
         }
 
         public login() {
-            this.module.login()
-        }
-
-        public usernameChange() {
-            console.log('66666666666666666666')
+            this.store.login()
         }
     }
 </script>
