@@ -10,6 +10,7 @@ import request from "../../common/HttpClient"
     store,
 })
 export default class LoginStore extends VuexModule {
+
     public username:String = 'admin'; //state
     public password:String = '';
 
@@ -21,18 +22,31 @@ export default class LoginStore extends VuexModule {
         return this.password
     }
 
+    set setUsername(v) { //setter
+        debugger
+        this.username = v
+    }
+
+    set setPassword(v) { //setter
+        debugger
+        this.password = v
+    }
+
     @Action({ commit: 'success' })
     public async login() {
-        request.post('api/login', {
-            "username" : "admin",
-            "password" : "admin"
+        debugger
+        await request.post('api/login', {
+            "username" : this.username,
+            "password" : this.password,
         }).then((res)=>{
-            debugger
-        }).catch((e)=>{});
+
+        }).catch((e)=>{
+            console.log(e)
+        });
     }
 
     @Mutation
     private success(data: any) {
-
+        console.log('22222222222222222222222')
     }
 }
