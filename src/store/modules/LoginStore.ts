@@ -16,12 +16,13 @@ export default class LoginStore extends VuexModule {
 
     @Action({ commit: 'success' })
     public async login() {
-        debugger
         await request.post('api/login', {
             "username" : this.username,
             "password" : this.password,
         }).then((res)=>{
-
+            console.log(res)
+            debugger
+            this["$router"].push({name: 'Home'})
         }).catch((e)=>{
             console.log(e)
         });
@@ -39,6 +40,6 @@ export default class LoginStore extends VuexModule {
 
     @Mutation
     private success(data: any) {
-        console.log('22222222222222222222222')
+        // console.log('22222222222222222222222')
     }
 }
