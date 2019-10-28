@@ -217,7 +217,10 @@
 .topTwo{
     display: block;
     height: 230px;
+    width: 90%;
     background-color: #00b7ff;
+    margin-left: auto;
+    margin-right: auto;
 }
 .level{
     display: block;
