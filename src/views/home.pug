@@ -26,6 +26,7 @@
         Layout
             Content
                 Header
+                    .circle
                 .mainBodyOne
                     .top
                       #myEcharts(:style={ height:'400px'})
@@ -86,7 +87,91 @@
                                 span 100只
                 .mainBodyTwo
                     .topTwo
-                        p(:style={'text-align':'center','font-size':'20px','line-height':'80px'}) 技能工种评定系统
-                    .level
-
-
+                        p(:style={'text-align':'center','font-size':'20px','line-height':'80px','font-weight':'bold','color':'#000000'}) 技能工种评定系统
+                        .ulDiv
+                            ul
+                                li 一级
+                                li 二级
+                                li 三级
+                                li 四级
+                                li 五级
+                                li 六级
+                                li 七级
+                                li 八级
+                                li 九级
+                        .ulDivTwo
+                            ul
+                                li 10人
+                                li 10人
+                                li 10人
+                                li 10人
+                                li 10人
+                                li 10人
+                                li 10人
+                                li 10人
+                                li 10人
+                    .footerTwo
+                        .hr
+                        .divOne
+                            h2 培训情况
+                            .y1
+                                span 培训场数
+                                span 培训人数
+                            .y1
+                                span 10场
+                                span 10人
+                            #myEchartOne(:style={'height': '100%','width':'220px','margin-right':'auto','margin-left':'auto'})
+                        .hrTwo
+                        .divOne
+                            h2 课件类别统计
+                            .y2
+                                span 挖机培训
+                                span 塔吊培训
+                                span 铝模培训
+                            .y2
+                                span 10场
+                                span 10人
+                                span 10人
+                            #myEchart(:style={'height': '100%','width':'220px','margin-right':'auto','margin-left':'auto'})
+                        .hr
+                        .divOne
+                            h2 职业证书统计
+                            #myEchartTwo(:style={'height': '290px','width':'300px','margin-right':'auto','margin-left':'auto'})
+                        .hrTwo
+                        .divOne
+                            .imgDiv
+                                template
+                                Carousel(v-model="value3", :autoplay="true",:autoplay-speed="3000",:dots="false",:radius-dot="close",:arrow="false")
+                                    CarouselItem
+                                        .demo-carousel 第一张
+                                    CarouselItem
+                                        .demo-carousel 第二张
+                                    CarouselItem
+                                        .demo-carousel 第三张
+                                    CarouselItem
+                                        .demo-carousel 第四张
+                            .y3
+                                span(:style={'font-weight': 'bold'}) 编号
+                                span(:style={'font-weight': 'bold'}) 姓名
+                                span(:style={'font-weight': 'bold'}) 行为
+                                span(:style={'font-weight': 'bold'}) 处罚
+                            .y3
+                                span 01
+                                span 某某某
+                                span 寻衅挑事
+                                span 黑名单
+                            .y3
+                                span 01
+                                span 某某某
+                                span 寻衅挑事
+                                span 黑名单
+                            .y3
+                                span 01
+                                span 某某某
+                                span 寻衅挑事
+                                span 黑名单
+                            .y3
+                                span 01
+                                span 某某某
+                                span 寻衅挑事
+                                span 黑名单
