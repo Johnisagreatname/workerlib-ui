@@ -32,8 +32,7 @@ export default new Router({
               component: Nav,
               redirect: '/Home',
               children: [
-                {path: '/Home', component: Home},
-                {path: '/Item', component: Item},
+                {path: '/Home', component: Home}
               ]
           },
       ],
