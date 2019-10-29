@@ -1,10 +1,7 @@
 var __extends = (this && this.__extends) || (function () {
-    var extendStatics = function (d, b) {
-        extendStatics = Object.setPrototypeOf ||
-            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-        return extendStatics(d, b);
-    };
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
     return function (d, b) {
         extendStatics(d, b);
         function __() { this.constructor = d; }
@@ -68,17 +65,19 @@ var LoginStore = /** @class */ (function (_super) {
     }
     LoginStore.prototype.login = function () {
         return __awaiter(this, void 0, void 0, function () {
+            var _this = this;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0:
-                        debugger;
-                        return [4 /*yield*/, request.post('api/login', {
-                                "username": this.username,
-                                "password": this.password,
-                            }).then(function (res) {
-                            }).catch(function (e) {
-                                console.log(e);
-                            })];
+                    case 0: return [4 /*yield*/, request.post('api/login', {
+                            "username": this.username,
+                            "password": this.password,
+                        }).then(function (res) {
+                            console.log(res);
+                            debugger;
+                            _this["$router"].push({ name: 'Home' });
+                        }).catch(function (e) {
+                            console.log(e);
+                        })];
                     case 1:
                         _a.sent();
                         return [2 /*return*/];
@@ -93,7 +92,7 @@ var LoginStore = /** @class */ (function (_super) {
         this.password = data;
     };
     LoginStore.prototype.success = function (data) {
-        console.log('22222222222222222222222');
+        // console.log('22222222222222222222222')
     };
     __decorate([
         Action({ commit: 'success' }),
