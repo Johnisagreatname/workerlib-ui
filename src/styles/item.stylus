@@ -1,0 +1,11 @@
+.content
+    .head
+        font-size 22px
+        height 48px
+        background #f2f2f2
+        i
+            padding 0 10px
+            vertical-align initial
+        p
+            display inline-block
+            line-height 48px
