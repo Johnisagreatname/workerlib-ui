@@ -8,7 +8,6 @@ let pending: any[] = []; // 声明一个数组用于存储每个ajax请求的取
 const CancelToken: any = axios.CancelToken;
 
 
-
 const removePending: any = (config: any, f: any) => {
     // 获取请求的url
     const flagUrl = config.url;
@@ -55,9 +54,17 @@ service.interceptors.request.use((config: any) => {
 /* respone拦截器 */
 service.interceptors.response.use(
     (response: any) => {
+
         // 移除队列中的该请求，注意这时候没有传第二个参数f
         removePending(response.config);
-        // 获取返回数据，并处理。按自己业务需求修改。下面只是个demo
+        if(response.status != 200) {
+            throw response.data.message;
+        }
+
+        if(response.data.status != 0 || response.data.data == undefined) {
+            throw response.data.message;
+        }
+
         const data = response.data;
         return data;
     },
