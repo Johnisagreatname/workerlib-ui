@@ -51,6 +51,8 @@
     background: #2c303b;
     min-width: 0;
 }
+
+
 .ivu-layout-sider-trigger{
     position: fixed;
     bottom: 0;
@@ -87,8 +89,28 @@
     display: block;
     width: 100%;
     background: #f78803;
-    padding: 0 50px;
+    padding-left: 50px;
+    padding-top: 20px;
     height: 64px;
     line-height: 64px;
     border-radius: 5px 5px 0px 0px;
+}
+.circle{
+    display: block;
+    width: 25px;
+    height: 25px;
+    background-color: #ffffff;
+    border-radius: 50%;
+    padding-top: 15px;
+    float:left;
+}
+.headers span{
+    font-size: 18px;
+    font-weight: bold;
+    display: block;
+    float: left;
+    height: 40px;
+    padding-left: 13px;
+    line-height: 27px;
+    color: #ffffff;
 }
