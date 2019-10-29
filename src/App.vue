@@ -3,7 +3,6 @@
         router-view
 </template>
 <script lang="ts">
-
     import "@/assets/css/common.css";
     import { Vue, Component } from 'vue-property-decorator'
     @Component({

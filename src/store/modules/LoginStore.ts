@@ -27,7 +27,8 @@ export default class LoginStore extends VuexModule {
             router.push({path: '/'})
             return data
         }).catch((e)=>{
-            debugger
+            router.push({path: '/'})
+            // debugger
             console.log(e)
             let alert: any = Message;
             alert.warning(e)
