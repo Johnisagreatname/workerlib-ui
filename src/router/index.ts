@@ -4,6 +4,7 @@ import Home from '@/components/Home.vue';
 import Login from '@/components/Login.vue';
 import Nav from '@/components/Nav.vue';
 import Project from '@/components/Project.vue';
+import Worker from '@/components/Worker.vue';
 
 import Router from 'vue-router';
 Vue.use(Router);
@@ -33,7 +34,8 @@ export default new Router({
               redirect: '/home',
               children: [
                 {path: '/home', component: Home},
-                {path: '/project', component: Project}
+                {path: '/project', component: Project},
+                {path: '/worker', component: Worker}
               ]
           },
       ],

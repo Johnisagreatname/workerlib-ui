@@ -46,9 +46,9 @@
                 { name: '首页', path: '/home', icon: 'md-home', text: '数据中心' },
                 { name: '项目', path: '/project', icon: 'ios-folder-open', text: '项目管理' },
                 { name: '人员', path: '/worker', icon: 'md-people', text: '人员管理' },
-                { name: '培训', path: '/worker', icon: 'ios-book', text: '培训管理' },
-                { name: '工种', path: '/worker', icon: 'ios-build', text: '工种管理' },
-                { name: '设置', path: '/worker', icon: 'md-settings', text: '设置管理' },
+                { name: '培训', path: '/1-4', icon: 'ios-book', text: '培训管理' },
+                { name: '工种', path: '/1-5', icon: 'ios-build', text: '工种管理' },
+                { name: '设置', path: '/1-6', icon: 'md-settings', text: '设置管理' },
             ];
             return this.menus;
         }
