@@ -1,32 +1,22 @@
 .layout
     Layout(:style="{minHeight: '100vh'}")
-        Sider(collapsible, :collapsed-width="78",v-model="isCollapsed")
-            Menu(active-name="/home",theme="dark", width="auto", :class="menuitemClasses", @on-select="clicks")
-                MenuItem(name="1-1")
-                    .logo
+        Sider(collapsible, :collapsed-width="78",v-model='isCollapsed')
+            .logo
+            Menu( :theme="theme2",:open-names="['1']",accordion,@on-select="select",width="auto", :class="menuitemClasses",theme="dark")
                 MenuItem(name="/home")
                     Icon(type="md-home")
                     span 首页
-                MenuItem(name="/Item")
-                    Icon(type="ios-folder-open")
-                    span 项目
-                MenuItem(name="1-4")
-                    Icon(type="md-people")
-                    span 人员
-                MenuItem(name="1-5")
-                    Icon(type="ios-book")
-                    span 培训
-                MenuItem(name="1-6")
-                    Icon(type="ios-build")
-                    span 工种
-                MenuItem(name="1-7")
-                    Icon(type="md-settings")
-                    span 设置
-
+                Submenu(v-for="item in getMenus()",:name="item.name")
+                    template( slot="title")
+                        Icon(:type="item.icon")
+                        span {{item.name}}
+                    MenuItem(v-for="item2 in item.second",:name="item2.path")
+                        span {{item2.secondName}}
         Layout
             Content
                 .headers
                     .circle
+                    span {{title}}
                 router-view
 
 

@@ -1,0 +1,148 @@
+.body{
+    display: inline-block;
+    min-height: 1080px;
+    height: auto;
+    width: 100%;
+    background-color: #ffffff;
+}
+.topOne{
+    display: block;
+    height: 140px;
+    width: 90%;
+    height: auto;
+    float: left;
+    min-height: 140px;
+}
+.topTwo{
+    display: block;
+    height: 140px;
+    width: 10%;
+    height: auto;
+    float: left;
+    min-height: 140px;
+}
+.divOne{
+    display: block;
+    height: 70px;
+    width: 290px;
+    float: left;
+    margin-left:60px;
+}
+.divOne span {
+    line-height: 70px;
+    font-size: 18px;
+    float: right;
+    color:#000000;
+}
+.topTwo Button{
+    line-height: 30px;
+    font-size: 18px;
+    float: right;
+    height: 40px;
+    width: 165px;
+    margin-top: 85px;
+    margin-right: 20px;
+    background-color: #ffe100;
+    color:#ffffff;
+}
+.hr{
+    display: inline-block;
+    background-color: #f7f7f7;
+    width: 100%;
+    height: auto;
+    height: 10px;
+    float: right;
+}
+.button{
+    display: inline-block;
+    min-height: 70px;
+    height: auto;
+    width: 100%;
+}
+.button Button {
+    margin-left: 20px;
+    margin-top: 20px;
+}
+.people{
+    display: inline-block;
+    width: 320px;
+    height: 395px;
+    margin-left: 80px;
+    margin-top: 20px;
+    background-color: #f8f9fb;
+}
+
+.name{
+    width: 100%;
+    height: 40px;
+    font-size: 18px;
+    color: #000000;
+    line-height: 40px;
+    text-align: center;;
+}
+.circle{
+    width: 90px;
+    height: 90px;
+    background-color: #32bcff;
+    border-radius: 50%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 10px;
+}
+.ivu-rate {
+    display: inline-block;
+    margin: 0;
+    padding: 0;
+    font-size: 20px;
+    vertical-align: middle;
+    font-weight: 400;
+    font-style: normal;
+    margin-left: 20px;
+}
+.comment{
+    width: 100%;
+    height: 40px;
+    margin-bottom: 7px;
+}
+.com{
+    width: 70px;
+    height: 35px;
+    margin-left: 28px;
+    margin-top: 3px;
+    border: 1px solid #000000;
+    float: left;
+    text-align: center;
+    line-height: 35px;
+}
+.y1{
+    height: 65px;
+    width: 100%;
+}
+.y1 span{
+    margin-left: 20px;
+    font-size: 18px;
+}
+.y2{
+    width: 100%;
+    height: 43px;
+}
+.y2 button{
+    width: 104px;
+    height: 40px;
+    color: #f78803;
+    text-align: center;
+    line-height: 30px;
+    margin-left: 35px;
+}
+.footer{
+    height: 50px;
+    width: 100%;
+    float:left;
+    margin-top: 20px;
+}
+
+.footer ul {
+    margin-left: auto;
+    margin-right: auto;
+    width: 500px;
+}

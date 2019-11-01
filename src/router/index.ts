@@ -3,8 +3,10 @@ import Vue from 'vue';
 import Home from '@/components/Home.vue';
 import Login from '@/components/Login.vue';
 import Nav from '@/components/Nav.vue';
-import Item from '@/components/Item.vue';
-
+import Project from '@/components/Project.vue';
+import Worker from '@/components/Worker.vue';
+import Comments from '@/components/Comments.vue';
+import Contributive from '@/components/Contributive.vue';
 import Router from 'vue-router';
 Vue.use(Router);
 
@@ -23,16 +25,20 @@ export default new Router({
       routes: [
           {
               path: '/login',
-              name: 'Login',
+              name: 'login',
               component: Login
           },
           {
               path: '/',
-              name: 'Nav',
+              name: 'nav',
               component: Nav,
-              redirect: '/Home',
+              redirect: '/home',
               children: [
-                {path: '/Home', component: Home}
+                {path: '/home', component: Home},
+                {path: '/project', component: Project},
+                {path: '/worker', component: Worker},
+                {path: '/comments', component: Comments},
+                {path: '/contributive', component: Contributive}
               ]
           },
       ],

@@ -1,6 +1,11 @@
 import Vue from 'vue';
 import Home from '@/components/Home.vue';
 import Login from '@/components/Login.vue';
+import Nav from '@/components/Nav.vue';
+import Project from '@/components/Project.vue';
+import Worker from '@/components/Worker.vue';
+import Comments from '@/components/Comments.vue';
+import Contributive from '@/components/Contributive.vue';
 import Router from 'vue-router';
 Vue.use(Router);
 // @ts-ignore
@@ -17,15 +22,23 @@ export default new Router({
     base: '/',
     routes: [
         {
-            path: '/',
-            name: 'Home',
-            component: Home
+            path: '/login',
+            name: 'login',
+            component: Login
         },
         {
-            path: '/login',
-            name: 'Login',
-            component: Login
-        }
+            path: '/',
+            name: 'nav',
+            component: Nav,
+            redirect: '/home',
+            children: [
+                { path: '/home', component: Home },
+                { path: '/project', component: Project },
+                { path: '/worker', component: Worker },
+                { path: '/comments', component: Comments },
+                { path: '/contributive', component: Contributive }
+            ]
+        },
     ],
 });
 //# sourceMappingURL=index.js.map

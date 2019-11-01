@@ -1,4 +1,4 @@
-Content
+.body
     .mainBodyOne
         .top
             #myEcharts(:style={height: '400px'})
@@ -57,6 +57,7 @@ Content
                     span 10种
                     span 100只
                     span 100只
+    .mainHr
     .mainBodyTwo
         .topTwo
             p(:style={
@@ -110,7 +111,7 @@ Content
                     span 10场
                     span 10人
                     span 10人
-                #myEchart(:style={'height': '100%', 'width': '220px', 'margin-right': 'auto', 'margin-left': 'auto'})
+                #myEchart(:style={'height': '100%', 'width': '100%'})
             .hr
             .divOne
                 h2 职业证书统计
@@ -122,17 +123,16 @@ Content
                 })
             .hrTwo
             .divOne
-                .imgDiv
-                    template
-                    Carousel(v-model="value3", :autoplay="true",:autoplay-speed="3000",dots="false",radius-dot="close",arrow="0")
-                        CarouselItem
-                            .demo-carousel 第一张
-                        CarouselItem
-                            .demo-carousel 第二张
-                        CarouselItem
-                            .demo-carousel 第三张
-                        CarouselItem
-                            .demo-carousel 第四张
+                template
+                Carousel(v-model="value3", autoplay, :autoplay-speed=3000, dots="none", radius-dot, arrow="never")
+                    CarouselItem
+                        .demo-carousel 第一张
+                    CarouselItem
+                        .demo-carousel 第二张
+                    CarouselItem
+                        .demo-carousel 第三张
+                    CarouselItem
+                        .demo-carousel 第四张
                 .y3
                     span(:style={'font-weight': 'bold'}) 编号
                     span(:style={'font-weight': 'bold'}) 姓名
