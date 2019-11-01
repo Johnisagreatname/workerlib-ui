@@ -30,7 +30,7 @@
 
         @Model('isCollapsed', { type: Boolean }) private isCollapsed !: boolean;
 
-        private menus!: any;
+        private menus: Array<MenuInfo>;
 
         get title() : String {
             return this.store.title
@@ -54,26 +54,52 @@
                         {secondName:'评价管理', path: '/comments', text: '评价管理'}
                     ] },
                 { name: '培训', icon: 'ios-book',second:[
-                        {secondName:'课件管理', path: '/comments', text: '课件管理'},
+                        {secondName:'课件管理', path: '/3-1', text: '课件管理'},
                         {secondName:'讲师档案', path: '/3-2', text: '讲师档案'},
                         {secondName:'试卷管理', path: '/3-3', text: '试卷管理'},
                         {secondName:'培训记录', path: '/3-4', text: '培训记录'}
                     ]},
-                { name: '工种', path: '/1-5', icon: 'ios-build', text: '工种管理' },
-                { name: '设置', path: '/1-6', icon: 'md-settings', text: '设置管理' },
+                { name: '工种', path: '/1-5', icon: 'ios-build', text: '工种管理', second: [] },
+                { name: '设置', path: '/1-6', icon: 'md-settings', text: '设置管理', second: [] },
             ];
             return this.menus;
         }
 
         select(e) : void {
           this['$router'].push(e);
-          let selectedItem = this.menus.filter(a=>a.second.path == e)[0];
+
+          //let selectedItem:SubMenuInfo = this.menus.filter(a=>a.second.filter(b=>b.path==e))[0];
+            let selectedItem: any = null;
+            for(let i=0; i<this.menus.length; i++) {
+                for(let j=0; j<this.menus[i].second.length; j++) {
+                    let item:SubMenuInfo = this.menus[i].second[j];
+                    if(!item || item.path!=e) {
+                        continue;
+                    }
+
+                    selectedItem = item;
+                    break;
+                }
+            }
           if(!selectedItem){
               this.title = '首页';
               return;
           }
           this.title = selectedItem.text;
         }
+    }
+
+    interface MenuInfo {
+        name?: string;
+        icon?: string;
+        path?: string;
+        second?: Array<SubMenuInfo>;
+        text?: string;
+    }
+    interface SubMenuInfo {
+        secondName?: string;
+        path?: string;
+        text?: string;
     }
 </script>
 
