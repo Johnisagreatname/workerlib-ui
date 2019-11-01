@@ -25,3 +25,10 @@
         .divOne
             Button 搜索
     .hr
+    .button
+        Button(type="primary", ghost, icon="ios-log-in") 导入
+        Button(type="primary", ghost, icon="ios-log-out") 导出
+        Button(type="primary", ghost, icon="ios-remove-circle-outline") 删除
+
+    .bodyTwo
+        Table( border,ref="selection", :columns="columns4", :data="data1")
