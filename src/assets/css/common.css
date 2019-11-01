@@ -10,7 +10,7 @@
     color: #f68903;
     margin-left: 5px;
 }
-#app .freamwork .loginBox .ivu-btn, .ivu-btn:active, .ivu-btn:focus{
+#app .freamwork .loginBox .ivu-btn, #app .freamwork .loginBox .ivu-btn:active, #app .freamwork .loginBox .ivu-btn:focus{
     outline: 0;
     width: 365px;
     height: 50px;
@@ -19,7 +19,7 @@
     margin-top: 5%;
     background-color: #f68903;
 }
-#app .ivu-layout-sider-trigger{
+#app .ivu-layout-sider-trigger {
     position: fixed;
     bottom: 0;
     text-align: center;

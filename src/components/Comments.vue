@@ -1,6 +1,6 @@
 <script lang="ts">
     import "@/assets/css/common.css";
-    import WorkerStore from '../store/modules/WorkerStore';
+    import CommentsStore from '../store/modules/CommentsStore';
     import { Component, Vue, Prop, Model} from 'vue-property-decorator';
     import { getModule } from 'vuex-module-decorators';
 
@@ -20,12 +20,12 @@
             }
         }
     })
-    export default class Worker extends Vue {
+    export default class Comments extends Vue {
 
         private store: any;
         constructor() {
             super();
-            this.store = getModule(WorkerStore)
+            this.store = getModule(CommentsStore)
         }
 
         @Model('isCollapsed', { type: Boolean }) private isCollapsed !: boolean;
@@ -39,12 +39,12 @@
             ];
             return this.options;
         }
-
-        getPeoples() : any{
-            return this.store.peoples;
+        getComments() : any{
+            return this.store.comments;
         }
+
 
     }
 </script>
-<style scoped src="@/styles/worker.css" />
-<template lang="pug" src="@/views/worker.pug" />
+<style scoped src="@/styles/comments.css" />
+<template lang="pug" src="@/views/comments.pug" />

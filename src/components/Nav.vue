@@ -43,10 +43,22 @@
         getMenus() : any {
             if(this.menus) return this.menus;
             this.menus = [
-                { name: '首页', path: '/home', icon: 'md-home', text: '数据中心' },
-                { name: '项目', path: '/project', icon: 'ios-folder-open', text: '项目管理' },
-                { name: '人员', path: '/worker', icon: 'md-people', text: '人员管理' },
-                { name: '培训', path: '/1-4', icon: 'ios-book', text: '培训管理' },
+                { name: '项目', icon: 'ios-folder-open',second:[
+                        {secondName:'项目工程管理', path: '/project', text: '工程管理' },
+                        {secondName:'施工单位管理', path: '/1-1', text: '单位管理' }
+                    ] },
+                { name: '人员', icon: 'md-people',second:[
+                        {secondName:'产业工人档案', path: '/worker', text: '产业工人档案'},
+                        {secondName:'工资管理', path: '/contributive', text: '工资管理'},
+                        {secondName:'出勤管理', path: '/2-2', text: '出勤管理'},
+                        {secondName:'评价管理', path: '/comments', text: '评价管理'}
+                    ] },
+                { name: '培训', icon: 'ios-book',second:[
+                        {secondName:'课件管理', path: '/comments', text: '课件管理'},
+                        {secondName:'讲师档案', path: '/3-2', text: '讲师档案'},
+                        {secondName:'试卷管理', path: '/3-3', text: '试卷管理'},
+                        {secondName:'培训记录', path: '/3-4', text: '培训记录'}
+                    ]},
                 { name: '工种', path: '/1-5', icon: 'ios-build', text: '工种管理' },
                 { name: '设置', path: '/1-6', icon: 'md-settings', text: '设置管理' },
             ];
@@ -55,7 +67,11 @@
 
         select(e) : void {
           this['$router'].push(e);
-          let selectedItem = this.menus.filter(a=>a.path == e)[0];
+          let selectedItem = this.menus.filter(a=>a.second.path == e)[0];
+          if(!selectedItem){
+              this.title = '首页';
+              return;
+          }
           this.title = selectedItem.text;
         }
     }

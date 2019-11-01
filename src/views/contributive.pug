@@ -1,0 +1,27 @@
+.body
+    .topOne
+        .divOne
+            span 项目：
+                Input( v-model="value",clearable,style="width: 260px")
+        .divOne
+            span 参见单位：
+                Input( v-model="value",clearable,style="width: 260px")
+        .divOne
+            span 项目名称：
+                Input( v-model="value",clearable,style="width: 260px")
+        .divOne
+            span 姓名：
+                Input( v-model="value",clearable,style="width: 260px")
+        .divOne
+            span 工种：
+                Input( v-model="value",clearable,style="width: 260px")
+        .divOne
+            span 状态：
+                Select(v-model="model8",clearable,style="width:260px")
+                    Option(v-for="item in getMenus()", :value="item.value", :key="item.key")
+        .divOne
+            span 类型：
+                Input( v-model="value",clearable,style="width: 260px")
+        .divOne
+            Button 搜索
+    .hr

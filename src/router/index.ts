@@ -5,7 +5,8 @@ import Login from '@/components/Login.vue';
 import Nav from '@/components/Nav.vue';
 import Project from '@/components/Project.vue';
 import Worker from '@/components/Worker.vue';
-
+import Comments from '@/components/Comments.vue';
+import Contributive from '@/components/Contributive.vue';
 import Router from 'vue-router';
 Vue.use(Router);
 
@@ -35,7 +36,9 @@ export default new Router({
               children: [
                 {path: '/home', component: Home},
                 {path: '/project', component: Project},
-                {path: '/worker', component: Worker}
+                {path: '/worker', component: Worker},
+                {path: '/comments', component: Comments},
+                {path: '/contributive', component: Contributive}
               ]
           },
       ],

@@ -1,0 +1,54 @@
+.body
+    .topOne
+        .divOne
+            span 项目：
+                Input( v-model="value",clearable,style="width: 200px")
+        .divOne
+            span 参见单位：
+                Input( v-model="value",clearable,style="width: 200px")
+        .divOne
+            span 项目名称：
+                Input( v-model="value",clearable,style="width: 200px")
+        .divOne
+            span 姓名：
+                Input( v-model="value",clearable,style="width: 200px")
+        .divOne
+            span 工种：
+                Input( v-model="value",clearable,style="width: 200px")
+        .divOne
+            span 电话：
+                Input( v-model="value",clearable,style="width: 200px")
+        .divOne
+            span 状态：
+                Select(v-model="model8",clearable,style="width:200px")
+                    Option(v-for="item in getMenus()", :value="item.value", :key="item.key")
+        .divOne
+            span 类型：
+                Input( v-model="value",clearable,style="width: 200px")
+    .topTwo
+            Button 搜索
+    .hr
+    .button
+        Button(type="primary", ghost, icon="ios-log-out") 导出评价
+    .hr
+    .people(v-for="item in getComments()")
+        .circle
+        .name
+            span {{item.name}}
+        Rate(disabled, :value="item.valueDisabled")
+        span(:style={'color': '#f78803','margin-left':'110px','font-size':'18px'}) {{ item.valueCustomText }}
+        .comment
+            .com 好评{{item.goodReputation}}
+            .com 中评{{item.mediumReview}}
+            .com 差评{{item.negativeComment}}
+        .y1
+            span(:style={'color':'#000000','font-weight':'bold','font-size':'18px'}) 所在项目
+            span {{item.project}}
+        .y1
+            span(:style={'color':'#000000','font-weight':'bold','font-size':'18px'}) 所属工种
+            span {{item.typeWork}}
+        .y2
+            Button 查看详情
+            Button 添加评论
+    .footer
+        Page(:total="40", size="small" ,show-elevator show-sizer)

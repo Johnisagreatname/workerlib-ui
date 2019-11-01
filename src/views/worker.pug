@@ -31,29 +31,30 @@
       Button(type="primary", ghost, icon="ios-log-in") 导入
       Button(type="primary", ghost, icon="ios-log-out") 导出
 
-   .people(v-for="item in getPeople()")
-      .y1
-         .headPhotos
-            .circle
-         .top
-            p(:style={'text-align': 'center','font-size': '16px',
-                'line-height': '55px','color':'#000000'})
-               span {{item.name}}
-               span |
-               span {{item.sex}}
-               span |
-               span {{item.age}}岁
-            Button
-         .photos
-         .y2
-            p 手机号码
-            p 身份证号
-            p 工种
-            p 状态
-         .y3
-            p {{item.phone}}
-            p {{item.cards}}
-            p {{item.profession}}
-            p {{item.state}}
+   .people(v-for="item in getPeoples()")
+      .headPhotos
+         .circle
+      .top
+         p(:style={
+             'text-align': 'center', 'font-size': '16px',
+             'line-height': '55px', 'color': '#000000'
+         })
+            span {{item.name}}
+            span |
+            span {{item.sex}}
+            span |
+            span {{item.age}}岁
+         Button(@click="handleRender")
+      .photos
+      .y2
+         p 手机号码
+         p 身份证号
+         p 工种
+         p 状态
+      .y3
+         p {{item.phone}}
+         p {{item.cards}}
+         p {{item.profession}}
+         p {{item.state}}
    .footer
       Page(:total="40", size="small" ,show-elevator show-sizer)

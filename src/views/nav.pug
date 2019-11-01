@@ -1,13 +1,17 @@
 .layout
     Layout(:style="{minHeight: '100vh'}")
         Sider(collapsible, :collapsed-width="78",v-model='isCollapsed')
-            Menu(active-name="/home",theme="dark", width="auto", :class="menuitemClasses", @on-select="select")
-                MenuItem(name="/")
-                    .logo
-                MenuItem(v-for="item in getMenus()", :name="item.path")
-                    Icon(:type="item.icon")
-                    span {{item.name}}
-
+            .logo
+            Menu( :theme="theme2",:open-names="['1']",accordion,@on-select="select",width="auto", :class="menuitemClasses",theme="dark")
+                MenuItem(name="/home")
+                    Icon(type="md-home")
+                    span 首页
+                Submenu(v-for="item in getMenus()",:name="item.name")
+                    template( slot="title")
+                        Icon(:type="item.icon")
+                        span {{item.name}}
+                    MenuItem(v-for="item2 in item.second",:name="item2.path")
+                        span {{item2.secondName}}
         Layout
             Content
                 .headers
