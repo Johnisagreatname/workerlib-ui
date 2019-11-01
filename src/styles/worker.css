@@ -90,12 +90,14 @@
     margin-left: 20px;
 }
 .photos{
-    width: 105px;
-    height: 105px;
+    width: 62px;
+    height: 62px;
     float: right;
     background-image: url('~@/assets/css/images/er.png');
     background-repeat:no-repeat;
     background-position: center;
+    margin-right: 30px;
+    margin-top: 5px;
 }
 .top{
     width: 175px;
@@ -103,8 +105,8 @@
     float: left;
 }
 .top Button{
-    width: 175px;
-    height: 50px;
+    width: 109px;
+    height: 37px;
     background-image: url('~@/assets/css/images/particulars.png');
     background-repeat:no-repeat;
     background-position: center;
@@ -127,17 +129,15 @@
 .y2 p{
     color:#000000;
     font-weight: bold;
-    min-height: 42px;
     font-size:16px;
-    line-height:42px;
+    line-height:33px;
     text-align:center;
 }
 .y3 p{
     color: #0b93ff;
     font-weight: bold;
-    min-height: 42px;
     font-size:16px;
-    line-height:42px;
+    line-height:33px;
     text-align: right;
 }
 .footer{
@@ -158,4 +158,13 @@ p span{
 
 .button button .ivu-icon {
     font-size: 18px !important;
+}
+.imgCheck {
+    display: block;
+    width: 16px;
+    height: 16px;
+    float: right;
+    margin-right: 18px;
+    background-color: #c5e8ff;
+    border-radius: 50%;
 }
