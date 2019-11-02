@@ -14,9 +14,9 @@
 .divOne{
     display: block;
     height: 70px;
-    width: 290px;
+    width: 360px;
     float: left;
-    margin-left: 40px;
+    margin-left:45px;
 }
 .divOne span {
     line-height: 70px;
@@ -52,20 +52,8 @@
     margin-left: 20px;
     margin-top: 20px;
 }
-.bodyTwo{
-    width: 1635px;
-    margin-left: auto;
-    margin-right: auto;
-}
-.footer{
-    height: 50px;
-    width: 100%;
-    float:left;
-    margin-top: 20px;
-}
-
-.footer ul {
-    margin-left: auto;
-    margin-right: auto;
-    width: 500px;
+.lecturer{
+    background-image: url('~@/assets/css/images/lecturer.png');
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
 }

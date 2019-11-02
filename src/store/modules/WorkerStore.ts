@@ -16,4 +16,10 @@ export default class WorkerStore extends VuexModule {
         {name:'陈吕',sex:'男',age:'25',phone:'15688539953',cards:'356***********5686',profession:'资料员',state:'在职'}
     ];
 
+    public modal1 : Boolean = false;
+
+    @Mutation
+    setModal1(data:boolean) {
+        this.modal1 = data;
+    }
 }

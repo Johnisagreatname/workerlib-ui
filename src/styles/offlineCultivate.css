@@ -14,9 +14,9 @@
 .divOne{
     display: block;
     height: 70px;
-    width: 290px;
+    width: 360px;
     float: left;
-    margin-left: 40px;
+    margin-left:45px;
 }
 .divOne span {
     line-height: 70px;

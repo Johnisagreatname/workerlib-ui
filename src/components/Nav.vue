@@ -45,7 +45,7 @@
             this.menus = [
                 { name: '项目', icon: 'ios-folder-open',second:[
                         {secondName:'项目工程管理', path: '/project', text: '工程管理' },
-                        {secondName:'施工单位管理', path: '/1-1', text: '单位管理' }
+                        {secondName:'施工单位管理', path: '/unit', text: '单位管理' }
                     ] },
                 { name: '人员', icon: 'md-people',second:[
                         {secondName:'产业工人档案', path: '/worker', text: '产业工人档案'},
@@ -54,15 +54,15 @@
                         {secondName:'评价管理', path: '/comments', text: '评价管理'}
                     ] },
                 { name: '培训', icon: 'ios-book',second:[
-                        {secondName:'线上', path: '/3-0', text: '课件管理'},
-                        {secondName:'课件管理', path: '/3-1', text: '课件管理'},
+                        {secondName:'线上', path: '/courseWare', text: '课件管理'},
+                        {secondName:'课件管理', path: '/courseware', text: '课件管理'},
                         {secondName:'试卷管理', path: '/examinationPaper', text: '试卷管理'},
-                        {secondName:'培训记录', path: '/3-4', text: '培训记录'},
-                        {secondName:'线下', path: '/3-01', text: '课件管理'},
-                        {secondName:'课件管理', path: '/3-5', text: '课件管理'},
-                        {secondName:'讲师档案', path: '/3-6', text: '讲师档案'},
-                        {secondName:'考评管理', path: '/3-7', text: '考评管理'},
-                        {secondName:'培训记录', path: '/3-8', text: '培训记录'}
+                        {secondName:'培训记录', path: '/cultivate', text: '培训记录'},
+                        {secondName:'线下', path: '/offlineCourseWare', text: '课件管理'},
+                        {secondName:'课件管理', path: '/offlineCourseware', text: '课件管理'},
+                        {secondName:'讲师档案', path: '/lecturer', text: '讲师档案'},
+                        {secondName:'考评管理', path: '/checkEvaluate', text: '考评管理'},
+                        {secondName:'培训记录', path: '/offlineCultivate', text: '培训记录'}
                     ]},
                 { name: '工种', path: '/1-5', icon: 'ios-build', text: '工种管理', second: [] },
                 { name: '设置', path: '/1-6', icon: 'md-settings', text: '设置管理', second: [] }

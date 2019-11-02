@@ -302,3 +302,9 @@
     text-align: center;
     color: #000000;
 }
+.demo-carousel {
+    width: auto;
+    height: 200px;
+    margin-left: auto;
+    margin-right: auto;
+}

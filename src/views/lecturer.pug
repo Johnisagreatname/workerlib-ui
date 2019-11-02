@@ -1,0 +1,17 @@
+.body
+    .topOne
+        .divOne
+            span 老师类型：
+                Input( v-model="value",clearable,style="width: 260px")
+        .divOne
+            span 老师名称：
+                Input( v-model="value",clearable,style="width: 260px")
+        .divOne
+            Button 搜索
+    .hr
+    .button
+        Button(type="primary", ghost, icon="ios-add-circle-outline") 添加老师
+        Button(type="primary", ghost, icon="ios-log-in") 导入老师
+        Button(type="primary", ghost, icon="ios-log-out") 导出老师
+    .hr
+    img(src='~@/assets/css/images/lecturer.png')

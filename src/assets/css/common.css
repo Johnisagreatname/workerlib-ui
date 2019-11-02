@@ -32,6 +32,24 @@
     -webkit-transition: all .2s ease-in-out;
     transition: all .2s ease-in-out;
 }
+
 .ivu-table-header table thead tr th {
     background-color: #c5e8ff !important;
+    font-size: 18px !important;
+}
+.ivu-table-body table tbody tr:nth-child(even) td {
+    background-color: #f8f9fb !important;
+}
+.ivu-table-body table tbody tr td {
+    height: 35px !important;
+    font-size: 16px !important;
+}
+.ivu-table-body table tbody tr:hover>td {
+    background-color: #fdefc6 !important;
+}
+
+button i {
+    font-size: 18px;
+    font-weight: bold;
+
 }

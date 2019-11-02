@@ -23,14 +23,25 @@
     export default class Worker extends Vue {
 
         private store: any;
+        public modal2: boolean;
         constructor() {
             super();
             this.store = getModule(WorkerStore)
+            this.modal2 = false;
         }
 
         @Model('isCollapsed', { type: Boolean }) private isCollapsed !: boolean;
 
         private options!: any;
+
+        get modal1() : boolean {
+            return this.store.modal1;
+        }
+
+        openModal() {
+            this.store.setModal1(!this.store.modal1)
+        }
+
         getMenus() : any {
             if(this.options) return this.options;
             this.options = [

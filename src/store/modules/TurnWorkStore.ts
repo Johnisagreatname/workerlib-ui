@@ -17,31 +17,38 @@ export default class TurnWorkStore extends VuexModule {
         },
         {
             title: '姓名',
-            key: 'name'
+            key: 'name',
+            sortable: true
         },
         {
             title: '所属项目',
-            key: 'project'
+            key: 'project',
+            sortable: true
         },
         {
             title: '所属参见单位',
-            key: 'construction'
+            key: 'construction',
+            sortable: true
         },
         {
             title: '工种',
-            key: 'typeWork'
+            key: 'typeWork',
+            sortable: true
         },
         {
             title: '进出方向',
-            key: 'inOut'
+            key: 'inOut',
+            sortable: true
         },
         {
             title: '时间',
-            key: 'time'
+            key: 'time',
+            sortable: true
         },
         {
             title: '设备',
-            key: 'equipment'
+            key: 'equipment',
+            sortable: true
         }
     ];
 

@@ -1,6 +1,6 @@
 <script lang="ts">
     import "@/assets/css/common.css";
-    import ProjectStore from '../store/modules/ProjectStore';
+    import UnitStore from '../store/modules/UnitStore';
     import { Component, Vue, Prop, Model} from 'vue-property-decorator';
     import { getModule } from 'vuex-module-decorators';
 
@@ -20,12 +20,12 @@
             }
         }
     })
-    export default class Project extends Vue {
+    export default class Unit extends Vue {
 
         private store: any;
         constructor() {
             super();
-            this.store = getModule(ProjectStore)
+            this.store = getModule(UnitStore)
         }
 
         @Model('isCollapsed', { type: Boolean }) private isCollapsed !: boolean;
@@ -58,5 +58,5 @@
 
     }
 </script>
-<style scoped src="@/styles/project.css" />
-<template lang="pug" src="@/views/project.pug" />
+<style scoped src="@/styles/unit.css" />
+<template lang="pug" src="@/views/unit.pug" />

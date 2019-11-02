@@ -18,35 +18,43 @@ export default class ContributiveStore extends VuexModule {
         },
         {
             title: '姓名',
-            key: 'name'
+            key: 'name',
+            sortable: true
         },
         {
             title: '所属项目',
-            key: 'project'
+            key: 'project',
+            sortable: true
         },
         {
             title: '所属参见单位',
-            key: 'construction'
+            key: 'construction',
+            sortable: true
         },
         {
             title: '应发工资',
-            key: 'salary'
+            key: 'salary',
+            sortable: true
         },
         {
             title: '实发工资',
-            key: 'netPayroll'
+            key: 'netPayroll',
+            sortable: true
         },
         {
             title: '进出方向',
-            key: 'inOut'
+            key: 'inOut',
+            sortable: true
         },
         {
             title: '时间',
-            key: 'time'
+            key: 'time',
+            sortable: true
         },
         {
             title: '银行账号',
-            key: 'bankAccount'
+            key: 'bankAccount',
+            sortable: true
         }
     ];
 

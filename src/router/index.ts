@@ -9,6 +9,13 @@ import Comments from '@/components/Comments.vue';
 import Contributive from '@/components/Contributive.vue';
 import TurnWork from '@/components/turnWork.vue';
 import ExaminationPaper from '@/components/examinationPaper.vue';
+import Courseware from '@/components/courseware.vue';
+import Cultivate from '@/components/cultivate.vue';
+import OfflineCourseware from '@/components/offlineCourseware.vue';
+import OfflineCultivate from '@/components/offlineCultivate.vue';
+import CheckEvaluate from '@/components/checkEvaluate.vue';
+import Lecturer from '@/components/lecturer.vue';
+import Unit from '@/components/unit.vue';
 import Router from 'vue-router';
 Vue.use(Router);
 
@@ -42,7 +49,16 @@ export default new Router({
                 {path: '/comments', component: Comments},
                 {path: '/contributive', component: Contributive},
                 {path: '/turnWork', component: TurnWork},
-                {path: '/examinationPaper', component: ExaminationPaper}
+                {path: '/examinationPaper', component: ExaminationPaper},
+                {path: '/courseware', component: Courseware},
+                {path: '/courseWare', component: Courseware},
+                {path: '/cultivate', component: Cultivate},
+                {path: '/offlineCourseware', component: OfflineCourseware},
+                {path: '/offlineCourseWare', component: OfflineCourseware},
+                {path: '/offlineCultivate', component: OfflineCultivate},
+                {path: '/checkEvaluate', component: CheckEvaluate},
+                {path: '/lecturer', component: Lecturer},
+                {path: '/unit', component: Unit}
               ]
           },
       ],
