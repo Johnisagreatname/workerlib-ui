@@ -50,17 +50,22 @@
                 { name: '人员', icon: 'md-people',second:[
                         {secondName:'产业工人档案', path: '/worker', text: '产业工人档案'},
                         {secondName:'工资管理', path: '/contributive', text: '工资管理'},
-                        {secondName:'出勤管理', path: '/2-2', text: '出勤管理'},
+                        {secondName:'出勤管理', path: '/turnWork', text: '出勤管理'},
                         {secondName:'评价管理', path: '/comments', text: '评价管理'}
                     ] },
                 { name: '培训', icon: 'ios-book',second:[
+                        {secondName:'线上', path: '/3-0', text: '课件管理'},
                         {secondName:'课件管理', path: '/3-1', text: '课件管理'},
-                        {secondName:'讲师档案', path: '/3-2', text: '讲师档案'},
-                        {secondName:'试卷管理', path: '/3-3', text: '试卷管理'},
-                        {secondName:'培训记录', path: '/3-4', text: '培训记录'}
+                        {secondName:'试卷管理', path: '/examinationPaper', text: '试卷管理'},
+                        {secondName:'培训记录', path: '/3-4', text: '培训记录'},
+                        {secondName:'线下', path: '/3-01', text: '课件管理'},
+                        {secondName:'课件管理', path: '/3-5', text: '课件管理'},
+                        {secondName:'讲师档案', path: '/3-6', text: '讲师档案'},
+                        {secondName:'考评管理', path: '/3-7', text: '考评管理'},
+                        {secondName:'培训记录', path: '/3-8', text: '培训记录'}
                     ]},
                 { name: '工种', path: '/1-5', icon: 'ios-build', text: '工种管理', second: [] },
-                { name: '设置', path: '/1-6', icon: 'md-settings', text: '设置管理', second: [] },
+                { name: '设置', path: '/1-6', icon: 'md-settings', text: '设置管理', second: [] }
             ];
             return this.menus;
         }

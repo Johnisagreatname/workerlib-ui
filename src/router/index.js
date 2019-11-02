@@ -6,6 +6,8 @@ import Project from '@/components/Project.vue';
 import Worker from '@/components/Worker.vue';
 import Comments from '@/components/Comments.vue';
 import Contributive from '@/components/Contributive.vue';
+import TurnWork from '@/components/turnWork.vue';
+import ExaminationPaper from '@/components/examinationPaper.vue';
 import Router from 'vue-router';
 Vue.use(Router);
 // @ts-ignore
@@ -36,7 +38,9 @@ export default new Router({
                 { path: '/project', component: Project },
                 { path: '/worker', component: Worker },
                 { path: '/comments', component: Comments },
-                { path: '/contributive', component: Contributive }
+                { path: '/contributive', component: Contributive },
+                { path: '/turnWork', component: TurnWork },
+                { path: '/examinationPaper', component: ExaminationPaper }
             ]
         },
     ],
