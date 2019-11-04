@@ -98,7 +98,6 @@
     height: 25px;
     background-color: #ffffff;
     border-radius: 50%;
-    padding-top: 15px;
     float:left;
 }
 .headers span{
@@ -107,7 +106,7 @@
     display: block;
     float: left;
     height: 40px;
-    padding-left: 13px;
+    padding-left: 1%;
     line-height: 27px;
     color: #ffffff;
 }

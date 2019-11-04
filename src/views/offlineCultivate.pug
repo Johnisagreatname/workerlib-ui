@@ -1,0 +1,21 @@
+.body
+    .topOne
+        .divOne
+            span 课程类型：
+                Input( v-model="value",clearable,style="width: 260px")
+        .divOne
+            span 课程状态：
+                Select(v-model="model8",clearable,style="width:260px")
+                    Option(v-for="item in getMenus()", :value="item.value", :key="item.key")
+        .divOne
+            span 所属项目：
+                Input( v-model="value",clearable,style="width: 260px")
+        .divOne
+            Button 搜索
+    .hr
+    .button
+    .hr
+    .bodyTwo
+        Table(:row-class-name="rowClassName", border, ref="selection", :columns="getColumns()", :data="getData()")
+    .footer
+        Page(:total="5", size="small" ,show-elevator,show-sizer,show-total)

@@ -31,6 +31,6 @@
         Button(type="primary", ghost, icon="ios-remove-circle-outline") 删除
 
     .bodyTwo
-        Table(:row-class-name="rowClassName", border, ref="selection", :columns="getColumns()", :data="getData()")
+        Table(border,ref="selection", :columns="getColumns()", :data="getData()")
     .footer
         Page(:total="5", size="small" ,show-elevator,show-sizer,show-total)

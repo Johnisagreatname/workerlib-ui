@@ -1,0 +1,22 @@
+.body
+    .topOne
+        .divOne
+            span 试卷类型：
+                Input( v-model="value",clearable,style="width: 260px")
+        .divOne
+            span 搜索试卷：
+                Input( v-model="value",clearable,style="width: 260px")
+        .divOne
+            Button 搜索
+    .hr
+    .button
+        Button(type="primary", ghost, icon="ios-add-circle-outline") 添加试卷
+    .hr
+    .examinationPaper(v-for="item in getPaper()")
+        .divY
+            p(:style={'font-weight':'bold'}) {{item.title}}
+            p 题数：{{item.questionNumber}}
+            p 分数：{{item.grade}}
+            Button 查看试题
+        .divY
+            .img

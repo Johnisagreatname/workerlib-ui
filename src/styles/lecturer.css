@@ -7,11 +7,9 @@
 }
 .topOne{
     display: block;
-    height: 140px;
     width: 100%;
     height: auto;
     float: right;
-    min-height: 140px;
 }
 .divOne{
     display: block;
@@ -54,20 +52,8 @@
     margin-left: 20px;
     margin-top: 20px;
 }
-.bodyTwo{
-    width: 1635px;
-    margin-left: auto;
-    margin-right: auto;
-}
-.footer{
-    height: 50px;
-    width: 100%;
-    float:left;
-    margin-top: 20px;
-}
-
-.footer ul {
-    margin-left: auto;
-    margin-right: auto;
-    width: 500px;
+.lecturer{
+    background-image: url('~@/assets/css/images/lecturer.png');
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
 }

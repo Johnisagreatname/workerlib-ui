@@ -7,11 +7,9 @@
 }
 .topOne{
     display: block;
-    height: 140px;
     width: 100%;
     height: auto;
     float: right;
-    min-height: 140px;
 }
 .divOne{
     display: block;

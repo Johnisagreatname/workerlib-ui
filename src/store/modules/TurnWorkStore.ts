@@ -5,11 +5,10 @@ import store from "../index";
     namespaced: true,
     stateFactory: true,
     dynamic: true,
-    name: "ContributiveStore",
+    name: "TurnWorkStore",
     store,
 })
-export default class ContributiveStore extends VuexModule {
-
+export default class TurnWorkStore extends VuexModule {
     public columns = [
         {
             type: 'selection',
@@ -32,13 +31,8 @@ export default class ContributiveStore extends VuexModule {
             sortable: true
         },
         {
-            title: '应发工资',
-            key: 'salary',
-            sortable: true
-        },
-        {
-            title: '实发工资',
-            key: 'netPayroll',
+            title: '工种',
+            key: 'typeWork',
             sortable: true
         },
         {
@@ -52,53 +46,48 @@ export default class ContributiveStore extends VuexModule {
             sortable: true
         },
         {
-            title: '银行账号',
-            key: 'bankAccount',
+            title: '设备',
+            key: 'equipment',
             sortable: true
         }
     ];
 
-    public data = [
+    public data= [
         {
             name: '裴灏杰',
             project: '深圳创新科技园项目',
             construction: '深圳市市政工程总公司',
-            salary: '8000',
-            netPayroll: '8000',
+            typeWork: '木工',
             inOut: '进',
-            time: '2019-10-01',
-            bankAccount: '620000002000000'
+            time: '2019-10-01 08:34:12',
+            equipment: '闸机'
         },
         {
             name: '范佳超',
             project: '深圳创新科技园项目',
             construction: '深圳市市政工程总公司',
-            salary: '8000',
-            netPayroll: '8000',
+            typeWork: '水泥工',
             inOut: '进',
-            time: '2019-10-01',
-            bankAccount: '637000802000556'
+            time: '2019-10-01 08:29:16',
+            equipment: '人脸考勤机'
         },
         {
             name: '林陆锐',
             project: '深圳创新科技园项目',
             construction: '深圳市市政工程总公司',
-            salary: '8000',
-            netPayroll: '8000',
+            typeWork: '电工',
             inOut: '进',
-            time: '2019-10-01',
-            bankAccount: '3785000000295800'
+            time: '2019-10-01 08:36:48',
+            equipment: '闸机'
         },
         {
             name: '陈吕',
             project: '深圳创新科技园项目',
             construction: '深圳市市政工程总公司',
-            salary: '8000',
-            netPayroll: '8000',
+            typeWork: '焊工',
             inOut: '进',
-            time: '2019-10-01',
-            bankAccount: '6208954522000090'
+            time: '2019-10-01 08:32:56',
+            equipment: '移动考勤机'
         }
     ];
-
 }
