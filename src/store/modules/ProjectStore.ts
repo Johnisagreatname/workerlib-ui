@@ -13,7 +13,6 @@ export default class ProjectStore extends VuexModule {
     public columns = [
         {
             type: 'selection',
-            width: 60,
             align: 'center'
         },
         {

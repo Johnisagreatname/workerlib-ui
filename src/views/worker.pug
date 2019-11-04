@@ -27,8 +27,8 @@
    .hr
    .button
       Button(type="primary", ghost,@click="modal2=!modal2",icon="ios-add-circle-outline") 新增
-      Modal(:value="modal2",title="Common Modal dialog box title")
-         p Content of dialog
+      Modal(:value="modal2",title="新增人员",@on-ok="ok()",@on-cancel="cancel()",width='70%')
+         .left
          p Content of dialog
          p Content of dialog
       Button(type="primary", ghost, icon="ios-contact-outline") 离职

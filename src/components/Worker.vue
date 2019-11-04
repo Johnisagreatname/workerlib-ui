@@ -34,14 +34,6 @@
 
         private options!: any;
 
-        get modal1() : boolean {
-            return this.store.modal1;
-        }
-
-        openModal() {
-            this.store.setModal1(!this.store.modal1)
-        }
-
         getMenus() : any {
             if(this.options) return this.options;
             this.options = [
@@ -54,7 +46,12 @@
         getPeoples() : any{
             return this.store.peoples;
         }
-
+        ok() : any{
+            this.modal2 = false;
+        }
+        cancel():any {
+            this.modal2 = false;
+        }
     }
 </script>
 <style scoped src="@/styles/worker.css" />

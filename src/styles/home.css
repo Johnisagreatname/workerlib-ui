@@ -3,7 +3,7 @@
     min-height: 970px;
     height: auto;
     width: 100%;
-    background-color: #ffffff;
+    background-color: #f3f5f7;
 }
 .mainHr{
     display: inline-block;
@@ -16,7 +16,6 @@
     display: inline-block;
     height: auto;
     width: 53%;
-    min-width: 666px;
     background-color: #ffffff;
     border-radius: 0px 0px 0px 5px;
     float: left;
@@ -30,7 +29,6 @@
     border-radius: 0px 0px 0px 5px;
     float: right;
     min-height: 970px;
-    min-width: 666px;
 }
 .ivu-layout-header{
     background: #f78803;
@@ -52,11 +50,11 @@
 .box{
     display: block;
     height: 135px;
-    width: 215px;
+    width: 29%;
     background-color: #ffffff;
     border-radius: 5px 5px 5px 5px;
-    margin-left: 60px;
-    margin-top: 25px;
+    margin-left: 3%;
+    margin-top: 3%;
     float: left;
     border: 1px solid #d7d7d7;
     box-shadow: 3px 3px 1px -1px #d7d7d7;
@@ -71,9 +69,9 @@
     width: 80%;
     background-color: #ffffff;
     border-radius: 5px 5px 5px 5px;
-    margin-left: 95px;
+    margin-left: 9%;
     float: left;
-    margin-top: 50px;
+    margin-top:8%;
     border: 1px solid #d7d7d7;
     box-shadow: 3px 3px 1px -1px #d7d7d7;
     color: #ffffff;
@@ -126,13 +124,13 @@
     height: 50%;
 }
 .byOne span{
-    padding-left: 100px;
+    padding-left: 18%;
     font-size:20px;
     line-height:65px;
     color: #000000;
 }
 .byTwo span{
-    padding-left: 95px;
+    padding-left: 16%;
     font-size:20px;
     line-height:65px;
     color: #000000;
@@ -219,7 +217,7 @@
     color: #000000;
 }
 .ulDiv{
-    width: 90%;
+    width: 95%;
     height: 40px;
     margin-left: auto;
     margin-right: auto;
@@ -229,7 +227,7 @@
     float: left;
     list-style: none;
     font-size: 15px;
-    width: 68px;
+    width: 11%;
     height: 40px;
     line-height: 40px;
     text-align: center;
@@ -265,7 +263,7 @@
 }
 
 .ulDivTwo{
-    width: 90%;
+    width: 95%;
     height: 40px;
     margin-left: auto;
     margin-right: auto;
@@ -276,7 +274,7 @@
     float: left;
     list-style: none;
     font-size: 15px;
-    width: 68px;
+    width: 11%;
     height: 40px;
     line-height: 40px;
     text-align: center;
@@ -294,7 +292,7 @@
 .y3 span{
     display: block;
     width: 25%;
-    font-size: 18px;
+    font-size: 15px;
     margin-left: auto;
     margin-right: auto;
     float: left;
@@ -304,7 +302,7 @@
 }
 .demo-carousel {
     width: auto;
-    height: 200px;
+    height: 150px;
     margin-left: auto;
     margin-right: auto;
 }
