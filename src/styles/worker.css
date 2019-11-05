@@ -168,3 +168,6 @@ p span{
     background-color: #c5e8ff;
     border-radius: 50%;
 }
+.ivu-modal{
+    width: 1368px !important;
+}

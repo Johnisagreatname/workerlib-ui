@@ -26,7 +26,11 @@
          Button 搜索
    .hr
    .button
-      Button(type="primary", ghost, icon="ios-add-circle-outline") 新增
+      Button(type="primary", ghost,@click="modal2=!modal2",icon="ios-add-circle-outline") 新增
+      Modal(:value="modal2",title="新增人员",@on-ok="ok()",@on-cancel="cancel()",width='70%')
+         .left
+         p Content of dialog
+         p Content of dialog
       Button(type="primary", ghost, icon="ios-contact-outline") 离职
       Button(type="primary", ghost, icon="ios-log-in") 导入
       Button(type="primary", ghost, icon="ios-log-out") 导出
@@ -65,4 +69,4 @@
          p {{item.profession}}
          p {{item.state}}
    .footer
-      Page(:total="40", size="small" ,show-elevator show-sizer)
+      Page(:total="4", size="small" ,show-elevator,show-sizer,show-total)

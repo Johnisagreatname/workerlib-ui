@@ -23,14 +23,17 @@
     export default class Worker extends Vue {
 
         private store: any;
+        public modal2: boolean;
         constructor() {
             super();
             this.store = getModule(WorkerStore)
+            this.modal2 = false;
         }
 
         @Model('isCollapsed', { type: Boolean }) private isCollapsed !: boolean;
 
         private options!: any;
+
         getMenus() : any {
             if(this.options) return this.options;
             this.options = [
@@ -43,7 +46,12 @@
         getPeoples() : any{
             return this.store.peoples;
         }
-
+        ok() : any{
+            this.modal2 = false;
+        }
+        cancel():any {
+            this.modal2 = false;
+        }
     }
 </script>
 <style scoped src="@/styles/worker.css" />

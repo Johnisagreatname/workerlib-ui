@@ -1,0 +1,30 @@
+.body
+    .topOne
+        .divOne
+            span 课程类型：
+                Input( v-model="value",clearable,style="width: 260px")
+        .divOne
+            span 课程搜索：
+                Input( v-model="value",clearable,style="width: 260px")
+        .divOne
+            Button 搜索
+    .hr
+    .button
+        Button(type="primary", ghost, icon="ios-add-circle-outline") 新建课件
+        Button(type="primary", ghost, icon="ios-arrow-round-down") 下载课件
+    .hr
+    .courseware(v-for="item in getCourseware()")
+        .div1
+            span {{item.title}}
+        .div2
+        .div3
+            .left
+                span(:style={'margin-left':'20px','margin-top':'15px','font-size':'18px','float':'left'}) {{item.hour}}课时
+                .ellipse
+                    span(:style={'font-size':'12px','padding-left': '11px'}) 必学
+            .right
+                span {{item.name}}
+        Button 开始培训
+
+
+

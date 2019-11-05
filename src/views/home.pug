@@ -57,7 +57,6 @@
                     span 10种
                     span 100只
                     span 100只
-    .mainHr
     .mainBodyTwo
         .topTwo
             p(:style={
@@ -123,8 +122,7 @@
                 })
             .hrTwo
             .divOne
-                template
-                Carousel(v-model="value3", autoplay, :autoplay-speed=3000, dots="none", radius-dot, arrow="never")
+                Carousel(v-model="value3", autoplay, :autoplay-speed=3000, dots="none", radius-dot, arrow="never",height=70)
                     CarouselItem
                         Img.demo-carousel 第一张
                     CarouselItem
@@ -134,10 +132,10 @@
                     CarouselItem
                         .demo-carousel 第四张
                 .y3
-                    span(:style={'font-weight': 'bold'}) 编号
-                    span(:style={'font-weight': 'bold'}) 姓名
-                    span(:style={'font-weight': 'bold'}) 行为
-                    span(:style={'font-weight': 'bold'}) 处罚
+                    span(:style={'font-weight': 'bold','font-size':'18px'}) 编号
+                    span(:style={'font-weight': 'bold','font-size':'18px'}) 姓名
+                    span(:style={'font-weight': 'bold','font-size':'18px'}) 行为
+                    span(:style={'font-weight': 'bold','font-size':'18px'}) 处罚
                 .y3
                     span 01
                     span 某某某
