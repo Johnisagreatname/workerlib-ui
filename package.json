@@ -97,7 +97,7 @@
   },
   "proxyServer": {
     "port": 6666,
-    "host": "39.108.103.150"
+    "host": "localhost"
   },
   "engines": {
     "node": ">= 4.0.0",
