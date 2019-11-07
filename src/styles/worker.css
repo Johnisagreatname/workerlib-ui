@@ -20,11 +20,32 @@
     float: left;
     margin-left:45px;
 }
+.divTwo{
+    line-height: 70px;
+    width: 80%;
+    height: 14%;
+    margin-left: 10%;
+    float: left;
+
+}
+.divTwo span{
+    font-size: 18px;
+}
 .divOne span {
     line-height: 70px;
     font-size: 18px;
     float: right;
     color:#000000;
+}
+.name{
+    width: 22%;
+    float: left;
+    text-align: right;
+}
+.input{
+    width: 75%;
+    float: left;
+    margin-left: 2%;
 }
 .divOne Button{
     line-height: 30px;
@@ -67,7 +88,16 @@
     background-image: url('~@/assets/css/images/border2.png');
     background-repeat: no-repeat;
 }
-
+.divY{
+    padding: 20px 0;
+    background-image: url('~@/assets/css/images/top.png');
+    background-repeat: no-repeat;
+}
+.divU{
+    padding: 20px 0;
+    background-image: url('~@/assets/css/images/bottom.png');
+    background-repeat: no-repeat;
+}
 .y1{
     display: inline-block;
     min-height: 105px;
@@ -88,6 +118,16 @@
     float: left;
     margin-top: 16px;
     margin-left: 20px;
+}
+.oCircle{
+    display: block;
+    width: 70px;
+    height: 70px;
+    background-color: #e2e2e2;
+    border-radius: 50%;
+    float: left;
+    margin-left: 13%;
+    margin-top: 3%;
 }
 .photos{
     width: 62px;
@@ -131,7 +171,8 @@
     font-weight: bold;
     font-size:16px;
     line-height:33px;
-    text-align:center;
+    text-align:left;
+    padding-left: 10%;
 }
 .y3 p{
     color: #0b93ff;
@@ -168,6 +209,209 @@ p span{
     background-color: #c5e8ff;
     border-radius: 50%;
 }
-.ivu-modal{
-    width: 1368px !important;
+.addBody{
+    width: 100%;
+    height: 675px;
+}
+.particularsBody{
+    width: 100%;
+    height: 675px;
+    background-color: #f2f2f2;
+}
+.minBody{
+    width: 100%;
+    height: 675px;
+}
+.left{
+    width: 50%;
+    height: 100%;
+    border-right: 1px solid #e1e1e1;
+    float: left;
+}
+.right{
+    width: 49%;
+    height: 100%;
+    float: left;
+}
+.box{
+    width: 100%;
+    height: 30%;
+    float: left;
+}
+.box span{
+     font-size: 18px;
+ }
+
+.boxLeft{
+    width: 20%;
+    float: left;
+    text-align: right;
+    margin-top: 15%;
+}
+.boxRight{
+    width: 75%;
+    float: left;
+    margin-left: 2%;
+}
+.boxOne{
+    width: 30%;
+    height: 100%;
+    background-color: #f2f2f2;
+    float: left;
+ }
+.oneTop{
+     width: 100%;
+     height: 38%;
+     background-color: #ffffff;
+ }
+.oneButtom{
+    width: 100%;
+    height: 60%;
+    background-color: #ffffff;
+    margin-top: 4%;
+}
+.twoTop{
+    width: 100%;
+    height: 50%;
+    background-color: #ffffff;
+}
+.twoMiddle{
+    width: 100%;
+    height: 24%;
+    margin-top: 2%;
+    background-color: #ffffff;
+}
+.twoButtom{
+    width: 100%;
+    height: 24%;
+    margin-top: 2%;
+    background-color: #ffffff;
+
+}
+.boxTwo{
+    width: 36%;
+    height: 100%;
+    background-color: #f2f2f2;
+    float: left;
+    margin-left: 2%;
+}
+.boxThree{
+    width: 30%;
+    height: 100%;
+    background-color: #f2f2f2;
+    float: left;
+    margin-left: 2%;
+}
+.three{
+    width: 100%;
+    height: 100%;
+    background-color: #ffffff;
+}
+.oTop{
+    width: 100%;
+    height: 30%;
+}
+.oTop1{
+    width: 25%;
+    height: 100%;
+    float: left;
+}
+.oTop2{
+    width: 45%;
+    height: 100%;
+    float: left;
+}
+.oTop3{
+    width: 30%;
+    height: 100%;
+    float: left;
+}
+.top2{
+    width: 100%;
+    height: 50%;
+}
+.top2 span{
+    font-size: 15px;
+    padding-left: 7%;
+    line-height: 35px;
+    color: #000000;
+}
+.buttonTop{
+    width: 100%;
+    color: #f78803;
+    padding-top: 1%;
+    text-align: center;
+    border-bottom: 1px solid #e5f4ff;
+}
+.text{
+    width: 100%;
+    height: 17%;
+    margin-top: 3%;
+    padding-left: 6%;
+    font-size: 16px;
+    color: #000000;
+}
+.twoLeft{
+    width: 60%;
+    float: left;
+}
+.twoTextL{
+    width: 100%;
+    height: 17%;
+    margin-top: 3%;
+    padding-left: 6%;
+    font-size: 16px;
+    color: #000000;
+}
+.twoRight{
+    width: 40%;
+    float: left;
+}
+.twoTextR{
+    width: 100%;
+    height: 17%;
+    margin-top: 3%;
+    padding-left: 6%;
+    font-size: 16px;
+    color: #000000;
+    padding-top: 4%;
+}
+.middleHr{
+    width: 100%;
+    height: 1px;
+    background-color: #e7e7e7;
+}
+.middleHrBu{
+    width: 100%;
+    height: 1px;
+    background-color: #e5f4ff;
+}
+.middle{
+    width: 100%;
+    height: 25%;
+    padding-left: 6%;
+    font-size: 16px;
+    color: #000000;
+    margin-top: 5%;
+}
+.threeDiv{
+    width: 100%;
+    min-height: 10%;
+    padding-left: 5%;
+    padding-top: 5%;
+    height: auto;
+}
+.com{
+    width: 70px;
+    height: 25px;
+    margin-left: 17px;
+    margin-top: 3px;
+    float: left;
+    text-align: center;
+    line-height: 25px;
+    border: 1px solid #d7d7d7;
+    box-shadow: 3px 3px 3px -1px #d7d7d7;
+}
+.threeDiv p{
+    margin-bottom: 2%;
 }

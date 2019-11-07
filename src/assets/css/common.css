@@ -53,3 +53,8 @@ button i {
     font-weight: bold;
 
 }
+
+#app .ivu-modal-wrap .ivu-modal .ivu-modal-content .ivu-modal-header{
+    text-align: center !important;
+    background-color: yellowgreen !important;
+}

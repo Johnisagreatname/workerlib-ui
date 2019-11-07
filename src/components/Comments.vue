@@ -23,9 +23,12 @@
     export default class Comments extends Vue {
 
         private store: any;
+        public addCommtent: boolean;
         constructor() {
             super();
             this.store = getModule(CommentsStore)
+            this.addCommtent = false;
+
         }
 
         @Model('isCollapsed', { type: Boolean }) private isCollapsed !: boolean;
@@ -39,10 +42,27 @@
             ];
             return this.options;
         }
+
+        private commentType!: any;
+        getCommentType() : any {
+            if(this.commentType) return this.commentType;
+            this.commentType = [
+                { value: '永久不予录入', key: '0' },
+                { value: '其他', key: '1' }
+            ];
+            return this.commentType;
+        }
+
+
         getComments() : any{
             return this.store.comments;
         }
-
+        ok() : any{
+            this.addCommtent = false;
+        }
+        cancel():any {
+            this.addCommtent = false;
+        }
 
     }
 </script>
