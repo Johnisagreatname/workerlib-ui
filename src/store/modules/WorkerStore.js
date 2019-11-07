@@ -14,10 +14,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-import { Module, VuexModule, Mutation } from 'vuex-module-decorators';
+import { Module, VuexModule } from 'vuex-module-decorators';
 import store from "../index";
 var WorkerStore = /** @class */ (function (_super) {
     __extends(WorkerStore, _super);
@@ -29,18 +26,8 @@ var WorkerStore = /** @class */ (function (_super) {
             { name: '林陆锐', sex: '男', age: '29', phone: '15977565653', cards: '462***********2518', profession: '资料员', state: '在职' },
             { name: '陈吕', sex: '男', age: '25', phone: '15688539953', cards: '356***********5686', profession: '资料员', state: '在职' }
         ];
-        _this.modal1 = false;
         return _this;
     }
-    WorkerStore.prototype.setModal1 = function (data) {
-        this.modal1 = data;
-    };
-    __decorate([
-        Mutation,
-        __metadata("design:type", Function),
-        __metadata("design:paramtypes", [Boolean]),
-        __metadata("design:returntype", void 0)
-    ], WorkerStore.prototype, "setModal1", null);
     WorkerStore = __decorate([
         Module({
             namespaced: true,

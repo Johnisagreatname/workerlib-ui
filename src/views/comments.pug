@@ -45,6 +45,75 @@
             span {{item.typeWork}}
         .y2
             Button 查看详情
-            Button 添加评论
+            Button(type="primary", ghost,@click="addCommtent=!addCommtent") 添加评论
+
     .footer
         Page(:total="4", size="small" ,show-elevator,show-sizer,show-total)
+
+    Modal(:value="addCommtent",title="添加评价",@on-ok="ok()",@on-cancel="cancel()",width='70%')
+     .minBody
+         Tabs( value="name1")
+             TabPane( label="不良评价",name="name1",style="height: 430px")
+                 .div
+                     .d1
+                         span 选择项目
+                         span(:style={'color': 'red'}) *
+                     .d2
+                         Input( v-model="value",clearable,style="width: 380px",size=large)
+                 .div
+                     .d1
+                         span 不良记录评价
+                         span(:style={'color': 'red'}) *
+                     .d2
+                         Input( v-model="value",clearable,style="width: 380px",size=large,type="textarea")
+                 .div
+                     .d1
+                         span 添加图片
+                     .d2
+                         Upload(multiple,type="drag",action="//jsonplaceholder.typicode.com/posts/",:style={
+                             'width': '30%'
+                         })
+                             div(style="padding: 20px 0")
+                                 Icon(type="ios-add" size="52" style="color: #3399ff")
+                                 p 点击上传
+                 .div
+                     .d1
+                         span 处罚
+                         span(:style={'color': 'red'}) *
+                     .d2
+                         Select(v-model="model8",clearable,style="width:380px")
+                            Option(v-for="item in getCommentType()", :value="item.value", :key="item.key")
+             TabPane( label="综合评价",name="name2",style="height: 430px")
+                .yu1
+                    .dd
+                        .m1
+                            span 选择项目
+                            span(:style={'color': 'red'}) *
+                        .m2
+                            Input( v-model="value",clearable,style="width: 380px",size=large)
+                    .dd
+                        .m1
+                            span 不良记录评价
+                            span(:style={'color': 'red'}) *
+                        .m2
+                            Input( v-model="value",clearable,style="width: 380px",size=large,type="textarea")
+                    .dd
+                        .m1
+                            span 添加图片
+                        .m2
+                            Upload(multiple,type="drag",action="//jsonplaceholder.typicode.com/posts/",:style={
+                                'width': '30%'
+                            })
+                                div(style="padding: 20px 0")
+                                    Icon(type="ios-add" size="52" style="color: #3399ff")
+                                    p 点击上传
+                .yu2
+                    .x
+                        span 态度
+                        Rate(v-model="value")
+                    .x
+                        span 技术
+                        Rate(v-model="value")
+                    .x
+                        span 专业
+                        Rate(v-model="value")

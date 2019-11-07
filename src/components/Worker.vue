@@ -24,10 +24,14 @@
 
         private store: any;
         public modal2: boolean;
+        public particulars: boolean;
+        public ee: boolean;
         constructor() {
             super();
             this.store = getModule(WorkerStore)
             this.modal2 = false;
+            this.particulars = false;
+            this.ee = false;
         }
 
         @Model('isCollapsed', { type: Boolean }) private isCollapsed !: boolean;
@@ -37,11 +41,12 @@
         getMenus() : any {
             if(this.options) return this.options;
             this.options = [
-                { value: '离线', key: '0' },
-                { value: '在线', key: '1' }
+                {value: '离线', key: '0' },
+                {value: '在线', key: '1' }
             ];
             return this.options;
         }
+        animal = '否'
 
         getPeoples() : any{
             return this.store.peoples;
@@ -51,6 +56,25 @@
         }
         cancel():any {
             this.modal2 = false;
+        }
+        particularsOk() : any{
+            this.particulars = false;
+        }
+        particularsCancel():any {
+            this.particulars = false;
+        }
+
+        close():any {
+            this.particulars = false;
+            this.ee=true;
+        }
+        eeOk() : any{
+            this.ee = false;
+            this.particulars = true;
+        }
+       eeCancel():any {
+           this.ee = false;
+           this.particulars = true;
         }
     }
 </script>
