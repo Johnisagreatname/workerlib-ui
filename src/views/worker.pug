@@ -270,7 +270,7 @@
                   .threeDiv
                      span(:style={'font-size':'16px'}) 平均分：
                         span(:style={'font-size':'18px','font-weight':'bold'}) 4.9
-                           Rate(v-model="value")
+                           Rate(disabled,v-model="valueDisabled")
                   .middleHrBu
                   .threeDiv
                      .com 好评
@@ -279,10 +279,11 @@
                      .com 离职评价
                   .middleHr
                   .threeDiv
-                     p 深圳市白石龙项目
-                     p 某某 现场管理员人员  |  2019-01-01
-                     p 干活它是，人踏实，继续努力
-                     Rate(v-model="value")
+                     p(:style={'color':'#1397ff','font-size': '16px'}) 深圳市白石龙项目
+                     p(:style={'color':'#9b9b9b','font-size': '12px'}) 某某 现场管理员人员  |  2019-01-01
+                     p(:style={'color':'#000000','font-size': '14px'}) 干活它是，人踏实，继续努力
+                     Rate(disabled,v-model="valueDisabled")
+                  .middleHr
             //Button(type="primary", ghost,@click="close()")
 
       Modal(:value="ee",title="人员详情",@on-ok="eeOk()",@on-cancel="eeCancel()",width='70%')
