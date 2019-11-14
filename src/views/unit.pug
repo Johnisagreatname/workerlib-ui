@@ -1,0 +1,25 @@
+.body
+    .topOne
+        .divOne
+            span 项目名称：
+                Input( v-model="value",clearable,style="width: 200px")
+        .divOne
+            span 单位名称：
+                Input( v-model="value",clearable,style="width: 200px")
+        .divOne
+            span 在场状态：
+                Select(v-model="model8",clearable,style="width:200px")
+                    Option(v-for="item in getMenus()", :value="item.value", :key="item.key")
+        .divOne
+            Button 搜索
+    .hr
+    .button
+        Button(type="primary", ghost, icon="ios-add-circle-outline") 新增单位
+        Button(type="primary", ghost, icon="ios-log-in") 导入单位
+        Button(type="primary", ghost, icon="ios-log-out") 导出信息
+        Button(type="primary", ghost, icon="ios-add-circle-outline") 添加单位评价
+
+    .bodyTwo
+        Table(:row-class-name="rowClassName", border, ref="selection", :columns="getColumns()", :data="getData()")
+    .footer
+        Page(:total="5", size="small" ,show-elevator,show-sizer,show-total)

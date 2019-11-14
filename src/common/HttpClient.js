@@ -26,7 +26,7 @@ var removePending = function (config, f) {
 };
 /* 创建axios实例 */
 var service = axios.create({
-    timeout: 5000,
+    timeout: 200000,
     headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }
 });
 /* request拦截器 */
@@ -50,7 +50,12 @@ service.interceptors.request.use(function (config) {
 service.interceptors.response.use(function (response) {
     // 移除队列中的该请求，注意这时候没有传第二个参数f
     removePending(response.config);
-    // 获取返回数据，并处理。按自己业务需求修改。下面只是个demo
+    if (response.status != 200) {
+        throw response.data.message;
+    }
+    if (response.data.status != 0 || response.data.data == undefined) {
+        throw response.data.message;
+    }
     var data = response.data;
     return data;
 }, function (error) {

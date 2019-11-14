@@ -55,6 +55,8 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 import { Module, VuexModule, Mutation, Action } from 'vuex-module-decorators';
 import store from "../index";
 import request from "../../common/HttpClient";
+import { Message } from 'iview';
+import router from '../../router';
 var LoginStore = /** @class */ (function (_super) {
     __extends(LoginStore, _super);
     function LoginStore() {
@@ -65,18 +67,29 @@ var LoginStore = /** @class */ (function (_super) {
     }
     LoginStore.prototype.login = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var _this = this;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, request.post('api/login', {
                             "username": this.username,
                             "password": this.password,
-                        }).then(function (res) {
-                            console.log(res);
+                        }).then(function (data) {
                             debugger;
-                            _this["$router"].push({ name: 'Home' });
+                            sessionStorage.setItem('loginInfo', JSON.stringify(data));
+                            router.push({ path: '/' });
+                            return data;
                         }).catch(function (e) {
+                            debugger;
                             console.log(e);
+                            var alert = Message;
+                            if (!e) {
+                                alert.warning('未知错误！');
+                                return;
+                            }
+                            if (e.response && e.response.data && e.response.data.message) {
+                                alert.warning(e.response.data.message);
+                                return;
+                            }
+                            alert.warning(e.message || e);
                         })];
                     case 1:
                         _a.sent();

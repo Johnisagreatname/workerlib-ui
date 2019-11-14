@@ -96,7 +96,7 @@
     "forge": "./config/forge.config.js"
   },
   "proxyServer": {
-    "port": 8888,
+    "port": 6666,
     "host": "localhost"
   },
   "engines": {

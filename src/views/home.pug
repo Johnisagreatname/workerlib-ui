@@ -1,177 +1,159 @@
-.layout
-    Layout(:style="{minHeight: '100vh'}")
-        Sider(collapsible, :collapsed-width="78",v-model="isCollapsed")
-            Menu(active-name="1-2",theme="dark", width="auto", :class="menuitemClasses")
-                MenuItem(name="1-1")
-                    .logo
-                MenuItem(name="1-2")
-                    Icon(type="md-home")
-                    span 首页
-                MenuItem(name="1-3")
-                    Icon(type="ios-folder-open")
-                    span 项目
-                MenuItem(name="1-4")
-                    Icon(type="md-people")
-                    span 人员
-                MenuItem(name="1-5")
-                    Icon(type="ios-book")
-                    span 培训
-                MenuItem(name="1-6")
-                    Icon(type="ios-build")
+.body
+    .mainBodyOne
+        .top
+            #myEcharts(:style={height: '400px'})
+        .box
+            .minOne
+                h3 工程总数
+                .hrOne
+            .minTwo
+                span(:style={'font-size': '40px', 'line-height': '65px', 'padding-left': '10px'}) 1
+                span(:style={'font-size': '15px'}) 个
+            .hrOne
+            span(:style={'padding-left': '10px', 'line-height': '35px'}) 在建工程：10
+            span(:style={'padding-left': '20px', 'line-height': '35px'}) 未开工：0
+
+
+        .box
+            .minOne
+                h3 在职工人总数
+                .hrOne
+            .minTwo
+                span(:style={'font-size': '40px', 'line-height': '65px', 'padding-left': '10px'}) 10000
+                span(:style={'font-size': '15px'}) 人
+            .hrOne
+                span(:style={'padding-left': '10px', 'line-height': '35px'})
+                span(:style={'padding-left': '20px', 'line-height': '35px'})
+            .minTwo
+        .box
+            .minOne
+                h3 离职工人总数
+                .hrOne
+            .minTwo
+                span(:style={'font-size': '40px', 'line-height': '65px', 'padding-left': '10px'}) 100
+                span(:style={'font-size': '15px'}) 人
+            .hrOne
+        .footerOne
+            .countOne
+                h2 建筑工人总数
+            .countTwo
+                .byOne
                     span 工种
-                MenuItem(name="1-7")
-                    Icon(type="md-settings")
-                    span 设置
+                    span 自有
+                    span 外部
+                .byTwo
+                    span 10种
+                    span 100人
+                    span 100人
+        .footerOne
+            .countOne
+                h2 承建队伍总数
+            .countTwo
+                .byOne
+                    span 工种
+                    span 自有
+                    span 外部
+                .byTwo
+                    span 10种
+                    span 100只
+                    span 100只
+    .mainBodyTwo
+        .topTwo
+            p(:style={
+                'text-align': 'center',
+                'font-size': '20px',
+                'line-height': '80px',
+                'font-weight': 'bold',
+                'color': '#000000'
+            }) 技能工种评定系统
+            .ulDiv
+                ul
+                    li 一级
+                    li 二级
+                    li 三级
+                    li 四级
+                    li 五级
+                    li 六级
+                    li 七级
+                    li 八级
+                    li 九级
+            .ulDivTwo
+                ul
+                    li 10人
+                    li 10人
+                    li 10人
+                    li 10人
+                    li 10人
+                    li 10人
+                    li 10人
+                    li 10人
+                    li 10人
+        .footerTwo
+            .hr
+            .divOne
+                h2 培训情况
+                .y1
+                    span 培训场数
+                    span 培训人数
+                .y1
+                    span 10场
+                    span 10人
+                #myEchartOne(:style={'height': '100%', 'width': '80%', 'margin-right': 'auto', 'margin-left': 'auto'})
+            .hrTwo
+            .divOne
+                h2 课件类别统计
+                .y2
+                    span 挖机培训
+                    span 塔吊培训
+                    span 铝模培训
+                .y2
+                    span 10场
+                    span 10人
+                    span 10人
+                #myEchart(:style={'height': '100%', 'width': '100%'})
+            .hr
+            .divOne
+                h2 职业证书统计
+                #myEchartTwo(:style={
+                    'height': '290px',
+                    'width': '300px',
+                    'margin-right': 'auto',
+                    'margin-left': 'auto'
+                })
+            .hrTwo
+            .divOne
+                Carousel(v-model="value3", autoplay, :autoplay-speed=3000, dots="none", radius-dot, arrow="never",height=70)
+                    CarouselItem
+                        Img.demo-carousel 第一张
+                    CarouselItem
+                        Img.demo-carousel 第二张
+                    CarouselItem
+                        Img.demo-carousel 第三张
+                    CarouselItem
+                        .demo-carousel 第四张
+                .y3
+                    span(:style={'font-weight': 'bold','font-size':'18px'}) 编号
+                    span(:style={'font-weight': 'bold','font-size':'18px'}) 姓名
+                    span(:style={'font-weight': 'bold','font-size':'18px'}) 行为
+                    span(:style={'font-weight': 'bold','font-size':'18px'}) 处罚
+                .y3
+                    span 01
+                    span 裴灏杰
+                    span 寻衅挑事
+                    span 黑名单
+                .y3
+                    span 02
+                    span 范佳超
+                    span 寻衅挑事
+                    span 黑名单
+                .y3
+                    span 03
+                    span 陈吕
+                    span 寻衅挑事
+                    span 黑名单
+                .y3
+                    span 04
+                    span 吴之甫
+                    span 寻衅挑事
+                    span 黑名单
 
-        Layout
-            Content
-                Header
-                    .circle
-                .mainBodyOne
-                    .top
-                      #myEcharts(:style={ height:'400px'})
-                    .box
-                        .minOne
-                           h3 工程总数
-                           .hrOne
-                        .minTwo
-                            span(:style={'font-size': '40px','line-height':'65px','padding-left':'10px'}) 1
-                            span(:style={'font-size': '15px'}) 个
-                        .hrOne
-                        span(:style={'padding-left':'10px','line-height':'35px'}) 在建工程：10
-                        span(:style={'padding-left':'20px','line-height':'35px'}) 未开工：0
-
-
-                    .box
-                        .minOne
-                            h3 在职工人总数
-                            .hrOne
-                        .minTwo
-                             span(:style={'font-size': '40px', 'line-height': '65px', 'padding-left': '10px'}) 10000
-                             span(:style={'font-size': '15px'}) 人
-                        .hrOne
-                             span(:style={'padding-left': '10px', 'line-height': '35px'})
-                             span(:style={'padding-left': '20px', 'line-height': '35px'})
-                        .minTwo
-                    .box
-                        .minOne
-                            h3 离职工人总数
-                            .hrOne
-                        .minTwo
-                            span(:style={'font-size': '40px', 'line-height': '65px', 'padding-left': '10px'}) 100
-                            span(:style={'font-size': '15px'}) 人
-                        .hrOne
-                    .footerOne
-                        .countOne
-                            h2 建筑工人总数
-                        .countTwo
-                            .byOne
-                                span 工种
-                                span 自有
-                                span 外部
-                            .byTwo
-                                span 10种
-                                span 100人
-                                span 100人
-                    .footerOne
-                        .countOne
-                            h2 承建队伍总数
-                        .countTwo
-                            .byOne
-                                span 工种
-                                span 自有
-                                span 外部
-                            .byTwo
-                                span 10种
-                                span 100只
-                                span 100只
-                .mainBodyTwo
-                    .topTwo
-                        p(:style={'text-align':'center','font-size':'20px','line-height':'80px','font-weight':'bold','color':'#000000'}) 技能工种评定系统
-                        .ulDiv
-                            ul
-                                li 一级
-                                li 二级
-                                li 三级
-                                li 四级
-                                li 五级
-                                li 六级
-                                li 七级
-                                li 八级
-                                li 九级
-                        .ulDivTwo
-                            ul
-                                li 10人
-                                li 10人
-                                li 10人
-                                li 10人
-                                li 10人
-                                li 10人
-                                li 10人
-                                li 10人
-                                li 10人
-                    .footerTwo
-                        .hr
-                        .divOne
-                            h2 培训情况
-                            .y1
-                                span 培训场数
-                                span 培训人数
-                            .y1
-                                span 10场
-                                span 10人
-                            #myEchartOne(:style={'height': '100%','width':'220px','margin-right':'auto','margin-left':'auto'})
-                        .hrTwo
-                        .divOne
-                            h2 课件类别统计
-                            .y2
-                                span 挖机培训
-                                span 塔吊培训
-                                span 铝模培训
-                            .y2
-                                span 10场
-                                span 10人
-                                span 10人
-                            #myEchart(:style={'height': '100%','width':'220px','margin-right':'auto','margin-left':'auto'})
-                        .hr
-                        .divOne
-                            h2 职业证书统计
-                            #myEchartTwo(:style={'height': '290px','width':'300px','margin-right':'auto','margin-left':'auto'})
-                        .hrTwo
-                        .divOne
-                            .imgDiv
-                                template
-                                Carousel(v-model="value3", :autoplay="true",:autoplay-speed="3000",:dots="false",:radius-dot="close",:arrow="false")
-                                    CarouselItem
-                                        .demo-carousel 第一张
-                                    CarouselItem
-                                        .demo-carousel 第二张
-                                    CarouselItem
-                                        .demo-carousel 第三张
-                                    CarouselItem
-                                        .demo-carousel 第四张
-                            .y3
-                                span(:style={'font-weight': 'bold'}) 编号
-                                span(:style={'font-weight': 'bold'}) 姓名
-                                span(:style={'font-weight': 'bold'}) 行为
-                                span(:style={'font-weight': 'bold'}) 处罚
-                            .y3
-                                span 01
-                                span 某某某
-                                span 寻衅挑事
-                                span 黑名单
-                            .y3
-                                span 01
-                                span 某某某
-                                span 寻衅挑事
-                                span 黑名单
-                            .y3
-                                span 01
-                                span 某某某
-                                span 寻衅挑事
-                                span 黑名单
-                            .y3
-                                span 01
-                                span 某某某
-                                span 寻衅挑事
-                                span 黑名单

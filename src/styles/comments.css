@@ -1,0 +1,223 @@
+.body{
+    display: inline-block;
+    min-height: 1080px;
+    height: auto;
+    width: 100%;
+    background-color: #ffffff;
+}
+.topOne{
+    display: block;
+    height: 140px;
+    width: 100%;
+    height: auto;
+    float: right;
+    min-height: 140px;
+}
+.divOne{
+    display: block;
+    height: 70px;
+    width: 360px;
+    float: left;
+    margin-left:45px;
+}
+.divOne span {
+    line-height: 70px;
+    font-size: 18px;
+    float: right;
+    color:#000000;
+}
+.divOne Button{
+    line-height: 30px;
+    font-size: 18px;
+    float: right;
+    height: 40px;
+    width: 165px;
+    margin-top: 13px;
+    background-color: #ffe100;
+    color:#ffffff;
+}
+.hr{
+    display: inline-block;
+    background-color: #f7f7f7;
+    width: 100%;
+    height: auto;
+    height: 10px;
+    float: right;
+}
+.button{
+    display: inline-block;
+    min-height: 70px;
+    height: auto;
+    width: 100%;
+}
+.button Button {
+    margin-left: 20px;
+    margin-top: 20px;
+}
+.people{
+    display: inline-block;
+    width: 280px;
+    height: 300px;
+    margin-left: 45px;
+    margin-top: 20px;
+    border: 1.5px solid #f8f9fb;
+    box-shadow: 5px 5px 5px -1px #d7d7d7;
+    background-color: #f8f9fb;
+}
+.people:hover,.people:active {
+    border: 1.5px solid #0090ff;
+    box-shadow: 5px 5px 5px -1px #cce9ff;
+    background-color: #ffffff;
+}
+.name{
+    width: 100%;
+    height: 25px;
+    font-size: 18px;
+    color: #000000;
+    line-height: 25px;
+    text-align: center;
+}
+.circle{
+    width: 60px;
+    height: 60px;
+    background-color: #32bcff;
+    border-radius: 50%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 8px;
+}
+.ivu-rate {
+    display: inline-block;
+    margin: 0;
+    padding: 0;
+    font-size: 20px;
+    vertical-align: middle;
+    font-weight: 400;
+    font-style: normal;
+    margin-left: 20px;
+}
+.comment{
+    width: 100%;
+    height: 25px;
+    margin-bottom: 7px;
+}
+.com{
+    width: 70px;
+    height: 25px;
+    margin-left: 17px;
+    margin-top: 3px;
+    float: left;
+    text-align: center;
+    line-height: 25px;
+    border: 1px solid #d7d7d7;
+    box-shadow: 3px 3px 3px -1px #d7d7d7;
+}
+.y1{
+    height: 52px;
+    width: 100%;
+}
+.y1 span{
+    margin-left: 14px;
+    font-size: 12px;
+}
+.y2{
+    width: 100%;
+    height: 37px;
+}
+.y2 button{
+    width: 50%;
+    height: 36px;
+    color: #0090ff;
+    text-align: center;
+    line-height: 27px;
+    border: 1px solid #e6f4ff;
+    font-weight: bold;
+    font-size: 13px;
+    background-color: transparent;
+}
+.y2 button:hover,.y2 button:active{
+    color: #ffffff;
+    background-color: #0090ff;
+}
+.footer{
+    height: 50px;
+    width: 100%;
+    float:left;
+    margin-top: 20px;
+}
+
+.footer ul {
+    margin-left: auto;
+    margin-right: auto;
+    width: 500px;
+}
+.minBody{
+    width: 100%;
+    height: 390px;
+}
+.div{
+    width: 50%;
+    height: 50px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 2%;
+}
+.dd{
+    width: 100%;
+    height: 65px;
+    margin-left: 5%;
+    margin-top: 2%;
+}
+.dd span{
+    font-size: 18px;
+}
+.d1{
+    width: 20%;
+    text-align: right;
+    float: left;
+}
+.d2{
+    width: 75%;
+    margin-left: 2%;
+    float: left;
+}
+.m1{
+    width: 20%;
+    text-align: right;
+    float: left;
+}
+.m2{
+    width: 75%;
+    margin-left: 2%;
+    float: left;
+}
+.div span {
+    font-size: 18px;
+}
+.left{
+    float: left;
+    height: 345px;
+    width: 100%;
+}
+.yu1{
+    float: left;
+    width: 60%;
+    height: 100%;
+    margin-top: 2%;
+}
+.yu2{
+    float: left;
+    width: 40%;
+    height: 82%;
+    border-left: 1px solid  #e1e1e1;
+}
+.x{
+    width: 100%;
+    margin-left: 20%;
+    margin-top: 5%;
+}
+.x span{
+    margin-left: 3%;
+    font-size: 18px;
+    font-weight: bold;
+}

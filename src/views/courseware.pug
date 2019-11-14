@@ -1,0 +1,45 @@
+.body
+    .topOne
+        .divOne
+            span 课程类型：
+                Input( v-model="value",clearable,style="width: 260px")
+        .divOne
+            span 课程搜索：
+                Input( v-model="value",clearable,style="width: 260px")
+        .divOne
+            Button 搜索
+    .hr
+    .button
+        Button(type="primary", ghost, icon="ios-add-circle-outline") 新建课件
+        //Button(type="primary", ghost, icon="ios-arrow-round-down") 下载课件
+    .hr
+    .courseware(v-for="item in getCourseware()")
+        .div1
+            span(:style={'font-size': '18px','line-height':'50px','margin-left': '5%','color': '#000000'}) {{item.title}}
+            template
+                Dropdown
+                    a( href="javascript:void(0)" :style={"font-size":"30px"})
+                        Icon(type="ios-more")
+                    DropdownMenu(slot="list")
+                        DropdownItem
+                            Icon(type="ios-create-outline" )
+                            span 编辑
+                        DropdownItem
+                            Icon(type="ios-trash-outline" )
+                            span 删除
+                        DropdownItem
+                            Icon(type="ios-cloud-download-outline" )
+                            span 下载
+        .div2
+            img(src="~@/assets/css/images/gj.jpeg" :style={'width':'100%','height':'100%'})
+        .div3
+            .left
+                span(:style={'margin-left':'10%','margin-top':'5%','font-size':'18px','float':'left','color': '#000000'}) {{item.hour}}课时
+                .ellipse
+                    span(:style={'font-size':'12px', 'float': 'left','margin-top':'5%','margin-left': '25%','color': '#ffffff'}) 必学
+            .right
+                span(:style={'color':'#0090ff'}) {{item.name}}
+        Button.butt 开始培训
+
+
+

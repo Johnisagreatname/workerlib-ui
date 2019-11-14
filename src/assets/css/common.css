@@ -10,7 +10,7 @@
     color: #f68903;
     margin-left: 5px;
 }
-#app .freamwork .loginBox .ivu-btn, .ivu-btn:active, .ivu-btn:focus{
+#app .freamwork .loginBox .ivu-btn, #app .freamwork .loginBox .ivu-btn:active, #app .freamwork .loginBox .ivu-btn:focus{
     outline: 0;
     width: 365px;
     height: 50px;
@@ -19,7 +19,7 @@
     margin-top: 5%;
     background-color: #f68903;
 }
-#app .ivu-layout-sider-trigger{
+#app .ivu-layout-sider-trigger {
     position: fixed;
     bottom: 0;
     text-align: center;
@@ -31,4 +31,30 @@
     z-index: 1000;
     -webkit-transition: all .2s ease-in-out;
     transition: all .2s ease-in-out;
+}
+
+.ivu-table-header table thead tr th {
+    background-color: #c5e8ff !important;
+    font-size: 18px !important;
+}
+.ivu-table-body table tbody tr:nth-child(even) td {
+    background-color: #f8f9fb !important;
+}
+.ivu-table-body table tbody tr td {
+    height: 35px !important;
+    font-size: 16px !important;
+}
+.ivu-table-body table tbody tr:hover>td {
+    background-color: #fdefc6 !important;
+}
+
+button i {
+    font-size: 18px;
+    font-weight: bold;
+
+}
+
+#app .ivu-modal-wrap .ivu-modal .ivu-modal-content .ivu-modal-header{
+    text-align: center !important;
+    background-color: yellowgreen !important;
 }
