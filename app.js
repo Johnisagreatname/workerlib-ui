@@ -6,7 +6,7 @@ const proxy = require('http-proxy-middleware');
 const app = express();
 
 // 超时时间
-const TIME_OUT = 30 * 1e3;
+const TIME_OUT = 60 * 1e3;
 
 // 设置端口
 app.set('port', config.listen);
