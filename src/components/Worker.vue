@@ -1,15 +1,13 @@
 <script lang="ts">
     import "@/assets/css/common.css";
     import WorkerStore from '../store/modules/WorkerStore';
-    import { Component, Vue, Prop, Model} from 'vue-property-decorator';
+    import { Component, Vue, Prop, Model, Watch} from 'vue-property-decorator';
     import { getModule } from 'vuex-module-decorators';
 
     @Component({
         components:{
         },
         directives: { // 自定义指令
-        },
-        mounted() {
         },
         computed: {
             menuitemClasses: () => {
@@ -21,35 +19,54 @@
         }
     })
     export default class Worker extends Vue {
-
+        @Model('isCollapsed', { type: Boolean }) private isCollapsed !: boolean;
+        animal = '否';
         private store: any;
         public modal2: boolean;
         public particulars: boolean;
-        public ee: boolean;
+        public certificate: boolean;
+        private sex: string;
+        private options!: any;
+        private now: Date;
+        private year :any;
+        private date:any
+
         constructor() {
             super();
             this.store = getModule(WorkerStore)
             this.modal2 = false;
             this.particulars = false;
-            this.ee = false;
+            this.certificate = false;
         }
 
-        @Model('isCollapsed', { type: Boolean }) private isCollapsed !: boolean;
-
-        private options!: any;
+        mounted() {
+            this.store.search()
+            console.log('mounted');
+        }
 
         getMenus() : any {
             if(this.options) return this.options;
             this.options = [
-                {value: '离线', key: '0' },
-                {value: '在线', key: '1' }
+                {value: '离职', key: '0' },
+                {value: '在职', key: '1' }
             ];
             return this.options;
         }
-        animal = '否'
-
-        getPeoples() : any{
-            return this.store.peoples;
+        //获取性别
+        checkSex(idNumber): boolean {
+            this.sex = idNumber.substring(16,17);
+            if(this.sex=="1"||this.sex=="3"||this.sex=="5"||this.sex=="7"||this.sex=="9"){
+                 return true;
+            }else {
+                return false;
+            }
+        }
+        //获取年龄
+        getAge(idNumber): number{
+            this.now = new Date();
+            this.year = this.now.getTime();
+            this.date = new Date(idNumber.substring(6,10)+","+idNumber.substring(10,12)+","+idNumber.substring(12,14)).getTime();
+            return Math.floor((this.year-this.date)/(1000*60*60*24*31*12));
         }
         ok() : any{
             this.modal2 = false;
@@ -63,18 +80,21 @@
         particularsCancel():any {
             this.particulars = false;
         }
-
-        close():any {
+        certificateOpen():any {
             this.particulars = false;
-            this.ee=true;
+            this.certificate=true;
         }
-        eeOk() : any{
-            this.ee = false;
+        certificateOk() : any{
+            this.certificate = false;
             this.particulars = true;
         }
-       eeCancel():any {
-           this.ee = false;
+        certificateCancel():any {
+           this.certificate = false;
            this.particulars = true;
+        }
+
+        onCheck(id: number): void{
+            this.store.onCheck(id);
         }
     }
 </script>

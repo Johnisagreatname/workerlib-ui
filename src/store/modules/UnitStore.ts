@@ -27,12 +27,12 @@ export default class ProjectStore extends VuexModule {
             sortable: true
         },
         {
-            title: '参见单位编号',
+            title: '参建单位编号',
             key: 'unitNum',
             sortable: true
         },
         {
-            title: '参见单位名称',
+            title: '参建单位名称',
             key: 'unitName',
             sortable: true
         },

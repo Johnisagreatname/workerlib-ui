@@ -27,7 +27,7 @@ export default class ContributiveStore extends VuexModule {
             sortable: true
         },
         {
-            title: '所属参见单位',
+            title: '所属参建单位',
             key: 'construction',
             sortable: true
         },

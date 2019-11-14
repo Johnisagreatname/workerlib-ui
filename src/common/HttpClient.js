@@ -26,7 +26,7 @@ var removePending = function (config, f) {
 };
 /* 创建axios实例 */
 var service = axios.create({
-    timeout: 5000,
+    timeout: 200000,
     headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }
 });
 /* request拦截器 */
