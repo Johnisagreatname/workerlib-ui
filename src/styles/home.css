@@ -4,6 +4,7 @@
     height: auto;
     width: 100%;
     background-color: #f3f5f7;
+    color:#000000;
 }
 .mainHr{
     display: inline-block;
@@ -184,7 +185,7 @@
 .divOne h2{
     text-align: center;
     padding-top: 10%;
-    color:#000000;
+
 }
 .y1{
     width: 100%;

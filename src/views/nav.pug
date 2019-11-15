@@ -30,22 +30,24 @@
                     template( slot="title")
                         Icon(type="ios-book")
                         span 培训
-                    MenuItem(name="/courseWare")
-                        span 线上
-                    MenuItem(name="/courseware")
-                        span 课件管理
-                    MenuItem(name="/examinationPaper")
-                        span 试卷管理
-                    MenuItem(name="/cultivate")
-                        span 培训记录
-                    MenuItem(name="/offlineCourseWare")
-                        span 线下
-                    MenuItem(name="/offlineCourseware")
-                        span 课件管理
-                    MenuItem(name="/lecturer")
-                        span 讲师档案
-                    MenuItem(name="/offlineCultivate")
-                        span 培训记录
+                    Submenu(name="线上")
+                        template( slot="title")
+                            span 线上
+                        MenuItem(name="/courseWare")
+                            span 课件管理
+                        MenuItem(name="/examinationPaper")
+                            span 试卷管理
+                        MenuItem(name="/cultivate")
+                            span 培训记录
+                    Submenu(name="线下")
+                        template( slot="title")
+                            span 线下
+                        MenuItem(name="/offlineCourseWare")
+                            span 课件管理
+                        MenuItem(name="/lecturer")
+                            span 讲师档案
+                        MenuItem(name="/offlineCultivate")
+                            span 培训记录
 
                 MenuItem(name="/checkEvaluate")
                     Icon(type="md-checkbox")

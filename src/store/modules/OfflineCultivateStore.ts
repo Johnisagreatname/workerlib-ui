@@ -53,7 +53,7 @@ export default class OfflineCultivateStore extends VuexModule {
         },
         {
             title: '操作',
-            key: 'operation',
+            slot: 'operation',
             sortable: true
         }
     ];
@@ -66,8 +66,7 @@ export default class OfflineCultivateStore extends VuexModule {
             people: '10',
             state: '待学习',
             schedule: '0',
-            initiator: '裴灏杰',
-            operation: '操作'
+            initiator: '裴灏杰'
         },
         {
             course: '钢筋工岗前知识培训',
@@ -76,8 +75,7 @@ export default class OfflineCultivateStore extends VuexModule {
             people: '12',
             state: '学习中',
             schedule: '88',
-            initiator: '范佳超',
-            operation: '操作'
+            initiator: '范佳超'
         },
         {
             course: '电焊工岗前知识培训',
@@ -86,8 +84,7 @@ export default class OfflineCultivateStore extends VuexModule {
             people: '15',
             state: '学习中',
             schedule: '55',
-            initiator: '林陆锐',
-            operation: '操作'
+            initiator: '林陆锐'
         },
         {
             course: '水泥工岗前知识培训',
@@ -97,7 +94,6 @@ export default class OfflineCultivateStore extends VuexModule {
             state: '学习完成',
             schedule: '100',
             initiator: '陈吕',
-            operation: '操作'
         }
     ];
 
