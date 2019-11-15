@@ -4,6 +4,7 @@
     height: auto;
     width: 100%;
     background-color: #ffffff;
+    color:#000000;
 }
 .topOne{
     display: block;
@@ -22,7 +23,6 @@
     line-height: 70px;
     font-size: 18px;
     float: right;
-    color:#000000;
 }
 .divOne Button{
     line-height: 30px;

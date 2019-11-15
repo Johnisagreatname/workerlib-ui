@@ -14,4 +14,13 @@
         Button(type="primary", ghost, icon="ios-log-in") 导入老师
         Button(type="primary", ghost, icon="ios-log-out") 导出老师
     .hr
-    img(src='~@/assets/css/images/lecturer.png')
+    .lecturer(v-for="item in getLecturer()")
+        .divY
+            .img
+                img(src="~@/assets/css/images/js.jpg" :style={'width':'100%','height':'100%'})
+        .divY
+            p(:style={'font-weight':'bold','font-size':'18px'}) {{item.name}}
+            p 课程：{{item.curriculum}}
+            p 培训履历：
+                a 查看详情
+            p 培训评价:( {{item.evaluate}} )

@@ -27,7 +27,9 @@
             super();
             this.store = getModule(LecturerStore)
         }
-
+        getLecturer() : any{
+            return this.store.lecturer;
+        }
         @Model('isCollapsed', { type: Boolean }) private isCollapsed !: boolean;
 
 

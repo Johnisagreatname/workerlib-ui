@@ -14,9 +14,24 @@
     .hr
     .examinationPaper(v-for="item in getPaper()")
         .divY
-            p(:style={'font-weight':'bold'}) {{item.title}}
+            p {{item.title}}
             p 题数：{{item.questionNumber}}
             p 分数：{{item.grade}}
             Button 查看试题
         .divY
+            template
+                Dropdown(trigger="click")
+                    a( href="javascript:void(0)" :style={"font-size": "30px"})
+                        Icon(type="ios-more")
+                    DropdownMenu(slot="list")
+                        DropdownItem
+                            Icon(type="ios-create-outline" )
+                            span 编辑
+                        DropdownItem
+                            Icon(type="ios-trash-outline" )
+                            span 删除
+                        DropdownItem
+                            Icon(type="ios-cloud-download-outline" )
+                            span 下载
             .img
+                img(src="~@/assets/css/images/sj.jpg" :style={'width':'100%','height':'100%'})

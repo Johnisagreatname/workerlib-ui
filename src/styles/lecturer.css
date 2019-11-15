@@ -4,6 +4,7 @@
     height: auto;
     width: 100%;
     background-color: #ffffff;
+    color:#000000;
 }
 .topOne{
     display: block;
@@ -22,7 +23,6 @@
     line-height: 70px;
     font-size: 18px;
     float: right;
-    color:#000000;
 }
 .divOne Button{
     line-height: 30px;
@@ -33,6 +33,21 @@
     margin-top: 13px;
     background-color: #ffe100;
     color:#ffffff;
+}
+.divY{
+    width: 50%;
+    float: left;
+}
+.divY p{
+    height: 25px;
+    margin-top: 22px;
+    font-size: 16px;
+}
+.img{
+    width: 155px;
+    height: 155px;
+    margin-left: 10%;
+    margin-top: 15%;
 }
 .hr{
     display: inline-block;
@@ -53,7 +68,18 @@
     margin-top: 20px;
 }
 .lecturer{
-    background-image: url('~@/assets/css/images/lecturer.png');
-    background-size: 100% 100%;
-    background-repeat: no-repeat;
+    width: 22.5%;
+    height: 210px;
+    background-color: #ebccd1;
+    float: left;
+    margin-left: 2%;
+    margin-top: 40px;
+    background-color: #f8f9fb;
+    border: 2px solid transparent;
+    box-shadow: 3px 3px 3px 1px #d7d7d7;
+}
+.lecturer:hover{
+    background-color: #ffffff;
+    border: 2px solid #0090ff;
+    box-shadow: 3px 3px 3px 1px #cce9ff
 }

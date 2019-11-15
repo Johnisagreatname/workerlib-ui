@@ -21,14 +21,22 @@
         }
     })
     export default class Courseware extends Vue {
-
+        @Model('isCollapsed', { type: Boolean }) private isCollapsed !: boolean;
+        public addCourseware: boolean;
         private store: any;
         constructor() {
             super();
+            this.addCourseware = false;
             this.store = getModule(CoursewareStore)
         }
+        coursewareList='light';
+        ok() : any{
+            this.addCourseware = false;
+        }
+        cancel():any {
+            this.addCourseware = false;
+        }
 
-        @Model('isCollapsed', { type: Boolean }) private isCollapsed !: boolean;
         getCourseware() : any{
             return this.store.courseware;
         }
