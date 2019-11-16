@@ -1,5 +1,7 @@
 import { Module, VuexModule, Mutation, Action } from 'vuex-module-decorators';
 import store from "../index";
+import request from "../../common/HttpClient";
+import {Message} from "iview";
 
 @Module({
     namespaced: true,
@@ -9,6 +11,46 @@ import store from "../index";
     store,
 })
 export default class ContributiveStore extends VuexModule {
+    constructor(e) {
+        super(e);
+        this.pageInfo = {
+            pageIndex: 1,
+            pageSize: 50
+        };
+        this.peoples = [];
+    }
+    public peoples: Array<PeopleInfo>;
+    public pageInfo: PageInfo;
+    @Action
+    public async search() {
+        await request.post('', {
+            "pageInfo" : {
+                "pageIndex": this.pageInfo.pageIndex, //页码
+                "pageSize": this.pageInfo.pageSize  //每页条数
+            }
+        }).then((data)=>{
+            this.success(data)
+        }).catch((e)=>{
+            console.log(e)
+            let alert: any = Message;
+            if(!e) {
+                alert.warning('未知错误！')
+                return
+            }
+
+            if(e.response && e.response.data && e.response.data.message) {
+                alert.warning(e.response.data.message)
+                return
+            }
+
+            alert.warning(e.message || e)
+        });
+    }
+    @Mutation
+    private success(data: any) {
+        this.peoples = data.data;
+        this.pageInfo = data.pageInfo;
+    }
 
     public columns = [
         {
@@ -42,11 +84,6 @@ export default class ContributiveStore extends VuexModule {
             sortable: true
         },
         {
-            title: '进出方向',
-            key: 'inOut',
-            sortable: true
-        },
-        {
             title: '时间',
             key: 'time',
             sortable: true
@@ -58,47 +95,20 @@ export default class ContributiveStore extends VuexModule {
         }
     ];
 
-    public data = [
-        {
-            name: '裴灏杰',
-            project: '深圳创新科技园项目',
-            construction: '深圳市市政工程总公司',
-            salary: '8000',
-            netPayroll: '8000',
-            inOut: '进',
-            time: '2019-10-01',
-            bankAccount: '620000002000000'
-        },
-        {
-            name: '范佳超',
-            project: '深圳创新科技园项目',
-            construction: '深圳市市政工程总公司',
-            salary: '8000',
-            netPayroll: '8000',
-            inOut: '进',
-            time: '2019-10-01',
-            bankAccount: '637000802000556'
-        },
-        {
-            name: '林陆锐',
-            project: '深圳创新科技园项目',
-            construction: '深圳市市政工程总公司',
-            salary: '8000',
-            netPayroll: '8000',
-            inOut: '进',
-            time: '2019-10-01',
-            bankAccount: '3785000000295800'
-        },
-        {
-            name: '陈吕',
-            project: '深圳创新科技园项目',
-            construction: '深圳市市政工程总公司',
-            salary: '8000',
-            netPayroll: '8000',
-            inOut: '进',
-            time: '2019-10-01',
-            bankAccount: '6208954522000090'
-        }
-    ];
 
+
+}
+interface PageInfo {
+    pageIndex: number;
+    pageSize: number;
+}
+
+interface PeopleInfo {
+    id: number;
+    bank_card: string;
+    name: string;
+    project: string;
+    unit: string;
+    pre_revenue:number;
+    revenue:number;
 }

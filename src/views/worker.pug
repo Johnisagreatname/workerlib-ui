@@ -19,7 +19,7 @@
       .divOne
          span 类型：
             Input(clearable,style="width: 260px")
-      .divOne
+      .search
          Button(@click="this.store.search") 搜索
    .hr
    .button
@@ -126,18 +126,18 @@
                   span 上传身份证：
                .boxRight
                   Upload(multiple,type="drag",action="//jsonplaceholder.typicode.com/posts/",:style={
-                      'width': '37%',
-                      'margin-top': '10%',
-                      'float': 'left'
-
+                     'width': '179px',
+                     'height': '120px',
+                     'float': 'left',
+                     'margin-right': '20px'
                   })
                      .divY
                         Icon(size="52" style="color: #3399ff")
                   Upload(multiple,type="drag",action="//jsonplaceholder.typicode.com/posts/",:style={
-                      'width': '37%',
-                      'float': 'left',
-                      'margin-top': '10%',
-                      'margin-left': '6%'
+                     'width': '179px',
+                     'height': '120px',
+                     'float': 'left',
+                     'margin-right': '20px'
                   })
                      .divU
                         Icon(size="52" style="color: #3399ff")

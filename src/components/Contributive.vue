@@ -52,7 +52,7 @@
             return this.store.columns;
         }
         getData() : any{
-            return this.store.data;
+            return this.store.peoples;
         }
 
 

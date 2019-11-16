@@ -16,15 +16,20 @@
     .courseware(v-for="item in getOfflineCourseware()")
         .div1
             span {{item.title}}
+            template
+                Dropdown(trigger="click")
+                    a( href="javascript:void(0)" :style={"font-size": "30px"})
+                        Icon(type="ios-more")
+                    DropdownMenu(slot="list")
+                        DropdownItem
+                            Icon(type="ios-create-outline" )
+                            span 编辑
+                        DropdownItem
+                            Icon(type="ios-trash-outline" )
+                            span 删除
+                        DropdownItem
+                            Icon(type="ios-cloud-download-outline" )
+                            span 下载
         .div2
-        .div3
-            .left
-                span(:style={'margin-left':'20px','margin-top':'15px','font-size':'18px','float':'left'}) {{item.hour}}课时
-                .ellipse
-                    span(:style={'font-size':'12px','padding-left': '11px'}) 必学
-            .right
-                span {{item.name}}
-        Button 开始培训
-
-
-
+            img(src="~@/assets/css/images/gj.jpeg" :style={'width':'100%','height':'100%'})
+        Button.butt 开始培训

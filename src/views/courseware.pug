@@ -2,22 +2,22 @@
     .topOne
         .divOne
             span 课程类型：
-                Input( v-model="value",clearable,style="width: 260px")
+                Input(clearable,style="width: 260px")
         .divOne
             span 课程搜索：
-                Input( v-model="value",clearable,style="width: 260px")
+                Input(clearable,style="width: 260px")
         .divOne
             Button 搜索
     .hr
     .button
-        Button(type="primary", ghost, icon="ios-add-circle-outline") 新建课件
+        Button(type="primary", ghost, icon="ios-add-circle-outline",@click="addCourseware=!addCourseware") 新建课件
         //Button(type="primary", ghost, icon="ios-arrow-round-down") 下载课件
     .hr
     .courseware(v-for="item in getCourseware()")
         .div1
             span(:style={'font-size': '18px','line-height':'50px','margin-left': '5%','color': '#000000'}) {{item.title}}
             template
-                Dropdown
+                Dropdown(trigger="click")
                     a( href="javascript:void(0)" :style={"font-size":"30px"})
                         Icon(type="ios-more")
                     DropdownMenu(slot="list")
@@ -40,6 +40,18 @@
             .right
                 span(:style={'color':'#0090ff'}) {{item.name}}
         Button.butt 开始培训
+
+
+
+    Modal(:value="addCourseware",title="课件上传",@on-ok="ok()",@on-cancel="cancel()",width='70%')
+        template
+            Menu( :theme="coursewareList" active-name="1")
+                MenuItem( name="1")
+                    Icon( type="md-document" )
+                    span 文章管理
+                MenuItem( name="2")
+                    Icon( type="md-chatbubbles" )
+                    span 评论管理
 
 
 

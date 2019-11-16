@@ -1,24 +1,7 @@
 
 import Vue from 'vue';
-// import Home from '@/components/Home.vue';
-// import Login from '@/components/Login.vue';
-// import Nav from '@/components/Nav.vue';
-// import Project from '@/components/Project.vue';
-// import Worker from '@/components/Worker.vue';
-// import Comments from '@/components/Comments.vue';
-// import Contributive from '@/components/Contributive.vue';
-// import TurnWork from '@/components/turnWork.vue';
-// import ExaminationPaper from '@/components/examinationPaper.vue';
-// import Courseware from '@/components/courseware.vue';
-// import Cultivate from '@/components/cultivate.vue';
-// import OfflineCourseware from '@/components/offlineCourseware.vue';
-// import OfflineCultivate from '@/components/offlineCultivate.vue';
-// import CheckEvaluate from '@/components/checkEvaluate.vue';
-// import Lecturer from '@/components/lecturer.vue';
-// import Unit from '@/components/unit.vue';
 import Router from 'vue-router';
 Vue.use(Router);
-
 
 const Home = () => require('@/components/Home.vue');
 const Login = () => require('@/components/Login.vue');
@@ -64,49 +47,49 @@ export default new Router({
               },
               redirect: '/home',
               children: [
-                {path: '/home', component: async () : Promise<any> => {
+                { path:'/home', component: async () : Promise<any> => {
                   return await Home()
                 }},
-                {path: '/project', component: async () : Promise<any> => {
+                { path:'/project', component: async () : Promise<any> => {
                   return await Project()
                 }},
-                {path: '/worker', component: async () : Promise<any> => {
+                { path:'/worker', component: async () : Promise<any> => {
                   return await Worker()
                 }},
-                {path: '/comments', component: async () : Promise<any> => {
+                { path:'/comments', component: async () : Promise<any> => {
                   return await Comments()
                 }},
-                {path: '/contributive', component: async () : Promise<any> => {
+                { path:'/contributive', component: async () : Promise<any> => {
                   return await Contributive()
                 }},
-                {path: '/turnWork', component: async () : Promise<any> => {
+                { path:'/turnWork', component: async () : Promise<any> => {
                   return await TurnWork()
                 }},
-                {path: '/examinationPaper', component: async () : Promise<any> => {
+                { path:'/examinationPaper', component: async () : Promise<any> => {
                   return await ExaminationPaper()
                 }},
-                {path: '/courseWare', component: async () : Promise<any> => {
+                { path:'/courseWare', component: async () : Promise<any> => {
                   return await Courseware()
                 }},
-                {path: '/cultivate', component: async () : Promise<any> => {
+                { path:'/cultivate', component: async () : Promise<any> => {
                   return await Cultivate()
                 }},
-                {path: '/offlineCourseWare', component: async () : Promise<any> => {
+                { path:'/offlineCourseWare', component: async () : Promise<any> => {
                   return await OfflineCourseware()
                 }},
-                {path: '/offlineCultivate', component: async () : Promise<any> => {
+                { path:'/offlineCultivate', component: async () : Promise<any> => {
                   return await OfflineCultivate()
                 }},
-                {path: '/checkEvaluate', component: async () : Promise<any> => {
+                { path:'/checkEvaluate', component: async () : Promise<any> => {
                   return await CheckEvaluate()
                 }},
-                {path: '/lecturer', component: async () : Promise<any> => {
+                { path:'/lecturer', component: async () : Promise<any> => {
                   return await Lecturer()
                 }},
-                {path: '/unit', component: async () : Promise<any> => {
+                { path:'/unit', component: async () : Promise<any> => {
                   return await Unit()
                 }}
               ]
           },
-      ],
+      ]
 })

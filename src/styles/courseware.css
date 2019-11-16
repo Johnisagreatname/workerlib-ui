@@ -4,6 +4,7 @@
     height: auto;
     width: 100%;
     background-color: #ffffff;
+    color:#000000;
 }
 .topOne{
     display: block;
@@ -22,7 +23,6 @@
     line-height: 70px;
     font-size: 18px;
     float: right;
-    color:#000000;
 }
 .divOne Button{
     line-height: 30px;
@@ -61,9 +61,10 @@
     margin-left: 2%;
     background-color: #f8f9fb;
     border: 2px solid transparent;
-    box-shadow: 3px 3px 3px 1px #d7d7d7
+    box-shadow: 3px 3px 3px 1px #d7d7d7;
 }
 .courseware:hover{
+    background-color: #ffffff;
     border: 2px solid #0090ff;
     box-shadow: 3px 3px 3px 1px #cce9ff
 }
@@ -85,10 +86,10 @@
 }
 
 .div2{
-    height: 170px;
+    height: 180px
 }
 .div3{
-    height: 45px;
+    height: 40px;
 }
 .left{
     height: 100%;

@@ -53,12 +53,10 @@
                         {secondName:'出勤管理', path: '/turnWork', text: '出勤管理'}
                     ] },
                 { name: '培训', icon: 'ios-book',second:[
-                        {secondName:'线上', path: '/courseWare', text: '课件管理'},
-                        {secondName:'课件管理', path: '/courseware', text: '课件管理'},
+                        {secondName:'课件管理', path: '/courseWare', text: '课件管理'},
                         {secondName:'试卷管理', path: '/examinationPaper', text: '试卷管理'},
                         {secondName:'培训记录', path: '/cultivate', text: '培训记录'},
-                        {secondName:'线下', path: '/offlineCourseWare', text: '课件管理'},
-                        {secondName:'课件管理', path: '/offlineCourseware', text: '课件管理'},
+                        {secondName:'课件管理', path: '/offlineCourseWare', text: '课件管理'},
                         {secondName:'讲师档案', path: '/lecturer', text: '讲师档案'},
                         {secondName:'培训记录', path: '/offlineCultivate', text: '培训记录'}
                     ]},
