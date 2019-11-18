@@ -38,10 +38,12 @@
 
             return '';
         }
+
         mounted() {
             this.store.search()
             console.log('mounted');
         }
+
         private options!: any;
         getMenus() : any {
             if(this.options) return this.options;
