@@ -1,6 +1,6 @@
 <script lang="ts">
     import "@/assets/css/common.css";
-    import OfflineCultivateStore from '../store/modules/OfflineCultivateStore';
+    import TurnWorkStore from '../../../store/modules/TurnWorkStore';
     import { Component, Vue, Prop, Model} from 'vue-property-decorator';
     import { getModule } from 'vuex-module-decorators';
 
@@ -20,32 +20,22 @@
             }
         }
     })
-    export default class OfflineCultivate extends Vue {
+    export default class TurnWork extends Vue {
 
         private store: any;
         constructor() {
             super();
-            this.store = getModule(OfflineCultivateStore)
+            this.store = getModule(TurnWorkStore)
         }
 
         @Model('isCollapsed', { type: Boolean }) private isCollapsed !: boolean;
-
-        rowClassName (row, index) : string {
-
-            if(index == 0) {
-                return 'table-header'
-            }
-
-            return '';
-        }
 
         private options!: any;
         getMenus() : any {
             if(this.options) return this.options;
             this.options = [
-                { value: '待学习', key: '0' },
-                { value: '学习中', key: '1' },
-                { value: '学习完成', key: '2' }
+                { value: '离场', key: '0' },
+                { value: '在场', key: '1' }
             ];
             return this.options;
         }
@@ -55,9 +45,7 @@
         getData() : any{
             return this.store.data;
         }
-
-
     }
 </script>
-<style scoped src="@/styles/cultivate.css" />
-<template lang="pug" src="@/views/cultivate.pug" />
+<style scoped src="@/styles/turnWork.css" />
+<template lang="pug" src="@/views/turnWork.pug" />

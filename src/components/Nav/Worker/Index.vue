@@ -1,6 +1,6 @@
 <script lang="ts">
     import "@/assets/css/common.css";
-    import WorkerStore from '../store/modules/WorkerStore';
+    import WorkerStore from '../../../store/modules/WorkerStore';
     import { Component, Vue, Prop, Model, Watch} from 'vue-property-decorator';
     import { getModule } from 'vuex-module-decorators';
 

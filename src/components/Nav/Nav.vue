@@ -1,6 +1,6 @@
 <script lang="ts">
     import "@/assets/css/common.css";
-    import NavStore from '../store/modules/NavStore';
+    import NavStore from '../../store/modules/NavStore';
     import { Component, Vue, Prop, Model} from 'vue-property-decorator';
     import { getModule } from 'vuex-module-decorators';
 
@@ -44,30 +44,30 @@
             if(this.menus) return this.menus;
             this.menus = [
                 { name: '项目', icon: 'ios-folder-open',second:[
-                        {secondName:'项目工程管理', path: '/project', text: '工程管理' },
-                        {secondName:'施工单位管理', path: '/unit', text: '单位管理' }
+                        {secondName:'项目工程管理', path: '/nav/project', text: '工程管理' },
+                        {secondName:'施工单位管理', path: '/nav/unit', text: '单位管理' }
                     ] },
                 { name: '人员', icon: 'md-people',second:[
-                        {secondName:'产业工人档案', path: '/worker', text: '产业工人档案'},
-                        {secondName:'工资管理', path: '/contributive', text: '工资管理'},
-                        {secondName:'出勤管理', path: '/turnWork', text: '出勤管理'}
+                        {secondName:'产业工人档案', path: '/nav/worker', text: '产业工人档案'},
+                        {secondName:'工资管理', path: '/nav/contributive', text: '工资管理'},
+                        {secondName:'出勤管理', path: '/nav/turnWork', text: '出勤管理'}
                     ] },
                 { name: '培训', icon: 'ios-book',second:[
-                        {secondName:'课件管理', path: '/courseWare', text: '课件管理'},
-                        {secondName:'试卷管理', path: '/examinationPaper', text: '试卷管理'},
-                        {secondName:'培训记录', path: '/cultivate', text: '培训记录'},
-                        {secondName:'课件管理', path: '/offlineCourseWare', text: '课件管理'},
-                        {secondName:'讲师档案', path: '/lecturer', text: '讲师档案'},
-                        {secondName:'培训记录', path: '/offlineCultivate', text: '培训记录'}
+                        {secondName:'课件管理', path: '/nav/courseWare', text: '课件管理'},
+                        {secondName:'试卷管理', path: '/nav/examinationPaper', text: '试卷管理'},
+                        {secondName:'培训记录', path: '/nav/cultivate', text: '培训记录'},
+                        {secondName:'课件管理', path: '/nav/offlineCourseWare', text: '课件管理'},
+                        {secondName:'讲师档案', path: '/nav/lecturer', text: '讲师档案'},
+                        {secondName:'培训记录', path: '/nav/offlineCultivate', text: '培训记录'}
                     ]},
                 { name: '技能鉴定', icon: 'md-people',second:[
-                        {secondName:'技能鉴定', path: '/checkEvaluate', text: '技能鉴定'}
+                        {secondName:'技能鉴定', path: '/nav/checkEvaluate', text: '技能鉴定'}
                     ] },
                 { name: '综合评价', icon: 'md-people',second:[
-                        {secondName:'评价管理', path: '/comments', text: '评价管理'}
+                        {secondName:'评价管理', path: '/nav/comments', text: '评价管理'}
                     ] },
-                { name: '工种', path: '/1-5', icon: 'ios-build', text: '工种管理', second: [] },
-                { name: '设置', path: '/1-6', icon: 'md-settings', text: '设置管理', second: [] }
+                { name: '工种', path: '/nav/1-5', icon: 'ios-build', text: '工种管理', second: [] },
+                { name: '设置', path: '/nav/1-6', icon: 'md-settings', text: '设置管理', second: [] }
             ];
             return this.menus;
         }
