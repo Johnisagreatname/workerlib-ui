@@ -17,17 +17,41 @@ export default class ContributiveStore extends VuexModule {
             pageIndex: 1,
             pageSize: 50
         };
-        this.peoples = [];
+        this.contributive = [];
     }
-    public peoples: Array<PeopleInfo>;
+    public contributive: Array<PeopleInfo>;
     public pageInfo: PageInfo;
     @Action
     public async search() {
-        await request.post('', {
+        await request.post('/api/workerlib/join', {
+            "joinTables": [{
+                "tablename": "salary",
+                "alias": "a",
+                "JoinMode": "inner"
+            }, {
+                "tablename": "archives",
+                "alias": "b",
+                "joinMode": "Inner",
+                "onList": [{
+                    "name": "b.id",
+                    "value": "a.archives_id",
+                    "algorithm": "EQ"
+                }]
+            }
+            ],
             "pageInfo" : {
                 "pageIndex": this.pageInfo.pageIndex, //页码
                 "pageSize": this.pageInfo.pageSize  //每页条数
-            }
+            },
+            "conditionList": [],
+
+            "sortList": [ ],
+
+            "groupList" : [],
+
+            "keywords" : [],
+
+            "selectList": []
         }).then((data)=>{
             this.success(data)
         }).catch((e)=>{
@@ -48,7 +72,7 @@ export default class ContributiveStore extends VuexModule {
     }
     @Mutation
     private success(data: any) {
-        this.peoples = data.data;
+        this.contributive = data.data;
         this.pageInfo = data.pageInfo;
     }
 

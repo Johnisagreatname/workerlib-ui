@@ -25,7 +25,6 @@ export default class WorkerStore extends VuexModule {
     public name:string;
     public workType:string;
     public state:number;
-
     public peoples: Array<PeopleInfo>;
     public pageInfo: PageInfo;
 
