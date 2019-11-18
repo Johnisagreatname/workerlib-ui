@@ -5,10 +5,10 @@ import store from "../index";
     namespaced: true,
     stateFactory: true,
     dynamic: true,
-    name: "ProjectStore",
+    name: "UnitStore",
     store,
 })
-export default class ProjectStore extends VuexModule {
+export default class UnitStore extends VuexModule {
 
     public columns = [
         {

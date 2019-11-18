@@ -38,7 +38,8 @@ export default class ProjectStore extends VuexModule {
         {
             title: '合同竣工时间',
             key: 'completedTime',
-            sortable: true
+            sortable: true,
+            width: 180
         },
         {
             title: '建设单位',
