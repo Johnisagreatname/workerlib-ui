@@ -4,6 +4,18 @@ const express = require('express');
 const timeout = require('connect-timeout');
 const proxy = require('http-proxy-middleware');
 const app = express();
+const compression = require('compression');
+app.use(compression({filter: shouldCompress}));
+
+
+function shouldCompress (req, res) {
+    if (req.headers['x-no-compression']) {
+        // 这里就过滤掉了请求头包含'x-no-compression'
+        return false;
+    }
+
+    return compression.filter(req, res);
+}
 
 // 超时时间
 const TIME_OUT = 60 * 1e3;

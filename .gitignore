@@ -8,3 +8,5 @@
 *.log
 .idea
 workspace.xml
+.invoke
+/**/.invoke

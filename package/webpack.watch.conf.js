@@ -7,6 +7,7 @@ var baseWebpackConfig = require('./webpack.base.conf')
 var HtmlWebpackPlugin = require('html-webpack-plugin')
 var FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
 var CopyWebpackPlugin = require('copy-webpack-plugin')
+const VueRouterInvokeWebpackPlugin = require('vue-router-invoke-webpack-plugin');
 
 // add hot-reload related code to entry chunks
 Object.keys(baseWebpackConfig.entry).forEach(function (name) {
@@ -36,6 +37,13 @@ module.exports = merge(baseWebpackConfig, {
       inject: true
     }),
     new FriendlyErrorsPlugin(),
+    new VueRouterInvokeWebpackPlugin({
+      'dir' : 'src/components',
+      'alias' : '../../components',
+      'routerDir' : 'src/router',
+      'language' : 'typescript',
+      'mode' : 'hash'
+    }),
     // copy custom static assets
     new CopyWebpackPlugin([
         {
