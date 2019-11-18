@@ -100,7 +100,6 @@ var WorkerStore = /** @class */ (function (_super) {
                         }).then(function (data) {
                             _this.success(data);
                         }).catch(function (e) {
-                            console.log(e);
                             var alert = Message;
                             if (!e) {
                                 alert.warning('未知错误！');
