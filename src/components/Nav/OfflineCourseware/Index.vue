@@ -1,6 +1,6 @@
 <script lang="ts">
     import "@/assets/css/common.css";
-    import OfflineCoursewareStore from '../store/modules/OfflineCoursewareStore';
+    import OfflineCoursewareStore from '../../../store/modules/OfflineCoursewareStore';
     import { Component, Vue, Prop, Model} from 'vue-property-decorator';
     import { getModule } from 'vuex-module-decorators';
 

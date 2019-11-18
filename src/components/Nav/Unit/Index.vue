@@ -1,6 +1,6 @@
 <script lang="ts">
     import "@/assets/css/common.css";
-    import OfflineCultivateStore from '../store/modules/OfflineCultivateStore';
+    import UnitStore from '../../../store/modules/UnitStore';
     import { Component, Vue, Prop, Model} from 'vue-property-decorator';
     import { getModule } from 'vuex-module-decorators';
 
@@ -20,12 +20,12 @@
             }
         }
     })
-    export default class OfflineCultivate extends Vue {
+    export default class Unit extends Vue {
 
         private store: any;
         constructor() {
             super();
-            this.store = getModule(OfflineCultivateStore)
+            this.store = getModule(UnitStore)
         }
 
         @Model('isCollapsed', { type: Boolean }) private isCollapsed !: boolean;
@@ -43,9 +43,8 @@
         getMenus() : any {
             if(this.options) return this.options;
             this.options = [
-                { value: '待学习', key: '0' },
-                { value: '学习中', key: '1' },
-                { value: '学习完成', key: '2' }
+                { value: '离场', key: '0' },
+                { value: '在场', key: '1' }
             ];
             return this.options;
         }
@@ -59,5 +58,5 @@
 
     }
 </script>
-<style scoped src="@/styles/cultivate.css" />
-<template lang="pug" src="@/views/cultivate.pug" />
+<style scoped src="@/styles/unit.css" />
+<template lang="pug" src="@/views/unit.pug" />

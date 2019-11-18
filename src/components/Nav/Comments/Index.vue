@@ -1,6 +1,6 @@
 <script lang="ts">
     import "@/assets/css/common.css";
-    import CommentsStore from '../store/modules/CommentsStore';
+    import CommentsStore from '../../../store/modules/CommentsStore';
     import { Component, Vue, Prop, Model} from 'vue-property-decorator';
     import { getModule } from 'vuex-module-decorators';
 

@@ -1,6 +1,6 @@
 <script lang="ts">
     import "@/assets/css/common.css";
-    import CoursewareStore from '../store/modules/CoursewareStore';
+    import CoursewareStore from '../../../store/modules/CoursewareStore';
     import { Component, Vue, Prop, Model} from 'vue-property-decorator';
     import { getModule } from 'vuex-module-decorators';
 

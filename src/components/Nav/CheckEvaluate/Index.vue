@@ -1,6 +1,6 @@
 <script lang="ts">
     import "@/assets/css/common.css";
-    import ExaminationPaperStore from '../store/modules/ExaminationPaperStore';
+    import CheckEvaluateStore from '../../../store/modules/CheckEvaluateStore';
     import { Component, Vue, Prop, Model} from 'vue-property-decorator';
     import { getModule } from 'vuex-module-decorators';
 
@@ -20,19 +20,20 @@
             }
         }
     })
-    export default class ExaminationPaper extends Vue {
+    export default class CheckEvaluate extends Vue {
 
         private store: any;
         constructor() {
             super();
-            this.store = getModule(ExaminationPaperStore)
+            this.store = getModule(CheckEvaluateStore)
         }
 
         @Model('isCollapsed', { type: Boolean }) private isCollapsed !: boolean;
-        getPaper() : any{
-            return this.store.paper;
-        }
+
+
+
+
     }
 </script>
-<style scoped src="@/styles/examinationPaper.css" />
-<template lang="pug" src="@/views/examinationPaper.pug" />
+<style scoped src="@/styles/checkEvaluate.css" />
+<template lang="pug" src="@/views/checkEvaluate.pug" />
