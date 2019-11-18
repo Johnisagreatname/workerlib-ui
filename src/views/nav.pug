@@ -15,16 +15,13 @@
                     MenuItem(name="/unit")
                         span 施工单位管理
 
-                Submenu(name="人员")
-                    template( slot="title")
-                        Icon(type="md-people")
-                        span 人员
-                    MenuItem(name="/worker")
-                        span 产业工人档案
-                    MenuItem(name="/contributive")
-                        span 工资管理
-                    MenuItem(name="/turnWork")
-                        span 出勤管理
+                MenuItem(name="/worker")
+                    Icon(type="md-checkbox")
+                    span 工人档案
+
+                MenuItem(name="/lecturer")
+                    Icon(type="md-checkbox")
+                    span 讲师档案
 
                 Submenu(name="培训")
                     template( slot="title")
@@ -57,13 +54,12 @@
                     Icon(type="ios-create")
                     span 综合评价
 
-                MenuItem(name="/1-5")
-                    Icon(type="ios-build")
-                    span 工种
-
-                MenuItem(name="/1-6")
-                    Icon(type="md-settings")
-                    span 设置
+                Submenu(name="设置")
+                    template( slot="title")
+                        Icon(type="md-settings")
+                        span 设置
+                    MenuItem(name="/workerclass")
+                        span 工种
         Layout
             Content
                 .headers
