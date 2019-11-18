@@ -107,14 +107,16 @@
 }
 
 .divY{
-    padding: 20px 0;
+    padding: 20px 0px;
     background-image: url('~@/assets/css/images/top.png');
     background-repeat: no-repeat;
+    height: 110px;
 }
 .divU{
     padding: 20px 0;
     background-image: url('~@/assets/css/images/bottom.png');
     background-repeat: no-repeat;
+    height: 110px;
 }
 .y1{
     display: inline-block;
@@ -457,3 +459,4 @@ p span{
 .threeDiv p{
     margin-bottom: 2%;
 }
+
