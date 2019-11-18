@@ -23,7 +23,7 @@
             span 类型：
                 Input( v-model="value",clearable,style="width: 260px")
         .search
-            Button 搜索
+            Button(@click="this.store.search") 搜索
     .hr
     .button
         Button(type="primary", ghost, icon="ios-log-in") 导入

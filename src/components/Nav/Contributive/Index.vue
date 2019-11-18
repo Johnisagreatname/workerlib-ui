@@ -39,6 +39,11 @@
             return '';
         }
 
+        mounted() {
+            this.store.search()
+            console.log('mounted');
+        }
+
         private options!: any;
         getMenus() : any {
             if(this.options) return this.options;
@@ -52,7 +57,7 @@
             return this.store.columns;
         }
         getData() : any{
-            return this.store.peoples;
+            return this.store.contributive;
         }
 
 
