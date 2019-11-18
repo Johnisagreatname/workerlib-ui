@@ -60,7 +60,6 @@ export default class WorkerStore extends VuexModule {
         }).then((data)=>{
             this.success(data)
         }).catch((e)=>{
-            console.log(e)
             let alert: any = Message;
             if(!e) {
                 alert.warning('未知错误！')
