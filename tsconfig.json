@@ -3,9 +3,10 @@
     "lib": [
       "dom",
       "es5",
-      "es2015.promise"
+      "es2015.promise",
+      "esnext"
     ],
-    "module": "es2015",
+    "module": "esNext",
     "moduleResolution": "node",
     "target": "es5",
     "sourceMap": true,

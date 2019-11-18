@@ -3,23 +3,23 @@
         Sider(collapsible, :collapsed-width="78",v-model='isCollapsed')
             .logo
             Menu(:open-names="['1']",accordion,@on-select="select",width="auto", :class="menuitemClasses",theme="dark")
-                MenuItem(name="/home")
+                MenuItem(name="/nav/home")
                     Icon(type="md-home")
                     span 首页
                 Submenu(name="项目")
                     template( slot="title")
                         Icon(type="ios-folder-open")
                         span 项目
-                    MenuItem(name="/project")
+                    MenuItem(name="/nav/project")
                         span 项目工程管理
-                    MenuItem(name="/unit")
+                    MenuItem(name="/nav/unit")
                         span 施工单位管理
 
-                MenuItem(name="/worker")
+                MenuItem(name="/nav/worker")
                     Icon(type="md-checkbox")
                     span 工人档案
 
-                MenuItem(name="/lecturer")
+                MenuItem(name="/nav/lecturer")
                     Icon(type="md-checkbox")
                     span 讲师档案
 
@@ -30,27 +30,27 @@
                     Submenu(name="线上")
                         template( slot="title")
                             span 线上
-                        MenuItem(name="/courseWare")
+                        MenuItem(name="/nav/courseWare")
                             span 课件管理
-                        MenuItem(name="/examinationPaper")
+                        MenuItem(name="/nav/examinationPaper")
                             span 试卷管理
-                        MenuItem(name="/cultivate")
+                        MenuItem(name="/nav/cultivate")
                             span 培训记录
                     Submenu(name="线下")
                         template( slot="title")
                             span 线下
-                        MenuItem(name="/offlineCourseWare")
+                        MenuItem(name="/nav/offlineCourseWare")
                             span 课件管理
-                        MenuItem(name="/lecturer")
+                        MenuItem(name="/nav/lecturer")
                             span 讲师档案
-                        MenuItem(name="/offlineCultivate")
+                        MenuItem(name="/nav/offlineCultivate")
                             span 培训记录
 
-                MenuItem(name="/checkEvaluate")
+                MenuItem(name="/nav/checkEvaluate")
                     Icon(type="md-checkbox")
                     span 技能鉴定
 
-                MenuItem(name="/comments")
+                MenuItem(name="/nav/comments")
                     Icon(type="ios-create")
                     span 综合评价
 
@@ -58,7 +58,7 @@
                     template( slot="title")
                         Icon(type="md-settings")
                         span 设置
-                    MenuItem(name="/workerclass")
+                    MenuItem(name="/nav/workerclass")
                         span 工种
         Layout
             Content

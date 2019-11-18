@@ -2,7 +2,6 @@ import { Module, VuexModule, Mutation, Action } from 'vuex-module-decorators';
 import store from "../index";
 import request from "../../common/HttpClient"
 import { Message } from 'iview'
-import router from '../../router'
 
 @Module({
     namespaced: true,
