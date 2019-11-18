@@ -1,6 +1,6 @@
 <script lang="ts">
     import "@/assets/css/common.css";
-    import ProjectStore from '../store/modules/ProjectStore';
+    import TurnWorkStore from '../../../store/modules/TurnWorkStore';
     import { Component, Vue, Prop, Model} from 'vue-property-decorator';
     import { getModule } from 'vuex-module-decorators';
 
@@ -20,24 +20,15 @@
             }
         }
     })
-    export default class Project extends Vue {
+    export default class TurnWork extends Vue {
 
         private store: any;
         constructor() {
             super();
-            this.store = getModule(ProjectStore)
+            this.store = getModule(TurnWorkStore)
         }
 
         @Model('isCollapsed', { type: Boolean }) private isCollapsed !: boolean;
-
-        rowClassName (row, index) : string {
-
-            if(index == 0) {
-                return 'table-header'
-            }
-
-            return '';
-        }
 
         private options!: any;
         getMenus() : any {
@@ -54,9 +45,7 @@
         getData() : any{
             return this.store.data;
         }
-
-
     }
 </script>
-<style scoped src="@/styles/project.css" />
-<template lang="pug" src="@/views/project.pug" />
+<style scoped src="@/styles/turnWork.css" />
+<template lang="pug" src="@/views/turnWork.pug" />

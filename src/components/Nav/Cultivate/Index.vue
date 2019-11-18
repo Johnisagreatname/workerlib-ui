@@ -1,6 +1,6 @@
 <script lang="ts">
     import "@/assets/css/common.css";
-    import ContributiveStore from '../store/modules/ContributiveStore';
+    import CultivateStore from '../../../store/modules/CultivateStore';
     import { Component, Vue, Prop, Model} from 'vue-property-decorator';
     import { getModule } from 'vuex-module-decorators';
 
@@ -20,12 +20,12 @@
             }
         }
     })
-    export default class Contributive extends Vue {
+    export default class Cultivate extends Vue {
 
         private store: any;
         constructor() {
             super();
-            this.store = getModule(ContributiveStore)
+            this.store = getModule(CultivateStore)
         }
 
         @Model('isCollapsed', { type: Boolean }) private isCollapsed !: boolean;
@@ -43,8 +43,9 @@
         getMenus() : any {
             if(this.options) return this.options;
             this.options = [
-                { value: '离场', key: '0' },
-                { value: '在场', key: '1' }
+                { value: '待学习', key: '0' },
+                { value: '学习中', key: '1' },
+                { value: '学习完成', key: '2' }
             ];
             return this.options;
         }
@@ -52,11 +53,11 @@
             return this.store.columns;
         }
         getData() : any{
-            return this.store.peoples;
+            return this.store.data;
         }
 
 
     }
 </script>
-<style scoped src="@/styles/contributive.css" />
-<template lang="pug" src="@/views/contributive.pug" />
+<style scoped src="@/styles/cultivate.css" />
+<template lang="pug" src="@/views/cultivate.pug" />

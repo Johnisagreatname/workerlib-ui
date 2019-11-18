@@ -1,6 +1,6 @@
 <script lang="ts">
     import "@/assets/css/common.css";
-    import CheckEvaluateStore from '../store/modules/CheckEvaluateStore';
+    import LecturerStore from '../../../store/modules/LecturerStore';
     import { Component, Vue, Prop, Model} from 'vue-property-decorator';
     import { getModule } from 'vuex-module-decorators';
 
@@ -20,20 +20,21 @@
             }
         }
     })
-    export default class CheckEvaluate extends Vue {
+    export default class Lecturer extends Vue {
 
         private store: any;
         constructor() {
             super();
-            this.store = getModule(CheckEvaluateStore)
+            this.store = getModule(LecturerStore)
         }
-
+        getLecturer() : any{
+            return this.store.lecturer;
+        }
         @Model('isCollapsed', { type: Boolean }) private isCollapsed !: boolean;
-
 
 
 
     }
 </script>
-<style scoped src="@/styles/checkEvaluate.css" />
-<template lang="pug" src="@/views/checkEvaluate.pug" />
+<style scoped src="@/styles/lecturer.css" />
+<template lang="pug" src="@/views/lecturer.pug" />

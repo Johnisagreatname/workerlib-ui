@@ -4,6 +4,7 @@ var merge = require('webpack-merge')
 var baseWebpackConfig = require('./webpack.base.conf')
 var CopyWebpackPlugin = require('copy-webpack-plugin')
 var publishRoot = path.resolve(__dirname, '../publish');
+const VueRouterInvokeWebpackPlugin = require('vue-router-invoke-webpack-plugin');
 
 var webpackConfig = merge(baseWebpackConfig, {
   module: {
@@ -17,6 +18,13 @@ var webpackConfig = merge(baseWebpackConfig, {
     path: publishRoot
   },
   plugins: [
+    new VueRouterInvokeWebpackPlugin({
+      'dir' : 'src/components',
+      'alias' : '../../components',
+      'routerDir' : 'src/router',
+      'language' : 'typescript',
+      'mode' : 'hash'
+    }),
     // copy custom static assets
     new CopyWebpackPlugin([
       {

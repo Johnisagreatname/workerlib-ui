@@ -2,7 +2,7 @@
 
     import { Component, Vue, Prop, Model } from 'vue-property-decorator';
     import { getModule } from 'vuex-module-decorators';
-    import LoginStore from '../store/modules/loginStore';
+    import LoginStore from '../../store/modules/LoginStore';
 
     @Component({
         computed: {

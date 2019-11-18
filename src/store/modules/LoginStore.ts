@@ -2,7 +2,7 @@ import { Module, VuexModule, Mutation, Action } from 'vuex-module-decorators';
 import store from "../index";
 import request from "../../common/HttpClient"
 import { Message } from 'iview'
-import router from '../../router'
+import router from '../../router/.invoke/router'
 
 @Module({
     namespaced: true,
@@ -23,7 +23,7 @@ export default class LoginStore extends VuexModule {
             "password" : this.password,
         }).then((data)=>{
             sessionStorage.setItem('loginInfo', JSON.stringify(data))
-            router.push({path: '/'})
+            router.push({path: '/nav/home'})
             return data
         }).catch((e)=>{
             console.log(e)
