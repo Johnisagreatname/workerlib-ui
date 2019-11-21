@@ -10,6 +10,8 @@ var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin');
 var CleanWebpackPlugin = require('clean-webpack-plugin');
 var CopyWebpackPlugin = require('copy-webpack-plugin');
+var CodeGenerator = require('../CodeGeneratorWebpackPlugin');
+
 const VueRouterInvokeWebpackPlugin = require('vue-router-invoke-webpack-plugin');
 
 // add hot-reload related code to entry chunks
@@ -30,6 +32,7 @@ var webpackConfig = merge(baseWebpackConfig, {
         new webpack.DefinePlugin({
             'process.env': config.build.env
         }),
+        new CodeGenerator('傻'),
         new CleanWebpackPlugin([config.build.assetsRoot]),
         new VueRouterInvokeWebpackPlugin({
             'dir' : 'src/components',

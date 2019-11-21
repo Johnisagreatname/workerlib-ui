@@ -21,7 +21,9 @@
         }
     })
     export default class Unit extends Vue {
-
+        mounted() {
+            this.store.search();
+        }
         private store: any;
         constructor() {
             super();
@@ -52,7 +54,7 @@
             return this.store.columns;
         }
         getData() : any{
-            return this.store.data;
+            return this.store.unit;
         }
 
 
