@@ -32,30 +32,38 @@ export default class WorkerStore extends VuexModule {
     @Action
     public async search() {
         await request.post('/api/workerlib/archives', {
+            "joinTables": [{
+                "tablename": "salary",
+                "alias": "a",
+                "JoinMode": "inner"
+            }, {
+                "tablename": "archives",
+                "alias": "b",
+                "joinMode": "Inner",
+                "onList": [{
+                    "name": "b.id",
+                    "value": "a.archives_id",
+                    "algorithm": "EQ"
+                }]
+            }
+
+            ],
+
             "pageInfo" : {
-                "pageIndex": this.pageInfo.pageIndex, //页码
-                "pageSize": this.pageInfo.pageSize  //每页条数
+                "pageIndex": 1,
+                "pageSize": 50
             },
-            "conditionList":[],
-            "sortList": [],
-            "groupList": [],
-            "keywords": [],
-            "selectList": [
-                {"field":"id"},
-                {"field":"id_number"},
-                {"field":"work_type"},
-                {"field":"name"},
-                {"field":"phone"},
-                {"field":"state"}
-            ]
-            // "keywords" : [{
-            //     "project": this.projectName,
-            //     "constructionUnit": this.constructionUnit,
-            //     "name": this.name,
-            //     "workType": this.workType,
-            //     "state":this.state,
-            //     ""
-            // }]
+
+            "conditionList": [],
+
+            "sortList": [ ],
+
+            "groupList" : [
+            ],
+
+            "keywords" : [],
+
+            "selectList": []
         }).then((data)=>{
             this.success(data)
         }).catch((e)=>{
