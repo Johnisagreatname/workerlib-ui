@@ -78,6 +78,10 @@ export default class WorkerStore extends VuexModule {
                 return
             }
 
+            if(!e.message) {
+                return;
+            }
+
             alert.warning(e.message || e)
         });
     }

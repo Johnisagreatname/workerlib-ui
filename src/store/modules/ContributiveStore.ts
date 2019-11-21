@@ -68,6 +68,14 @@ export default class ContributiveStore extends VuexModule {
                 return
             }
 
+            if(e.message === false) {
+                return;
+            }
+
+            if(!e.message) {
+                return;
+            }
+
             alert.warning(e.message || e)
         });
     }
