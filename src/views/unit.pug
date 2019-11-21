@@ -11,7 +11,7 @@
                 Select(v-model="model8",clearable,style="width:200px")
                     Option(v-for="item in getMenus()", :value="item.value", :key="item.key")
         .divOne
-            Button 搜索
+            Button(@click="this.store.search") 搜索
     .hr
     .button
         Button(type="primary", ghost, icon="ios-add-circle-outline") 新增单位
@@ -20,6 +20,24 @@
         Button(type="primary", ghost, icon="ios-add-circle-outline") 添加单位评价
 
     .bodyTwo
-        Table(:row-class-name="rowClassName", border, ref="selection", :columns="getColumns()", :data="getData()")
+        template
+            Table(border,:columns="getColumns()", :data="getData()")
+                template(slot-scope="{row, index }",slot="operation")
+                    template
+                        Dropdown(trigger="click")
+                            a(href="javascript:void(0)" :style={"font-size": "16px"})
+                                span 详细操作
+                                Icon(type="md-arrow-dropdown" )
+                            DropdownMenu(slot="list")
+                                DropdownItem
+                                    Icon(type="ios-book-outline")
+                                    span 添加评价
+                                DropdownItem
+                                    Icon(type="ios-create-outline")
+                                    span 查看评价
+                                DropdownItem
+                                    Icon(type="ios-contact-outline")
+                                    span 编辑
+
     .footer
         Page(:total="5", size="small" ,show-elevator,show-sizer,show-total)

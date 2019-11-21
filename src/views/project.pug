@@ -2,26 +2,97 @@
     .topOne
         .divOne
             span 选择公司：
-                Input( v-model="value",clearable,style="width: 200px")
+                Input(v-model="selectOrganization",clearable,style="width: 200px")
         .divOne
             span 选择地区：
-                Input( v-model="value",clearable,style="width: 200px")
+                Input(v-model="selectProjectAddress",clearable,style="width: 200px")
         .divOne
             span 项目名称：
-                Input( v-model="value",clearable,style="width: 200px")
+                Input(v-model="selectProjectName",clearable,style="width: 200px")
         .divOne
-            span 课程状态：
-                Select(v-model="model8",clearable,style="width:200px")
-                    Option(v-for="item in getMenus()", :value="item.value", :key="item.key")
+            span 项目状态：
+                Select(clearable,style="width:200px",v-model="selectStatus")
+                    Option(v-for="item in getMenus()", :value="item.value")
         .divOne
-            Button 搜索
+            Button(@click="search") 搜索
     .hr
     .button
-        Button(type="primary", ghost, icon="ios-add-circle-outline") 新增项目
+        Button(type="primary", ghost, icon="ios-add-circle-outline",@click="addProject=!addProject") 新增项目
         Button(type="primary", ghost, icon="ios-log-in") 导入项目
         Button(type="primary", ghost, icon="ios-log-out") 导出信息
 
     .bodyTwo
         Table(:row-class-name="rowClassName", border, ref="selection", :columns="getColumns()", :data="getData()")
     .footer
-        Page(:total="5", size="small" ,show-elevator,show-sizer,show-total)
+        Page(:total="totalRecords",show-sizer,show-elevator,show-total,@on-page-size-change="onPageSizeChange",@on-change="onPageIndexChange")
+
+    Modal(:value="addProject",title="新增人员",@on-ok="ok()",@on-cancel="cancel()",width='50%')
+        .addBody
+            .divTwo
+                .name
+                    span 项目名称
+                    span(:style={'color': 'red'}) *
+                .input
+                    Input(clearable,style="width: 345px",size=large,v-model="projectName")
+            .divTwo
+                .name
+                    span 项目简介
+                    span(:style={'color': 'red'}) *
+                .input
+                    Input(type="textarea",clearable,style="width: 345px",size=large,v-model="projectBrief")
+            .divTwo
+                .name
+                    span 施工许可证
+                    span(:style={'color': 'red'}) *
+                .input
+                    Input(clearable,style="width: 345px",size=large,v-model="builderLicense")
+            .divTwo
+                .name
+                    span 开工时间
+                    span(:style={'color': 'red'}) *
+                .input
+                    template
+                        Row
+                            Col(span="12")
+                                DatePicker(v-model="startTime",type="date",placeholder="请选择",style="width: 345px")
+            .divTwo
+                .name
+                    span 合同竣工时间
+                    span(:style={'color': 'red'}) *
+                .input
+                    template
+                        Row
+                            Col(span="12")
+                                DatePicker(v-model="endTime",type="date",placeholder="请选择",style="width: 345px")
+            .divTwo
+                .name
+                    span 建设单位
+                    span(:style={'color': 'red'}) *
+                .input
+                    Input(clearable,style="width: 345px",size=large,v-model="construction")
+            .divTwo
+                .name
+                    span 施工单位
+                    span(:style={'color': 'red'}) *
+                .input
+                    Input(clearable,style="width: 345px",size=large,v-model="organization")
+            .divTwo
+                .name
+                    span 监理单位
+                    span(:style={'color': 'red'}) *
+                .input
+                    Input(clearable,style="width: 345px",size=large,v-model="supervising")
+            .divTwo
+                .name
+                    span 项目地址
+                    span(:style={'color': 'red'}) *
+                .input
+                    Input(clearable,style="width: 345px",size=large,v-model="projectAddress")
+            .divTwo
+                .name
+                    span 项目状态
+                    span(:style={'color': 'red'}) *
+                .input
+                    Select(clearable,style="width:200px", v-model="status")
+                        Option(v-for="item in getMenus()", :value="item.value")
+
