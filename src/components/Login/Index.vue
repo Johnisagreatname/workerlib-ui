@@ -28,18 +28,17 @@
         get username() : String {
             return this.store.username
         }
-
         set username(data: String) {
             this.store.setUsername(data)
         }
-
         get password() : String {
             return this.store.password
         }
-
         set password(data: String) {
             this.store.setPassword(data)
         }
+
+
 
         public login() {
             this.store.login()
