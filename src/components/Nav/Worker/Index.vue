@@ -22,7 +22,7 @@
         @Model('isCollapsed', { type: Boolean }) private isCollapsed !: boolean;
         animal = '否';
         private store: any;
-        public modal2: boolean;
+        public addWorker: boolean;
         public particulars: boolean;
         public certificate: boolean;
         private sex: string;
@@ -34,7 +34,7 @@
         constructor() {
             super();
             this.store = getModule(WorkerStore)
-            this.modal2 = false;
+            this.addWorker = false;
             this.particulars = false;
             this.certificate = false;
         }
@@ -69,10 +69,10 @@
             return Math.floor((this.year-this.date)/(1000*60*60*24*31*12));
         }
         ok() : any{
-            this.modal2 = false;
+            this.addWorker = false;
         }
         cancel():any {
-            this.modal2 = false;
+            this.addWorker = false;
         }
         particularsOk() : any{
             this.particulars = false;

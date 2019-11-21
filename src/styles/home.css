@@ -5,7 +5,128 @@
     width: 100%;
     background-color: #f3f5f7;
     color:#000000;
+    border-radius: 5px 5px 5px 5px;
 }
+.headerTop{
+    width: 100%;
+    height: 80px;
+    background-image: url('~@/assets/css/images/homeTop.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    border-radius: 5px 5px 0px 0px;
+}
+.minBody{
+    width: 100%;
+    height:950px;
+    border-radius: 0px 0px 5px 5px;
+}
+.bodyLeft{
+    width:27%;
+    float:left;
+    height:950px;
+}
+.bodyMiddle{
+    width:45.8%;
+    float:left;
+    height:920px;
+    background-image: url('~@/assets/css/images/homeMiddle.png');
+    background-repeat: no-repeat;
+    background-position-x: center;
+    background-size: 100% 100%;
+}
+.bodyRight{
+    width: 27%;
+    float: left;
+    height:950px;
+    background-color: #434e5b;
+}
+.one{
+    width: 92%;
+    height:267px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 10px;
+    background-image: url('~@/assets/css/images/homeLeft.png');
+    background-repeat: no-repeat;
+    background-position-x: center;
+    background-size: 100% 100%;
+}
+.two{
+    width: 92%;
+    height:360px;
+    margin-left: auto;
+    margin-right: auto;
+    background-image: url('~@/assets/css/images/homeLeftBottom.png');
+    background-repeat: no-repeat;
+    background-position-x: center;
+    background-size: 100% 100%;
+}
+.twoTop{
+    height: 80px;
+}
+.twoEcharts{
+    width: 95%;
+    height: 320px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.oneTop{
+
+}
+.oneMiddle{
+}
+.oneBottom{
+
+}
+.twoMiddle{
+    width: 90%;
+    height: 180px;
+    margin-left: auto;
+    margin-right: auto;
+
+}
+.twoFooterOne{
+    width: 93%;
+    height: 135px;
+    margin-right: auto;
+    margin-left: auto;
+    margin-bottom: 25px;
+}
+.twoFooterTwo{
+    width: 93%;
+    height: 135px;
+    margin-left: auto;
+    margin-right: auto;
+    background-image: url('~@/assets/css/images/homeFooter.png');
+    background-repeat: no-repeat;
+    background-position-x: center;
+    background-size: 100% 100%;
+}
+.div{
+    width: 30%;
+    height: 135px;
+    float: left;
+    background-image: url('~@/assets/css/images/homeMinFooter.png');
+    background-repeat: no-repeat;
+    background-position-x: center;
+    background-size: 100% 100%;
+}
+.threeTop{
+    width: 100%;
+    height: 535px;
+    background-image: url('~@/assets/css/images/homeRightTop.png');
+    background-repeat: no-repeat;
+    background-position-x: center;
+    background-size: 100% 100%;
+}
+
+
+
+
+
+
+
 .mainHr{
     display: inline-block;
     background-color: #f5f5f6;
@@ -27,7 +148,7 @@
     height: auto;
     width: 46%;
     background-color: #ffffff;
-    border-radius: 0px 0px 0px 5px;
+    border-radius: 0px 0px 5px 0px;
     float: right;
     min-height: 970px;
 }
@@ -301,7 +422,7 @@
     text-align: center;
     color: #000000;
 }
-.demo-carousel {
+.demo-carousel{
     width: auto;
     height: 150px;
     margin-left: auto;

@@ -21,14 +21,31 @@
         }
     })
     export default class Lecturer extends Vue {
-
+        public checkedInternal: boolean;
         private store: any;
+        private
+        mounted() {
+            this.store.search();
+        }
         constructor() {
             super();
+            this.checkedInternal = true;
             this.store = getModule(LecturerStore)
         }
+        //获取讲师数据
         getLecturer() : any{
-            return this.store.lecturer;
+            return this.store.lecturers;
+        }
+
+        //切换内部/外部讲师
+        toggle():any{
+            this.checkedInternal=!this.checkedInternal;
+            if(this.checkedInternal==true){
+                this.store.type(0);
+            }else {
+                this.store.type(1);
+            }
+            this.store.search();
         }
         @Model('isCollapsed', { type: Boolean }) private isCollapsed !: boolean;
 

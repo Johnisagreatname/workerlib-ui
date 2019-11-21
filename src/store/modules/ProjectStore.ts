@@ -2,7 +2,6 @@ import { Module, VuexModule, Mutation, Action } from 'vuex-module-decorators';
 import store from "../index";
 import request from "../../common/HttpClient";
 import {Message} from "iview";
-import router from "../../router/.invoke/router";
 
 @Module({
     namespaced: true,
@@ -62,7 +61,6 @@ export default class ProjectStore extends VuexModule {
 
     @Action
     public async search() {
-        ;
         await request.post('/api/workerlib/project', await this.getParams()).then((data)=>{
             this.success(data)
             this.count();
@@ -85,11 +83,8 @@ export default class ProjectStore extends VuexModule {
 
     @Action
     public async count() {
-        ;
         await request.post('/api/workerlib/project/count', await this.getParams()).then((total)=>{
-            ;
             this.setPageTotal(total.data)
-
         }).catch((e)=>{
             console.log(e)
             let alert: any = Message;

@@ -23,145 +23,91 @@
          @Model('isCollapsed', { type: Boolean }) private isCollapsed!: boolean;
         //饼图
          public $echarts: any;
-         private options: object = {
-             tooltip: {
+         private twoOptions: any = {
+             tooltip : {
                  trigger: 'item',
-                 formatter: "{a} <br/>{b}: {c} ({d}%)"
+                 //{a}（系列名称），{b}（数据项名称），{c}（数值）, {d}（百分比）
+                 formatter: "{a} <br/>{b} : {c} ({d}%)"
              },
              legend: {
-                 orient: 'vertical',
-                 y: '20px',
-                 x: '20px',
-                 data:['普工','钢筋工','木工','电焊工','泥水工']
+                 show:false
              },
-             color:[
-                '#3F9BFD','#9786F0','#F9CE33','#1CE9AE','#FF7A8F'
-             ],
-             series: [
+             toolbox: {
+                 //是否显示工具栏组件
+                 show : true,
+                 feature : {
+                     mark : {show: true},
+
+                     magicType : {
+                         show: true,
+                         type: ['pie', 'funnel']
+                     }
+
+                 }
+             },
+             series : [
                  {
-                     name:'访问来源',
+                     name:'工种人数',
                      type:'pie',
-                     radius: ['50%', '70%'],
-                     avoidLabelOverlap: false,
-                     label: {
-                         normal: {
-                             show: false,
-                             position: 'center'
-                         },
-                         emphasis: {
-                             show: true,
-                             textStyle: {
-                                 fontSize: '30',
-                                 fontWeight: 'bold'
-                             }
-                         }
-                     },
-                     labelLine: {
-                         normal: {
-                             show: false
-                         }
-                     },
+                     radius : [30, 150],
+                     center : ['50%', '50%'],
+                     roseType : 'area',
                      data:[
-                         {value:500, name:'普工'},
-                         {value:200, name:'钢筋工'},
-                         {value:150, name:'木工'},
-                         {value:100, name:'电焊工'},
-                         {value:50, name:'泥水工'},
+                         {value:12, name:'普工'},
+                         {value:10, name:'电工'},
+                         {value:26, name:'焊工'},
+                         {value:20, name:'水泥工'},
+                         {value:25, name:'钢筋工'},
                      ]
                  }
-             ]
+             ],
+             color:['#4DA2FF','#6ADFC5', '#F86E6E', '#F9CC7B', '#BFC0FF',
+                    '#F86E6E','#6ADFC5', '#4DA2FF', '#F9CC7B', '#BFC0FF']
          };
-         private option: object = {
-             width: '300px',
-             height: '135px',
-             grid: {
-                 left: '3%',
-                 right: '4%',
-                 bottom: '3%',
-                 containLabel: true
+         private options: any = {
+
+             series: [{
+                 name:'工种人数',
+                 type:'pie',
+                 radius : [30, 170],
+                 center : ['50%', '50%'],
+                 roseType : 'area',
+                 label: {
+                     normal: {
+                         show: false
+                     }
+                 },
+                 data:[
+                     {value:15, name:'一级'},
+                     {value:19, name:'二级'},
+                     {value:9, name:'三级'},
+                     {value:20, name:'四级'},
+                     {value:15, name:'五级'},
+                     {value:30, name:'六级'},
+                     {value:19, name:'七级'},
+                     {value:28, name:'八级'},
+                     {value:20, name:'九级'}
+                 ]
+             }
+             ],
+             itemStyle:{
+                 borderWidth:20,
+                 borderColor:'#fff',
              },
 
-             xAxis: {
-                 type: 'value',
-                 boundaryGap: [0, 0.01]
-             },
-             yAxis: {
-                 type: 'category',
-                 data: ['瓦工教育','泥工教育','架子工教育','安全教育','铝模培训']
-             },
-             series: [
-                 {
-                     name: '2019年',
-                     type: 'bar',
-                     color: function (params) {
-                         var colorList = ['#FF7A8F','#1CE9AE','#F9CE33','#9786F0','#3F9BFD'];
-                         return colorList[params.dataIndex];
-                     },
-                     data: [50, 100, 56, 90, 120, 180]
-                 }
-             ]
+             color:['#4DA2FF','#6ADFC5', '#F86E6E', '#F9CC7B', '#BFC0FF',
+                 '#F86E6E','#6ADFC5', '#4DA2FF', '#F9CC7B', '#BFC0FF']
          };
-         private optionOne: object = {
-             width: '200px',
-             height: '135px',
-             xAxis: {
-                 type: 'category',
-                 data: ['', '', '', '']
-             },
-             yAxis: {
-                 type: 'value'
-             },
-             series: [{
-                 data: [12, 15, 11, 20],
-                 color: function (params) {
-                     var colorList = ['#fbb869', '#faae4f', '#f69516','#fa8403'];
-                     return colorList[params.dataIndex];
-                 },
-                 type: 'bar'
-             }]
-         };
-         private optionTwo: object = {
-             width: '500px',
-             height: '500px',
-             tooltip: {
-                 trigger: 'item',
-                 formatter: "{a} <br/>{b}: {c} ({d}%)"
-             },
-             series: [
-                 {
-                     name:'职业证书统计',
-                     type:'pie',
-                     radius: ['40%', '55%'],
-                     color: function (params) {
-                         var colorList = ['#3F9BFD','#9786F0','#F9CE33','#1CE9AE','#FF7A8F'];
-                         return colorList[params.dataIndex];
-                     },
-                     data:[
-                         {value:335, name:'电工'},
-                         {value:310, name:'水泥工'},
-                         {value:234, name:'木工'},
-                         {value:102, name:'瓦工'},
-                         {value:150, name:'电焊工'}
-                     ]
-                 }
-             ]
-         };
-         private mounted() {
+
+         mounted() {
              const ele = document.getElementById('myEcharts');
              const chart: any = this.$echarts.init(ele);
-             chart.setOption(this.options);
+             chart.setOption(this.twoOptions);
 
-             const elet = document.getElementById('myEchart');
-             const charts: any = this.$echarts.init(elet);
-             charts.setOption(this.option);
+             // const elet = document.getElementById('myEchart');
+             // const charts: any = this.$echarts.init(elet);
+             // charts.setOption(this.option);
 
-             const myEchartOne = document.getElementById('myEchartOne');
-             const chartsOne: any = this.$echarts.init(myEchartOne);
-             chartsOne.setOption(this.optionOne);
-
-             const myEchartTwo = document.getElementById('myEchartTwo');
-             const chartsTwo: any = this.$echarts.init(myEchartTwo);
-             chartsTwo.setOption(this.optionTwo);
          }
          value3 = 0
          setting = {

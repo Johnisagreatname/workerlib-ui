@@ -58,3 +58,10 @@ button i {
     text-align: center !important;
     background-color: yellowgreen !important;
 }
+#app .layout .ivu-layout .ivu-layout{
+    background-color: #f2e9cc;
+}
+#app .layout .ivu-layout .ivu-layout .ivu-layout-content{
+    box-shadow: 0 0 0px 0px #fff;
+}
+

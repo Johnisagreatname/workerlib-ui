@@ -12,7 +12,7 @@ import { Message } from 'iview'
 })
 export default class LoginStore extends VuexModule {
 
-    public title:String = '数据中心'; //state
+    public title:String = '首页'; //state
 
     @Mutation
     private setTitle(data: any) {
