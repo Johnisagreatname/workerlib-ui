@@ -10,7 +10,7 @@ var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin');
 var CleanWebpackPlugin = require('clean-webpack-plugin');
 var CopyWebpackPlugin = require('copy-webpack-plugin');
-var CodeGenerator = require('../CodeGeneratorWebpackPlugin');
+var CodeGenerator = require('../CodeGenerator');
 
 const VueRouterInvokeWebpackPlugin = require('vue-router-invoke-webpack-plugin');
 

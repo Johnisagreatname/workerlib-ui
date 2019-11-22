@@ -18,7 +18,7 @@ export default class LoginStore extends VuexModule {
 
     @Action({ commit: 'success' })
     public async login() {
-        await request.post('api/login', {
+        await request.post('api/workerlib/login', {
             "username" : this.username,
             "password" : this.password,
         }).then((data)=>{
@@ -36,6 +36,10 @@ export default class LoginStore extends VuexModule {
             if(e.response && e.response.data && e.response.data.message) {
                 alert.warning(e.response.data.message)
                 return
+            }
+
+            if(!e.message) {
+                return;
             }
 
             alert.warning(e.message || e)

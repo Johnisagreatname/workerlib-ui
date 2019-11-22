@@ -15,7 +15,7 @@ const removePending: any = (config: any, f: any) => {
     if (pending.indexOf(flagUrl) !== -1) {
         // 如果在请求中，并存在f,f即axios提供的取消函数
         if (f) {
-            //f('您操作太快了'); // 执行取消操作
+            f('您操作太快了'); // 执行取消操作
         } else {
             pending.splice(pending.indexOf(flagUrl), 1); // 把这条记录从数组中移除
         }
@@ -72,7 +72,8 @@ service.interceptors.response.use(
         // 异常处理
         console.log(error)
         pending = [];
-        if (error.message === '取消重复请求') {
+        if (error.message === '您操作太快了') {
+            error.message = false;
             return Promise.reject(error);
         }
         return Promise.reject(error);
