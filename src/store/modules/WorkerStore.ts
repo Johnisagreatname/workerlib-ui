@@ -11,6 +11,13 @@ import {Message} from "iview";
     store,
 })
 export default class WorkerStore extends VuexModule {
+    public projectName:string;
+    public constructionUnit:string;
+    public name:string;
+    public workType:string;
+    public state:number;
+    public peoples: Array<PeopleInfo>;
+    public pageInfo: PageInfo;
 
     constructor(e) {
         super(e)
@@ -20,13 +27,7 @@ export default class WorkerStore extends VuexModule {
         }
         this.peoples = [];
     }
-    public projectName:string;
-    public constructionUnit:string;
-    public name:string;
-    public workType:string;
-    public state:number;
-    public peoples: Array<PeopleInfo>;
-    public pageInfo: PageInfo;
+
 
 
     @Action
@@ -110,11 +111,11 @@ interface PageInfo {
 }
 
 interface PeopleInfo {
-    id_number: string;
-    work_type: string;
-    name: string;
-    phone: string;
-    state: number;
+    id_number?: string;
+    work_type?: string;
+    name?: string;
+    phone?: string;
+    state?: number;
     checked?: boolean;
-    id: number;
+    id?: number;
 }

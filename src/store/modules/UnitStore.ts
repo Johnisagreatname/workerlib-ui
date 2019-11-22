@@ -15,7 +15,7 @@ export default class UnitStore extends VuexModule {
         super(e);
         this.pageInfo = {
             pageIndex: 1,
-            pageSize: 50
+            pageSize: 10
         };
         this.unit = [];
     }
@@ -48,8 +48,7 @@ export default class UnitStore extends VuexModule {
 
             "sortList": [ ],
 
-            "groupList" : [
-            ],
+            "groupList" : [],
 
             "keywords" : [],
 

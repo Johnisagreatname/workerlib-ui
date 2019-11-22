@@ -5,6 +5,7 @@
     width: 100%;
     background-color: #ffffff;
     color:#000000;
+    border-radius: 0px 0px 5px 5px;
 }
 .topOne{
     display: block;
@@ -58,16 +59,19 @@
     margin-right: auto;
 }
 .footer{
-    height: 50px;
+    position: fixed;
+    left: 0px;
+    bottom: 0px;
     width: 100%;
-    float:left;
-    margin-top: 20px;
+    height: 35px;
+    background-color: #e6e6e6;
+    z-index: 1;
 }
 
 .footer ul {
     margin-left: auto;
     margin-right: auto;
-    width: 500px;
+    width: 431px;
 }
 .addBody{
     width: 100%;

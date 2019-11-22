@@ -1,26 +1,31 @@
 .body
     .topOne
-        .divOne
-            span 老师类型：
-                Input( v-model="value",clearable,style="width: 260px")
-        .divOne
-            span 老师名称：
-                Input( v-model="value",clearable,style="width: 260px")
-        .divOne
-            Button 搜索
+        .cut
+            div(@click="toggle()",:class="checkedInternal? 'cutOrange' : 'cutGray'")
+                span 内部讲师
+            div(@click="toggle()",:class="!checkedInternal? 'cutOrange' : 'cutGray'")
+                span 外部讲师
     .hr
     .button
-        Button(type="primary", ghost, icon="ios-add-circle-outline") 添加老师
-        Button(type="primary", ghost, icon="ios-log-in") 导入老师
-        Button(type="primary", ghost, icon="ios-log-out") 导出老师
-    .hr
-    .lecturer(v-for="item in getLecturer()")
-        .divY
-            .img
-                img(src="~@/assets/css/images/js.jpg" :style={'width':'100%','height':'100%'})
-        .divY
-            p(:style={'font-weight':'bold','font-size':'18px'}) {{item.name}}
-            p 课程：{{item.curriculum}}
-            p 培训履历：
-                a 查看详情
-            p 培训评价:( {{item.evaluate}} )
+        Button(type="primary", ghost, icon="ios-add-circle-outline") 新增讲师
+        //Button(type="primary", ghost, icon="ios-log-in") 导入老师
+        //Button(type="primary", ghost, icon="ios-log-out") 导出老师
+    div(v-for="(item, index) in getLecturer()", :key="index")
+        .lecturer
+            .divY
+                .img
+                    img(src="~@/assets/css/images/js.jpg" :style={'width': '100%', 'height': '100%'})
+            .divY
+                p(:style={'font-weight': 'bold', 'font-size': '18px'}) {{item.name}}
+                p 课程：{{item.curriculum}}
+                p 培训履历：
+                    a 查看详情
+                p(v-if="item.evaluate == null ") 培训评价: 无
+                p(v-else) 培训评价: {{item.evaluate}}
+                p(v-if="item.type == 0 ") 讲师类型：
+                    span(:style={'color':'#f78d0f'}) 内部
+                p(v-else) 讲师类型：
+                    span(:style={'color':'#1597ff'}) 外部
+    .footer
+       span 共{{getLecturer().length}}条记录
+

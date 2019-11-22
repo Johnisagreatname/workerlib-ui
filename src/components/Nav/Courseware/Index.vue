@@ -23,10 +23,12 @@
     export default class Courseware extends Vue {
         @Model('isCollapsed', { type: Boolean }) private isCollapsed !: boolean;
         public addCourseware: boolean;
+        public checked: boolean;
         private store: any;
         constructor() {
             super();
             this.addCourseware = false;
+            this.checked = true;
             this.store = getModule(CoursewareStore)
         }
         coursewareList='light';
@@ -40,7 +42,16 @@
         getCourseware() : any{
             return this.store.courseware;
         }
-
+        //切换内部/外部讲师
+        toggle():any{
+            this.checked=!this.checked;
+            if(this.checked==true){
+                this.store.type(0);
+            }else {
+                this.store.type(1);
+            }
+          //  this.store.search();
+        }
 
     }
 </script>

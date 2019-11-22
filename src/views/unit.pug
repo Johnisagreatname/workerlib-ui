@@ -38,6 +38,5 @@
                                 DropdownItem
                                     Icon(type="ios-contact-outline")
                                     span 编辑
-
     .footer
-        Page(:total="5", size="small" ,show-elevator,show-sizer,show-total)
+        Page(:total="totalRecords",show-sizer,show-elevator,show-total,@on-page-size-change="onPageSizeChange",@on-change="onPageIndexChange")
