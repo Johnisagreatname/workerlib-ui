@@ -11,6 +11,41 @@ import {Message} from "iview";
     store,
 })
 export default class WorkerStore extends VuexModule {
+    @Mutation
+    public setPageInfo(data: PageInfo) { 
+        
+    }
+
+    @Mutation
+    public setPeoples(data: Array<PeopleInfo>) { 
+        
+    }
+
+    @Mutation
+    public setState(data:number) { 
+        
+    }
+
+    @Mutation
+    public setWorkType(data:string) { 
+        
+    }
+
+    @Mutation
+    public setName(data:string) { 
+        
+    }
+
+    @Mutation
+    public setConstructionUnit(data:string) { 
+        
+    }
+
+    @Mutation
+    public setProjectName(data:string) { 
+        
+    }
+
     public projectName:string;
     public constructionUnit:string;
     public name:string;
