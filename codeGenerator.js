@@ -50,11 +50,14 @@ function CodeGenerator (args) {
                         codeList.push(codeStr);
                     }
 
-                    var reMutation = new RegExp("@Mutation\\s+public\\s+set" + name.substring(0,1).toUpperCase() + name.substring(1));
+                    var reMutation = new RegExp("@Mutation\\s+public\\s+set" + name.substring(0,1).toUpperCase() + name.substring(1), "gmi");
                     if(!reMutation.test(storeSource)) {
                         var codeMutation = '\n    @Mutation\n    public set' + name.substring(0,1).toUpperCase() + name.substring(1) + '(data:'+param+') { \n' +
                             '        \n' +
                             '    }';
+
+                        // console.log('    生成vuex的Mutation=========>');
+                        // console.log(codeMutation);
 
                         moutionList.push(codeMutation);
                     }
