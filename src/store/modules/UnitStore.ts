@@ -134,12 +134,12 @@ export default class UnitStore extends VuexModule {
 
 }
 
-export interface PageInfo {
+interface PageInfo {
     pageIndex: number;
     pageSize: number;
 }
 
-export interface UnitInfo {
+interface UnitInfo {
     id:number;
     project_id:number;
     project_license:string;
