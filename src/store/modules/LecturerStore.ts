@@ -67,7 +67,7 @@ export default class LecturerStore extends VuexModule {
     }
 }
 
-interface LecturerInfo {
+export interface LecturerInfo {
     name?: string;
     type?: number;
     photo?: string;

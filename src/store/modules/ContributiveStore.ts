@@ -131,12 +131,12 @@ export default class ContributiveStore extends VuexModule {
 
 
 }
-interface PageInfo {
+export interface PageInfo {
     pageIndex: number;
     pageSize: number;
 }
 
-interface ContributiveInfo {
+export interface ContributiveInfo {
     id: number;
     bank_card: string;
     name: string;

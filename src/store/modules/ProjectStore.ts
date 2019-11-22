@@ -303,14 +303,14 @@ export default class ProjectStore extends VuexModule {
 }
 
 
-interface PageInfo {
+export interface PageInfo {
     pageIndex?: number;
     pageSize?: number;
     pageCount?:number;
     totalRecords?:number;
 }
 
-interface ProjectInfo {
+export interface ProjectInfo {
     id?:number;
     project_name?:string;
     project_brief?:string;

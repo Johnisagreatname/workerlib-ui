@@ -105,12 +105,12 @@ export default class WorkerStore extends VuexModule {
     }
 }
 
-interface PageInfo {
+export interface PageInfo {
     pageIndex: number;
     pageSize: number;
 }
 
-interface PeopleInfo {
+export interface PeopleInfo {
     id_number?: string;
     work_type?: string;
     name?: string;
