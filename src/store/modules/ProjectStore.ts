@@ -1,6 +1,7 @@
 import { Module, VuexModule, Mutation, Action } from 'vuex-module-decorators';
 import store from "../index";
 import request from "../../common/HttpClient";
+import MessageUtils from "../../common/MessageUtils";
 import {Message} from "iview";
 
 @Module({
@@ -77,6 +78,10 @@ export default class ProjectStore extends VuexModule {
                 return
             }
 
+            if(!e.message) {
+                return;
+            }
+
             alert.warning(e.message || e)
         });
     }
@@ -86,19 +91,7 @@ export default class ProjectStore extends VuexModule {
         await request.post('/api/workerlib/project/count', await this.getParams()).then((total)=>{
             this.setPageTotal(total.data)
         }).catch((e)=>{
-            console.log(e)
-            let alert: any = Message;
-            if(!e) {
-                alert.warning('未知错误！')
-                return
-            }
-
-            if(e.response && e.response.data && e.response.data.message) {
-                alert.warning(e.response.data.message)
-                return
-            }
-
-            alert.warning(e.message || e)
+            MessageUtils.warning(e);
         });
     }
 
@@ -131,6 +124,10 @@ export default class ProjectStore extends VuexModule {
                 return
             }
 
+            if(!e.message) {
+                return;
+            }
+
             alert.warning(e.message || e)
         });
     }
@@ -154,7 +151,7 @@ export default class ProjectStore extends VuexModule {
 
     @Mutation
     public success(data: any) {
-        
+
         this.project = data.data;
         this.pageInfo = {
             pageIndex: data.pageInfo.pageIndex,

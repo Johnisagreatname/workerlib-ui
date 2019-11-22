@@ -1,4 +1,4 @@
-import { Module, VuexModule, Mutation, Action } from 'vuex-module-decorators';
+import {Module, VuexModule, Mutation, Action, getModule} from 'vuex-module-decorators';
 import store from "../index";
 import request from "../../common/HttpClient";
 import {Message} from "iview";
@@ -19,11 +19,12 @@ export default class ContributiveStore extends VuexModule {
         };
         this.contributive = [];
     }
-    public contributive: Array<PeopleInfo>;
+    public contributive: Array<ContributiveInfo>;
     public pageInfo: PageInfo;
+
     @Action
     public async search() {
-        await request.post('/api/workerlib/join', {
+        await request.post('/asyncapi/workerlib/join', {
             "joinTables": [{
                 "tablename": "salary",
                 "alias": "a",
@@ -65,6 +66,14 @@ export default class ContributiveStore extends VuexModule {
             if(e.response && e.response.data && e.response.data.message) {
                 alert.warning(e.response.data.message)
                 return
+            }
+
+            if(e.message === false) {
+                return;
+            }
+
+            if(!e.message) {
+                return;
             }
 
             alert.warning(e.message || e)
@@ -127,7 +136,7 @@ interface PageInfo {
     pageSize: number;
 }
 
-interface PeopleInfo {
+interface ContributiveInfo {
     id: number;
     bank_card: string;
     name: string;

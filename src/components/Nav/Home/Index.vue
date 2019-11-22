@@ -1,6 +1,9 @@
 <script lang="ts">
     import "@/assets/css/common.css";
 
+    import Echart from 'echarts';
+    Vue.prototype.$echarts = Echart;
+
     import { Component, Vue, Prop, Model} from 'vue-property-decorator';
 
      @Component({
