@@ -54,8 +54,6 @@
         }
 
         onPageIndexChange(pageIndex){
-            
-            console.log(pageIndex)
 
             this.store.pageIndex(pageIndex);
             this.store.search();
@@ -71,10 +69,10 @@
         getMenus() : any {
             if(this.options) return this.options;
             this.options = [
-                { value: '待开工', key: '0' },
-                { value: '开工', key: '1' },
-                { value: '停工', key: '2' },
-                { value: '完工', key: '3' }
+                { value: '待开工', key: 1 },
+                { value: '开工', key: 2 },
+                { value: '停工', key: 3 },
+                { value: '完工', key: 4 }
             ];
             return this.options;
         }
@@ -175,8 +173,7 @@
             return this.store.projectInfo.status;
         }
         set status(data:number){
-            let key = this.options.filter(a=>a.value == data)[0].key
-            this.store.status(key);
+            this.store.status(data);
         }
 
 
@@ -205,11 +202,14 @@
             return this.store.projectInfo.selectStatus;
         }
         set selectStatus(data:number){
+            if(!data) {
+                this.store.selectStatus(0);
+                return;
+            }
             let key = this.options.filter(a=>a.value == data)[0].key
             this.store.selectStatus(key);
         }
-
-    }
+}
 </script>
 <style scoped src="@/styles/project.css" />
 <template lang="pug" src="@/views/project.pug" />

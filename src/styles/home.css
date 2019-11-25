@@ -144,11 +144,29 @@
     background-position-x: center;
     background-size: 100% 100%;
 }
-.div{
+.divOne{
     width: 30%;
     height: 135px;
     float: left;
-    background-image: url('~@/assets/css/images/homeMinFooter.png');
+    background-image: url('~@/assets/css/images/homeMinFooterOne.png');
+    background-repeat: no-repeat;
+    background-position-x: center;
+    background-size: 100% 100%;
+}
+.divTwo{
+    width: 30%;
+    height: 135px;
+    float: left;
+    background-image: url('~@/assets/css/images/homeMinFooterTwo.png');
+    background-repeat: no-repeat;
+    background-position-x: center;
+    background-size: 100% 100%;
+}
+.divThree{
+    width: 30%;
+    height: 135px;
+    float: left;
+    background-image: url('~@/assets/css/images/homeMinFooterThree.png');
     background-repeat: no-repeat;
     background-position-x: center;
     background-size: 100% 100%;
