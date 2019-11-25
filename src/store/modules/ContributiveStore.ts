@@ -11,6 +11,11 @@ import {Message} from "iview";
     store,
 })
 export default class ContributiveStore extends VuexModule {
+    @Mutation
+    private success(data: any) {
+        this.contributive = data.data;
+        this.pageInfo = data.pageInfo;
+    }
     constructor(e) {
         super(e);
         this.pageInfo = {
@@ -79,11 +84,7 @@ export default class ContributiveStore extends VuexModule {
             alert.warning(e.message || e)
         });
     }
-    @Mutation
-    private success(data: any) {
-        this.contributive = data.data;
-        this.pageInfo = data.pageInfo;
-    }
+
 
     public columns = [
         {
