@@ -32,7 +32,7 @@ var webpackConfig = merge(baseWebpackConfig, {
         new webpack.DefinePlugin({
             'process.env': config.build.env
         }),
-        new CodeGenerator('傻'),
+        new CodeGenerator('ts的getter、setter代码生成'),
         new CleanWebpackPlugin([config.build.assetsRoot]),
         new VueRouterInvokeWebpackPlugin({
             'dir' : 'src/components',

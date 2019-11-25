@@ -107,8 +107,8 @@
              series: [{
                  name:'工种人数',
                  type:'pie',
-                 radius : [10, 90],
-                 center : ['50%', '50%'],
+                 radius : [15, 90],
+                 center : ['51%', '50%'],
                  roseType : 'area',
                  label: {
                      normal: {

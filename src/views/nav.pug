@@ -27,24 +27,21 @@
                     template( slot="title")
                         Icon(type="ios-book")
                         span 培训
-                    Submenu(name="线上")
-                        template( slot="title")
-                            span 线上
-                        MenuItem(name="/nav/courseWare")
-                            span 课件管理
-                        MenuItem(name="/nav/examinationPaper")
-                            span 试卷管理
-                        MenuItem(name="/nav/cultivate")
-                            span 培训记录
-                    Submenu(name="线下")
-                        template( slot="title")
-                            span 线下
-                        MenuItem(name="/nav/offlineCourseWare")
-                            span 课件管理
-                        MenuItem(name="/nav/lecturer")
-                            span 讲师档案
-                        MenuItem(name="/nav/offlineCultivate")
-                            span 培训记录
+                    MenuItem(name="/nav/courseWare")
+                        span 课件管理
+                    MenuItem(name="/nav/examinationPaper")
+                        span 试卷管理
+                    MenuItem(name="/nav/cultivate")
+                        span 培训记录
+                    //Submenu(name="线下")
+                    //    template( slot="title")
+                    //        span 线下
+                    //    MenuItem(name="/nav/offlineCourseWare")
+                    //        span 课件管理
+                    //    MenuItem(name="/nav/lecturer")
+                    //        span 讲师档案
+                    //    MenuItem(name="/nav/offlineCultivate")
+                    //        span 培训记录
 
                 MenuItem(name="/nav/checkEvaluate")
                     Icon(type="md-checkbox")
@@ -58,7 +55,9 @@
                     template( slot="title")
                         Icon(type="md-settings")
                         span 设置
-                    MenuItem(name="/nav/workerclass")
+                    MenuItem(name="/nav/account")
+                        span 帐号
+                    MenuItem(name="/nav/workclass")
                         span 工种
         Layout
             Content

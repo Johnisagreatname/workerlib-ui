@@ -96,7 +96,47 @@
         onCheck(id: number): void{
             this.store.onCheck(id);
         }
-    }
+    
+        set state(data:number){
+            this.store.setState(data);
+        }
+
+        get state() : number {
+            return this.store.state;
+        }
+
+        set workType(data:string){
+            this.store.setWorkType(data);
+        }
+
+        get workType() : string {
+            return this.store.workType;
+        }
+
+        set name(data:string){
+            this.store.setName(data);
+        }
+
+        get name() : string {
+            return this.store.name;
+        }
+
+        set constructionUnit(data:string){
+            this.store.setConstructionUnit(data);
+        }
+
+        get constructionUnit() : string {
+            return this.store.constructionUnit;
+        }
+
+        set projectName(data:string){
+            this.store.setProjectName(data);
+        }
+
+        get projectName() : string {
+            return this.store.projectName;
+        }
+}
 </script>
 <style scoped src="@/styles/worker.css" />
 <template lang="pug" src="@/views/worker.pug" />

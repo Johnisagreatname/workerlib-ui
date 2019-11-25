@@ -68,6 +68,10 @@ export default class UnitStore extends VuexModule {
                 return
             }
 
+            if(!e.message) {
+                return;
+            }
+
             alert.warning(e.message || e)
         });
     }

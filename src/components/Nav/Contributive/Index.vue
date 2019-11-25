@@ -41,7 +41,7 @@
 
         mounted() {
             this.store.search()
-            console.log('mounted');
+            console.log('mounted')
         }
 
         private options!: any;

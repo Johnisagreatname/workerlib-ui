@@ -10,11 +10,6 @@ import 'iview/dist/styles/iview.css'
 
 Vue.use(iView)
 
-import Echart from 'echarts';
-Vue.prototype.$echarts = Echart;
-
-Vue.config.productionTip = false
-
 import store from './store';
 
 /* eslint-disable no-new */

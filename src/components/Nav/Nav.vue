@@ -66,8 +66,10 @@
                 { name: '综合评价', icon: 'md-people',second:[
                         {secondName:'评价管理', path: '/nav/comments', text: '评价管理'}
                     ] },
-                { name: '工种', path: '/nav/1-5', icon: 'ios-build', text: '工种管理', second: [] },
-                { name: '设置', path: '/nav/1-6', icon: 'md-settings', text: '设置管理', second: [] }
+                { name: '设置', icon: 'md-settings', second: [
+                        {secondName:'账号', path: '/nav/account', text: '账号管理'},
+                        {secondName:'工种', path: '/nav/workclass', text: '工种管理'},
+                    ] }
             ];
             return this.menus;
         }
