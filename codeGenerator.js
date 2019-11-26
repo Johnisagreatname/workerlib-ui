@@ -20,9 +20,9 @@ function CodeGenerator (args) {
                 var param = s[1].substring(0, s[1].length-1);
                 var keyword = param.replace('Array<', '').replace('>','').trim();
                 var name = s[0].split(" ")[1];
-                var reGet = new RegExp("get\\s+"+name+"\\(\\s*\\)");
+                var reGet = new RegExp("(get)?\\s+"+name+"\\s*\\(\\s*\\)", "gm");
 
-                if(!reGet.test(vueSource)) {
+                if(reGet.exec(vueSource)<0) {
                     var codeStr = '\n        ' +
                         'get '+name+'() : '+param+' {\n' +
                         '            return this.store.' + name + ';\n'+
@@ -36,8 +36,8 @@ function CodeGenerator (args) {
                     }
                 }
 
-                var reSet = new RegExp("set\\s+"+name+"\\([\\w:]+\\)");
-                if(!reSet.test(vueSource)) {
+                var reSet = new RegExp("(set)?\\s+"+name+"\\s*\\([\\w:]+\\)", "gm");
+                if(reSet.exec(vueSource)<0) {
                     var codeStr = '\n        ' +
                         'set '+name+'(data:'+param+'){\n' +
                         '            this.store.set' + name.substring(0,1).toUpperCase() + name.substring(1) + '(data);\n'+
