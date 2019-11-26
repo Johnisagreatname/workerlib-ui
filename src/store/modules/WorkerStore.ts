@@ -12,12 +12,37 @@ import {Message} from "iview";
 })
 export default class WorkerStore extends VuexModule {
     @Mutation
-    public setPageInfo(data: PageInfo) { 
+    public setPageSize(data: number) { 
         
     }
 
     @Mutation
-    public setPeoples(data: Array<PeopleInfo>) { 
+    public setPageIndex(data: number) { 
+        
+    }
+
+    @Mutation
+    public setChecked(data: boolean) { 
+        
+    }
+
+    @Mutation
+    public setPhone(data: string) { 
+        
+    }
+
+    @Mutation
+    public setWork_type(data: string) { 
+        
+    }
+
+    @Mutation
+    public setId_number(data: string) { 
+        
+    }
+
+    @Mutation
+    public setPeoples(data: any) { 
         
     }
 
@@ -46,28 +71,34 @@ export default class WorkerStore extends VuexModule {
         
     }
 
+
     public projectName:string;
     public constructionUnit:string;
     public name:string;
     public workType:string;
     public state:number;
-    public peoples: Array<PeopleInfo>;
-    public pageInfo: PageInfo;
+    public peoples: any;
+
+    public id_number: string;
+    public work_type: string;
+    public phone: string;
+    public checked: boolean;
+    public id?: number;
+
+    public pageIndex: number;
+    public pageSize: number;
 
     constructor(e) {
         super(e)
-        this.pageInfo = {
-            pageIndex: 1,
-            pageSize: 50
-        }
+        this.pageIndex=1;
+        this.pageSize= 10;
         this.peoples = [];
     }
 
-
-
     @Action
-    public async search() {
-        await request.post('/api/workerlib/archives', {
+    public getParams() : any {
+        debugger
+        return {
             "joinTables": [{
                 "tablename": "salary",
                 "alias": "a",
@@ -86,8 +117,8 @@ export default class WorkerStore extends VuexModule {
             ],
 
             "pageInfo" : {
-                "pageIndex": 1,
-                "pageSize": 50
+                "pageIndex": this.pageIndex,
+                "pageSize": this.pageSize
             },
 
             "conditionList": [],
@@ -100,7 +131,12 @@ export default class WorkerStore extends VuexModule {
             "keywords" : [],
 
             "selectList": []
-        }).then((data)=>{
+        };
+    }
+
+    @Action
+    public async search() {
+        await request.post('/api/workerlib/archives',await this.getParams()).then((data)=>{
             this.success(data)
         }).catch((e)=>{
             let alert: any = Message;
@@ -108,16 +144,13 @@ export default class WorkerStore extends VuexModule {
                 alert.warning('未知错误！')
                 return
             }
-
             if(e.response && e.response.data && e.response.data.message) {
                 alert.warning(e.response.data.message)
                 return
             }
-
             if(!e.message) {
                 return;
             }
-
             alert.warning(e.message || e)
         });
     }
@@ -125,7 +158,6 @@ export default class WorkerStore extends VuexModule {
     @Mutation
     private success(data: any) {
         this.peoples = data.data;
-        this.pageInfo = data.pageInfo;
     }
 
     @Mutation
@@ -138,19 +170,4 @@ export default class WorkerStore extends VuexModule {
             this.peoples = data;
         }
     }
-}
-
-interface PageInfo {
-    pageIndex: number;
-    pageSize: number;
-}
-
-interface PeopleInfo {
-    id_number?: string;
-    work_type?: string;
-    name?: string;
-    phone?: string;
-    state?: number;
-    checked?: boolean;
-    id?: number;
 }

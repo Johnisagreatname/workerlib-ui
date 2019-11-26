@@ -96,7 +96,66 @@
         onCheck(id: number): void{
             this.store.onCheck(id);
         }
-    
+
+
+
+
+        set pageSize(data: number){
+            this.store.setPageSize(data);
+        }
+
+        get pageSize() :  number {
+            return this.store.pageSize;
+        }
+
+        set pageIndex(data: number){
+            this.store.setPageIndex(data);
+        }
+
+        get pageIndex() :  number {
+            return this.store.pageIndex;
+        }
+
+        set checked(data: boolean){
+            this.store.setChecked(data);
+        }
+
+        get checked() :  boolean {
+            return this.store.checked;
+        }
+
+        set phone(data: string){
+            this.store.setPhone(data);
+        }
+
+        get phone() :  string {
+            return this.store.phone;
+        }
+
+        set work_type(data: string){
+            this.store.setWork_type(data);
+        }
+
+        get work_type() :  string {
+            return this.store.work_type;
+        }
+
+        set id_number(data: string){
+            this.store.setId_number(data);
+        }
+
+        get id_number() :  string {
+            return this.store.id_number;
+        }
+
+        set peoples(data: any){
+            this.store.setPeoples(data);
+        }
+
+        get peoples() :  any {
+            return this.store.peoples;
+        }
+
         set state(data:number){
             this.store.setState(data);
         }

@@ -27,6 +27,7 @@ export default class ProjectStore extends VuexModule {
 
     @Action
     public getParams() : any {
+        debugger
         return {
             "pageInfo" : {
                 "pageIndex": this.pageInfo.pageIndex,
@@ -47,8 +48,8 @@ export default class ProjectStore extends VuexModule {
                 "algorithm": "LIKE"
             },{
                 "name": "status",
-                "value": this.projectInfo.selectStatus,
-                "algorithm": "LIKE"
+                "value": !this.projectInfo.selectStatus ? null : this.projectInfo.selectStatus,
+                "algorithm": "EQ"
             }],
 
             "sortList": [],
@@ -63,7 +64,7 @@ export default class ProjectStore extends VuexModule {
     @Action
     public async search() {
         await request.post('/api/workerlib/project', await this.getParams()).then((data)=>{
-            this.success(data)
+            this.success(data);
             this.count();
         }).catch((e)=>{
             console.log(e)
@@ -153,6 +154,7 @@ export default class ProjectStore extends VuexModule {
     public success(data: any) {
 
         this.project = data.data;
+
         this.pageInfo = {
             pageIndex: data.pageInfo.pageIndex,
             pageSize:  data.pageInfo.pageSize,

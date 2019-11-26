@@ -72,3 +72,34 @@
     margin-right: auto;
     width: 431px;
 }
+.bodyTwo .ivu-table-wrapper{
+    overflow: unset !important;
+}
+.addBody{
+    width: 100%;
+    height: 700px;
+}
+.divTwo{
+    line-height: 70px;
+    width: 80%;
+    height: 65px;
+    margin-left: 20%;
+    float: left;
+
+}
+.name{
+    width: 22%;
+    float: left;
+    text-align: right;
+}.input{
+     width: 75%;
+     float: left;
+     margin-left: 2%;
+ }
+.divTwo span{
+    font-size: 18px;
+}
+#app .addBody .divTwo .input .ivu-input-wrapper .ivu-input {
+    height: 50px !important;
+}
+
