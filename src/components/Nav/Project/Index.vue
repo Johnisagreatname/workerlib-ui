@@ -23,7 +23,6 @@
     export default class Project extends Vue {
         public addProject: boolean;
         private store: any;
-        private options!: Array<any>;
 
         constructor() {
             super();
@@ -33,7 +32,7 @@
 
         mounted() {
             this.store.search();
-
+            this.store.getProjectType();
         }
         public search() {
             this.store.search();
@@ -47,19 +46,17 @@
         }
 
         onPageSizeChange(pageSize){
-            
             this.store.pageSize(pageSize);
             this.store.pageIndex(1);
             this.onPageIndexChange(1);
         }
 
         onPageIndexChange(pageIndex){
-
             this.store.pageIndex(pageIndex);
             this.store.search();
         }
 
-        rowClassName (row, index) : string {
+        rowClassNastatusme (row, index) : string {
             if(index == 0) {
                 return 'table-header'
             }
@@ -67,14 +64,7 @@
         }
 
         getMenus() : any {
-            if(this.options) return this.options;
-            this.options = [
-                { value: '待开工', key: 1 },
-                { value: '开工', key: 2 },
-                { value: '停工', key: 3 },
-                { value: '完工', key: 4 }
-            ];
-            return this.options;
+          return this.store.projectType;
         }
         getColumns() : any{
             return this.store.columns;
@@ -206,8 +196,7 @@
                 this.store.selectStatus(0);
                 return;
             }
-            let key = this.options.filter(a=>a.value == data)[0].key
-            this.store.selectStatus(key);
+            this.store.selectStatus(data);
         }
 }
 </script>

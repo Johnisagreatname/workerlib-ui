@@ -10,8 +10,8 @@
             span 在场状态：
                 Select(v-model="selectStatus",clearable,style="width:200px")
                     Option(v-for="item in getMenus()", :value="item.key",:key="item.key") {{item.value}}
-        .divOne
-            Button(@click="search()") 搜索
+        .search
+            Button(@click="this.store.search") 搜索
     .hr
     .button
         Button(type="primary", ghost, icon="ios-add-circle-outline",@click="addUnit=!addUnit") 新增单位
@@ -92,7 +92,7 @@
                     Input(clearable,style="width: 345px",size=large,v-model="principal")
             .divTwo
                 .name
-                    span 项目状态
+                    span 在场状态
                     span(:style={'color': 'red'}) *
                 .input
                     Select(clearable,style="width:345px", v-model="status")
@@ -103,6 +103,6 @@
                     span(:style={'color': 'red'}) *
                 .input
                     Select(clearable,style="width:345px", v-model="unit_type")
-                        Option(v-for="item in getType()", :value="item.key",:key="item.key") {{item.value}}
+                        Option(v-for="item in getType()", :value="item.value",:key="item.value") {{item.name}}
 
 

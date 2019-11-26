@@ -12,7 +12,7 @@
         .divOne
             span 项目状态：
                 Select(clearable,style="width:200px",v-model="selectStatus")
-                    Option(v-for="item in getMenus()", :value="item.value")
+                    Option(v-for="item in getMenus()", :value="item.value",:key="item.value") {{item.name}}
         .divOne
             Button(@click="search()") 搜索
     .hr
@@ -22,7 +22,7 @@
         Button(type="primary", ghost, icon="ios-log-out") 导出信息
 
     .bodyTwo
-        Table(:row-class-name="rowClassName", border, ref="selection", :columns="getColumns()", :data="getData()")
+        Table(border, ref="selection", :columns="getColumns()", :data="getData()")
     .footer
         Page(:total="totalRecords",show-sizer,show-elevator,show-total,@on-page-size-change="onPageSizeChange",@on-change="onPageIndexChange")
 
@@ -93,6 +93,6 @@
                     span 项目状态
                     span(:style={'color': 'red'}) *
                 .input
-                    Select(clearable,style="width:200px", v-model="status")
-                        Option(v-for="item in getMenus()", :value="item.key",:key="item.key") {{item.value}}
+                    Select(clearable,style="width:345px", v-model="status")
+                        Option(v-for="item in getMenus()", :value="item.value",:key="item.value") {{item.name}}
 

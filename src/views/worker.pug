@@ -2,23 +2,24 @@
    .topOne
       .divOne
          span 项目名称：
-            Input(clearable,style="width: 260px")
+            Input(clearable,style="width: 260px",v-model="selectProjectName")
       .divOne
          span 参建单位：
-            Input(clearable,style="width: 260px")
+            Input(clearable,style="width: 260px",v-model="selectContractors")
       .divOne
          span 姓名：
-            Input(clearable,style="width: 260px")
+            Input(clearable,style="width: 260px",v-model="selectUserName")
       .divOne
          span 工种：
-            Input(clearable,style="width: 260px")
+            Select(clearable,style="width:260px",filterable,allow-create,@on-create="handleCreate",v-model="selectType")
+               Option(v-for="item in getType()", :value="item.name", :key="item.name") {{item.name}}
       .divOne
          span 状态：
-            Select(clearable,style="width:260px")
-               Option(v-for="item in getMenus()", :value="item.value", :key="item.key")
-      .divOne
-         span 类型：
-            Input(clearable,style="width: 260px")
+            Select(clearable,style="width:260px",v-model="selectStatus")
+               Option(v-for="item in getMenus()", :value="item.key", :key="item.key") {{item.value}}
+      //.divOne
+      //   span 类型：
+      //      Input(clearable,style="width: 260px")
       .search
          Button(@click="this.store.search") 搜索
    .hr
@@ -28,7 +29,7 @@
       Button(type="primary", ghost, icon="ios-log-in") 导入
       Button(type="primary", ghost, icon="ios-log-out") 导出
 
-   div(v-for="(item, index) in this.store.peoples", :key="index",@click="onCheck(item.id)", :class="item.checked ? 'people-selected' : 'people'")
+   div(v-for="(item, index) in getPeopleList()", :key="index",@click="onCheck(item.id)", :class="item.checked ? 'people-selected' : 'people'")
       .headPhotos
          .circle
       .top
@@ -58,7 +59,7 @@
          p(v-if="item.state=1") 在职
          p(v-if="item.state=0") 离职
    .footer
-      Page(:total="this.store.pageInfo.totalRecords", :page-size="50", size="small" ,show-elevator,show-sizer,show-total)
+      Page(:total="pageTotal",show-sizer,show-elevator,show-total,@on-page-size-change="onPageSizeChange",@on-change="onPageIndexChange")
 
    Modal(:value="addWorker",title="新增人员",@on-ok="ok()",@on-cancel="cancel()",width='70%')
       .addBody
@@ -75,7 +76,7 @@
                   span 身份证号
                   span(:style={'color': 'red'}) *
                .input
-                  Input(clearable,style="width: 345px",size=large,v-model="idNumber")
+                  Input(clearable,style="width: 345px",size=large,v-model="card")
             .divTwo
                .name
                   span 手机号码
@@ -99,15 +100,15 @@
                   span 参建单位
                   span(:style={'color': 'red'}) *
                .input
-                  Input(clearable,style="width: 345px",size=large)
+                  Input(clearable,style="width: 345px",size=large,v-model="unit")
             .divTwo
                .name
                   span 是否班组长
                   span(:style={'color': 'red'}) *
                .input
                   RadioGroup(v-model="animal")
-                     Radio(label="是")
-                     Radio(label="否")
+                     Radio(label="1") 是
+                     Radio(label="2") 否
          .right
             h2(:style={'text-ag': '18px', 'text-align': 'center'}) 证件信息
             .box
