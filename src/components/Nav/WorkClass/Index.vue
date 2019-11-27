@@ -179,8 +179,6 @@
             this.store.status(key);
         }
 
-
-
         get selectOrganization():string{
             return this.store.projectInfo.selectOrganization;
         }
