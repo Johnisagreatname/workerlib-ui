@@ -51,13 +51,50 @@
 
     Modal(:value="addCourseware",title="课件上传",@on-ok="ok()",@on-cancel="cancel()",width='70%')
         template
-            Menu( :theme="coursewareList" active-name="1")
-                MenuItem( name="1")
-                    Icon( type="md-document" )
-                    span 文章管理
-                MenuItem( name="2")
-                    Icon( type="md-chatbubbles" )
-                    span 评论管理
+            Tabs
+                TabPane(label="基本信息" icon="ios-paper-outline")
+                    .addBody
+                        .divTwo
+                            .name
+                                span 课件名称
+                                span(:style={'color': 'red'}) *
+                            .input
+                                Input(clearable,style="width: 345px",size=large,v-model="userName",placeholder="请输入课件名称")
+                        .divTwo
+                            .name
+                                span 课程
+                                span(:style={'color': 'red'}) *
+                            .input
+                                Select(clearable,style="width:345px",v-model="type",placeholder="选择分类")
+                                    Option(v-for="item in getType()", :value="item.key", :key="item.key") {{item.value}}
+                        .divTwo
+                            .name
+                                span 总课时
+                                span(:style={'color': 'red'}) *
+                            .input
+                                Input(clearable,style="width: 345px",size=large,v-model="userName",placeholder="请输入总课时")
+                        .divTwo
+                            .name
+                                span 授课方式
+                                span(:style={'color': 'red'}) *
+                            .input
+                                Button(disabled) 录播
+                        .divTwo
+                            .name
+                                span 是否必学课程
+                                span(:style={'color': 'red'}) *
+                            .input
+                                Radio(v-model="single") 是
+                        .divTwo
+                            .name
+                                span 绑定课件工种分类
+                                span(:style={'color': 'red'}) *
+                            .input
+                                Select(clearable,style="width:345px",v-model="type",placeholder="选择分类")
+                                    Option(v-for="item in getType()", :value="item.key", :key="item.key") {{item.value}}
+                TabPane(label="资料上传" icon="ios-cloud-upload-outline") 标签二的内容
+                TabPane(label="课件详情" icon="ios-folder-outline") 标签三的内容
+
 
 
 

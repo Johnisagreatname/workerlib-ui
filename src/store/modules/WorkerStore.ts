@@ -79,7 +79,7 @@ export default class WorkerStore extends VuexModule {
                 "value": this.selectType,
                 "algorithm": "EQ"
             },{
-                "name": "status",
+                "name": "leave",
                 "value": !this.selectStatus ? null : this.selectStatus,
                 "algorithm": "EQ"
             }
