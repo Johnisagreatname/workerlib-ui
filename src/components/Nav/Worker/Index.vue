@@ -20,7 +20,6 @@
     })
     export default class Worker extends Vue {
         @Model('isCollapsed', { type: Boolean }) private isCollapsed !: boolean;
-        animal = '否';
         private store: any;
         public addWorker: boolean;
         public particulars: boolean;
@@ -30,7 +29,6 @@
         private now: Date;
         private year :any;
         private date:any
-
         constructor() {
             super();
             this.store = getModule(WorkerStore)
@@ -40,17 +38,29 @@
         }
 
         mounted() {
-            this.store.search()
-            console.log('mounted');
+            this.store.search();
+            this.store.getProjectType();
         }
-
+        getPeopleList():any{
+            return this.store.peoples;
+        }
         getMenus() : any {
             if(this.options) return this.options;
             this.options = [
-                {value: '离职', key: '0' },
-                {value: '在职', key: '1' }
+                {value: '在职', key: 1 },
+                {value: '离职', key: 2 }
+
             ];
             return this.options;
+        }
+        handleCreate (type) {
+            this.getType().push({
+                value: type,
+                label: type
+            });
+        }
+        getType(){
+            return this.store.projectType
         }
         //获取性别
         checkSex(idNumber): boolean {
@@ -68,6 +78,7 @@
             this.date = new Date(idNumber.substring(6,10)+","+idNumber.substring(10,12)+","+idNumber.substring(12,14)).getTime();
             return Math.floor((this.year-this.date)/(1000*60*60*24*31*12));
         }
+
         ok() : any{
             this.addWorker = false;
         }
@@ -92,109 +103,107 @@
            this.certificate = false;
            this.particulars = true;
         }
-
         onCheck(id: number): void{
             this.store.onCheck(id);
         }
-
-
-
-
-        set pageSize(data: number){
-            this.store.setPageSize(data);
+        onPageSizeChange(pageSize){
+            this.store.setPageSize(pageSize);
+            this.store.setPageIndex(1);
+            this.onPageIndexChange(1);
+        }
+        onPageIndexChange(pageIndex){
+            this.store.setPageIndex(pageIndex);
+            this.store.search();
         }
 
-        get pageSize() :  number {
-            return this.store.pageSize;
+        set userName(data:string){
+            this.store.setUserName(data);
+        }
+        get userName():string{
+            return this.store.userName;
         }
 
-        set pageIndex(data: number){
-            this.store.setPageIndex(data);
+        set card(data:string){
+            this.store.setCard(data);
+        }
+        get card():string{
+            return this.store.card;
         }
 
-        get pageIndex() :  number {
-            return this.store.pageIndex;
-        }
-
-        set checked(data: boolean){
-            this.store.setChecked(data);
-        }
-
-        get checked() :  boolean {
-            return this.store.checked;
-        }
-
-        set phone(data: string){
+        set phone(data:number){
             this.store.setPhone(data);
         }
-
-        get phone() :  string {
+        get phone():number{
             return this.store.phone;
         }
 
-        set work_type(data: string){
-            this.store.setWork_type(data);
+        set type(data:number){
+            this.store.setType(data);
+        }
+        get type():number{
+            return this.store.type;
         }
 
-        get work_type() :  string {
-            return this.store.work_type;
+        set project(data:string){
+            this.store.setProject(data);
+        }
+        get project():string{
+            return this.store.project;
         }
 
-        set id_number(data: string){
-            this.store.setId_number(data);
+        set unit(data:string){
+            this.store.setUnit(data);
+        }
+        get unit():string{
+            return this.store.unit;
         }
 
-        get id_number() :  string {
-            return this.store.id_number;
+        set animal(data:string){
+            this.store.setAnimal(data);
+        }
+        get animal():string{
+            return this.store.animal;
         }
 
-        set peoples(data: any){
-            this.store.setPeoples(data);
+        set pageTotal(data:number){
+            this.store.setPageToatl(data);
+        }
+        get pageTotal():number{
+            return this.store.pageTotal;
         }
 
-        get peoples() :  any {
-            return this.store.peoples;
+        set selectProjectName(data:string){
+            this.store.setSelectProjectName(data);
+        }
+        get selectProjectName():string{
+            return this.store.selectProjectName;
+        }
+        set selectContractors(data:string){
+            this.store.setSelectContractors(data);
+        }
+        get selectContractors():string{
+            return this.store.selectContractors;
+        }
+        set selectUserName(data:string){
+            this.store.setSelectUserName(data);
+        }
+        get selectUserName():string{
+            return this.store.selectUserName;
+        }
+        set selectType(data:string){
+            this.store.setSelectType(data);
+        }
+        get selectType():string{
+            return this.store.selectType;
+        }
+        set selectStatus(data:number){
+            this.store.setSelectStatus(data);
+        }
+        get selectStatus():number{
+            return this.store.selectStatus;
         }
 
-        set state(data:number){
-            this.store.setState(data);
-        }
 
-        get state() : number {
-            return this.store.state;
-        }
-
-        set workType(data:string){
-            this.store.setWorkType(data);
-        }
-
-        get workType() : string {
-            return this.store.workType;
-        }
-
-        set name(data:string){
-            this.store.setName(data);
-        }
-
-        get name() : string {
-            return this.store.name;
-        }
-
-        set constructionUnit(data:string){
-            this.store.setConstructionUnit(data);
-        }
-
-        get constructionUnit() : string {
-            return this.store.constructionUnit;
-        }
-
-        set projectName(data:string){
-            this.store.setProjectName(data);
-        }
-
-        get projectName() : string {
-            return this.store.projectName;
-        }
 }
 </script>
 <style scoped src="@/styles/worker.css" />

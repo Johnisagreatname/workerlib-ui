@@ -107,8 +107,8 @@
              series: [{
                  name:'工种人数',
                  type:'pie',
-                 radius : [15, 90],
-                 center : ['51%', '50%'],
+                 radius : [15, 70],
+                 center : ['51%', '45%'],
                  roseType : 'area',
                  label: {
                      normal: {
@@ -145,8 +145,8 @@
              },
 
              grid: {
-                 left: '2%',
-                 right: '10%',
+                 left: '1%',
+                 right: '12%',
                  top:'10%',
                  bottom: '5%',
                  containLabel: true
@@ -160,6 +160,7 @@
                  },
                  axisLabel: {
                      show: true,
+                     interval:0,
                      textStyle: {
                          color: '#000000',
                          fontSize: 12,
@@ -407,6 +408,7 @@
                  },
                  axisLabel: {
                      show: true,
+                     interval:0,
                      textStyle: {
                          color: "#383838" //X轴文字颜色
                      }

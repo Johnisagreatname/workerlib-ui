@@ -156,3 +156,36 @@
     margin-right: auto;
     margin-top: 17px;
 }
+.addBody{
+    width: 100%;
+    height: 410px;
+}
+.divTwo{
+    line-height: 70px;
+    width: 80%;
+    height: 65px;
+    margin-left: 20%;
+    float: left;
+
+}
+.divTwo span{
+    font-size: 18px;
+}
+.name{
+    width: 22%;
+    float: left;
+    text-align: right;
+}
+.input{
+    width: 75%;
+    float: left;
+    margin-left: 2%;
+}
+.ivu-btn.disabled, .ivu-btn.disabled.active, .ivu-btn.disabled:active, .ivu-btn.disabled:focus,
+.ivu-btn.disabled:hover, .ivu-btn[disabled], .ivu-btn[disabled].active, .ivu-btn[disabled]:active,
+.ivu-btn[disabled]:focus, .ivu-btn[disabled]:hover, fieldset[disabled] .ivu-btn, fieldset[disabled],
+.ivu-btn:active, fieldset[disabled] .ivu-btn:focus, fieldset[disabled] .ivu-btn:hover{
+    color: #ffffff !important;
+    background-color: #0693ff !important;
+    border-color: #0693ff !important;
+}

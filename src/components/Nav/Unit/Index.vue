@@ -24,6 +24,7 @@
         mounted() {
             this.store.search();
             this.store.getProject();
+            this.store.getUnitType();
         }
 
 
@@ -40,11 +41,9 @@
         @Model('isCollapsed', { type: Boolean }) private isCollapsed !: boolean;
 
         rowClassName (row, index) : string {
-
             if(index == 0) {
                 return 'table-header'
             }
-
             return '';
         }
 
@@ -52,21 +51,13 @@
         getMenus() : any {
             if(this.options) return this.options;
             this.options = [
-                { value: '待开工', key: 1 },
-                { value: '开工', key: 2},
-                { value: '停工', key: 3 },
-                { value: '完工', key: 4 }
+                { value: '在场', key: 1 },
+                { value: '离场', key: 2}
             ];
             return this.options;
         }
-        private unitType!:any;
         getType() : any {
-            if(this.unitType) return this.unitType;
-            this.unitType = [
-                { value: '总包', key: 1},
-                { value: '分包', key: 2}
-            ];
-            return this.unitType;
+            return this.store.unitType;
         }
 
         getProjectNameList():any{
@@ -192,7 +183,6 @@
             return this.store.sProjectName;
         }
         set selectProjectName(data:string){
-            debugger
             this.store.selectProjectName(data);
         }
         get selectStatus():number{
@@ -237,11 +227,6 @@
         }
 
 
-
-
-
-
-
         set pageTotal(data:number){
             this.store.setPageTotal(data);
         }
@@ -267,6 +252,10 @@
         }
 
         set status(data:number){
+            if(!data) {
+                this.store.selectStatus(0);
+                return;
+            }
             this.store.setStatus(data);
         }
 

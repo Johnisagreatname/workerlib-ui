@@ -7,7 +7,7 @@
                 span 外部讲师
     .hr
     .button
-        Button(type="primary", ghost, icon="ios-add-circle-outline") 新增讲师
+        Button(type="primary", ghost, icon="ios-add-circle-outline",@click="addLecturer=!addLecturer") 新增讲师
         //Button(type="primary", ghost, icon="ios-log-in") 导入老师
         //Button(type="primary", ghost, icon="ios-log-out") 导出老师
     div(v-for="(item, index) in getLecturer()", :key="index")
@@ -22,10 +22,43 @@
                     a 查看详情
                 p(v-if="item.evaluate == null ") 培训评价: 无
                 p(v-else) 培训评价: {{item.evaluate}}
-                p(v-if="item.type == 0 ") 讲师类型：
+                p(v-if="item.type == 1 ") 讲师类型：
                     span(:style={'color':'#f78d0f'}) 内部
                 p(v-else) 讲师类型：
                     span(:style={'color':'#1597ff'}) 外部
     .footer
        span 共{{getLecturer().length}}条记录
+    Modal(:value="addLecturer",title="新增人员",@on-ok="ok()",@on-cancel="cancel()",width='70%')
+        .addBody
+            .divTwo
+                .name
+                    span 姓名
+                    span(:style={'color': 'red'}) *
+                .input
+                    Input(clearable,style="width: 345px",size=large,v-model="userName")
+            .divTwo
+                .name
+                    span 课程
+                    span(:style={'color': 'red'}) *
+                .input
+                    Input(clearable,style="width: 345px",size=large,v-model="curriculum")
+            .divTwo
+                .name
+                    span 讲师类型
+                    span(:style={'color': 'red'}) *
+                .input
+                    Select(clearable,style="width:345px",v-model="type")
+                        Option(v-for="item in getType()", :value="item.key", :key="item.key") {{item.value}}
+            .divTwo
+                .name 上传照片
+                    span(:style={'color': 'red'}) *
+                .input
+                    Upload(multiple,type="drag",action="//jsonplaceholder.typicode.com/posts/",:style={
+                        'width': '30%',
+                        'margin-top': '3%'
+                    })
+                        div(style="padding: 20px 0")
+                            Icon(type="ios-add" size="52" style="color: #3399ff")
+                            p 点击上传
+
 

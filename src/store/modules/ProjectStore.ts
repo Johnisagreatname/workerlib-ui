@@ -20,8 +20,10 @@ export default class ProjectStore extends VuexModule {
         };
         this.project = [];
         this.projectInfo = {};
+        this.projectType = [];
     }
     public project: Array<ProjectInfo>;
+    public projectType: Array<ProjectType>;
     public pageInfo: PageInfo;
     public projectInfo:ProjectInfo;
 
@@ -97,6 +99,29 @@ export default class ProjectStore extends VuexModule {
     }
 
     @Action
+    public async getProjectType(){
+        debugger;
+        await request.post('/api/workerlib/dictionaries', {
+            "pageInfo" : {},
+            "conditionList": [{
+                "name": "category",
+                "value": "项目状态",
+                "algorithm": "EQ"
+            }],
+            "sortList": [],
+
+            "groupList" : [],
+
+            "keywords" : [],
+            "selectList": []
+        }).then((data)=>{
+            this.successType(data);
+        }).catch((e)=>{
+            MessageUtils.warning(e);
+        });
+    }
+
+    @Action
     public async insertProject() {
         await request.put('/api/workerlib/project', {
                 "project_name":this.projectInfo.project_name,
@@ -133,6 +158,16 @@ export default class ProjectStore extends VuexModule {
         });
     }
 
+    @Mutation
+    public success(data: any) {
+        this.project = data.data;
+    }
+
+    @Mutation
+    public successType(data: any) {
+        this.projectType = data.data;
+    }
+
     @Action
      public added(data: any) {
         if(data.status == 0) {
@@ -150,18 +185,7 @@ export default class ProjectStore extends VuexModule {
         };
     }
 
-    @Mutation
-    public success(data: any) {
 
-        this.project = data.data;
-
-        this.pageInfo = {
-            pageIndex: data.pageInfo.pageIndex,
-            pageSize:  data.pageInfo.pageSize,
-            pageCount: this.pageInfo.pageCount,
-            totalRecords: this.pageInfo.totalRecords
-        };
-    }
     public columns = [
         {
             type: 'selection',
@@ -310,6 +334,10 @@ interface PageInfo {
     pageSize?: number;
     pageCount?:number;
     totalRecords?:number;
+}
+interface ProjectType {
+    value?: string;
+    name?: string;
 }
 
 interface ProjectInfo {

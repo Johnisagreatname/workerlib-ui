@@ -12,7 +12,7 @@
         .divOne
             span 项目状态：
                 Select(clearable,style="width:200px",v-model="selectStatus")
-                    Option(v-for="item in getMenus()", :value="item.value")
+
         .divOne
             Button(@click="search") 搜索
     .hr
@@ -92,7 +92,5 @@
                 .name
                     span 项目状态
                     span(:style={'color': 'red'}) *
-                .input
-                    Select(clearable,style="width:200px", v-model="status")
-                        Option(v-for="item in getMenus()", :value="item.value")
+
 
