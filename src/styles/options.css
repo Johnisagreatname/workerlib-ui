@@ -52,45 +52,26 @@
     margin-left: 20px;
     margin-top: 20px;
 }
-.examinationPaper{
-    width: 30.5%;
-    height: 260px;
-    float: left;
-    margin-left: 2%;
+.bodyTwo{
+    width: 1635px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.footer{
+    height: 50px;
+    width: 100%;
+    float:left;
     margin-top: 20px;
-    background-color: #f8f9fb;
-    border: 2px solid transparent;
-    box-shadow: 3px 3px 3px 1px #d7d7d7;
 }
-.examinationPaper:hover{
-    background-color: #ffffff;
-    border: 2px solid #0090ff;
-    box-shadow: 3px 3px 3px 1px #cce9ff
+
+.footer ul {
+    margin-left: auto;
+    margin-right: auto;
+    width: 500px;
 }
-.divY{
-    width: 50%;
-    float: left;
+.bodyTwo a{
+    color: #000000;
 }
-.divY p{
-    height: 40px;
-    margin-left: 38px;
-    margin-top: 22px;
-    font-size: 18px;
-}
-.divY Button{
-    margin-left: 38px;
-    background-color: #f78803;
-    color:#ffffff;
-}
-.img{
-    width: 200px;
-    height: 200px;
-    margin-left: 5%;
-}
-.ivu-dropdown {
-     margin-left: 80%;
-     display: inline-block;
- }
 .divTwo{
     line-height: 70px;
     width: 80%;
@@ -111,3 +92,12 @@
     float: left;
     margin-left: 2%;
 }
+/*.bodyTwo .ivu-table-wrapper{*/
+    /*overflow: unset !important;*/
+/*}*/
+/*.bodyTwo .ivu-table-wrapper .ivu-table ivu-table-default ivu-table-border{*/
+    /*overflow: unset !important;*/
+/*}*/
+/*.bodyTwo .ivu-table-wrapper .ivu-table ivu-table-default ivu-table-border{*/
+    /*overflow: unset !important;*/
+/*}*/
