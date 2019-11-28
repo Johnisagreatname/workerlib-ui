@@ -40,12 +40,10 @@
             // this.store.getProjectType();
         }
         yes() : any{
-            debugger
             this.store.insertOptions();
             this.addSubject = false;
         }
         ok() : any{
-            debugger
             this.store.insertSubject();
             this.addOptions = false;
         }
@@ -64,7 +62,6 @@
         }
 
         popupAddOption(id) {
-            debugger;
             this.currentId = id;
             this.subject_id = id;
             this.addSubject=!this.addSubject;
@@ -108,7 +105,6 @@
             return this.store.subjectInfo.title;
         }
         set title(data:string){
-            debugger
             this.store.setTitle(data);
         }
         get standard():string{

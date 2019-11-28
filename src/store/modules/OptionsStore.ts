@@ -54,7 +54,6 @@ export default class OptionsStore extends VuexModule {
 
     @Action
     public getParams() : any {
-        debugger
         return {
             "pageInfo" : {
                 "pageIndex": this.pageIndex,
@@ -75,7 +74,6 @@ export default class OptionsStore extends VuexModule {
     }
     @Action
     public async count() {
-        debugger
         await request.post('/api/workerlib/subject/count', await this.getParams()).then((total)=>{
             this.setPageTotal(total.data)
         }).catch((e)=>{
@@ -84,9 +82,7 @@ export default class OptionsStore extends VuexModule {
     }
     @Action
     public async search() {
-        debugger
         await request.post('/api/workerlib/subject',await this.getParams()).then((data)=>{
-            debugger
             this.success(data);
             this.count();
         }).catch((e)=>{
@@ -107,14 +103,12 @@ export default class OptionsStore extends VuexModule {
     }
     @Action
     public added(data: any) {
-        debugger
         if(data.status == 0) {
             this.search();
         }
     }
     @Action
     public async insertSubject() {
-        debugger
         await request.put('/api/workerlib/subject', {
             "title":this.subjectInfo.title,
             "standard":this.subjectInfo.standard,
@@ -146,7 +140,6 @@ export default class OptionsStore extends VuexModule {
 
     @Action
     public async insertOptions() {
-        debugger
         await request.put('/api/workerlib/options', {
             "subject_id":this.optionsInfo.subject_id,
             "value":this.optionsInfo.value,
@@ -226,7 +219,6 @@ export default class OptionsStore extends VuexModule {
     // ];
     @Mutation
     private success(data: any) {
-        debugger
         this.subject = data.data;
     }
     @Mutation
@@ -263,7 +255,6 @@ export default class OptionsStore extends VuexModule {
     }
     @Mutation
     public setValue(data: string){
-        debugger
         this.optionsInfo.value = data;
     }
 
