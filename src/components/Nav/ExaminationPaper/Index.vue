@@ -26,11 +26,21 @@
         constructor() {
             super();
             this.store = getModule(ExaminationPaperStore)
+            this.addExaminationPaper = false;
         }
 
         @Model('isCollapsed', { type: Boolean }) private isCollapsed !: boolean;
+        public addExaminationPaper: boolean;
+        public checked: boolean;
         getPaper() : any{
             return this.store.paper;
+        }
+
+        ok() : any{
+            this.addExaminationPaper = false;
+        }
+        cancel():any {
+            this.addExaminationPaper = false;
         }
     }
 </script>
