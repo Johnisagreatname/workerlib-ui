@@ -18,7 +18,7 @@
     .hr
     .button
         Button(type="primary", ghost, icon="ios-add-circle-outline",@click="addCourseware=!addCourseware") 新建课件
-        Button(type="primary", ghost, icon="ios-arrow-round-down") 下载课件
+        //Button(type="primary", ghost, icon="ios-arrow-round-down") 下载课件
     .courseware(v-for="item in getCourseware()")
         .div1
             span(:style={'font-size': '18px','line-height':'50px','margin-left': '5%','color': '#000000'}) {{item.title}}
@@ -92,8 +92,41 @@
                             .input
                                 Select(clearable,style="width:345px",v-model="type",placeholder="选择分类")
                                     Option(v-for="item in getType()", :value="item.key", :key="item.key") {{item.value}}
-                TabPane(label="资料上传" icon="ios-cloud-upload-outline") 标签二的内容
-                TabPane(label="课件详情" icon="ios-folder-outline") 标签三的内容
+                TabPane(label="资料上传" icon="ios-cloud-upload-outline")
+                    Upload(multiple,type="drag",action="/api/workerlib/upload/archives/photo",:style={
+                        'width': '90%',
+                        'margin-top': '5%',
+                        'margin-right': 'auto',
+                        'margin-left':'auto'
+                    })
+                        div(style="padding: 90px 0")
+                            Icon(type="ios-add" size="52" style="color: #3399ff")
+                            p 点击上传
+                            p （请上传某种格式视频）
+                TabPane(label="课件详情" icon="ios-folder-outline")
+
+                    Upload(multiple,type="drag",action="/api/workerlib/upload/archives/photo",:style={
+                        'width': '60%',
+                        'margin-top': '3%',
+                        'margin-right': 'auto',
+                        'margin-left': 'auto'
+                    })
+                        div(style="padding: 50px 0")
+                            Icon(type="ios-add" size="52" style="color: #3399ff")
+                            p 点击上传
+                            p （请上传某种格式视频）
+                    .divTwo
+                        .name
+                            span 描述
+                            span(:style={'color': 'red'}) *
+                        .input
+                            Input(clearable,style="width: 345px",size=large,placeholder="请输入描述")
+                    .divTwo
+                        .name
+                            span 课程详情
+                            span(:style={'color': 'red'}) *
+                        .input
+                            Input(type="textarea",clearable,style="width: 345px",size=large)
 
 
 
