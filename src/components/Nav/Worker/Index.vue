@@ -26,6 +26,7 @@
         public certificate: boolean;
         private sex: string;
         private options!: any;
+        private optionsGrade!: any;
         private now: Date;
         private year :any;
         private date:any
@@ -40,10 +41,39 @@
         mounted() {
             this.store.search();
             this.store.getProjectType();
+            this.store.selectProject();
         }
+        // success(response, file, fileList){
+        //     debugger
+        // }
         getPeopleList():any{
             return this.store.peoples;
         }
+        selectUnit(){
+            this.store.selectUnit();
+        }
+        getUnitList():any{
+            return this.store.unitList;
+        }
+        getProjectList():any{
+            return this.store.projectList;
+        }
+        getInvolvedProjectList():any{
+            return this.store.involvedProjectInfo;
+        }
+
+        getDateFormat (d: number) : string {
+            let date = new Date(d);
+            return date.getFullYear() + "-" + (date.getMonth()+1) + "-" + date.getDate();
+        }
+
+        viewData(id) {
+            this.particulars=!this.particulars;
+            this.store.setInfoId(id);
+            this.store.searchInfo();
+            this.store.searchInvolvedProject();
+        }
+
         getMenus() : any {
             if(this.options) return this.options;
             this.options = [
@@ -53,6 +83,7 @@
             ];
             return this.options;
         }
+
         handleCreate (type) {
             this.getType().push({
                 value: type,
@@ -64,6 +95,7 @@
         }
         //获取性别
         checkSex(idNumber): boolean {
+            if(!idNumber) return;
             this.sex = idNumber.substring(16,17);
             if(this.sex=="1"||this.sex=="3"||this.sex=="5"||this.sex=="7"||this.sex=="9"){
                  return true;
@@ -73,6 +105,7 @@
         }
         //获取年龄
         getAge(idNumber): number{
+            if(!idNumber) return;
             this.now = new Date();
             this.year = this.now.getTime();
             this.date = new Date(idNumber.substring(6,10)+","+idNumber.substring(10,12)+","+idNumber.substring(12,14)).getTime();
@@ -80,6 +113,7 @@
         }
 
         ok() : any{
+            this.store.insertArchives();
             this.addWorker = false;
         }
         cancel():any {
@@ -116,6 +150,22 @@
             this.store.search();
         }
 
+        onInPageSizeChange(pageSize){
+            this.store.setInPageIndex(pageSize);
+            this.store.setInPageIndex(1);
+            this.onInPageIndexChange(1);
+        }
+        onInPageIndexChange(pageIndex){
+            this.store.setInPageIndex(pageIndex);
+            this.store.searchInvolvedProject();
+        }
+
+        set infoId(data:number){
+            this.store.setInfoId(data);
+        }
+        get infoId():number{
+            return this.store.infoId;
+        }
         set userName(data:string){
             this.store.setUserName(data);
         }
@@ -151,6 +201,18 @@
             return this.store.project;
         }
 
+        set projectId(data:number){
+            this.store.setProjectId(data);
+        }
+        get projectId():number{
+            return this.store.projectId;
+        }
+        set unitId(data:number){
+            this.store.setUnitId(data);
+        }
+        get unitId():number{
+            return this.store.unitId;
+        }
         set unit(data:string){
             this.store.setUnit(data);
         }
@@ -165,11 +227,32 @@
             return this.store.animal;
         }
 
+        set startTime(data:Date){
+            this.store.setStartTime(data);
+        }
+        get startTime():Date{
+            return this.store.startTime;
+        }
+
+        set endTime(data:string){
+            this.store.setEndTime(data);
+        }
+        get endTime():string{
+            return this.store.endTime;
+        }
+
         set pageTotal(data:number){
             this.store.setPageToatl(data);
         }
         get pageTotal():number{
             return this.store.pageTotal;
+        }
+
+        set inPageTotal(data:number){
+            this.store.setInPageTotal(data);
+        }
+        get inPageTotal():number{
+            return this.store.inPageTotal;
         }
 
         set selectProjectName(data:string){
@@ -202,8 +285,40 @@
         get selectStatus():number{
             return this.store.selectStatus;
         }
+        set photo(data:string){
+            this.store.setPhoto(data);
+        }
+        get photo():string{
+            return this.store.photo;
+        }
 
+        set idCardfront(data:string){
+            this.store.setIdCardfront(data);
+        }
+        get idCardfront():string{
+            return this.store.idCardfront;
+        }
 
+        set idCardReverse(data:string){
+            this.store.setIdCardReverse(data);
+        }
+        get idCardReverse():string{
+            return this.store.idCardReverse;
+        }
+
+        set certificates(data:string){
+            this.store.setCertificate(data);
+        }
+        get certificates():string{
+            return this.store.certificate;
+        }
+
+        set grade(data:string){
+            this.store.setGrade(data);
+        }
+        get grade():string{
+            return this.store.grade;
+        }
 }
 </script>
 <style scoped src="@/styles/worker.css" />

@@ -146,7 +146,7 @@
 
              grid: {
                  left: '1%',
-                 right: '12%',
+                 right: '10%',
                  top:'10%',
                  bottom: '5%',
                  containLabel: true
