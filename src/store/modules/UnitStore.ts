@@ -364,7 +364,6 @@ export default class UnitStore extends VuexModule {
 
     @Action
     public added(data: any) {
-        debugger
         if(data.status == 0) {
             this.search();
         }
