@@ -39,7 +39,11 @@ var webpackConfig = merge(baseWebpackConfig, {
             'alias' : '../../components',
             'routerDir' : 'src/router',
             'language' : 'typescript',
-            'mode' : 'hash'
+            'mode' : 'hash',
+            'redirect': [{
+                redirect: '/login',
+                path: '/'
+            }]
         }),
         // https://github.com/glenjamin/webpack-hot-middleware#installation--usage
         new webpack.HotModuleReplacementPlugin(),
