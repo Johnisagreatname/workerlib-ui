@@ -41,7 +41,7 @@ var webpackConfig = merge(baseWebpackConfig, {
             'language' : 'typescript',
             'mode' : 'hash',
             'redirect': [{
-                redirect: '/login',
+                redirect: '/nav/home',
                 path: '/'
             }]
         }),
