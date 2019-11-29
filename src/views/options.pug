@@ -1,0 +1,83 @@
+.body
+    .topOne
+        .divOne
+            span 题目名称：
+                Input(clearable,style="width: 260px",v-model="title")
+        .divOne
+            span 题目类型：
+                Select(clearable,style="width:260px")
+                    Option(v-for="item in getType()", :value="item.value", :key="item.key")
+        .divOne
+            span 所属项目：
+                Select(clearable,style="width:260px")
+                    Option(v-for="item in getProject()", :value="item.value", :key="item.key")
+        .divOne
+            Button 搜索
+    .hr
+    .button
+        Button(type="primary", ghost, icon="ios-add-circle-outline" @click="addOptions=!addOptions") 新增
+        Button(type="primary", ghost, icon="ios-remove-circle-outline" @click="addSubject=!addSubject") 删除
+    .hr
+    .bodyTwo
+        //Table(:row-class-name="rowClassName", border, ref="selection", :columns="getColumns()", :data="getData()")
+        template
+            Table(border,:columns="getColumns()", :data="getData()")
+                template(slot-scope="{row, index }",slot="operation")
+                    Dropdown(trigger="click")
+                        a(href="javascript:void(0)" :style={"font-size": "16px"})
+                            span 详细操作
+                            Icon(type="md-arrow-dropdown" )
+                        DropdownMenu(slot="list")
+                            DropdownItem
+                                Icon(type="ios-add-circle-outline")
+                                span( @click="popupAddOption(row.id)") 新增答题选项
+                            DropdownItem
+                                Icon(type="ios-contact-outline")
+                                span 题目详情
+                            DropdownItem
+                                Icon(type="ios-contact-outline")
+                                span 删除
+    .footer
+        Page(:total="5", size="small" ,show-elevator,show-sizer,show-total)
+    Modal(:value="addOptions",title="题目上传",@on-ok="ok()",@on-cancel="cancel()",width='70%')
+        template
+            Tabs
+                TabPane(label="题目基本信息" icon="ios-paper-outline")
+                    .addBody
+                        .divTwo
+                            .name
+                                span 题目类型
+                                span(:style={'color': 'red'}) *
+                            .input
+                                Input(clearable,style="width: 345px",size=large,v-model="type",placeholder="请输入题目名称")
+
+                        .divTwo
+                            .name
+                                span 题目名称
+                                span(:style={'color': 'red'}) *
+                            .input
+                                Input(clearable,style="width: 345px",size=large,v-model="title",placeholder="请输入题目名称")
+                        .divTwo
+                            .name
+                                span 标准答案
+                                span(:style={'color': 'red'}) *
+                            .input
+                                Input(clearable,style="width: 345px",size=large,v-model="standard",placeholder="请输入标准答案")
+
+                        .divTwo
+                            .name
+                                span 题目分数
+                                span(:style={'color': 'red'}) *
+                            .input
+                                Input(clearable,style="width: 345px",size=large,v-model="score",placeholder="请输入题目分数")
+    Modal(:value="addSubject",title="答案上传",@on-ok="yes()",@on-cancel="cancel()",width='70%')
+        template
+            Tabs
+                TabPane(label="题目基本信息" icon="ios-paper-outline")
+                    .addBody
+                        .divTwo
+                            .name
+                                span 题目答题选项
+                                span(:style={'color': 'red'}) *
+                            .input
+                                Input(clearable,style="width: 345px",size=large,v-model="value",placeholder="请输入题目答案选项")

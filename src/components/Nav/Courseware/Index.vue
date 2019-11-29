@@ -52,7 +52,16 @@
             }
           //  this.store.search();
         }
+        private options!: any;
+        getType() : any {
+            if(this.options) return this.options;
+            this.options = [
+                {value: '类型1', key: 1 },
+                {value: '类型2', key: 2 }
 
+            ];
+            return this.options;
+        }
     }
 </script>
 <style scoped src="@/styles/courseware.css" />

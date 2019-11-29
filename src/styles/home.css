@@ -317,19 +317,21 @@
     margin-right: auto;
 }
 .qLeft{
-    width:260px;
-    height: 260px;
+    width: 200px;
+    height: 200px;
+    margin-top: 25px;
     background-image: url('~@/assets/css/images/circle.png');
     background-repeat: no-repeat;
     background-position-x: center;
     background-size: 100% 100%;
     float: left;
+    margin-left: 5%;
 }
 .qRight{
-    float: left;
-    width:120px;
+    float: right;
+    width: 100px;
     margin-top: 5%;
-    margin-left: 1%;
+    margin-right: 5%;
 }
 
 

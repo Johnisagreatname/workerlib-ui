@@ -153,7 +153,7 @@ export default class UnitStore extends VuexModule {
     public pageIndex: number;
     public pageSize: number;
     public pageTotal:number;
-
+    public unitType: Array<UnitType>;
 
 
     constructor(e) {
@@ -162,6 +162,8 @@ export default class UnitStore extends VuexModule {
         this.pageIndex= 1;
         this.pageSize=10;
         this.pageTotal = 0;
+        this.unitType = [];
+
         //获取工程列表数据
         this.unit = [];
         //获取项目列表
@@ -187,7 +189,6 @@ export default class UnitStore extends VuexModule {
 
     @Action
     public getParams() : any {
-        debugger
         return {
             "joinTables": [{
                 "tablename": "project",
@@ -219,7 +220,7 @@ export default class UnitStore extends VuexModule {
                 "algorithm": "LIKE"
             },{
                 "name": "u.status",
-                "value": this.sStatus,
+                "value": !this.sStatus ? null : this.sStatus,
                 "algorithm": "EQ"
             }],
 
@@ -272,7 +273,6 @@ export default class UnitStore extends VuexModule {
 
     @Action
     public async search() {
-        debugger
         await request.post('/api/workerlib/join',await this.getParams()).then((data)=>{
             this.success(data);
             this.count();
@@ -297,7 +297,6 @@ export default class UnitStore extends VuexModule {
 
     @Action
     public async insertUnit() {
-        debugger
         await request.put('/api/workerlib/unit', {
             "project_id":this.project_id,
             "project_license":this.project_license,
@@ -330,13 +329,30 @@ export default class UnitStore extends VuexModule {
             alert.warning(e.message || e)
         });
     }
+
     @Action
-    public added(data: any) {
-        debugger
-        if(data.status == 0) {
-            this.search();
-        }
+    public async getUnitType(){
+        debugger;
+        await request.post('/api/workerlib/dictionaries', {
+            "pageInfo" : {},
+            "conditionList": [{
+                "name": "category",
+                "value": "单位类型",
+                "algorithm": "EQ"
+            }],
+            "sortList": [],
+
+            "groupList" : [],
+
+            "keywords" : [],
+            "selectList": []
+        }).then((data)=>{
+            this.successType(data);
+        }).catch((e)=>{
+            MessageUtils.warning(e);
+        });
     }
+
     @Action
     public async count() {
         await request.post('/api/workerlib/unit/count', await this.getParams()).then((total)=>{
@@ -346,16 +362,28 @@ export default class UnitStore extends VuexModule {
         });
     }
 
+    @Action
+    public added(data: any) {
+        if(data.status == 0) {
+            this.search();
+        }
+    }
 
+    @Mutation
+    public successType(data: any) {
+        this.unitType = data.data;
+    }
 
     @Mutation
     private success(data: any) {
         this.unit = data.data;
     }
+
     @Mutation
     private successProject(data:any){
         this.projectNameList = data.data;
     }
+
     public columns = [
         {
             type: 'selection',
@@ -410,5 +438,9 @@ export default class UnitStore extends VuexModule {
 
 
 
+}
+interface UnitType {
+    value?: string;
+    name?: string;
 }
 

@@ -21,13 +21,17 @@
         }
     })
     export default class Comments extends Vue {
-
+        vaueCustomText=5;
+        vaueCustom=1;
+        custom = 5;
         private store: any;
         public addCommtent: boolean;
+        public commtentcInfo: boolean;
         constructor() {
             super();
             this.store = getModule(CommentsStore)
             this.addCommtent = false;
+            this.commtentcInfo = false;
 
         }
 
@@ -62,6 +66,12 @@
         }
         cancel():any {
             this.addCommtent = false;
+        }
+        okInfo() : any{
+            this.commtentcInfo = false;
+        }
+        cancelInfo():any {
+            this.commtentcInfo = false;
         }
 
     }

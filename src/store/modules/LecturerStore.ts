@@ -13,12 +13,12 @@ import {Message} from "iview";
 export default class LecturerStore extends VuexModule {
     public lecturers: Array<LecturerInfo>;
     public lecturerInfo:LecturerInfo;
+    public selectType:number;
     constructor(e) {
         super(e)
+        this.lecturerInfo = {};
         this.lecturers = [];
-        this.lecturerInfo={
-            type:0
-        };
+        this.selectType = 1;
     }
 
     @Action
@@ -27,7 +27,7 @@ export default class LecturerStore extends VuexModule {
             "pageInfo" : {},
             "conditionList":[{
                 "name": "type",
-                "value": this.lecturerInfo.type,
+                "value": this.selectType,
                 "algorithm": "EQ"
             }],
             "sortList": [],
@@ -56,14 +56,62 @@ export default class LecturerStore extends VuexModule {
             alert.warning(e.message || e)
         });
     }
+    @Action
+    public async insertLecturer() {
+        await request.put('/api/workerlib/lecturer', {
+            "name":this.lecturerInfo.name,
+            "curriculum":this.lecturerInfo.curriculum,
+            "type":this.lecturerInfo.type
+        }).then((data)=>{
+            this.added(data)
+        }).catch((e)=>{
+            console.log(e)
+            let alert: any = Message;
+            if(!e) {
+                alert.warning('未知错误！');
+                return;
+            }
 
+            if(e.response && e.response.data && e.response.data.message) {
+                alert.warning(e.response.data.message)
+                return
+            }
+
+            if(!e.message) {
+                return;
+            }
+
+            alert.warning(e.message || e)
+        });
+    }
     @Mutation
     private success(data: any) {
         this.lecturers = data.data;
     }
+    @Action
+    public added(data: any) {
+        if(data.status == 0) {
+            this.search();
+
+        }
+    }
+
     @Mutation
-    private type(data: number) {
-        this.lecturerInfo.type = data;
+    private setSelectType(data: number) {
+        this.selectType = data;
+    }
+
+    @Mutation
+    public setType(data:number){
+        this.lecturerInfo.type=data;
+    }
+    @Mutation
+    public setCurriculum(data:string){
+        this.lecturerInfo.curriculum=data;
+    }
+    @Mutation
+    public setName(data:string){
+        this.lecturerInfo.name=data;
     }
 }
 

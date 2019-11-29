@@ -91,3 +91,23 @@
      margin-left: 80%;
      display: inline-block;
  }
+.divTwo{
+    line-height: 70px;
+    width: 80%;
+    height: 65px;
+    margin-left: 20%;
+    float: left;
+}
+.divTwo span{
+    font-size: 18px;
+}
+.name{
+    width: 22%;
+    float: left;
+    text-align: right;
+}
+.input{
+    width: 75%;
+    float: left;
+    margin-left: 2%;
+}
