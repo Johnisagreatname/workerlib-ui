@@ -44,5 +44,7 @@
         }
     }
 </script>
-<style scoped src="@/styles/examinationPaper.css" />
-<template lang="pug" src="@/views/examinationPaper.pug" />
+<!--<style scoped src="@/styles/examinationPaper.css" />-->
+<!--<template lang="pug" src="@/views/examinationPaper.pug" />-->
+<style scoped src="@/styles/waitting.css" />
+<template lang="pug" src="@/views/waitting.pug" />
