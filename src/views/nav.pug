@@ -30,18 +30,9 @@
                     MenuItem(name="/nav/courseWare")
                         span 课件管理
                     MenuItem(name="/nav/examinationPaper")
-                        span 试卷管理
+                        span 考试管理
                     MenuItem(name="/nav/cultivate")
-                        span 培训记录
-                    //Submenu(name="线下")
-                    //    template( slot="title")
-                    //        span 线下
-                    //    MenuItem(name="/nav/offlineCourseWare")
-                    //        span 课件管理
-                    //    MenuItem(name="/nav/lecturer")
-                    //        span 讲师档案
-                    //    MenuItem(name="/nav/offlineCultivate")
-                    //        span 培训记录
+                        span 课程管理
 
                 MenuItem(name="/nav/checkEvaluate")
                     Icon(type="md-checkbox")
@@ -59,8 +50,8 @@
                         span 帐号
                     MenuItem(name="/nav/workclass")
                         span 工种
-                    MenuItem(name="/nav/options")
-                        span 题库
+                    //MenuItem(name="/nav/options")
+                    //    span 题库
         Layout
             Content
                 .headers(v-if="title!='首页'")

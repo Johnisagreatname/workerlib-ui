@@ -26,7 +26,7 @@
    .button
       Button(type="primary", ghost,@click="addWorker=!addWorker",icon="ios-add-circle-outline") 新增
       Button(type="primary", ghost, icon="ios-contact-outline") 离职
-      Button(type="primary", ghost, icon="ios-log-in") 导入
+      Button(type="primary", ghost, icon="ios-log-in") 同步工人
       Button(type="primary", ghost, icon="ios-log-out") 导出
 
    div(v-for="(item, index) in getPeopleList()", :key="index",@click="onCheck(item.id)", :class="item.checked ? 'people-selected' : 'people'")
