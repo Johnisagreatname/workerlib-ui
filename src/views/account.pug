@@ -1,26 +1,17 @@
 .body
     .topOne
         .divOne
-            span 选择公司：
+            span 用户名：
                 Input(v-model="selectOrganization",clearable,style="width: 200px")
         .divOne
-            span 选择地区：
+            span 角色：
                 Input(v-model="selectProjectAddress",clearable,style="width: 200px")
-        .divOne
-            span 项目名称：
-                Input(v-model="selectProjectName",clearable,style="width: 200px")
-        .divOne
-            span 项目状态：
-                Select(clearable,style="width:200px",v-model="selectStatus")
 
         .divOne
             Button(@click="search") 搜索
     .hr
     .button
-        Button(type="primary", ghost, icon="ios-add-circle-outline",@click="addProject=!addProject") 新增项目
-        Button(type="primary", ghost, icon="ios-log-in") 导入项目
-        Button(type="primary", ghost, icon="ios-log-out") 导出信息
-
+        Button(type="primary", ghost, icon="ios-add-circle-outline",@click="addProject=!addProject") 新增用户
     .bodyTwo
         Table(:row-class-name="rowClassName", border, ref="selection", :columns="getColumns()", :data="getData()")
     .footer
@@ -30,19 +21,19 @@
         .addBody
             .divTwo
                 .name
-                    span 项目名称
+                    span 用户名
                     span(:style={'color': 'red'}) *
                 .input
-                    Input(clearable,style="width: 345px",size=large,v-model="projectName")
+                    Input(clearable,style="width: 345px",size=large,v-model="username",placeholder="用户名用于登入")
             .divTwo
                 .name
-                    span 项目简介
+                    span 密码
                     span(:style={'color': 'red'}) *
                 .input
-                    Input(type="textarea",clearable,style="width: 345px",size=large,v-model="projectBrief")
+                    Input(type="textarea",clearable,style="width: 345px",size=large,v-model="password",placeholder="请输入密码")
             .divTwo
                 .name
-                    span 施工许可证
+                    span 用户权限
                     span(:style={'color': 'red'}) *
                 .input
                     Input(clearable,style="width: 345px",size=large,v-model="builderLicense")
