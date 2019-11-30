@@ -23,6 +23,7 @@
     export default class Options extends Vue {
         public addOptions: boolean;
         public addSubject: boolean;
+        public selectSubject: boolean;
         public checked: boolean;
         private store: any;
         private currentId: number;
@@ -31,6 +32,7 @@
             super();
             this.addOptions = false;
             this.addSubject = false;
+            this.selectSubject = false;
             this.checked = true;
             this.store = getModule(OptionsStore);
             this.currentId = 0;
@@ -67,6 +69,16 @@
             this.addSubject=!this.addSubject;
         }
 
+        popupDelOptions(id) {
+            debugger
+            this.id=id;
+            this.subject_id = id;
+            this.store.selectOptions();
+        }
+        popupSelectOptions(id) {
+            this.selectSubject=!this.selectSubject;
+        }
+
         private options!: any;
         private types!: any;
         private project!: any;
@@ -92,9 +104,16 @@
         getColumns() : any{
             return this.store.columns;
         }
+        getValueColumns() : any{
+            return this.store.valueColumns;
+        }
         getData() : any{
             return this.store.subject;
         }
+        getValue() : any{
+            return this.store.value;
+        }
+
         get id(): number{
             return this.store.subjectInfo.id;
         }
