@@ -20,7 +20,7 @@
     background-color: #f68903;
 }
 #app .ivu-layout-sider-trigger {
-    position: fixed;
+    position: absolute;
     bottom: 0;
     text-align: center;
     cursor: pointer;

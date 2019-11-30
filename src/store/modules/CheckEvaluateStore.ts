@@ -171,6 +171,14 @@ export default class CheckEvaluateStore extends VuexModule {
     public setPageTotal(data: number) {
         this.pageTotal = data;
     }
+    @Mutation
+    public setPageIndex(data: number) {
+        this.pageIndex = data;
+    }
+    @Mutation
+    public setPageSize(data: number) {
+        this.pageSize = data;
+    }
    /* @Action
     public async insertRate() {
         await request.put('/api/workerlib/archives', {

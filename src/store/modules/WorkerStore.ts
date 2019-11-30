@@ -12,7 +12,7 @@ import MessageUtils from "../../common/MessageUtils";
     store,
 })
 export default class WorkerStore extends VuexModule {
-
+    public checkeds:any;
     public peoples: any;
     public pageIndex: number;
     public pageSize: number;
@@ -37,6 +37,7 @@ export default class WorkerStore extends VuexModule {
     public idCardReverse:string;
     public certificate:string;
     public grade:string;
+    public archivesId:number;
 
 
     public selectProjectName:string;
@@ -63,7 +64,7 @@ export default class WorkerStore extends VuexModule {
         this.inPageSize= 1;
         this.inPageTotal = 0;
 
-
+        this.checkeds = [];
         this.peoples = [];
         this.projectType = [];
         this.card = "";
@@ -75,6 +76,7 @@ export default class WorkerStore extends VuexModule {
         this.projectId = null;
         this.unitId = null;
         this.unit = null;
+        this.archivesId = null;
 
         this.startTime = null;
         this.endTime = null;
@@ -96,7 +98,8 @@ export default class WorkerStore extends VuexModule {
     }
     @Action
     public getParams() : any {
-        return {
+
+        let params: any =  {
 
             "pageInfo" : {
                 "pageIndex": this.pageIndex,
@@ -135,6 +138,7 @@ export default class WorkerStore extends VuexModule {
 
             "selectList": []
         };
+        // params.conditionList[0].value = new Array();
     }
     @Action
     public getInParams() : any {
@@ -355,7 +359,6 @@ export default class WorkerStore extends VuexModule {
 
     @Action
     public async selectUnit() {
-        debugger;
         await request.post('/api/workerlib/unit',{
             "pageInfo" : {},
 
@@ -395,6 +398,7 @@ export default class WorkerStore extends VuexModule {
 // this.entrance_time.getFullYear() + "-" + this.entrance_time.getMonth() + "-" + this.entrance_time.getDate(),@Action
     @Action
     public async insertArchives() {
+        debugger;
         await request.put('/api/workerlib/archives', {
             "name":this.userName,
             "phone":this.phone,
@@ -433,7 +437,45 @@ export default class WorkerStore extends VuexModule {
     }
 
     @Action
+    public async insertInvolvedProject() {
+        await request.put('/api/workerlib/involvedproject', {
+            "archives_id":this.archivesId,
+            "project_id":this.projectId,
+            "unit_id":this.unitId,
+            "start_time":this.startTime.getFullYear() + "-" + this.startTime.getMonth() + "-" + this.startTime.getDate(),
+            "end_time":this.endTime.getFullYear() + "-" + this.endTime.getMonth() + "-" + this.endTime.getDate()
+        }).then((data)=>{
+            this.addIn(data)
+        }).catch((e)=>{
+            console.log(e)
+            let alert: any = Message;
+            if(!e) {
+                alert.warning('未知错误！');
+                return;
+            }
+
+            if(e.response && e.response.data && e.response.data.message) {
+                alert.warning(e.response.data.message)
+                return
+            }
+
+            if(!e.message) {
+                return;
+            }
+
+            alert.warning(e.message || e)
+        });
+    }
+
+    @Action
     public added(data: any) {
+        if(data.status == 0) {
+            this.setArchivesId(data.data);
+            this.insertInvolvedProject();
+        }
+    }
+    @Action
+    public addIn(data: any) {
         if(data.status == 0) {
             this.search();
         }
@@ -463,6 +505,10 @@ export default class WorkerStore extends VuexModule {
     private successUnitList(data: any) {
         this.unitList = data.data;
     }
+    @Mutation
+    public setArchivesId(data: number) {
+        this.archivesId = data;
+    }
 
     @Mutation
     public setPhoto(data: string) {
@@ -482,9 +528,7 @@ export default class WorkerStore extends VuexModule {
     }
     @Mutation
     public setGrade(data: string) {
-        debugger
         this.grade = data;
-        debugger
     }
     @Mutation
     public setStartTime(data: Date) {
@@ -592,13 +636,13 @@ export default class WorkerStore extends VuexModule {
 
     @Mutation
     onCheck(id: number) {
-        let data = this.peoples;
-        this.peoples = [];
-        if(data.filter(a=>a.id == id).length > 0) {
-            let currentVal = data.filter(a=>a.id == id)[0].checked;
-            data.filter(a=>a.id == id)[0].checked = !currentVal;
-            this.peoples = data;
-        }
+        // let data = this.peoples;
+        // this.peoples = [];
+        // if(data.filter(a=>a.id == id).length > 0) {
+        //     let currentVal = data.filter(a=>a.id == id)[0].checked;
+        //     data.filter(a=>a.id == id)[0].checked = !currentVal;
+        //     this.peoples = data;
+        // }
     }
 }
 interface ProjectType {

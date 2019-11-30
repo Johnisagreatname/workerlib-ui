@@ -29,7 +29,6 @@ export default class ProjectStore extends VuexModule {
 
     @Action
     public getParams() : any {
-        debugger
         return {
             "pageInfo" : {
                 "pageIndex": this.pageInfo.pageIndex,
@@ -100,7 +99,6 @@ export default class ProjectStore extends VuexModule {
 
     @Action
     public async getProjectType(){
-        debugger;
         await request.post('/api/workerlib/dictionaries', {
             "pageInfo" : {},
             "conditionList": [{

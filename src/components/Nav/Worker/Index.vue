@@ -3,6 +3,7 @@
     import WorkerStore from '../../../store/modules/WorkerStore';
     import { Component, Vue, Prop, Model, Watch} from 'vue-property-decorator';
     import { getModule } from 'vuex-module-decorators';
+    import { Message } from 'iview';
 
     @Component({
         components:{
@@ -20,22 +21,26 @@
     })
     export default class Worker extends Vue {
         @Model('isCollapsed', { type: Boolean }) private isCollapsed !: boolean;
+        loading = true;
         private store: any;
         public addWorker: boolean;
         public particulars: boolean;
+        public onLeave: boolean;
         public certificate: boolean;
+        private checkeds: Array<any>;
         private sex: string;
         private options!: any;
-        private optionsGrade!: any;
         private now: Date;
         private year :any;
-        private date:any
+        private date:any;
         constructor() {
             super();
             this.store = getModule(WorkerStore)
             this.addWorker = false;
             this.particulars = false;
             this.certificate = false;
+            this.checkeds = new Array();
+            this.onLeave = false;
         }
 
         mounted() {
@@ -43,9 +48,24 @@
             this.store.getProjectType();
             this.store.selectProject();
         }
-        // success(response, file, fileList){
-        //     debugger
-        // }
+        handleSuccessPhoto (res, file) {
+            this.store.setPhoto(res.file);
+        }
+        handleFormatError (file) {
+            let alert: any = Message;
+            alert.warning(file.name + ' 文件格式错误！请上传jpg、jpeg、png格式文件！');
+        }
+        handleSuccessIdCardfront (res, file) {
+            this.store.setIdCardfront(res.file);
+        }
+
+        handleSuccessIdCardReverse (res, file) {
+            this.store. setIdCardReverse(res.file);
+        }
+
+        handleSuccessCertificate (res, file) {
+            this.store. setCertificate(res.file);
+        }
         getPeopleList():any{
             return this.store.peoples;
         }
@@ -73,6 +93,10 @@
             this.store.searchInfo();
             this.store.searchInvolvedProject();
         }
+        checkLeave() {
+            this.onLeave=!this.onLeave;
+
+        }
 
         getMenus() : any {
             if(this.options) return this.options;
@@ -81,6 +105,7 @@
                 {value: '离职', key: 2 }
 
             ];
+
             return this.options;
         }
 
@@ -111,8 +136,22 @@
             this.date = new Date(idNumber.substring(6,10)+","+idNumber.substring(10,12)+","+idNumber.substring(12,14)).getTime();
             return Math.floor((this.year-this.date)/(1000*60*60*24*31*12));
         }
-
+        messageWarningFn (text) {
+            let alert: any = Message;
+            alert.warning(text);
+            setTimeout(() => {
+                this.loading = false;
+                this.$nextTick(() => {
+                    this.loading = true;
+                })
+            }, 500)
+        }
         ok() : any{
+            // if(this.store.userName == "" || this.store.userName == null ){
+            //     debugger
+            //     this.messageWarningFn('请输入名称');
+            //     return;
+            // }
             this.store.insertArchives();
             this.addWorker = false;
         }
@@ -137,8 +176,26 @@
            this.certificate = false;
            this.particulars = true;
         }
-        onCheck(id: number): void{
-            this.store.onCheck(id);
+
+        onCheck(id: number,name:string): void {
+            var item = {};
+            if(this.checkeds.findIndex(x => x.id === id) > -1) {
+                let index = this.checkeds.findIndex(x => x.id === id);
+                this.checkeds.splice(index, 1);
+                debugger
+                return;
+            }
+            item['id'] = id;
+            item['name'] = name;
+            this.checkeds.push(item);
+        }
+
+        isChecked(id): boolean {
+            if(this.checkeds.find(x => x.id === id)){
+                return true;
+            }
+
+            return false;
         }
         onPageSizeChange(pageSize){
             this.store.setPageSize(pageSize);

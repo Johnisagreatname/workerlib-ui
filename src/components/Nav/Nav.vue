@@ -69,6 +69,7 @@
                 { name: '设置', icon: 'md-settings', second: [
                         {secondName:'账号', path: '/nav/account', text: '账号管理'},
                         {secondName:'工种', path: '/nav/workclass', text: '工种管理'},
+                        {secondName:'题库', path: '/nav/options', text: '题库管理'}
                     ] }
             ];
             return this.menus;

@@ -41,8 +41,8 @@
         getMenus() : any {
             if(this.options) return this.options;
             this.options = [
-                { value: '离线', key: '0' },
-                { value: '在线', key: '1' }
+                { value: '离线', key: 0 },
+                { value: '在线', key: 1 }
             ];
             return this.options;
         }
@@ -51,8 +51,8 @@
         getCommentType() : any {
             if(this.commentType) return this.commentType;
             this.commentType = [
-                { value: '永久不予录入', key: '0' },
-                { value: '其他', key: '1' }
+                { value: '永久不予录入', key: 0 },
+                { value: '其他', key: 1 }
             ];
             return this.commentType;
         }

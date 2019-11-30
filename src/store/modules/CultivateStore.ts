@@ -22,11 +22,6 @@ export default class CultivateStore extends VuexModule {
             sortable: true
         },
         {
-            title: '培训项目',
-            key: 'project',
-            sortable: true
-        },
-        {
             title: '开始培训时间',
             key: 'time',
             sortable: true
@@ -61,7 +56,6 @@ export default class CultivateStore extends VuexModule {
     public data = [
         {
             course: '岗前通用安全教育培训',
-            project: '科创中心项目',
             time: '2019-01-01',
             people: '10',
             state: '待学习',
@@ -70,7 +64,6 @@ export default class CultivateStore extends VuexModule {
         },
         {
             course: '钢筋工岗前知识培训',
-            project: '科创中心项目',
             time: '2019-01-01',
             people: '12',
             state: '学习中',
@@ -79,7 +72,6 @@ export default class CultivateStore extends VuexModule {
         },
         {
             course: '电焊工岗前知识培训',
-            project: '科创中心项目',
             time: '2019-01-01',
             people: '15',
             state: '学习中',
@@ -88,7 +80,6 @@ export default class CultivateStore extends VuexModule {
         },
         {
             course: '水泥工岗前知识培训',
-            project: '科创中心项目',
             time: '2019-01-01',
             people: '8',
             state: '学习完成',

@@ -25,11 +25,11 @@
    .hr
    .button
       Button(type="primary", ghost,@click="addWorker=!addWorker",icon="ios-add-circle-outline") 新增
-      Button(type="primary", ghost, icon="ios-contact-outline") 离职
+      Button(type="primary", ghost, icon="ios-contact-outline",@click="checkLeave()") 离职
       Button(type="primary", ghost, icon="ios-log-in") 导入
       Button(type="primary", ghost, icon="ios-log-out") 导出
 
-   div(v-for="(item, index) in getPeopleList()", :key="index",@click="onCheck(item.id)", :class="item.checked ? 'people-selected' : 'people'")
+   div(v-for="(item, index) in getPeopleList()", :key="index",@click="onCheck(item.id,item.name)", :class="isChecked(item.id) ? 'people-selected' : 'people'")
       .headPhotos
          .circle
             img(:src="'/api/workerlib/preview/archives/photo/'+item.id",:style={'width':'100%','height':'100%',
@@ -47,7 +47,7 @@
             span {{getAge(item.id_number)}}岁
          Button(type="primary", ghost,@click="viewData(item.id)")
       .photos
-         div(:class="item.checked ? 'pop' : 'pTop'")
+         div(:class="isChecked(item.id) ? 'pop' : 'pTop'")
          .pButtom
       .y2
          p 手机号码
@@ -61,9 +61,10 @@
          p(v-if="item.state=1") 在职
          p(v-if="item.state=0") 离职
    .footer
-      Page(:total="pageTotal",show-sizer,show-elevator,show-total,@on-page-size-change="onPageSizeChange",@on-change="onPageIndexChange")
+      Page(:total="pageTotal",show-sizer,show-elevator,show-total,
+      @on-page-size-change="onPageSizeChange",@on-change="onPageIndexChange")
 
-   Modal(:value="addWorker",title="新增人员",@on-ok="ok()",@on-cancel="cancel()",width='70%')
+   Modal(:value="addWorker",title="新增人员",@on-ok="ok()",@on-cancel="cancel()",width='70%',:loading="loading")
       .addBody
          .left
             h2(:style={'text-ag': '18px', 'text-align': 'center'}) 基本信息
@@ -139,7 +140,8 @@
                .boxLeft
                   span 上传头像：
                .boxRight
-                  Upload(multiple,type="drag",action="/api/workerlib/upload/archives/photo",:style={
+                  Upload(multiple,type="drag",action="/api/workerlib/upload/archives/photo",
+                     :on-success="handleSuccessPhoto",:format="['jpg','jpeg','png']",:on-format-error="handleFormatError",:style={
                       'width': '30%',
                       'margin-top': '10%'
                   })
@@ -150,7 +152,8 @@
                .boxLeft
                   span 上传身份证：
                .boxRight
-                  Upload(multiple,type="drag",action="/api/upload/archives/front",:style={
+                  Upload(multiple,type="drag",action="/api/workerlib/upload/archives/id_card_front",
+                  :on-success="handleSuccessIdCardfront",:format="['jpg','jpeg','png']",:on-format-error="handleFormatError",:style={
                      'width': '179px',
                      'height': '120px',
                      'float': 'left',
@@ -159,7 +162,9 @@
                   })
                      .divY
                         Icon(size="52" style="color: #3399ff")
-                  Upload(multiple,type="drag",action="/api/upload/archives/id_card_reverse",:style={
+                        p(:style={'color': '#ffffff','margin-top': '43px'}) 上传身份证正面
+                  Upload(multiple,type="drag",action="/api/workerlib/upload/archives/id_card_reverse",
+                  :on-success="handleSuccessIdCardReverse",:format="['jpg','jpeg','png']",:on-format-error="handleFormatError",:style={
                      'width': '179px',
                      'height': '120px',
                      'float': 'left',
@@ -168,11 +173,13 @@
                   })
                      .divU
                         Icon(size="52" style="color: #3399ff")
+                        p(:style={'color': '#ffffff','margin-top': '43px'})  上传身份证反面
             .box
                .boxLeft
                   span 上传证书：
                .boxRight
-                  Upload(multiple,type="drag",action="//jsonplaceholder.typicode.com/posts/",:style={
+                  Upload(multiple,type="drag",action="/api/workerlib/upload/archives/certificate",
+                  :on-success="handleSuccessCertificate",:format="['jpg','jpeg','png']",:on-format-error="handleFormatError",:style={
                       'width': '40%',
                       'margin-top': '10%'
                   })
@@ -247,15 +254,6 @@
                   .twoTextR
                      p(:style={'padding-top': '3%', 'font-weight': 'bold'}) 待考试
                      p(:style={'color': '#0E93FF','font-size':'12px'}) 时间：201-01-01
-               //   .twoTextR
-               //      p(:style={'padding-top': '3%', 'font-weight': 'bold'}) 待考试
-               //      p(:style={'color': '#0E93FF','font-size':'12px'}) 时间：201-01-01
-                  .twoTextR
-               //      p(:style={'padding-top': '3%', 'font-weight': 'bold'}) 待考试
-               //      p(:style={'color': '#0E93FF','font-size':'12px'}) 时间：201-01-01
-                  .twoTextR
-               //      p(:style={'padding-top': '3%', 'font-weight': 'bold'}) 待考试
-               //      p(:style={'color': '#0E93FF','font-size':'12px'}) 时间：201-01-01
             .twoMiddle
                .buttonTop
                   h2 出勤记录
@@ -312,3 +310,6 @@
       //Modal(:value="certificat",title="人员详情",@on-ok="certificateOk()",@on-cancel="certificateCancel()",width='70%')
       //   .minBody
       //      span 1234567890
+   Modal(title="是否将以下人员离职？",v-model="onLeave",:styles="{top: '20px'}")
+      div(v-for="item in checkeds")
+         p {{item.name}}
