@@ -19,15 +19,18 @@ var webpackConfig = merge(baseWebpackConfig, {
   },
   plugins: [
     new VueRouterInvokeWebpackPlugin({
-      'dir' : 'src/components',
-      'alias' : '../../components',
-      'routerDir' : 'src/router',
-      'language' : 'typescript',
-      'mode' : 'hash'
+      'dir': 'src/components',
+      'alias': '../../components',
+      'routerDir': 'src/router',
+      'language': 'typescript',
+      'mode': 'hash',
+      'redirect': [{
+        redirect: '/login',
+        path: '/'
+      }]
     }),
     // copy custom static assets
-    new CopyWebpackPlugin([
-      {
+    new CopyWebpackPlugin([{
         from: path.resolve(__dirname, '../package.json'),
         to: publishRoot
       },

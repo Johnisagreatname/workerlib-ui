@@ -15,7 +15,7 @@
     .hr
     .button
         Button(type="primary", ghost, icon="ios-add-circle-outline",@click="addUnit=!addUnit") 新增单位
-        Button(type="primary", ghost, icon="ios-log-in") 导入单位
+        Button(type="primary", ghost, icon="ios-log-in") 同步单位
         Button(type="primary", ghost, icon="ios-log-out") 导出信息
         Button(type="primary", ghost, icon="ios-add-circle-outline") 添加单位评价
 
@@ -35,13 +35,11 @@
                                 DropdownItem
                                     Icon(type="ios-create-outline")
                                     span 查看评价
-                                DropdownItem
-                                    Icon(type="ios-contact-outline")
-                                    span 编辑
+
     .footer
         Page(:total="pageTotal",show-sizer,show-elevator,show-total,@on-page-size-change="onPageSizeChange",@on-change="onPageIndexChange")
 
-    Modal(:value="addUnit",title="新增人员",@on-ok="ok()",@on-cancel="cancel()",width='50%')
+    Modal(:value="addUnit",title="新增单位",@on-ok="ok()",@on-cancel="cancel()",width='50%')
         .addBody
             .divTwo
                 .name

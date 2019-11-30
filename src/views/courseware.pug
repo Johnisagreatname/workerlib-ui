@@ -8,17 +8,16 @@
     .hr
     .topOne
         .divOne
-            span 课程类型：
+            span 课件类型：
                 Input(clearable,style="width: 260px")
         .divOne
-            span 课程搜索：
+            span 课件搜索：
                 Input(clearable,style="width: 260px")
         .divOne
             Button 搜索
     .hr
     .button
         Button(type="primary", ghost, icon="ios-add-circle-outline",@click="addCourseware=!addCourseware") 新建课件
-        //Button(type="primary", ghost, icon="ios-arrow-round-down") 下载课件
     .courseware(v-for="item in getCourseware()")
         .div1
             span(:style={'font-size': '18px','line-height':'50px','margin-left': '5%','color': '#000000'}) {{item.title}}
@@ -45,7 +44,7 @@
                     span(:style={'font-size':'12px', 'float': 'left','margin-top':'5%','margin-left': '25%','color': '#ffffff'}) 必学
             .right
                 span(:style={'color':'#0090ff'}) {{item.name}}
-        Button.butt 开始培训
+        Button.butt 新建课程
 
 
 

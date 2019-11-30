@@ -54,11 +54,11 @@
                     ] },
                 { name: '培训', icon: 'ios-book',second:[
                         {secondName:'课件管理', path: '/nav/courseWare', text: '课件管理'},
-                        {secondName:'试卷管理', path: '/nav/examinationPaper', text: '试卷管理'},
-                        {secondName:'培训记录', path: '/nav/cultivate', text: '培训记录'},
+                        {secondName:'考试管理', path: '/nav/examinationPaper', text: '考试管理'},
+                        {secondName:'课程管理', path: '/nav/cultivate', text: '课程管理'},
                         {secondName:'课件管理', path: '/nav/offlineCourseWare', text: '课件管理'},
                         {secondName:'讲师档案', path: '/nav/lecturer', text: '讲师档案'},
-                        {secondName:'培训记录', path: '/nav/offlineCultivate', text: '培训记录'}
+                        {secondName:'课程管理', path: '/nav/offlineCultivate', text: '课程管理'}
                     ]},
                 { name: '技能鉴定', icon: 'md-people',second:[
                         {secondName:'技能鉴定', path: '/nav/checkEvaluate', text: '技能鉴定'}

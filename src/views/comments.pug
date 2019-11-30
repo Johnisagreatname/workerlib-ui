@@ -53,14 +53,25 @@
     Modal(:value="addCommtent",title="添加评价",@on-ok="ok()",@on-cancel="cancel()",width='70%')
      .minBody
          Tabs(value="name1")
-             TabPane( label="不良评价",name="name1",style="height: 430px")
-
+             TabPane( label="不良评价",name="name1")
+                 .div
+                     .d1
+                         span 选择项目
+                         span(:style={'color': 'red'}) *
+                     .d2
+                         Input(clearable,style="width: 380px",size=large)
                  .div
                      .d1
                          span 不良记录评价
                          span(:style={'color': 'red'}) *
                      .d2
                          Input(clearable,style="width: 380px",size=large,type="textarea")
+                 .div
+                     .d1
+                        span 事件时间
+                        span(:style={'color': 'red'}) *
+                     .d2
+                        DatePicker(type="date")
                  .div
                      .d1
                          span 添加图片

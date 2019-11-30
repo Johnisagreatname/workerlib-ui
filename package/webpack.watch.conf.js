@@ -42,7 +42,11 @@ module.exports = merge(baseWebpackConfig, {
       'alias' : '../../components',
       'routerDir' : 'src/router',
       'language' : 'typescript',
-      'mode' : 'hash'
+      'mode' : 'hash',
+      'redirect': [{
+        redirect: '/login',
+        path: '/'
+      }]
     }),
     // copy custom static assets
     new CopyWebpackPlugin([
