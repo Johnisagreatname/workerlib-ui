@@ -1,8 +1,8 @@
 .body
     .topOne
         .divOne
-            span 工种名称：
-                Input(clearable,style="width: 200px" ,v-model="name")
+            span 评价名称：
+                Input(clearable,style="width: 200px")
         .divOne
             span
         .divOne
@@ -13,7 +13,7 @@
             Button(@click="search") 搜索
     .hr
     .button
-        Button(type="primary", ghost, icon="ios-add-circle-outline",@click="addWorkclass=!addWorkclass") 新增工种
+        Button(type="primary", ghost, icon="ios-add-circle-outline",@click="addEvaluation=!addEvaluation") 新增评价
     .bodyTwo
         Table(:row-class-name="rowClassName", border, ref="selection", :columns="getColumns()", :data="getData()")
             template(slot-scope="{row, index }",slot="operation")
@@ -24,31 +24,23 @@
                     DropdownMenu(slot="list")
                         DropdownItem
                             Icon(type="ios-remove-circle-outline")
-                            span(@click="popupUpdWorkclass(row.id)") 修改工种
-                        DropdownItem
-                            Icon(type="ios-remove-circle-outline")
-                            span(@click="popupDelWorkclass(row.id)") 刪除工种
+                            span(@click="popupDelEvaluation(row.id)") 刪除评价名称
     .footer
         Page(:total="totalRecords",show-sizer,show-elevator,show-total,@on-page-size-change="onPageSizeChange",@on-change="onPageIndexChange")
 
-    Modal(:value="addWorkclass",title="新增工种",@on-ok="ok()",@on-cancel="cancel()",width='50%')
+    Modal(:value="addEvaluation",title="新增评价",@on-ok="ok()",@on-cancel="cancel()",width='50%')
         .addBody
             .divTwo
                 .name
-                    span 工种名称
+                    span 评价类型名称
                     span(:style={'color': 'red'}) *
                 .input
                     Input(clearable,style="width: 345px",size=large,v-model="name")
-    Modal(:value="updWorkclass",title="新增工种",@on-ok="yes()",@on-cancel="cancel()",width='50%')
+    Modal(:value="delEvaluation",title="删除课程",@on-ok="deletes()",@on-cancel="cancel()",width='50%')
         .addBody
             .divTwo
                 .name
-                    span 工种名称
-                    span(:style={'color': 'red'}) *
+                    span 是否删除该评价名称
+                    span(:style={'color': 'red'})
                 .input
-                    Input(clearable,style="width: 345px",size=large,v-model="name")
-    Modal(:value="delWorkclass",title="删除工种",@on-ok="deletes()",@on-cancel="cancel()",width='75%')
-        .delBody
-            .divTwo
-                .name
-                    span 你确定要删除该工种吗？
+                    //Input(clearable,style="width: 345px",size=large,v-model="name")

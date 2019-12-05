@@ -1,6 +1,6 @@
 <script lang="ts">
     import "@/assets/css/common.css";
-    import WorkclassStore from '../../../store/modules/WorkclassStore';
+    import EvaluationStore from '../../../store/modules/EvaluationStore';
     import { Component, Vue, Prop, Model} from 'vue-property-decorator';
     import { getModule } from 'vuex-module-decorators';
     // import {Message} from "iview";
@@ -20,19 +20,17 @@
             }
         }
     })
-    export default class Workclass extends Vue {
-        public addWorkclass: boolean;
-        public updWorkclass: boolean;
-        public delWorkclass: boolean;
+    export default class Ecaluation extends Vue {
+        public addEvaluation: boolean;
+        public delEvaluation: boolean;
         private store: any;
         private options!: Array<any>;
 
         constructor() {
             super();
-            this.addWorkclass = false;
-            this.updWorkclass = false;
-            this.delWorkclass = false;
-            this.store = getModule(WorkclassStore);
+            this.addEvaluation = false;
+            this.delEvaluation = false;
+            this.store = getModule(EvaluationStore);
         }
 
         mounted() {
@@ -54,29 +52,22 @@
         //     }, 500)
         // }
         ok() : any{
+            debugger;
             this.store.verification();
-            this.addWorkclass = false;
+            this.addEvaluation = false;
         }
-        yes() : any{
-            this.store.verifications();
-            this.updWorkclass = false;
+        popupDelEvaluation(id) : any{
+            // this.store.deleteWorkclass(id);
+            this.store.evaluetionInfo.id = id
+            this.delEvaluation = !this.delEvaluation
         }
-        deletes() : any{
-            this.store.deleteWorkclass();
-            this.delWorkclass = false;
-        }
-        popupUpdWorkclass(id) : any{
-            this.store.workclassInfo.id = id;
-            this.updWorkclass = !this.updWorkclass;
-        }
-        popupDelWorkclass(id) : any{
-            this.store.workclassInfo.id = id;
-            this.delWorkclass = !this.delWorkclass;
+        deletes() :any{
+            this.store.deleteEvaluation();
+            this.delEvaluation = false;
         }
         cancel():any {
-            this.addWorkclass = false;
-            this.updWorkclass = false;
-            this.delWorkclass = false;
+            this.addEvaluation = false;
+            this.delEvaluation = false;
         }
 
         onPageSizeChange(pageSize){
@@ -104,7 +95,7 @@
             return this.store.columns;
         }
         getData() : any{
-            return this.store.workclass;
+            return this.store.evaluetion;
         }
 
         get totalRecords():number{
@@ -134,30 +125,30 @@
             this.store.setId(data);
         }
         get name(): string {
-            return this.store.workclassInfo.name;
+            return this.store.evaluetionInfo.name;
         }
         set name(data: string) {
             this.store.setName(data);
         }
         get value():string{
-            return this.store.workclassInfo.value;
+            return this.store.evaluetionInfo.value;
         }
         set value(data:string){
             this.store.setValue(data);
         }
         get description():string{
-            return this.store.workclassInfo.description;
+            return this.store.evaluetionInfo.description;
         }
         set description(data:string){
             this.store.setDescription(data);
         }
         get category():string{
-            return this.store.workclassInfo.category;
+            return this.store.evaluetionInfo.category;
         }
         set category(data:string){
             this.store.setCategory(data);
         }
     }
 </script>
-<style scoped src="@/styles/workclass.css" />
-<template lang="pug" src="@/views/workclass.pug" />
+<style scoped src="@/styles/evaluation.css" />
+<template lang="pug" src="@/views/evaluation.pug" />

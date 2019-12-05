@@ -1,6 +1,6 @@
 <script lang="ts">
     import "@/assets/css/common.css";
-    import WorkclassStore from '../../../store/modules/WorkclassStore';
+    import PunishmentStore from '../../../store/modules/PunishmentStore';
     import { Component, Vue, Prop, Model} from 'vue-property-decorator';
     import { getModule } from 'vuex-module-decorators';
     // import {Message} from "iview";
@@ -20,19 +20,17 @@
             }
         }
     })
-    export default class Workclass extends Vue {
-        public addWorkclass: boolean;
-        public updWorkclass: boolean;
-        public delWorkclass: boolean;
+    export default class Punishment extends Vue {
+        public addPunishment: boolean;
+        public delPunishment: boolean;
         private store: any;
         private options!: Array<any>;
 
         constructor() {
             super();
-            this.addWorkclass = false;
-            this.updWorkclass = false;
-            this.delWorkclass = false;
-            this.store = getModule(WorkclassStore);
+            this.addPunishment = false;
+            this.delPunishment = false;
+            this.store = getModule(PunishmentStore);
         }
 
         mounted() {
@@ -54,29 +52,22 @@
         //     }, 500)
         // }
         ok() : any{
+            debugger;
             this.store.verification();
-            this.addWorkclass = false;
+            this.addPunishment = false;
         }
-        yes() : any{
-            this.store.verifications();
-            this.updWorkclass = false;
+        popupDelPunishment(id) : any{
+            // this.store.deleteWorkclass(id);
+            this.store.punishmentInfo.id = id
+            this.delPunishment = !this.delPunishment
         }
-        deletes() : any{
-            this.store.deleteWorkclass();
-            this.delWorkclass = false;
-        }
-        popupUpdWorkclass(id) : any{
-            this.store.workclassInfo.id = id;
-            this.updWorkclass = !this.updWorkclass;
-        }
-        popupDelWorkclass(id) : any{
-            this.store.workclassInfo.id = id;
-            this.delWorkclass = !this.delWorkclass;
+        deletes() :any{
+            this.store.deletePunishment();
+            this.delPunishment = false;
         }
         cancel():any {
-            this.addWorkclass = false;
-            this.updWorkclass = false;
-            this.delWorkclass = false;
+            this.addPunishment = false;
+            this.delPunishment = false;
         }
 
         onPageSizeChange(pageSize){
@@ -104,7 +95,7 @@
             return this.store.columns;
         }
         getData() : any{
-            return this.store.workclass;
+            return this.store.punishment;
         }
 
         get totalRecords():number{
@@ -128,36 +119,36 @@
             this.store.pageSize(data);
         }
         get id(): number{
-            return this.store.projectInfo.id;
+            return this.store.punishmentInfo.id;
         }
         set id(data:number){
             this.store.setId(data);
         }
         get name(): string {
-            return this.store.workclassInfo.name;
+            return this.store.punishmentInfo.name;
         }
         set name(data: string) {
             this.store.setName(data);
         }
         get value():string{
-            return this.store.workclassInfo.value;
+            return this.store.punishmentInfo.value;
         }
         set value(data:string){
             this.store.setValue(data);
         }
         get description():string{
-            return this.store.workclassInfo.description;
+            return this.store.punishmentInfo.description;
         }
         set description(data:string){
             this.store.setDescription(data);
         }
         get category():string{
-            return this.store.workclassInfo.category;
+            return this.store.punishmentInfo.category;
         }
         set category(data:string){
             this.store.setCategory(data);
         }
     }
 </script>
-<style scoped src="@/styles/workclass.css" />
-<template lang="pug" src="@/views/workclass.pug" />
+<style scoped src="@/styles/punishment.css" />
+<template lang="pug" src="@/views/punishment.pug" />
