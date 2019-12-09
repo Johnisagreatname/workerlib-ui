@@ -5,11 +5,11 @@
                 Input(clearable,style="width: 260px",v-model="title")
         .divOne
             span 题目类型：
-                Select(clearable,style="width:260px")
+                Select(filterable,clearable,style="width:260px")
                     Option(v-for="item in getType()", :value="item.value", :key="item.key")
         .divOne
             span 所属项目：
-                Select(clearable,style="width:260px")
+                Select(filterable,clearable,style="width:260px")
                     Option(v-for="item in getProject()", :value="item.value", :key="item.key")
         .divOne
             Button 搜索

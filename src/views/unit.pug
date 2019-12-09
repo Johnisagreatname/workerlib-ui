@@ -8,7 +8,7 @@
                 Input( v-model="selectUnitName",clearable,style="width: 200px")
         .divOne
             span 在场状态：
-                Select(v-model="selectStatus",clearable,style="width:200px")
+                Select(v-model="selectStatus",clearable,filterable,style="width:200px")
                     Option(v-for="item in getMenus()", :value="item.key",:key="item.key") {{item.value}}
         .search
             Button(@click="this.store.search") 搜索
@@ -46,7 +46,7 @@
                     span 项目名称
                     span(:style={'color': 'red'}) *
                 .input
-                    Select(clearable,style="width:345px",v-model="project_id")
+                    Select(clearable,filterable,style="width:345px",v-model="project_id")
                         Option(v-for="item in getProjectNameList()", :value="item.id",:key="item.id") {{item.project_name}}
             .divTwo
                 .name
@@ -93,14 +93,14 @@
                     span 在场状态
                     span(:style={'color': 'red'}) *
                 .input
-                    Select(clearable,style="width:345px", v-model="status")
+                    Select(clearable,filterable,style="width:345px", v-model="status")
                         Option(v-for="item in getMenus()", :value="item.key",:key="item.key") {{item.value}}
             .divTwo
                 .name
                     span 单位类型
                     span(:style={'color': 'red'}) *
                 .input
-                    Select(clearable,style="width:345px", v-model="unit_type")
+                    Select(clearable,filterable,style="width:345px", v-model="unit_type")
                         Option(v-for="item in getType()", :value="item.value",:key="item.value") {{item.name}}
 
 

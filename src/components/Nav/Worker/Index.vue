@@ -27,20 +27,22 @@
         public particulars: boolean;
         public onLeave: boolean;
         public certificate: boolean;
-        private checkeds: Array<any>;
-        private sex: string;
-        private options!: any;
-        private now: Date;
-        private year :any;
-        private date:any;
+
+        public disabled:boolean;
+        public offLeave :boolean;
+        public sex: string;
+        public options!: any;
+        public now: Date;
+        public year :any;
+        public date:any;
         constructor() {
             super();
             this.store = getModule(WorkerStore)
             this.addWorker = false;
             this.particulars = false;
             this.certificate = false;
-            this.checkeds = new Array();
             this.onLeave = false;
+            this.offLeave =false;
         }
 
         mounted() {
@@ -95,26 +97,18 @@
         }
         checkLeave() {
             this.onLeave=!this.onLeave;
-
         }
 
         getMenus() : any {
             if(this.options) return this.options;
             this.options = [
-                {value: '在职', key: 1 },
-                {value: '离职', key: 2 }
+                {value: '在场', key: 1 },
+                {value: '离场', key: 2 }
 
             ];
-
             return this.options;
         }
 
-        handleCreate (type) {
-            this.getType().push({
-                value: type,
-                label: type
-            });
-        }
         getType(){
             return this.store.projectType
         }
@@ -123,7 +117,7 @@
             if(!idNumber) return;
             this.sex = idNumber.substring(16,17);
             if(this.sex=="1"||this.sex=="3"||this.sex=="5"||this.sex=="7"||this.sex=="9"){
-                 return true;
+                return true;
             }else {
                 return false;
             }
@@ -158,6 +152,27 @@
         cancel():any {
             this.addWorker = false;
         }
+        okLeave() : any{
+            debugger
+            if(this.store.checkeds.filter(x => x.leave=== 1).map(a=>a.leave)[0] == 1) {
+                this.store.setCheck(this.store.checkeds.filter(x => x.id).map(x => x.id));
+                this.store.setOnLeave(2);
+                this.store.update();
+            }else {
+                this.store.setCheck(this.store.checkeds.filter(x => x.id).map(x => x.id));
+                this.store.setOnLeave(1);
+                this.store.update();
+            }
+            this.onLeave = false;
+        }
+        cancelLeave():any {
+            this.onLeave = false;
+        }
+        upload():any{
+            this.store.setCheck(this.store.checkeds.filter(x => x.id).map(x => x.id));
+            this.store.upload();
+        }
+
         particularsOk() : any{
             this.particulars = false;
         }
@@ -173,25 +188,42 @@
             this.particulars = true;
         }
         certificateCancel():any {
-           this.certificate = false;
-           this.particulars = true;
+            this.certificate = false;
+            this.particulars = true;
         }
 
-        onCheck(id: number,name:string): void {
-            var item = {};
-            if(this.checkeds.findIndex(x => x.id === id) > -1) {
-                let index = this.checkeds.findIndex(x => x.id === id);
-                this.checkeds.splice(index, 1);
-                debugger
+        onCheck(id: number,name:string,leave:number): void {
+            var itemTrue = {};
+            if(this.store.checkeds.findIndex(x => x.id === id) > -1) {
+                let index = this.store.checkeds.findIndex(x => x.id === id);
+                this.store.checkeds.splice(index, 1);
                 return;
             }
-            item['id'] = id;
-            item['name'] = name;
-            this.checkeds.push(item);
+            debugger
+            itemTrue['id'] = id;
+            itemTrue['name'] = name;
+            itemTrue['leave'] = leave;
+            this.store.setChecked(itemTrue);
+        }
+        isdisabledFn():any{
+
+            let disabledTrue = this.store.checkeds.findIndex(x => x.leave=== 1);  //在职
+            let disabledFalse = this.store.checkeds.findIndex(x => x.leave=== 2); //离职
+            if(disabledTrue > -1  && disabledFalse > -1 || disabledTrue <0 && disabledFalse<0){   //同时选中禁用
+                this.disabled = true;
+            }else {
+                if(disabledTrue < 0  && disabledFalse> -1){
+                    this.offLeave = true;
+                }else {
+                    this.offLeave = false;
+                }
+                this.disabled = false;
+            }
+            return this.disabled;
         }
 
         isChecked(id): boolean {
-            if(this.checkeds.find(x => x.id === id)){
+            if(this.store.checkeds.find(x => x.id === id)){
                 return true;
             }
 
@@ -259,6 +291,9 @@
         }
 
         set projectId(data:number){
+            debugger
+            this.store.setProject(this.store.projectList.filter(x => x.id == data).map(a=>a.project_name));
+            debugger
             this.store.setProjectId(data);
         }
         get projectId():number{
@@ -376,7 +411,7 @@
         get grade():string{
             return this.store.grade;
         }
-}
+    }
 </script>
 <style scoped src="@/styles/worker.css" />
 <template lang="pug" src="@/views/worker.pug" />

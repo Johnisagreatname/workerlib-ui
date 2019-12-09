@@ -11,7 +11,7 @@
                 Input(v-model="selectProjectName",clearable,style="width: 200px")
         .divOne
             span 项目状态：
-                Select(clearable,style="width:200px",v-model="selectStatus")
+                Select(clearable,filterable,style="width:200px",v-model="selectStatus")
                     Option(v-for="item in getMenus()", :value="item.value",:key="item.value") {{item.name}}
         .divOne
             Button(@click="search()") 搜索
@@ -19,10 +19,10 @@
     .button
         Button(type="primary", ghost, icon="ios-add-circle-outline",@click="addProject=!addProject") 新增项目
         Button(type="primary", ghost, icon="ios-log-in") 同步项目
-        Button(type="primary", ghost, icon="ios-log-out") 导出信息
+        Button(type="primary", ghost, icon="ios-log-out",@click="this.store.upload") 导出信息
 
     .bodyTwo
-        Table(border, ref="selection", :columns="getColumns()", :data="getData()")
+        Table(border, ref="selection", :columns="getColumns()", :data="getData()",@on-select="handleSelectRow",@on-select-all="handleSelectAll")
     .footer
         Page(:total="totalRecords",show-sizer,show-elevator,show-total,@on-page-size-change="onPageSizeChange",@on-change="onPageIndexChange")
 
@@ -93,6 +93,6 @@
                     span 项目状态
                     span(:style={'color': 'red'}) *
                 .input
-                    Select(clearable,style="width:345px", v-model="status")
+                    Select(clearable,filterable,style="width:345px", v-model="status")
                         Option(v-for="item in getMenus()", :value="item.value",:key="item.value") {{item.name}}
 

@@ -16,7 +16,7 @@
             Input(clearable,style="width: 260px")
     .divOne
         span 状态：
-            Select(clearable,style="width:260px")
+            Select(filterable,clearable,style="width:260px")
                 Option(v-for="item in getMenus()", :value="item.key", :key="item.key") {{item.value}}
     .divOne
         span 类型：
@@ -87,7 +87,7 @@
                          span 处罚
                          span(:style={'color': 'red'}) *
                      .d2
-                         Select(clearable,style="width:380px")
+                         Select(filterable,clearable,style="width:380px",placement="top-start")
                             Option(v-for="item in getCommentType()", :value="item.key", :key="item.key") {{item.value}}
              TabPane( label="综合评价",name="name2",style="height: 430px")
                 .yu1

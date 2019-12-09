@@ -12,7 +12,8 @@ import MessageUtils from "../../common/MessageUtils";
     store,
 })
 export default class WorkerStore extends VuexModule {
-    public checkeds:any;
+    public checkeds: Array<any>;
+
     public peoples: any;
     public pageIndex: number;
     public pageSize: number;
@@ -54,6 +55,10 @@ export default class WorkerStore extends VuexModule {
     public projectType: Array<ProjectType>;
     public unitList:Array<UnitList>;
 
+    public check : Array<any>;
+    public onLeave:number;
+
+
     constructor(e) {
         super(e)
         this.pageIndex=1;
@@ -63,8 +68,10 @@ export default class WorkerStore extends VuexModule {
         this.inPageIndex=1;
         this.inPageSize= 1;
         this.inPageTotal = 0;
+        this.check = [];
+        this.onLeave = null;
 
-        this.checkeds = [];
+
         this.peoples = [];
         this.projectType = [];
         this.card = "";
@@ -76,7 +83,10 @@ export default class WorkerStore extends VuexModule {
         this.projectId = null;
         this.unitId = null;
         this.unit = null;
+        this.project = "";
         this.archivesId = null;
+
+        this.checkeds = new Array();
 
         this.startTime = null;
         this.endTime = null;
@@ -98,9 +108,7 @@ export default class WorkerStore extends VuexModule {
     }
     @Action
     public getParams() : any {
-
-        let params: any =  {
-
+        return {
             "pageInfo" : {
                 "pageIndex": this.pageIndex,
                 "pageSize": this.pageSize
@@ -140,62 +148,145 @@ export default class WorkerStore extends VuexModule {
         };
         // params.conditionList[0].value = new Array();
     }
+
+    @Action
+    public getUpdateParams() : any {
+        return  {
+            "data": {
+                "leave": this.onLeave
+            },
+            "conditionList": [{
+                "name": "id",
+                "value":  this.check,
+                "algorithm": "IN"
+            }
+            ],
+
+            "keywords" : []
+        };
+    }
+
+    @Action
+    public getUploadParams() : any {
+
+        return {
+            "conditionList": [{
+                "name": "id",
+                "value":  this.check,
+                "algorithm": "IN"
+            }
+            ],
+
+            "keywords" : [],
+            "selectList": [
+                {"field": "name" },
+                {"field": "phone" },
+                {"field": "id_number" },
+                {"field": "work_type" }
+            ]
+        };
+    }
     @Action
     public getInParams() : any {
         return {
             "joinTables": [
-            {
-                "tablename": "involvedproject",
-                "alias": "i",
-                "joinMode": "Inner"
-            },{
-                "tablename": "project",
-                "alias": "p",
-                "JoinMode": "inner",
-                "onList": [{
-                    "name": "p.id",
-                    "value": "i.project_id",
-                    "algorithm": "EQ"
-                }]
-            }, {
-                "tablename": "unit",
-                "alias": "u",
-                "joinMode": "Inner",
-                "onList": [{
-                    "name": "u.id",
-                    "value": "i.unit_id",
-                    "algorithm": "EQ"
-                }]
-            }
-        ],
+                {
+                    "tablename": "involvedproject",
+                    "alias": "i",
+                    "joinMode": "Inner"
+                },{
+                    "tablename": "project",
+                    "alias": "p",
+                    "JoinMode": "inner",
+                    "onList": [{
+                        "name": "p.id",
+                        "value": "i.project_id",
+                        "algorithm": "EQ"
+                    }]
+                }, {
+                    "tablename": "unit",
+                    "alias": "u",
+                    "joinMode": "Inner",
+                    "onList": [{
+                        "name": "u.id",
+                        "value": "i.unit_id",
+                        "algorithm": "EQ"
+                    }]
+                }
+            ],
             "pageInfo" : {
-            "pageIndex": this.inPageIndex,
+                "pageIndex": this.inPageIndex,
                 "pageSize": this.inPageSize
-        },
+            },
 
             "conditionList": [{
-            "name": "archives_id",
-            "value": this.infoId,
-            "algorithm": "EQ"
-        }
-        ],
+                "name": "archives_id",
+                "value": this.infoId,
+                "algorithm": "EQ"
+            }
+            ],
 
             "sortList": [ ],
 
             "groupList" : [
-        ],
+            ],
 
             "keywords" : [],
 
             "selectList": [
-            {"field": "p.project_name"},
-            {"field": "u.project_license"},
-            {"field": "i.start_time"},
-            {"field": "i.end_time"}
-        ]
+                {"field": "p.project_name"},
+                {"field": "u.project_license"},
+                {"field": "i.start_time"},
+                {"field": "i.end_time"}
+            ]
 
         }
     }
+
+    @Action
+    public async update() {
+
+        await request.put('/api/workerlib/archives/update',await this.getUpdateParams()).then((data)=>{
+            this.successUpdate(data);
+        }).catch((e)=>{
+            let alert: any = Message;
+            if(!e) {
+                alert.warning('未知错误！');
+                return
+            }
+            if(e.response && e.response.data && e.response.data.message) {
+                alert.warning(e.response.data.message)
+                return
+            }
+            if(!e.message) {
+                return;
+            }
+            alert.warning(e.message || e)
+        });
+    }
+
+    @Action
+    public async upload() {
+        let alert: any = Message;
+        await request.put('/api/workerlib/archives/export',await this.getUploadParams()).then((data)=>{
+            this.successUpload();
+        }).catch((e)=>{
+            let alert: any = Message;
+            if(!e) {
+                alert.warning('未知错误！');
+                return
+            }
+            if(e.response && e.response.data && e.response.data.message) {
+                alert.warning(e.response.data.message)
+                return
+            }
+            if(!e.message) {
+                return;
+            }
+            alert.warning(e.message || e)
+        });
+    }
+
 
     @Action
     public async search() {
@@ -395,13 +486,13 @@ export default class WorkerStore extends VuexModule {
             alert.warning(e.message || e)
         });
     }
-// this.entrance_time.getFullYear() + "-" + this.entrance_time.getMonth() + "-" + this.entrance_time.getDate(),@Action
+
     @Action
     public async insertArchives() {
-        debugger;
         await request.put('/api/workerlib/archives', {
             "name":this.userName,
             "phone":this.phone,
+            "project":this.project,
             "id_number":this.card,
             "project_id":this.projectId,
             "photo":this.photo,
@@ -442,8 +533,8 @@ export default class WorkerStore extends VuexModule {
             "archives_id":this.archivesId,
             "project_id":this.projectId,
             "unit_id":this.unitId,
-            "start_time":this.startTime.getFullYear() + "-" + this.startTime.getMonth() + "-" + this.startTime.getDate(),
-            "end_time":this.endTime.getFullYear() + "-" + this.endTime.getMonth() + "-" + this.endTime.getDate()
+            "start_time":this.startTime.getFullYear() + "-" + (this.startTime.getMonth()+1) + "-" + this.startTime.getDate(),
+            "end_time":this.endTime.getFullYear() + "-" + (this.endTime.getMonth()+1) + "-" + this.endTime.getDate()
         }).then((data)=>{
             this.addIn(data)
         }).catch((e)=>{
@@ -467,6 +558,8 @@ export default class WorkerStore extends VuexModule {
         });
     }
 
+
+
     @Action
     public added(data: any) {
         if(data.status == 0) {
@@ -476,15 +569,43 @@ export default class WorkerStore extends VuexModule {
     }
     @Action
     public addIn(data: any) {
+
         if(data.status == 0) {
             this.search();
         }
+    }
+
+    @Action
+    public successUpdate(data: any) {
+        let alert: any = Message;
+        if(data.status == 0) {
+            this.clear();
+            debugger
+            this.search();
+            alert.warning("成功！");
+
+        }
+    }
+
+    @Mutation
+    private setCheck(data: any) {
+        this.check = data;
+    }
+    @Mutation
+    private successUpload() {
+        this.check = [];
+    }
+    @Mutation
+    private setOnLeave(data: number) {
+        this.onLeave = data;
     }
 
     @Mutation
     private success(data: any) {
         this.peoples = data.data;
     }
+
+
     @Mutation
     private successInvolvedProject(data: any) {
         this.involvedProjectInfo = data.data;
@@ -495,6 +616,15 @@ export default class WorkerStore extends VuexModule {
         this.peopleInfo = data.data[0];
     }
 
+    @Mutation
+    private setChecked(data: any) {
+        this.checkeds.push(data);
+    }
+
+    @Mutation
+    private clear() {
+        this.checkeds.length = 0;
+    }
 
     @Mutation
     private successProjectList(data: any) {
@@ -607,19 +737,20 @@ export default class WorkerStore extends VuexModule {
         this.animal = data;
     }
 
+
+
     @Mutation
     public setPageTotal(data: number) {
         this.pageTotal = data;
     }
-    @Mutation
-    public setInPageTotal(data: number) {
-        this.inPageTotal = data;
-    }
-
 
     @Mutation
     public setPageIndex(data: number) {
         this.pageIndex = data;
+    }
+    @Mutation
+    public setInPageTotal(data: number) {
+        this.inPageTotal = data;
     }
     @Mutation
     public setPageSize(data: number) {
@@ -634,16 +765,7 @@ export default class WorkerStore extends VuexModule {
         this.inPageSize = data;
     }
 
-    @Mutation
-    onCheck(id: number) {
-        // let data = this.peoples;
-        // this.peoples = [];
-        // if(data.filter(a=>a.id == id).length > 0) {
-        //     let currentVal = data.filter(a=>a.id == id)[0].checked;
-        //     data.filter(a=>a.id == id)[0].checked = !currentVal;
-        //     this.peoples = data;
-        // }
-    }
+
 }
 interface ProjectType {
     value?: string;

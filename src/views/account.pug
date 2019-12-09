@@ -11,7 +11,7 @@
                 Input(v-model="selectProjectName",clearable,style="width: 200px")
         .divOne
             span 项目状态：
-                Select(clearable,style="width:200px",v-model="selectStatus")
+                Select(filterable,clearable,style="width:200px",v-model="selectStatus")
 
         .divOne
             Button(@click="search") 搜索

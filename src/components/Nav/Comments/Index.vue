@@ -41,8 +41,8 @@
         getMenus() : any {
             if(this.options) return this.options;
             this.options = [
-                { value: '离线', key: 0 },
-                { value: '在线', key: 1 }
+                { value: '在职', key: 1 },
+                { value: '离职', key: 2 }
             ];
             return this.options;
         }

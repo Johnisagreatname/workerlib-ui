@@ -11,11 +11,11 @@
             Input(clearable,style="width: 260px",v-model="selectUserName")
       .divOne
          span 工种：
-            Select(clearable,style="width:260px",filterable,allow-create,@on-create="handleCreate",v-model="selectType")
+            Select(filterable,clearable,style="width:260px",v-model="selectType")
                Option(v-for="item in getType()", :value="item.name", :key="item.name") {{item.name}}
       .divOne
          span 状态：
-            Select(clearable,style="width:260px",v-model="selectStatus")
+            Select(filterable,clearable,style="width:260px",v-model="selectStatus")
                Option(v-for="item in getMenus()", :value="item.key", :key="item.key") {{item.value}}
       //.divOne
       //   span 类型：
@@ -25,11 +25,13 @@
    .hr
    .button
       Button(type="primary", ghost,@click="addWorker=!addWorker",icon="ios-add-circle-outline") 新增
-      Button(type="primary", ghost, icon="ios-contact-outline",@click="checkLeave()") 退场
+      Button(type="primary", ghost, icon="ios-contact-outline",@click="checkLeave()",:disabled="isdisabledFn()")
+         span(v-if="offLeave == false") 退场
+         span(v-if="offLeave == true") 进场
       Button(type="primary", ghost, icon="ios-log-in") 同步工人
-      Button(type="primary", ghost, icon="ios-log-out") 导出
+      Button(type="primary", ghost, icon="ios-log-out",@click="upload()") 导出
 
-   div(v-for="(item, index) in getPeopleList()", :key="index",@click="onCheck(item.id,item.name)", :class="isChecked(item.id) ? 'people-selected' : 'people'")
+   div(v-for="(item, index) in getPeopleList()", :key="index",@click="onCheck(item.id,item.name,item.leave)", :class="isChecked(item.id) ? 'people-selected' : 'people'")
       .headPhotos
          .circle
             img(:src="'/api/workerlib/preview/archives/photo/'+item.id",:style={'width':'100%','height':'100%',
@@ -58,8 +60,8 @@
          p {{item.phone}}
          p {{item.id_number}}
          p {{item.work_type}}
-         p(v-if="item.state=1") 在职
-         p(v-if="item.state=0") 离职
+         p(v-if="item.leave==1") 在职
+         p(v-else) 离职
    .footer
       Page(:total="pageTotal",show-sizer,show-elevator,show-total,
       @on-page-size-change="onPageSizeChange",@on-change="onPageIndexChange")
@@ -91,21 +93,21 @@
                   span 工种
                   span(:style={'color': 'red'}) *
                .input
-                  Select(clearable,style="width:345px",filterable,allow-create,@on-create="handleCreate",v-model="type")
+                  Select(clearable,style="width:345px",filterable,v-model="type")
                      Option(v-for="item in getType()", :value="item.name", :key="item.name") {{item.name}}
             .divTwo
                .name
                   span 所属项目
                   span(:style={'color': 'red'}) *
                .input
-                  Select(clearable,style="width:345px",v-model="projectId",@on-change="selectUnit()")
+                  Select(filterable,clearable,style="width:345px",v-model="projectId",@on-change="selectUnit()")
                      Option(v-for="item in getProjectList()", :value="item.id", :key="item.id") {{item.project_name}}
             .divTwo
                .name
                   span 参建单位
                   span(:style={'color': 'red'}) *
                .input
-                  Select(clearable,style="width:345px",v-model="unitId")
+                  Select(filterable,clearable,style="width:345px",v-model="unitId")
                      Option(v-for="item in getUnitList()", :value="item.id", :key="item.id") {{item.project_license}}
 
             .divTwo
@@ -141,7 +143,7 @@
                   span 上传头像：
                .boxRight
                   Upload(multiple,type="drag",action="/api/workerlib/upload/archives/photo",
-                     :on-success="handleSuccessPhoto",:format="['jpg','jpeg','png']",:on-format-error="handleFormatError",:style={
+                  :on-success="handleSuccessPhoto",:format="['jpg','jpeg','png']",:on-format-error="handleFormatError",:style={
                       'width': '30%',
                       'margin-top': '10%'
                   })
@@ -154,10 +156,10 @@
                .boxRight
                   Upload(multiple,type="drag",action="/api/workerlib/upload/archives/id_card_front",
                   :on-success="handleSuccessIdCardfront",:format="['jpg','jpeg','png']",:on-format-error="handleFormatError",:style={
-                     'width': '179px',
-                     'height': '120px',
-                     'float': 'left',
-                     'margin-right': '20px',
+                      'width': '179px',
+                      'height': '120px',
+                      'float': 'left',
+                      'margin-right': '20px',
                       'margin-top':'50px'
                   })
                      .divY
@@ -165,10 +167,10 @@
                         p(:style={'color': '#ffffff','margin-top': '43px'}) 上传身份证正面
                   Upload(multiple,type="drag",action="/api/workerlib/upload/archives/id_card_reverse",
                   :on-success="handleSuccessIdCardReverse",:format="['jpg','jpeg','png']",:on-format-error="handleFormatError",:style={
-                     'width': '179px',
-                     'height': '120px',
-                     'float': 'left',
-                     'margin-right': '20px',
+                      'width': '179px',
+                      'height': '120px',
+                      'float': 'left',
+                      'margin-right': '20px',
                       'margin-top':'50px'
                   })
                      .divU
@@ -247,8 +249,8 @@
                   h2 参与培训
                .twoLeft
                   .twoTextL
-                        p(:style={'padding-top': '3%', 'font-weight': 'bold'}) 两制安全教育
-                        p(:style={'color':'#0E93FF','font-size':'14px'}) 线上学习时长：4小时
+                     p(:style={'padding-top': '3%', 'font-weight': 'bold'}) 两制安全教育
+                     p(:style={'color':'#0E93FF','font-size':'14px'}) 线上学习时长：4小时
                   .twoTextL
                .twoRight
                   .twoTextR
@@ -310,6 +312,7 @@
       //Modal(:value="certificat",title="人员详情",@on-ok="certificateOk()",@on-cancel="certificateCancel()",width='70%')
       //   .minBody
       //      span 1234567890
-   Modal(title="是否将以下人员离职？",v-model="onLeave",:styles="{top: '20px'}")
-      div(v-for="item in checkeds")
-         p {{item.name}}
+   Modal(title="是否将以下人员退场？",v-model="onLeave",:styles="{top: '20px'}",@on-ok="okLeave()",@on-cancel="cancelLeave()")
+      .divL
+         .divCheck(v-for="item in this.store.checkeds")
+            p {{item.name}}

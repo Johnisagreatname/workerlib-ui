@@ -21,11 +21,59 @@ export default class ProjectStore extends VuexModule {
         this.project = [];
         this.projectInfo = {};
         this.projectType = [];
+        this.uplodId = [];
     }
     public project: Array<ProjectInfo>;
     public projectType: Array<ProjectType>;
     public pageInfo: PageInfo;
     public projectInfo:ProjectInfo;
+
+    public uplodId:Array<any>;
+    @Action
+    public getUploadParams() : any {
+
+        return {
+            "conditionList": [{
+                "name": "id",
+                "value":  this.uplodId,
+                "algorithm": "IN"
+            }
+            ],
+            "keywords" : [],
+            "selectList": [
+                {"field": "project_name" },
+                {"field": "project_brief" },
+                {"field": "builder_license" },
+                {"field": "start_time" },
+                {"field": "end_time" },
+                {"field": "construction" },
+                {"field": "organization" },
+                {"field": "supervising" }
+            ]
+        };
+    }
+    @Action
+    public async upload() {
+        debugger
+        let alert: any = Message;
+        await request.put('/api/workerlib/project/export',await this.getUploadParams()).then((data)=>{
+            alert.warning('成功！');
+        }).catch((e)=>{
+            let alert: any = Message;
+            if(!e) {
+                alert.warning('未知错误！');
+                return
+            }
+            if(e.response && e.response.data && e.response.data.message) {
+                alert.warning(e.response.data.message)
+                return
+            }
+            if(!e.message) {
+                return;
+            }
+            alert.warning(e.message || e)
+        });
+    }
 
     @Action
     public getParams() : any {
@@ -249,6 +297,12 @@ export default class ProjectStore extends VuexModule {
     private id(data: number) {
         this.projectInfo.id = data;
     }
+
+    @Mutation
+    private setUplodId(data: any) {
+        this.uplodId.push(data);
+    }
+
 
     @Mutation
     private projectName(data: string) {
