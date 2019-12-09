@@ -21,42 +21,162 @@
         }
     })
     export default class Cultivate extends Vue {
-
-        private store: any;
-        constructor() {
-            super();
-            this.store = getModule(CultivateStore)
-        }
-
         @Model('isCollapsed', { type: Boolean }) private isCollapsed !: boolean;
-
         rowClassName (row, index) : string {
-
             if(index == 0) {
                 return 'table-header'
             }
-
             return '';
         }
-
-        private options!: any;
-        getMenus() : any {
-            if(this.options) return this.options;
-            this.options = [
-                { value: '待学习', key: '0' },
-                { value: '学习中', key: '1' },
-                { value: '学习完成', key: '2' }
-            ];
-            return this.options;
+        mounted() {
+            this.store.getStudyType();
+            this.store.search();
+        }
+        loading = true;
+        private store: any;
+        public startTraining:boolean;
+        public onDelete:boolean;
+        public checkAllGroup :Array<any>;
+        constructor() {
+            super();
+            this.store = getModule(CultivateStore);
+            this.startTraining = false;
+            this.onDelete = false;
+            this.checkAllGroup = [];
+        }
+        rowClass(row, index) {
+            return "rowClasses"
+        }
+        search(){
+            this.store.searchInfo();
+        }
+        getDateFormat (d: number) : string {
+            let date = new Date(d);
+            return date.getFullYear() + "-" + (date.getMonth()+1) + "-" + date.getDate();
+        }
+        getStudy() : any {
+            return this.store.studyType;
         }
         getColumns() : any{
             return this.store.columns;
         }
         getData() : any{
-            return this.store.data;
+            return this.store.cultivate;
         }
 
+        getColumnsInfo() : any{
+            return this.store.getColumnsInfo;
+        }
+        getDataInfo() : any{
+            return this.store.cultivateArchives;
+        }
+        okStart() : any{
 
+            this.startTraining = false;
+        }
+        cancelStart():any {
+            this.startTraining = false;
+        }
+        change(name){
+            this.store.setInfoId(name);
+            this.store.searchInfo();
+            this.startTraining = true;
+        }
+        deleteCultivate(){
+            this.onDelete = true;
+        }
+        handleSelectRow(selection, row) {
+            var itemTrue = {};
+            itemTrue['id'] = row.id;
+            itemTrue['name'] = row.name;
+            this.checkAllGroup.push(itemTrue);
+            this.store.setCheckedDelete(row.id)
+
+        }
+        handleSelectAll(selection) {
+            for(let i= 0;i<selection.length;i++){
+                let row = selection[i];
+                var itemTrue = {};
+                itemTrue['id'] = row.id;
+                itemTrue['name'] = row.name;
+                this.checkAllGroup.push(itemTrue);
+                this.store.setCheckedDelete(row.id)
+            }
+        }
+        okDelete() : any{
+            this.store.delete();
+            this.onDelete = false;
+        }
+        cancelDelete():any {
+            this.onDelete = false;
+        }
+        onPageSizeChange(pageSize){
+            this.store.setPageSize(pageSize);
+            this.store.setPageIndex(1);
+            this.onPageIndexChange(1);
+        }
+        onPageIndexChange(pageIndex){
+            this.store.setPageIndex(pageIndex);
+            this.store.search();
+        }
+
+        onInPageSizeChange(pageSize){
+            this.store.setInPageIndex(pageSize);
+            this.store.setInPageIndex(1);
+            this.onInPageIndexChange(1);
+        }
+        onInPageIndexChange(pageIndex){
+            this.store.setInPageIndex(pageIndex);
+            this.store.searchInvolvedProject();
+        }
+        set pageTotal(data:number){
+            this.store.setPageToatl(data);
+        }
+        get pageTotal():number{
+            return this.store.pageTotal;
+        }
+
+        set selectCourseName(data:number){
+            this.store.setSelectCourseName(data);
+        }
+        get selectCourseName():number{
+            return this.store.selectCourseName;
+        }
+
+        set selectState(data:number){
+            this.store.setSelectState(data);
+        }
+        get selectState():number{
+            return this.store.selectState;
+        }
+
+        set selectStartTime(data:Date){
+            this.store.setSelectStartTime(data);
+        }
+        get selectStartTime():Date{
+            return this.store.selectStartTime;
+        }
+
+        set inPageTotal(data:number){
+            this.store.setInPageTotal(data);
+        }
+        get inPageTotal():number{
+            return this.store.inPageTotal;
+        }
+
+        set infoId(data:number){
+            this.store.setInfoId(data);
+        }
+        get infoId():number{
+            return this.store.infoId;
+        }
+
+        set selectUserName(data:string){
+            this.store.setSelectUserName(data);
+        }
+        get selectUserName():string{
+            return this.store.selectUserName;
+        }
     }
 </script>
 <style scoped src="@/styles/cultivate.css" />

@@ -49,7 +49,6 @@ export default class UnitStore extends VuexModule {
 
     @Mutation
     public selectProjectName(data: string) {
-        debugger
         this.sProjectName = data;
     }
 
@@ -116,7 +115,6 @@ export default class UnitStore extends VuexModule {
 
     @Mutation
     public setProject_id(data:number) {
-        debugger
         this.project_id = data;
     }
 
@@ -332,7 +330,6 @@ export default class UnitStore extends VuexModule {
 
     @Action
     public async getUnitType(){
-        debugger;
         await request.post('/api/workerlib/dictionaries', {
             "pageInfo" : {},
             "conditionList": [{

@@ -16,8 +16,8 @@
             Input(clearable,style="width: 260px")
     .divOne
         span 状态：
-            Select(clearable,style="width:260px")
-                Option(v-for="item in getMenus()", :value="item.value", :key="item.key")
+            Select(filterable,clearable,style="width:260px")
+                Option(v-for="item in getMenus()", :value="item.key", :key="item.key") {{item.value}}
     .divOne
         span 类型：
             Input(clearable,style="width: 260px")
@@ -45,10 +45,10 @@
             span {{item.typeWork}}
         .y2
             Button(type="primary", ghost,@click="commtentcInfo=!commtentcInfo") 查看详情
-            Button(type="primary", ghost,@click="addCommtent=!addCommtent") 添加评论
+            Button(type="primary", ghost,@click="addCommtent=!addCommtent") 添加评价
 
     .footer
-        Page(:total="4", size="small" ,show-elevator,show-sizer,show-total)
+        Page( size="small" ,show-elevator,show-sizer,show-total)
 
     Modal(:value="addCommtent",title="添加评价",@on-ok="ok()",@on-cancel="cancel()",width='70%')
      .minBody
@@ -87,16 +87,10 @@
                          span 处罚
                          span(:style={'color': 'red'}) *
                      .d2
-                         Select(clearable,style="width:380px")
-                            Option(v-for="item in getCommentType()", :value="item.value", :key="item.key")
+                         Select(filterable,clearable,style="width:380px",placement="top-start")
+                            Option(v-for="item in getCommentType()", :value="item.key", :key="item.key") {{item.value}}
              TabPane( label="综合评价",name="name2",style="height: 430px")
                 .yu1
-                    .dd
-                        .m1
-                            span 选择项目
-                            span(:style={'color': 'red'}) *
-                        .m2
-                            Input(clearable,style="width: 380px",size=large)
                     .dd
                         .m1
                             span 评语
@@ -123,7 +117,7 @@
                     .x
                         span 专业
                         Rate(v-model="value")
-    Modal(:value="commtentcInfo",title="评价详情",width='70%')
+    Modal(:value="commtentcInfo",title="评价详情",width='70%',@on-ok="okInfo()",@on-cancel="cancelInfo()")
         .minBody
            .c1
                .c2

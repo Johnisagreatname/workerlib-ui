@@ -11,3 +11,10 @@
     })
     export default class App extends Vue {}
 </script>
+
+<style>
+body {
+    min-width: 1920px;
+    overflow-x: auto;
+}
+</style>

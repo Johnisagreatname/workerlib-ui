@@ -47,7 +47,7 @@
                     span 讲师类型
                     span(:style={'color': 'red'}) *
                 .input
-                    Select(clearable,style="width:345px",v-model="type")
+                    Select(filterable,clearable,style="width:345px",v-model="type")
                         Option(v-for="item in getType()", :value="item.key", :key="item.key") {{item.value}}
             .divTwo
                 .name 上传照片

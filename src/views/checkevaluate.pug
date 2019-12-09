@@ -11,15 +11,15 @@
                 Input(v-model="name",clearable,style="width: 260px")
         .divOne
             span 工种：
-                Select(clearable,style="width:260px",filterable,allow-create,@on-create="handleCreate",v-model="selectType")
+                Select(filterable,clearable,style="width:260px",v-model="selectType")
                     Option(v-for="item in getType()", :value="item.name", :key="item.name") {{item.name}}
         .divOne
             span 状态：
-                Select(clearable,style="width:260px",v-model="selectStatus")
+                Select(filterable,clearable,style="width:260px",v-model="selectStatus")
                     Option(v-for="item in getMenus()", :value="item.key", :key="item.key") {{item.value}}
         .divOne
             span 评级：
-                Select(clearable,style="width:260px",v-model="selectRate")
+                Select(filterable,clearable,style="width:260px",v-model="selectRate")
                     Option(v-for="item in getCommtenGrade()", :value="item.key", :key="item.key") {{item.value}}
         .search
             Button(@click="this.store.search") 搜索
@@ -30,12 +30,12 @@
         Button(type="primary", ghost, icon="ios-log-out") 导出
 
     .bodyTwo
-        Table(border, ref="selection", :columns="getColumns()", :data="getData()",@on-selection-change="handleSelectRow()")
+        Table(border, ref="selection", :columns="getColumns()", :data="getData()",@on-selection-change="handleSelectRow")
             template(slot-scope="{row, index }",slot="operation")
                 a(href="javascript:void(0)" :style={"font-size": "16px"})
                     span 编辑
     .footer
-        Page(:total="totalRecords",show-sizer,show-elevator,show-total,@on-page-size-change="onPageSizeChange()",@on-change="onPageIndexChange()")
+        Page(:total="totalRecords",show-sizer,show-elevator,show-total,@on-page-size-change="onPageSizeChange",@on-change="onPageIndexChange")
 
     Modal(:value="addRate",title="技能评价",@on-ok="ok()",@on-cancel="cancel()",width='50%')
         .addBody
@@ -44,19 +44,19 @@
                     span 评级人员
                     span(:style={'color': 'red'}) *
                 .input
-                    Input(clearable,style="width: 345px",size=large,v-model="projectName")
+                    Input(clearable,style="width: 345px",size=large,v-model="selectProjectName")
             .divTwo
                 .name
                     span 评选级别
                     span(:style={'color': 'red'}) *
                 .input
-                    Select(clearable,style="width:260px",v-model="selectStatus")
+                    Select(filterable,clearable,style="width:260px",v-model="selectStatus")
                         Option(v-for="item in getCommtenGrade()", :value="item.key", :key="item.key") {{item.value}}
             .divTwo
                 .name
                     span 评选等级
                     span(:style={'color': 'red'}) *
                 .input
-                    Select(clearable,style="width:260px",v-model="selectStatus")
+                    Select(filterable,clearable,style="width:260px",v-model="selectStatus")
                         Option(v-for="item in getGrade()", :value="item.key", :key="item.key") {{item.value}}
 

@@ -53,12 +53,9 @@
                         {secondName:'出勤管理', path: '/nav/turnWork', text: '出勤管理'}
                     ] },
                 { name: '培训', icon: 'ios-book',second:[
-                        {secondName:'课件管理', path: '/nav/courseWare', text: '课件管理'},
+                        {secondName:'课件管理', path: '/nav/courseware', text: '课件管理'},
                         {secondName:'考试管理', path: '/nav/examinationPaper', text: '考试管理'},
-                        {secondName:'课程管理', path: '/nav/cultivate', text: '课程管理'},
-                        {secondName:'课件管理', path: '/nav/offlineCourseWare', text: '课件管理'},
-                        {secondName:'讲师档案', path: '/nav/lecturer', text: '讲师档案'},
-                        {secondName:'课程管理', path: '/nav/offlineCultivate', text: '课程管理'}
+                        {secondName:'课程管理', path: '/nav/cultivate', text: '课程管理'}
                     ]},
                 { name: '技能鉴定', icon: 'md-people',second:[
                         {secondName:'技能鉴定', path: '/nav/checkEvaluate', text: '技能鉴定'}
@@ -69,6 +66,7 @@
                 { name: '设置', icon: 'md-settings', second: [
                         {secondName:'账号', path: '/nav/account', text: '账号管理'},
                         {secondName:'工种', path: '/nav/workclass', text: '工种管理'},
+                        {secondName:'题库', path: '/nav/options', text: '题库管理'}
                     ] }
             ];
             return this.menus;

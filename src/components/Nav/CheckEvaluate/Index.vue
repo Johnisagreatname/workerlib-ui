@@ -108,6 +108,12 @@
 
             return this.store.projectType;
         }
+        set totalRecords(data:number){
+            this.store.setPageTotal(data);
+        }
+        get totalRecords():number{
+            return this.store.pageTotal;
+        }
         set selectConstructionUit(data:string){
             this.store.setConstructionUit(data);
         }

@@ -63,6 +63,18 @@
             }
             return '';
         }
+        handleSelectRow(selection, row) {
+            console.log(row.id);
+            this.store.setUplodId(row.id)
+
+        }
+        handleSelectAll(selection) {
+            console.log(selection)
+            for(let i= 0;i<selection.length;i++){
+                let row = selection[i];
+                this.store.setUplodId(row.id);
+            }
+        }
 
         getMenus() : any {
           return this.store.projectType;

@@ -17,7 +17,7 @@
                 Input( v-model="value",clearable,style="width: 260px")
         .divOne
             span 状态：
-                Select(v-model="model8",clearable,style="width:260px")
+                Select(filterable,v-model="model8",clearable,style="width:260px")
                     Option(v-for="item in getMenus()", :value="item.value", :key="item.key")
         .divOne
             span 类型：

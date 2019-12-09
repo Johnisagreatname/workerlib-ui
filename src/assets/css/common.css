@@ -20,7 +20,7 @@
     background-color: #f68903;
 }
 #app .ivu-layout-sider-trigger {
-    position: fixed;
+    position: absolute;
     bottom: 0;
     text-align: center;
     cursor: pointer;
@@ -39,6 +39,9 @@
 }
 .ivu-table-body table tbody tr:nth-child(even) td {
     background-color: #f8f9fb !important;
+}
+#communal .rowClasses .ivu-table-cell {
+    white-space: nowrap !important;
 }
 .ivu-table-body table tbody tr td {
     height: 35px !important;
