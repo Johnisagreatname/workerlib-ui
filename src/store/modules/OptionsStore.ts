@@ -3,6 +3,7 @@ import store from "../index";
 import request from "../../common/HttpClient";
 import {Message} from "iview";
 import MessageUtils from "../../common/MessageUtils";
+import Options from "../../components/Nav/Options/Index.vue";
 
 @Module({
     namespaced: true,
@@ -28,6 +29,8 @@ export default class OptionsStore extends VuexModule {
     private subject: Array<Subject>;
     private subjectInfo: SubjectInfo;
     private optionsInfo: OptionsInfo;
+    private options: Array<OptionsEneile>
+    private values: Array<Values>;
 
 
 
@@ -40,6 +43,8 @@ export default class OptionsStore extends VuexModule {
         this.subject = [];
         this.subjectInfo = {};
         this.optionsInfo = {};
+        this.options = [];
+        this.values = [];
 
         this.title="";
         this.standard="";
@@ -61,6 +66,30 @@ export default class OptionsStore extends VuexModule {
             },
 
             "conditionList": [ ],
+
+            "sortList": [ ],
+
+            "groupList" : [
+            ],
+
+            "keywords" : [],
+
+            "selectList": []
+        };
+    }
+    @Action
+    public getId() : any {
+        return {
+            "pageInfo" : {
+                "pageIndex": this.pageIndex,
+                "pageSize": this.pageSize
+            },
+
+            "conditionList": [ {
+                "name": "subject_id",   //字段名
+                "value": this.subject_id,   //值
+                "algorithm": "EQ",
+            }],
 
             "sortList": [ ],
 
@@ -164,7 +193,66 @@ export default class OptionsStore extends VuexModule {
             alert.warning(e.message || e)
         });
     }
+
+    @Action
+    public async selectOptions(){
+        debugger;
+        await request.post('/api/workerlib/options',await this.getId()).then((data)=>{
+            this.answer(data);
+            // this.count();
+        }).catch((e)=>{
+            let alert: any = Message;
+            if(!e) {
+                alert.warning('未知错误！')
+                return
+            }
+            if(e.response && e.response.data && e.response.data.message) {
+                alert.warning(e.response.data.message)
+                return
+            }
+            if(!e.message) {
+                return;
+            }
+            alert.warning(e.message || e)
+        });
+    }
+    @Action
+    public async deleteOptions(){
+
+    }
     public columns = [
+        {
+            type: 'selection',
+            width: 60,
+            align: 'center'
+        },
+        {
+            title: '题目名称',
+            key: 'title',
+            sortable: true
+        },
+        {
+            title: '标准答案',
+            key: 'standard',
+            sortable: true
+        },
+        {
+            title: '题目类型',
+            key: 'type',
+            sortable: true
+        },
+        {
+            title: '分数',
+            key: 'score',
+            sortable: true
+        },
+        {
+            title: '操作',
+            slot: 'operation',
+            sortable: true
+        }
+    ];
+    public valueColumns = [
         {
             type: 'selection',
             width: 60,
@@ -222,6 +310,10 @@ export default class OptionsStore extends VuexModule {
         this.subject = data.data;
     }
     @Mutation
+    private answer(data: any) {
+        this.options = data.data;
+    }
+    @Mutation
     public setPageTotal(data: number) {
         this.pageTotal = data;
     }
@@ -264,6 +356,7 @@ interface Subject {
     standard?: string;
     type?: number;
 }
+
 interface SubjectInfo {
     id?:number;
     title?: string;
@@ -272,8 +365,16 @@ interface SubjectInfo {
     score?: string;
     private_id?: number;
 }
+interface OptionsEneile {
+    id?: number;
+    subject_id?: number;
+    value?: string;
+}
 interface OptionsInfo {
     id?: number;
     subject_id?: number;
+    value?: string;
+}
+interface Values {
     value?: string;
 }

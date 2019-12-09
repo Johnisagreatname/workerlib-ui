@@ -1,6 +1,6 @@
 <script lang="ts">
     import "@/assets/css/common.css";
-    import AccountStore from '../../../store/modules/AccountStore';
+    import RoleStore from '../../../store/modules/RoleStore';
     import { Component, Vue, Prop, Model} from 'vue-property-decorator';
     import { getModule } from 'vuex-module-decorators';
 
@@ -20,20 +20,18 @@
             }
         }
     })
-    export default class Account extends Vue {
-        public addProject: boolean;
+    export default class Role extends Vue {
+        public addRole: boolean;
+        public delRole: boolean;
         private store: any;
-        private options!: Array<any>;
-        private uid:string;
         private updUser:boolean;
-        public delUser: boolean;
 
         constructor() {
             super();
-            this.addProject = false;
-            this.store = getModule(AccountStore);
+            this.addRole = false;
+            this.store = getModule(RoleStore);
             this.updUser=false;
-            this.delUser = false;
+            this.delRole = false;
         }
         rowClassName (row, index) : string {
             if(index == 0) {
@@ -49,32 +47,23 @@
             this.store.search();
         }
         ok() : any{
-            this.store.insertUser();
-            this.addProject = false;
+            debugger;
+            this.store.insertRole();
+            this.addRole = false;
         }
         yes() : any{
-            this.store.updateUser();
+            this.store.deleteRole();
+            this.delRole = false;
         }
-        popupDelUser(userId){
-            this.store.setUid(userId);
-            // this.store.deleteUser(userId);
-            this.delUser =! this.delUser;
-        }
-        deletes() : any{
-            this.store.deleteUser();
-        }
-        popupUpdUser(userId){
-            this.uid = userId;
-            this.store.setUid(this.uid);
-            this.updUser = !this.updUser;
-            // this.store.updateUser(userId);
+        popupDelRole(roleId){
+            this.store.roleInfo.roleid = roleId;
+            this.delRole =! this.delRole;
         }
         cancel():any {
-            this.addProject = false;
+            this.addRole = false;
         }
 
         onPageSizeChange(pageSize){
-
             this.store.pageSize(pageSize);
             this.store.pageIndex(1);
             this.onPageIndexChange(1);
@@ -87,29 +76,46 @@
             this.store.pageIndex(pageIndex);
             this.store.search();
         }
-
         getColumns() : any{
             return this.store.columns;
         }
         getData() : any{
-            return this.store.project;
+            return this.store.role;
         }
 
+        get roleid():string{
+            return this.store.roleInfo.roleid;
+        }
+        set roleid(data:string){
+            this.store.setRoleid(data);
+        }
+        get roleName():string{
+            return this.store.roleInfo.roleName;
+        }
+        set roleName(data:string){
+            this.store.setRoleName(data);
+        }
+        get description():string{
+            return this.store.roleInfo.description;
+        }
+        set description(data:string){
+            this.store.setDescription(data);
+        }
+        get createTime():string{
+            return this.store.roleInfo.createTime;
+        }
+        set createTime(data:string){
+            this.store.setCreateTime(data);
+        }
+        get createBy():number{
+            return this.store.roleInfo.createBy;
+        }
+        set createBy(data:number){
+            this.store.setCreateBy(data);
+        }
 
-        get username():string{
-            return this.store.userInfo.username;
-        }
-        set username(data:string){
-            this.store.setUsername(data);
-        }
-        get password():string{
-            return this.store.userInfo.password;
-        }
-        set password(data:string){
-            this.store.setPassword(data);
-        }
 
     }
 </script>
-<style scoped src="@/styles/account.css" />
-<template lang="pug" src="@/views/account.pug" />
+<style scoped src="@/styles/role.css" />
+<template lang="pug" src="@/views/role.pug" />
