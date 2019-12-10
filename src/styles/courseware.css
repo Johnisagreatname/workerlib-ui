@@ -123,7 +123,31 @@
 
 .ivu-dropdown{
     display: inline-block;
-    margin-left: 45%;
+    margin-right: 2%;
+    float: right;
+
+}
+.divCheck{
+    border: 1px solid #2d8cf0;
+    float: left;
+    width: 50px;
+    text-align: center;
+    height: 20px;
+    border-radius: 10px;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+.divL{
+    width: 100%;
+    height: 30px;
+    overflow-y: auto;
+}
+
+.headPhotos{
+    width: 140px;
+    height: 140px;
+    float: left;
+    margin-left: 35%;
 }
 .ivu-dropdown-menu{
     min-width: 80px;
@@ -149,16 +173,19 @@
     font-size: 18px;
 }
 .cut{
-    width: 15%;
     height: 45px;
-    background-color: antiquewhite;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 17px;
+    /* background-color: antiquewhite; */
+    /* margin-left: auto; */
+    /* margin-right: auto; */
+    margin-top: 45px;
 }
 .addBody{
     width: 100%;
     height: 410px;
+}
+.addBody1{
+    width: 100%;
+    height: 770px;
 }
 .divTwo{
     line-height: 70px;
@@ -168,19 +195,116 @@
     float: left;
 
 }
+.top{
+    display: block;
+    width: 100%;
+    height: 80px;
+    float: right;
+}
+.cdivOne{
+    display: block;
+    height: 70px;
+    width: 520px;
+    float: left;
+    margin-left:100px;
+}
+.ccdivOne span {
+    width:1150px;
+    line-height: 70px;
+    font-size: 18px;
+}
+.cdivOne span {
+    line-height: 70px;
+    font-size: 18px;
+}
+.ccdivOne{
+    display: block;
+    height: 70px;
+    width: 100%;
+    float: left;
+    margin-left:100px;
+}
+.search{
+    display: block;
+    height: 70px;
+    width: 360px;
+    float: right;
+    margin-right:55px;
+}
+.search Button{
+    line-height: 30px;
+    font-size: 18px;
+    float: right;
+    height: 40px;
+    width: 165px;
+    margin-top: 13px;
+    background-color: #ffe100;
+    color:#ffffff;
+}
+.left1{
+    width: 860px;
+    height: 610px;
+    border: 1px solid #b8b8b8;
+    margin-left: 50px;
+    float: left;
+    padding-top: 10px;
+}
+.left1 table{
+    width: 800px;
+    border-top: 1px solid #999;
+
+    border-left: 1px solid #999;
+
+    border-spacing: 0;
+    margin-left: auto;
+    margin-right: auto;
+}
+.left1 td{
+   text-align: center;
+}
+.left1 table th{
+    height: 50px;
+    background-color: #b3d4fc;
+    font-size: 14px;
+}
+.left1 tr th,.left1 tr td{
+    border-bottom: 1px solid #999;
+
+    border-right: 0px;
+}
+.circle{
+    display: block;
+    width: 50px;
+    height: 50px;
+    background-color: #ffffff;
+    border-radius: 50%;
+    float: left;
+    margin-top: 16px;
+    margin-left: 20px;
+}
+.right1{
+    width: 340px;
+    height: 610px;
+    border: 1px solid #b8b8b8;
+    margin-right: 50px;
+    float: right;
+}
 .divTwo span{
     font-size: 18px;
 }
 .name{
-    width: 22%;
+    width: 90px;
     float: left;
     text-align: right;
 }
 .input{
-    width: 75%;
     float: left;
     margin-left: 2%;
+    line-height: 65px;
+    margin-left: 55px;
+    height: 100%;
 }
+
 .ivu-btn.disabled, .ivu-btn.disabled.active, .ivu-btn.disabled:active, .ivu-btn.disabled:focus,
 .ivu-btn.disabled:hover, .ivu-btn[disabled], .ivu-btn[disabled].active, .ivu-btn[disabled]:active,
 .ivu-btn[disabled]:focus, .ivu-btn[disabled]:hover, fieldset[disabled] .ivu-btn, fieldset[disabled],
@@ -189,3 +313,52 @@
     background-color: #0693ff !important;
     border-color: #0693ff !important;
 }
+.footer{
+    position: fixed;
+    /* left: 0px; */
+    bottom: 0px;
+    width: 90%;
+    height: 35px;
+    background-color: #e6e6e6;
+    z-index: 1;
+    float: right;
+}
+
+.footer ul {
+    text-align: center;
+    width: 100%;
+}
+.rdiv{
+    display:  inline-block;
+    float: left;
+    width: 50px;
+    height: 70px;
+    margin-left: 10px;
+    text-align: center;
+    margin-top: 10px;
+    position: relative;
+}
+.rimg{
+    width: 50px;
+    height: 50px;
+}
+.rname{
+    width: 50px;
+    height: 20px;
+}
+.image-remove {
+    background-color: #0091fe;
+    color: #ececec;
+    font-size: 12px;
+    width: 15px;
+    height: 15px;
+    text-align: center;
+    border-radius: 100%;
+    transform: rotate(45deg);
+    cursor: pointer;
+    /* opacity: 0.5; */
+    top: 2px;
+    right: -2px;
+    position: absolute;
+}
+#courseware{    margin-top: 10px;}
