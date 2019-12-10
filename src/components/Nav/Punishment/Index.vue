@@ -35,7 +35,6 @@
 
         mounted() {
             this.store.search();
-
         }
         public search() {
             this.store.search();

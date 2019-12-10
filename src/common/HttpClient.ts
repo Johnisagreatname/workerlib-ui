@@ -5,6 +5,7 @@ import axios from 'axios';
 
 /* 防止重复提交，利用axios的cancelToken */
 let pending: any[] = []; // 声明一个数组用于存储每个ajax请求的取消函数和ajax标识
+let name: string;
 const CancelToken: any = axios.CancelToken;
 
 
@@ -33,6 +34,19 @@ const service = axios.create({
     headers:{'Content-Type': 'application/json', 'Accept': 'application/json'}
 });
 
+// 下载函数
+function downLoad(data, name) {
+    let blob = []
+    blob.push(data)
+    let url = window.URL.createObjectURL(new Blob(blob, {type: "application/vnd.ms-excel;charset=utf-8"}))
+    let a = document.createElement('a')
+    a.style.display = 'none'
+    a.href = url
+    a.setAttribute('download', `${name}.xlsx`)
+    document.body.appendChild(a)
+    a.click()
+}
+
 /* request拦截器 */
 service.interceptors.request.use((config: any) => {
     // neverCancel 配置项，允许多个请求
@@ -46,6 +60,7 @@ service.interceptors.request.use((config: any) => {
     //   if (store.getters.sessionId) {
     //     config.headers['X-SessionId'] = getSessionId(); // 让每个请求携带token--['X-Token']为自定义key
     //   }
+    name = config.params ? config.params : ''
     return config;
 }, (error: any) => {
     Promise.reject(error);
@@ -61,8 +76,10 @@ service.interceptors.response.use(
             throw response.data.message;
         }
 
-        if(response.data.status != 0 || response.data.data == undefined) {
+        if((response.data.status != 0 || response.data.data == undefined) && response.data.type != "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet") {
             throw response.data.message;
+        } else if (response.data.type == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet") {
+            downLoad(response.data, name)
         }
 
         const data = response.data;

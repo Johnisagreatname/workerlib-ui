@@ -14,10 +14,10 @@
     .divOne
         span 工种：
             Input(clearable,style="width: 260px")
-    .divOne
-        span 状态：
-            Select(clearable,style="width:260px")
-                Option(v-for="item in getMenus()", :value="item.value", :key="item.key")
+    //.divOne
+    //    span 状态：
+    //        Select(clearable,style="width:260px")
+    //            Option(v-for="item in getMenus()", :value="item.value", :key="item.key")
     .divOne
         span 类型：
             Input(clearable,style="width: 260px")
@@ -25,14 +25,18 @@
         Button 搜索
     .hr
     .button
-        Button(type="primary", ghost, icon="ios-log-out") 导出评价
+        Button(type="primary", ghost, icon="ios-log-out",@click="commentsExport()") 导出评价
     .hr
     .people(v-for="item in getComments()")
         .circle
+            img(:src="'http://113.105.121.93:1818'+item.photo",:style={
+                'width': '100%', 'height': '100%',
+                'border-radius': '50%'
+            })
         .name
             span {{item.name}}
         Rate(disabled, :value="item.valueDisabled")
-        span(:style={'color': '#f78803','margin-left':'70px','font-size':'18px'}) {{ item.valueCustomText }}
+        span(:style={'color': '#f78803','margin-left':'70px','font-size':'18px'}) {{ item.appraise_score>0?item.appraise_score:0}}
         .comment
             .com 好评{{item.goodReputation}}
             .com 中评{{item.mediumReview}}
@@ -42,14 +46,13 @@
             span {{item.project}}
         .y1
             span(:style={'color':'#000000','font-weight':'bold','font-size':'15px'}) 所属工种
-            span {{item.typeWork}}
+            span {{item.work_type}}
         .y2
-            Button(type="primary", ghost,@click="commtentcInfo=!commtentcInfo") 查看详情
-            Button(type="primary", ghost,@click="addCommtent=!addCommtent") 添加评论
+            Button(type="primary", ghost,@click="details(item.id)") 查看详情
+            Button(type="primary", ghost,@click="addCommtentlist(item.id)") 添加评价
 
     .footer
-        Page(:total="4", size="small" ,show-elevator,show-sizer,show-total)
-
+        Page(:total="totalRecords",show-sizer,show-elevator,show-total,@on-page-size-change="onPageSizeChange",@on-change="onPageIndexChange")
     Modal(:value="addCommtent",title="添加评价",@on-ok="ok()",@on-cancel="cancel()",width='70%')
      .minBody
          Tabs(value="name1")
@@ -59,19 +62,19 @@
                          span 选择项目
                          span(:style={'color': 'red'}) *
                      .d2
-                         Input(clearable,style="width: 380px",size=large)
+                         Input(clearable,style="width: 380px",size=large,v-model="project")
                  .div
                      .d1
                          span 不良记录评价
                          span(:style={'color': 'red'}) *
                      .d2
-                         Input(clearable,style="width: 380px",size=large,type="textarea")
+                         Input(clearable,style={'width': '380px' ,'height':'70px'},size=large,type="textarea",v-model="description")
                  .div
                      .d1
                         span 事件时间
                         span(:style={'color': 'red'}) *
                      .d2
-                        DatePicker(type="date")
+                        DatePicker(type="date",v-model="appraise_time")
                  .div
                      .d1
                          span 添加图片
@@ -87,8 +90,8 @@
                          span 处罚
                          span(:style={'color': 'red'}) *
                      .d2
-                         Select(clearable,style="width:380px")
-                            Option(v-for="item in getCommentType()", :value="item.value", :key="item.key")
+                         Select(clearable,style="width:380px",v-model="punishment_id")
+                            Option(v-for="item in getCommentType()", :value="item.name", :key="item.value")
              TabPane( label="综合评价",name="name2",style="height: 430px")
                 .yu1
                     .dd
@@ -114,92 +117,94 @@
                                     Icon(type="ios-add" size="52" style="color: #3399ff")
                                     p 点击上传
                 .yu2
-                    .x
-                        span 态度
-                        Rate(v-model="value")
-                    .x
-                        span 技术
-                        Rate(v-model="value")
-                    .x
-                        span 专业
-                        Rate(v-model="value")
+                    .people(v-for="item in getComments()")
+                        .x
+                            span 态度
+                            Rate()
+                        .x
+                            span 技术
+                            Rate()
+                        .x
+                            span 专业
+                            Rate()
     Modal(:value="commtentcInfo",title="评价详情",width='70%')
-        .minBody
-           .c1
-               .c2
-                   .c5
-                        .c7
-                            span 裴灏杰
-                        .c8
-                            .c9
-                                span 水泥工
-                   .c6
-                       span 建兴劳务公司
-               .c3
-                   .ulDiv
-                       ul
-                           li 1
-                           li 2
-                           li 3
-                           li 4
-                           li 5
-               .c4
-                   .cc
-                       span 4.9
-                   Rate(v-model="custom",disabled)
-           .c10
-           .c11
-               .threeDiv
-                   .c12
-                       .c15
-                           p 恶意讨薪
-                       .c16
-                          .c17
-                                p 2019-11-28
-                          .c17
-                                img(src="~@/assets/css/images/commentOne.png" :style={'width':'59px','height':'25px'})
-                   .c13
-                       p 处罚：简易不予录用
-                   .c14
-                       p(:style={'color': '#1397ff', 'font-size': '16px'}) 深圳市白石龙项目
-                       p(:style={'color': '#9b9b9b', 'font-size': '12px','margin-top':'45px'}) 陈吕 现场管理员人员
-                       //p(:style={'color': '#000000', 'font-size': '14px'}) 干活它是，人踏实，继续努力
-                       //Rate(disabled)
-               .middleHr
-               .threeDiv
-                   .c12
-                       .c15
-                           p 工作热情高；人品端正、德行优良、自身修养较高、对待客户诚信；对待工作严谨、处处为公司考虑，能够虚心接受同事给予的建议并改正；学习进步较快、受到大多数客户的好评。
-                       .c16
-                           .c17
-                               p 2019-11-19
-                           .c17
-                               img(src="~@/assets/css/images/commentsTwo.png" :style={
-                                   'width': '59px',
-                                   'height': '25px'
-                               })
-                   .c13
-                       Rate(v-model="vaueCustomText",disabled)
-                   .c14
-                       p(:style={'color': '#1397ff', 'font-size': '16px'}) 深圳市南山项目
-                       p(:style={'color': '#9b9b9b', 'font-size': '12px', 'margin-top': '45px'}) 范佳超 现场管理员人员
-                       //p(:style={'color': '#000000', 'font-size': '14px'}) 干活它是，人踏实，继续努力
+        .peoples(v-for="item in getObtain()")
+            .minBody
+               .c1
+                   .c2
+                       .c5
+                            .c7
+                                span {{item.name}}
+                            .c8
+                                .c9
+                                    span {{item.work_type}}
+                       .c6
+                           span 建兴劳务公司
+                   .c3
+                       .ulDiv
+                           ul
+                               li 1
+                               li 2
+                               li 3
+                               li 4
+                               li 5
+                   .c4
+                       .cc
+                           span {{item.appraise_score>0?item.appraise_score:0}}
+                       Rate(:value="item.appraise_score>0?item.appraise_score:0",disabled)
+               .c10
+               .c11
+                   .threeDiv
+                       .c12
+                           .c15
+                               p 恶意讨薪
+                           .c16
+                              .c17
+                                    p 2019-11-28
+                              .c17
+                                    img(src="~@/assets/css/images/commentOne.png" :style={'width':'59px','height':'25px'})
+                       .c13
+                           p 处罚：简易不予录用
+                       .c14
+                           p(:style={'color': '#1397ff', 'font-size': '16px'}) 深圳市白石龙项目
+                           p(:style={'color': '#9b9b9b', 'font-size': '12px','margin-top':'45px'}) 陈吕 现场管理员人员
+                           //p(:style={'color': '#000000', 'font-size': '14px'}) 干活它是，人踏实，继续努力
+                           //Rate(disabled)
+                   .middleHr
+                   .threeDiv
+                       .c12
+                           .c15
+                               p 工作热情高；人品端正、德行优良、自身修养较高、对待客户诚信；对待工作严谨、处处为公司考虑，能够虚心接受同事给予的建议并改正；学习进步较快、受到大多数客户的好评。
+                           .c16
+                               .c17
+                                   p 2019-11-19
+                               .c17
+                                   img(src="~@/assets/css/images/commentsTwo.png" :style={
+                                       'width': '59px',
+                                       'height': '25px'
+                                   })
+                       .c13
+                           Rate(v-model="vaueCustomText",disabled)
+                       .c14
+                           p(:style={'color': '#1397ff', 'font-size': '16px'}) 深圳市南山项目
+                           p(:style={'color': '#9b9b9b', 'font-size': '12px', 'margin-top': '45px'}) 范佳超 现场管理员人员
+                           //p(:style={'color': '#000000', 'font-size': '14px'}) 干活它是，人踏实，继续努力
 
-               .middleHr
-               .threeDiv
-                   .c12
-                       .c15
-                           p 退场前闹事，建议不予录用
-                       .c16
-                           .c17
-                               p 2019-11-19
-                           .c17
-                               img(src="~@/assets/css/images/commentThree.png" :style={
-                                   'width': '59px',
-                                   'height': '25px'
-                               })
-                   .c13
-                       Rate(v-model="vaueCustom",disabled)
-                   .c14
-                       p(:style={'color': '#1397ff', 'font-size': '16px'}) 布吉项目
-                       p(:style={'color': '#9b9b9b', 'font-size': '12px', 'margin-top': '45px'}) 林陆锐 现场管理员人员
+                   .middleHr
+                   .threeDiv
+                       .c12
+                           .c15
+                               p 退场前闹事，建议不予录用
+                           .c16
+                               .c17
+                                   p 2019-11-19
+                               .c17
+                                   img(src="~@/assets/css/images/commentThree.png" :style={
+                                       'width': '59px',
+                                       'height': '25px'
+                                   })
+                       .c13
+                           Rate(v-model="vaueCustom",disabled)
+                       .c14
+                           p(:style={'color': '#1397ff', 'font-size': '16px'}) 布吉项目
+                           p(:style={'color': '#9b9b9b', 'font-size': '12px', 'margin-top': '45px'}) 林陆锐 现场管理员人员

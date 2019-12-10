@@ -148,11 +148,11 @@
 .footer ul {
     margin-left: auto;
     margin-right: auto;
-    width: 500px;
+    width: 800px;
 }
 .minBody{
     width: 100%;
-    height: 440px;
+    height: auto;
 }
 .cc{
     font-size: 35px;
@@ -366,4 +366,22 @@
     color: #000000;
     margin-left: 3%;
     margin-top: 10px;
+}
+.peoples{
+    display: inline-block;
+    width: auto;
+    height: auto;
+    margin-left: 45px;
+    margin-top: 20px;
+    border: 1.5px solid #f8f9fb;
+    box-shadow: 5px 5px 5px -1px #d7d7d7;
+    background-color: #f8f9fb;
+}
+
+.minBody .ivu-table-wrapper{
+    overflow: unset !important;
+}
+
+.ivu-tabs {
+    overflow: unset !important;
 }
