@@ -189,15 +189,16 @@ export default class UnitStore extends VuexModule {
     public getParams() : any {
         return {
             "joinTables": [{
-                "tablename": "project",
-                "alias": "p",
-                "JoinMode": "inner"
-            }, {
                 "tablename": "unit",
                 "alias": "u",
-                "joinMode": "Inner",
+                "joinMode": "Left",
+
+            }, {
+                "tablename": "project",
+                "alias": "p",
+                "JoinMode": "Left",
                 "onList": [{
-                    "name": "p.id",
+                    "name": "p.project_id",
                     "value": "u.project_id",
                     "algorithm": "EQ"
                 }]
@@ -244,7 +245,7 @@ export default class UnitStore extends VuexModule {
 
             "keywords" : [],
             "selectList": [{
-                "field": "id"
+                "field": "project_id"
             },{
                 "field": "project_name"
             }]
@@ -295,6 +296,7 @@ export default class UnitStore extends VuexModule {
 
     @Action
     public async insertUnit() {
+        debugger
         await request.put('/api/workerlib/unit', {
             "project_id":this.project_id,
             "project_license":this.project_license,
@@ -302,13 +304,14 @@ export default class UnitStore extends VuexModule {
             "unit_name":this.unit_name,
             "people_number":this.people_number,
             "unit_type":this.unit_type,
-            "entrance_time":this.entrance_time.getFullYear() + "-" + this.entrance_time.getMonth() + "-" + this.entrance_time.getDate(),
+            "entrance_time":this.entrance_time ? this.entrance_time.getFullYear() + "-" + this.entrance_time.getMonth() + "-" + this.entrance_time.getDate():"",
             "principal":this.principal,
             "status":this.status
         }).then((data)=>{
             this.added(data)
         }).catch((e)=>{
             console.log(e)
+            debugger
             let alert: any = Message;
             if(!e) {
                 alert.warning('未知错误！');
@@ -352,7 +355,7 @@ export default class UnitStore extends VuexModule {
 
     @Action
     public async count() {
-        await request.post('/api/workerlib/unit/count', await this.getParams()).then((total)=>{
+        await request.post('/api/workerlib/join/count', await this.getParams()).then((total)=>{
             this.setPageTotal(total.data)
         }).catch((e)=>{
             MessageUtils.warning(e);
@@ -361,6 +364,7 @@ export default class UnitStore extends VuexModule {
 
     @Action
     public added(data: any) {
+        debugger
         if(data.status == 0) {
             this.search();
         }

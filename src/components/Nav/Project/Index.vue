@@ -38,7 +38,6 @@
             this.store.search();
         }
         ok() : any{
-            debugger
             this.store.insertProject();
             this.addProject = false;
         }

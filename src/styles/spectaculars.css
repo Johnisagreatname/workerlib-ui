@@ -1,0 +1,545 @@
+.spectaculars{
+    width: 100%;
+    height: 100%;
+    background-image: url('~@/assets/css/images/homeBJ.png');
+    background-repeat: no-repeat;
+    background-size: 100%;
+    background-position: center;
+    color: #ffffff;
+    overflow-x: hidden;
+    position: relative;
+}
+.header{
+    width: 100%;
+    height: 80px;
+}
+.headerLeft{
+    width: 670px;
+    height: 80px;
+    float: left;
+    background-image: url('~@/assets/css/images/headerLeft.png');
+    background-repeat: no-repeat;
+    background-position: center;
+}
+.headerMiddle{
+    width: 575px;
+    height: 80px;
+    float: left;
+    background-image: url('~@/assets/css/images/headerFont.png');
+    background-repeat: no-repeat;
+    background-position: center;
+}
+.headerRight{
+    width: 670px;
+    height: 80px;
+    float: right;
+    background-image: url('~@/assets/css/images/headerRight.png');
+    background-repeat: no-repeat;
+    background-position: center;
+}
+.headerLogo{
+    width: 125px;
+    height: 80px;
+    float: left;
+    background-image: url('~@/assets/css/images/headerLogo.png');
+    background-repeat: no-repeat;
+    margin-left: 105px;
+}
+.headerLogoFont{
+    width: 150px;
+    height: 80px;
+    float: left;
+}
+.headerLogoFont span{
+    color: #ffffff;
+    font-size:14px;
+    letter-spacing:6px;
+    line-height: 70px;
+}
+.body{
+    width: 100%;
+    height: 1000px;
+    background-image: url('~@/assets/css/images/homeBody.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 100%;
+}
+.bodyLeft{
+    width: 540px;
+    height: 1000px;
+    float: left;
+}
+.bodyLeftTop{
+    margin-top: 40px;
+    width: 490px;
+    height:282px;
+    background-image: url('~@/assets/css/images/homeLeftBJ.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 100%;
+    float: right;
+}
+.bodyLeftMiddle{
+    width: 490px;
+    height:282px;
+    background-image: url('~@/assets/css/images/homeLeftBJ.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 100%;
+    float: right;
+    margin-top: 20px;
+}
+.bodyLeftBelow{
+    width: 490px;
+    height: 313px;
+    background-image: url('~@/assets/css/images/homeLeftBelow.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 100%;
+    float: right;
+    margin-top: 20px;
+}
+.bodyMiddle{
+    width: 800px;
+    height: 1000px;
+    float: left;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+.bodyMiddleTop{
+    width: 800px;
+    height: 460px;
+    background-image: url('~@/assets/css/images/banner.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    margin-top: 40px;
+}
+.bodyMiddleMiddle{
+    width: 800px;
+    height: 182px;
+    background-image: url('~@/assets/css/images/homeMiddleMiddle.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    margin-top: 20px;
+}
+.bodyMiddleBelow{
+    width: 800px;
+    height: 235px;
+    margin-top: 20px;
+}
+.middleLeft{
+    width: 250px;
+    height: 235px;
+    float: left;
+    background-image: url('~@/assets/css/images/middleLeft.png');
+    background-repeat: no-repeat;
+    background-position: center;
+}
+.middleMiddle{
+    width: 250px;
+    height: 235px;
+    background-image: url('~@/assets/css/images/middleMiddle.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    margin-left: 25px;
+    margin-right: 25px;
+    float: left;
+}
+.middleRight{
+    width: 250px;
+    height: 235px;
+    background-image: url('~@/assets/css/images/middleRight.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    float: right;
+}
+.bodyRight{
+    width: 540px;
+    height: 1000px;
+    float: right;
+}
+.bodyRightTop{
+    width: 490px;
+    height: 282px;
+    background-image: url('~@/assets/css/images/homeRightBJTop.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    float: left;
+    margin-top: 40px;
+}
+.bodyRightMiddle{
+    width: 490px;
+    height: 282px;
+    background-image: url('~@/assets/css/images/homeRightBJMiddle.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    float: left;
+    margin-top: 20px;
+}
+.bodyRightBelow{
+    width: 490px;
+    height: 312px;
+    background-image: url('~@/assets/css/images/homeRightBJButtom.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    float: left;
+    margin-top: 20px;
+}
+.topTop{
+    width: 490px;
+    height: 50px;
+}
+.topLeftLeft{
+    width: 65px;
+    height: 50px;
+    background-image: url('~@/assets/css/images/OneLogo.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    float: left;
+}
+.belowTopLeft{
+    width: 65px;
+    height: 50px;
+    background-image: url('~@/assets/css/images/threeLogo.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    float: left;
+}
+.cultivateEcharts{
+    width: 418px;
+    height: 200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.belowTopMiddle{
+    width: 245px;
+    height: 50px;
+    float: left;
+    font-size: 16px;
+    color: #ffffff;
+    line-height: 50px;
+}
+.topLeftRight{
+    width: 180px;
+    height: 50px;
+    float: right;
+}
+.circleBlue{
+    display: block;
+    width: 8px;
+    height: 8px;
+    background-color: #3e9afe;
+    border-radius: 50%;
+    margin-top: 20px;
+    float: left;
+}
+.circleGreen{
+    display: block;
+    width: 8px;
+    height: 8px;
+    background-color: #6adfc5;
+    border-radius: 50%;
+    margin-top: 20px;
+    float: left;
+}
+.hrBJ{
+    width: 490px;
+    height: 1px;
+    background-image: url('~@/assets/css/images/gg.png');
+    background-repeat: no-repeat;
+    background-position: center;
+
+}
+.rightTitle{
+    width: 50%;
+    height: 50px;
+    float: left;
+}
+.topButtom{
+    width: 490px;
+    height: 20px;
+    margin-top: 20px;
+}
+.belowLeft{
+    float: left;
+    width: 200px;
+    height: 20px;
+    transform: rotateY(180deg);   /* 水平镜像翻转 */
+    margin-left: 5px;
+}
+.belowMiddle{
+    float: left;
+    width: 80px;
+    height: 20px;
+    text-align: center;
+    font-weight: bolder;
+}
+.belowRight{
+    float: left;
+    width: 200px;
+    height: 20px;
+    margin-right: 5px;
+}
+.middleTop{
+    width: 490px;
+    height: 50px;
+}
+.belowTop{
+    width: 490px;
+    height: 50px;
+}
+.middleTopLeft{
+    width: 65px;
+    height: 50px;
+    background-image: url('~@/assets/css/images/twoLogo.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    float: left;
+}
+.topLeftMiddle{
+    width: 245px;
+    height: 50px;
+    float: left;
+    font-size: 16px;
+    color: #ffffff;
+    line-height: 50px;
+}
+.topLeftMiddle span{
+    font-weight: bold;
+}
+.belowTopMiddle span{
+    font-weight: bold;
+}
+.middleRightTitle{
+    width: 70%;
+    height: 50px;
+    float: left;
+    text-align: right;
+}
+.middleRightTitleTwo{
+    width: 30%;
+    height: 50px;
+    float: left;
+}
+.middleRightRelative{
+    position:relative;
+    color:#000;
+    width:50px;
+    height:50px
+}
+.div-a{
+    position: absolute;
+    left: 15px;
+    top: 15px;
+    z-index: 50;
+    background: #0040a1;
+    width: 16px;
+    height: 16px;
+    border: 1px solid #001942;
+}
+.div-b{
+    position: absolute;
+    left: 20px;
+    top: 20px;
+    z-index: 80;
+    background: #0068ff;
+    width: 16px;
+    height: 16px;
+    border: 1px solid #001942;
+}
+.middleButtom{
+    width: 445px;
+    height: 160px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.middleLeftMiddle{
+    width: 490px;
+    height: 50px;
+}
+.middleMiddleRight{
+    width: 140px;
+    height: 50px;
+    float: right;
+    margin-right: 24px;
+    line-height: 50px;
+}
+.belowMiddleMiddle{
+    width: 490px;
+    height: 45px;
+}
+.middleMiddleTop{
+    width: 800px;
+    height: 24px;
+    text-align: center;
+    line-height: 24px;
+    color: #0067fd;
+}
+.middleMiddleBelow{
+    width: 800px;
+    height: 158px;
+}
+.middleBelow{
+    width: 264px;
+    height: 158px;
+    float: left;
+}
+.middleBelowT{
+    width: 250px;
+    height: 158px;
+    float: left;
+}
+.belowTopOne{
+    width: 264px;
+    height: 40px;
+    margin-top: 16px;
+}
+.belowTopOneT{
+    width: 250px;
+    height: 40px;
+    margin-top: 16px;
+}
+.belowBelow{
+    width: 264px;
+    height: 100px;
+    text-align: center;
+}
+.belowBelowTwo{
+    width: 250px;
+    height: 112px;
+    text-align: center;
+}
+.topLeft{
+    width: 56px;
+    height: 40px;
+    margin-left: 52px;
+    background-image: url('~@/assets/css/images/gzLogo.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    float: left;
+    background-position: center;
+}
+.topLeftZS{
+    width: 56px;
+    height: 40px;
+    margin-left: 52px;
+    background-image: url('~@/assets/css/images/zs.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    float: left;
+    background-position: center;
+}
+.topLeftZZ{
+    width: 56px;
+    height: 40px;
+    margin-left: 52px;
+    background-image: url('~@/assets/css/images/zz.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    float: left;
+    background-position: center;
+}
+.topLeftWB{
+    width: 56px;
+    height: 40px;
+    margin-left: 52px;
+    background-image: url('~@/assets/css/images/wb.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    float: left;
+    background-position: center;
+}
+.belowThree{
+    width: 250px;
+    height: 66px;
+    text-align: center;
+}
+.topRightRight{
+    width: 65px;
+    height: 50px;
+    background-image: url('~@/assets/css/images/zgrsLogo.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    float: left;
+}
+.topRightJN{
+    width: 65px;
+    height: 50px;
+    background-image: url('~@/assets/css/images/jnLogo.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    float: left;
+}
+.topRightBL{
+    width: 65px;
+    height: 50px;
+    background-image: url('~@/assets/css/images/blLogo.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    float: left;
+}
+.threeP{
+    width: 388px;
+    height: 212px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.gzEcharts{
+    width:230px;
+    height:230px;
+    float:left;
+    background-image: url('~@/assets/css/images/qq.png');
+    background-repeat: no-repeat;
+    background-position: center;
+}
+.gzmm{
+    width: 200px;
+    height: 230px;
+    float: left;
+    margin-left: 50px;
+}
+.tableCircle{
+    display: block;
+    width: 20px;
+    height: 10px;
+    background-color: #3e9afe;
+    float: left;
+    margin: 5px;
+}
+.q4{
+    width: 490px;
+    height: 100px;
+    margin-top: 10px;
+}
+.demo-carousel{
+    width: 150px;
+    height: 86px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.q5 table tr td{
+    border-bottom: 1px solid #223453 !important;
+}
+.q5{
+    width: 490px;
+    height: 140px;
+    margin-right: auto;
+    margin-left: auto;
+}
+.fh{
+    width: 120px;
+    height: 50px;
+    font-size: 14px;
+    background-color: #0079ba;
+    border-radius: 50px 0 0 50px;
+    line-height: 50px;
+    position: absolute;
+    top: 50px;
+    right: -50px;
+    padding-left: 20px;
+    cursor: pointer;
+    transition: all .5s;
+}
+.fh:hover {
+    right: 0;
+ }

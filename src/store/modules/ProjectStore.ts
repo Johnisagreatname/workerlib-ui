@@ -169,12 +169,13 @@ export default class ProjectStore extends VuexModule {
 
     @Action
     public async insertProject() {
+        debugger
         await request.put('/api/workerlib/project', {
                 "project_name":this.projectInfo.project_name,
                 "project_brief":this.projectInfo.project_brief,
                 "builder_license":this.projectInfo.builder_license,
-                "start_time":this.projectInfo.start_time.getFullYear() + "-" + this.projectInfo.start_time.getMonth() + "-" + this.projectInfo.start_time.getDate(),
-                "end_time":this.projectInfo.end_time.getFullYear() + "-" + this.projectInfo.end_time.getMonth() + "-" + this.projectInfo.end_time.getDate(),
+                "start_time":this.projectInfo.start_time ? this.projectInfo.start_time.getFullYear() + "-" + this.projectInfo.start_time.getMonth() + "-" + this.projectInfo.start_time.getDate():null,
+                "end_time":this.projectInfo.end_time ? this.projectInfo.end_time.getFullYear() + "-" + this.projectInfo.end_time.getMonth() + "-" + this.projectInfo.end_time.getDate():null,
                 "construction":this.projectInfo.construction,
                 "organization":this.projectInfo.organization,
                 "supervising":this.projectInfo.supervising,
@@ -216,6 +217,7 @@ export default class ProjectStore extends VuexModule {
 
     @Action
      public added(data: any) {
+        debugger
         if(data.status == 0) {
             this.search();
         }
