@@ -105,7 +105,7 @@
                   span(:style={'color': 'red'}) *
                .input
                   Select(filterable,clearable,style="width:345px",v-model="projectId",@on-change="selectUnit()")
-                     Option(v-for="item in getProjectList()", :value="item.id", :key="item.id") {{item.project_name}}
+                     Option(v-for="item in getProjectList()", :value="item.project_id", :key="item.project_id") {{item.project_name}}
             .divTwo
                .name
                   span 参建单位
