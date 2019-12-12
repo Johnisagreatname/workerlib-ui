@@ -351,6 +351,27 @@ export default class CultivateStore extends VuexModule {
             align: 'center'
         },
         {
+            title: '课程简介',
+            key: 'courseware_brief',
+            sortable: true,
+            render: (h, params) => {
+                return h('div', [
+                    h('span', {
+                        style: {
+                            display: 'inline-block',
+                            width: '100%',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            whiteSpace: 'nowrap'
+                        },
+                        domProps: {
+                            title: params.row.courseware_brief
+                        }
+                    }, params.row.courseware_brief)
+                ])
+            }
+        },
+        {
             title: '培训课程',
             key: 'course_name',
             sortable: true,

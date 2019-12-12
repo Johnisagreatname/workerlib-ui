@@ -68,7 +68,7 @@ export default class CoursewareStore extends VuexModule {
 
         this.selectTitle = "";
         this.selectTypeWork = "";
-        this.selectStatus = null;
+        this.selectStatus = 1;
         this.id = null;
 
         this.selectProjectName = "";
@@ -79,6 +79,7 @@ export default class CoursewareStore extends VuexModule {
     }
     @Action
     public getParams() : any {
+        debugger
         return {
             "pageInfo" : {
                 "pageIndex": this.pageIndex,
@@ -112,6 +113,7 @@ export default class CoursewareStore extends VuexModule {
     }
     @Action
     public getPeopleParams() : any {
+        debugger
         return {
             "pageInfo" : {
                 "pageIndex": this.pageInIndex,
@@ -173,6 +175,7 @@ export default class CoursewareStore extends VuexModule {
 
     @Action
     public async search() {
+        debugger
         await request.post('/api/workerlib/courseware',await this.getParams()).then((data)=>{
             this.success(data);
             this.count();
@@ -270,6 +273,7 @@ export default class CoursewareStore extends VuexModule {
     }
     @Action
     public async insertCourseware() {
+        debugger
         await request.put('/api/workerlib/courseware', {
             "title":this.courseWare.title,
             "course":this.courseWare.course,
@@ -310,10 +314,11 @@ export default class CoursewareStore extends VuexModule {
         await request.put('/api/workerlib/cultivate', {
             "course_id":this.cultivate.course_id,
             "course_name":this.cultivate.course_name,
-            "startTime":this.cultivate.startTime.getFullYear() + "-" + (this.cultivate.startTime.getMonth()+1) + "-" + this.cultivate.startTime.getDate(),
+            "startTime":this.cultivate.startTime ?this.cultivate.startTime.getFullYear() + "-" + (this.cultivate.startTime.getMonth()+1) + "-" + this.cultivate.startTime.getDate():null,
             "peoples":this.cultivate.peoples,
             "state":this.cultivate.state,
-            "mark":this.cultivate.mark
+            "mark":this.cultivate.mark,
+            "courseware_brief":this.cultivate.courseware_brief
         }).then((data)=>{
             this.successAddCultivate(data)
         }).catch((e)=>{
@@ -404,6 +409,7 @@ export default class CoursewareStore extends VuexModule {
     }
     @Action
     public async searchPeople() {
+        debugger
         await request.post('/api/workerlib/archives',await this.getPeopleParams()).then((data)=>{
             this.successPeople(data);
             this.countPeople();
@@ -801,6 +807,10 @@ export default class CoursewareStore extends VuexModule {
         this.cultivate.mark = data;
     }
     @Mutation
+    public setCoursewareBrief(data:string){
+        this.cultivate.courseware_brief = data;
+    }
+    @Mutation
     public setCourseName(data:string){
         this.cultivate.course_name = data;
     }
@@ -843,4 +853,5 @@ interface Cultivate {
     peoples?:number;
     state?:string;
     mark?:string;
+    courseware_brief?:string;
 }

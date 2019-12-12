@@ -5,10 +5,6 @@
                 Tabs(value="线上培训",@on-click="toggle")
                     TabPane(label="线上培训",name="线上培训",icon="ios-paper-outline")
                         .topOne
-                            //.divOne
-                            //    span 课件类型：
-                            //        Select(clearable,multiple,style="width:260px",v-model="selectTypeWork",filterable,placeholder="选择分类",placement="top-start")
-                            //            Option(v-for="item in getType()", :value="item.name", :key="item.name") {{item.name}}
                             .divOne
                                 span 课件搜索：
                                     Input(clearable,style="width: 260px",v-model="selectTitle")
@@ -62,6 +58,61 @@
 
 
                     TabPane(label="线下培训",name="线下培训",icon="ios-paper-outline")
+                        .topOne
+                            //.divOne
+                            //    span 课件类型：
+                            //        Select(clearable,multiple,style="width:260px",v-model="selectTypeWork",filterable,placeholder="选择分类",placement="top-start")
+                            //            Option(v-for="item in getType()", :value="item.name", :key="item.name") {{item.name}}
+                            .divOne
+                                span 课件搜索：
+                                    Input(clearable,style="width: 260px",v-model="selectTitle")
+                            .search
+                                Button(@click="this.store.search") 搜索
+                        .hr
+                        .button
+                            Button(type="primary", ghost, icon="ios-add-circle-outline",@click="addCourseware=!addCourseware") 新建课件
+                        .courseware(v-for="item in getCourseWareList()")
+                            .div1
+                                span(:style={
+                                    'font-size': '18px',
+                                    'line-height': '50px',
+                                    'margin-left': '5%',
+                                    'color': '#000000'
+                                }) {{item.title}}
+                                template
+                                    Dropdown(trigger="click",@on-click = "change")
+                                        a( href="javascript:void(0)" :style={"font-size": "30px"})
+                                            Icon(type="ios-more")
+                                        DropdownMenu(slot="list")
+                                            DropdownItem(:name="'edit_'+item.id")
+                                                Icon(type="ios-create-outline" )
+                                                span 编辑
+                                            DropdownItem(:name="'del_'+item.id")
+                                                Icon(type="ios-trash-outline" )
+                                                span 删除
+                            .div2
+                                img(src="~@/assets/css/images/gj.jpeg" :style={'width': '100%', 'height': '100%'})
+                            .div31
+                                Button.butt1(@click="viewData(item.id,item.title)") 新建课程
+                            //    .left
+                            //        span(:style={
+                            //            'margin-left': '10%',
+                            //            'margin-top': '5%',
+                            //            'font-size': '18px',
+                            //            'float': 'left',
+                            //            'color': '#000000'
+                            //        }) {{item.total_hours}}课时
+                            //        .ellipse
+                            //            span(:style={
+                            //                'font-size': '12px',
+                            //                'float': 'left',
+                            //                'margin-top': '5%',
+                            //                'margin-left': '25%',
+                            //                'color': '#ffffff'
+                            //            }) 必学
+                            //    .right
+                            //        span(:style={'color': '#0090ff'}) {{item.type_work}}
+
     .footer
         Page(:total="pageTotal",show-sizer,show-elevator,show-total,
         @on-page-size-change="onPageSizeChange",@on-change="onPageIndexChange")
@@ -127,7 +178,6 @@
                             p 点击上传
                             p （请上传某种格式视频）
                 TabPane(label="课件详情",name="name3",icon="ios-folder-outline")
-
                     Upload(multiple,type="drag",action="/api/workerlib/upload/courseware/cover_picture",
                     :on-success="handleSuccessPicture",:format="['jpg','jpeg','png']",:on-format-error="handleFormatPictrueError",
                     :style={
@@ -252,7 +302,14 @@
                         span 课件名称
                         span(:style={'color': 'red'}) *
                     .input
-                        Input(clearable,:style={'width': '370px'},:value="this.onTitle",disabled)
+                        Input(clearable,:style={'width': '240px'},:value="this.onTitle",disabled)
+                .cdivOne
+                    .name
+                        span 课件简介
+                        span(:style={'color': 'red'}) *
+                    .input
+                        Input(clearable,:style={'width': '240px'},v-model="coursewareBrief")
+
                 .cdivOne
                     .name
                         span 培训日期
@@ -260,7 +317,7 @@
                     .input
                         Row
                             Col(span="12")
-                                DatePicker(v-model="startTime",type="date",placeholder="请选择",style="width: 370px")
+                                DatePicker(v-model="startTime",type="date",placeholder="请选择",style="width: 240px")
             .top
                 .ccdivOne
                     .name
@@ -277,7 +334,8 @@
                     Select(clearable,filterable,:style={'width': '100px', 'margin-left': '10px'},placeholder="培训情况")
                         Option(v-for="item in getMenus()", :value="item.key",:key="item.key") {{item.value}}
                     Table(border=false, ref="selection", :columns="getColumns()", :data="getData()",:row-class-name="rowClass", id="communal",
-                    @on-select="handleSelectRow",@on-select-cancel="handleSelectRowCancel",@on-select-all="handleSelectAll")
+                    :style="{'margin-top': '10px'}",
+                    @on-select="handleSelectRow",@on-select-all="handleSelectAll")
 
                         template(slot-scope="{ row }" ,slot="photo")
                             img(:src="'/api/workerlib/preview/archives/photo/'+row.id",:style={

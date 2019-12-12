@@ -27,7 +27,7 @@ export default class WorkerStore extends VuexModule {
     public phone:number;
     public type:number;
     public project:string;
-    public projectId:number;
+    public projectId:string;
     public unit:string;
     public unitId:number;
     public animal:string;
@@ -80,7 +80,7 @@ export default class WorkerStore extends VuexModule {
         this.userName = "";
         this.animal = "2";
         this.infoId=null;
-        this.projectId = null;
+        this.projectId = "";
         this.unitId = null;
         this.unit = null;
         this.project = "";
@@ -170,19 +170,34 @@ export default class WorkerStore extends VuexModule {
     public getUploadParams() : any {
 
         return {
+            "joinTables": [{
+                "tablename": "archives",
+                "alias": "a",
+                "joinMode": "Left"
+            }, {
+                "tablename": "project",
+                "alias": "p",
+                "joinMode": "Left",
+                "onList": [{
+                    "name": "a.project_id",
+                    "value": "p.id",
+                    "algorithm": "EQ"
+                }]
+            }],
             "conditionList": [{
-                "name": "id",
+                "name": "a.id",
                 "value":  this.check,
                 "algorithm": "IN"
-            }
-            ],
+            }],
+
 
             "keywords" : [],
             "selectList": [
                 {"field": "name" },
                 {"field": "phone" },
                 {"field": "id_number" },
-                {"field": "work_type" }
+                {"field": "work_type" },
+                {"field": "p.project_name" }
             ]
         };
     }
@@ -268,7 +283,7 @@ export default class WorkerStore extends VuexModule {
     @Action
     public async upload() {
         let alert: any = Message;
-        await request.put('/api/workerlib/archives/export',await this.getUploadParams()).then((data)=>{
+        await request.post('/api/workerlib/export/join',await this.getUploadParams(),{responseType: 'blob', params: '人员档案'}).then((data)=>{
             this.successUpload();
         }).catch((e)=>{
             let alert: any = Message;
@@ -290,6 +305,7 @@ export default class WorkerStore extends VuexModule {
 
     @Action
     public async search() {
+        debugger
         await request.post('/api/workerlib/archives',await this.getParams()).then((data)=>{
             this.success(data);
             this.count();
@@ -502,7 +518,6 @@ export default class WorkerStore extends VuexModule {
             "leave":1,
             "id_card_front":this.idCardfront,
             "id_card_reverse":this.idCardReverse,
-            "grade":this.grade,
             "certificate":this.certificate
         }).then((data)=>{
             this.added(data)
@@ -569,7 +584,7 @@ export default class WorkerStore extends VuexModule {
     }
     @Action
     public addIn(data: any) {
-
+        debugger
         if(data.status == 0) {
             this.search();
         }
@@ -725,11 +740,12 @@ export default class WorkerStore extends VuexModule {
         this.unit = data;
     }
     @Mutation
-    public setProjectId(data:number){
+    public setProjectId(data:string){
         this.projectId = data;
     }
     @Mutation
     public setUnitId(data:number){
+        debugger
         this.unitId = data;
     }
     @Mutation

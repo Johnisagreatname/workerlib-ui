@@ -3,6 +3,7 @@
     import LecturerStore from '../../../store/modules/LecturerStore';
     import { Component, Vue, Prop, Model} from 'vue-property-decorator';
     import { getModule } from 'vuex-module-decorators';
+    import { Message } from 'iview';
 
     @Component({
         components:{
@@ -48,16 +49,17 @@
             ];
             return this.options;
         }
-        //切换内部/外部讲师
-        toggle():any{
-            this.checkedInternal=!this.checkedInternal;
-            if(this.checkedInternal==true){
+        toggle(name){
+            debugger;
+            if(name=="内部讲师"){
                 this.store.setSelectType(1);
+                this.store.search();
             }else {
                 this.store.setSelectType(2);
+                this.store.search();
             }
-            this.store.search();
         }
+
         ok() : any{
             this.store.insertLecturer();
             this.addLecturer = false;
@@ -66,7 +68,13 @@
             this.store.setLecturerInfo();
             this.addLecturer = false;
         }
-
+        handleSuccessPhoto (res, file) {
+            this.store.setPhoto(res.file);
+        }
+        handleFormatError (file) {
+            let alert: any = Message;
+            alert.warning(file.name + ' 文件格式错误！请上传jpg、jpeg、png格式文件！');
+        }
         set userName(data:string){
             this.store.setName(data);
         }

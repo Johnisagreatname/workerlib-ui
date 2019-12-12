@@ -61,7 +61,8 @@ export default class LecturerStore extends VuexModule {
         await request.put('/api/workerlib/lecturer', {
             "name":this.lecturerInfo.name,
             "curriculum":this.lecturerInfo.curriculum,
-            "type":this.lecturerInfo.type
+            "type":this.lecturerInfo.type,
+            "photo":this.lecturerInfo.photo
         }).then((data)=>{
             this.added(data)
         }).catch((e)=>{
@@ -112,6 +113,10 @@ export default class LecturerStore extends VuexModule {
     @Mutation
     public setName(data:string){
         this.lecturerInfo.name=data;
+    }
+    @Mutation
+    public setPhoto(data:string){
+        this.lecturerInfo.photo=data;
     }
 }
 
