@@ -30,13 +30,13 @@
                         DropdownMenu(slot="list")
                             DropdownItem
                                 Icon(type="ios-add-circle-outline")
-                                span( @click="popupAddOption(row.id)") 新增答题选项
+                                span(@click="popupAddOption(row.id)") 新增答题选项
                             DropdownItem
                                 Icon(type="ios-contact-outline")
-                                span 题目详情
+                                span(@click="popupSelectOptions(row.id)") 题目详情
                             DropdownItem
                                 Icon(type="ios-contact-outline")
-                                span 删除
+                                span(@click="popupDelOptions(row.id)") 删除
     .footer
         Page(:total="5", size="small" ,show-elevator,show-sizer,show-total)
     Modal(:value="addOptions",title="题目上传",@on-ok="ok()",@on-cancel="cancel()",width='70%')
@@ -81,3 +81,24 @@
                                 span(:style={'color': 'red'}) *
                             .input
                                 Input(clearable,style="width: 345px",size=large,v-model="value",placeholder="请输入题目答案选项")
+    Modal(:value="selectSubject",title="题目详情",@on-cancel="cancel()",width='70%')
+        template
+            Tabs
+                TabPane(label="题目详情" icon="ios-paper-outline")
+                    .addBody
+                        .divTwo
+                            .name
+                                span 题目名称
+                            .input
+                                Input(clearable,style="width: 345px",size=large,v-model="title" ,disabled="disabled")
+                        .divTwo
+                            .name
+                                span 标准答案
+                            .input
+                                Input(clearable,style="width: 345px",size=large,v-model="standard" ,disabled="disabled")
+                        .divTwo
+                            .name
+                                span 答案选项
+                            .name
+                                Table(border,:columns="getValueColumns()", :data="getValue()")
+                                    //template(slot-scope="{row, index }",slot="operation")

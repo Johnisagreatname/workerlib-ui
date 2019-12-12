@@ -77,6 +77,10 @@
     width: 100%;
     height: 525px;
 }
+.delBody{
+    width: 100%;
+    height: 50px;
+}
 .left{
     width: 100%;
     height: 100%;
@@ -103,7 +107,9 @@
 .divTwo span{
     font-size: 18px;
 }
-
+.bodyTwo .ivu-table-wrapper{
+    overflow: unset !important;
+}
 #app .addBody .divTwo .input .ivu-input-wrapper .ivu-input {
     height: 50px !important;
 }

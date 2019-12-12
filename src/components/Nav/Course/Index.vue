@@ -1,6 +1,6 @@
 <script lang="ts">
     import "@/assets/css/common.css";
-    import WorkclassStore from '../../../store/modules/WorkclassStore';
+    import CourseStore from '../../../store/modules/CourseStore';
     import { Component, Vue, Prop, Model} from 'vue-property-decorator';
     import { getModule } from 'vuex-module-decorators';
     // import {Message} from "iview";
@@ -20,19 +20,19 @@
             }
         }
     })
-    export default class Workclass extends Vue {
-        public addWorkclass: boolean;
-        public updWorkclass: boolean;
-        public delWorkclass: boolean;
+    export default class Course extends Vue {
+        public addCourse: boolean;
+        public updCourse: boolean;
+        public delCourse: boolean;
         private store: any;
         private options!: Array<any>;
 
         constructor() {
             super();
-            this.addWorkclass = false;
-            this.updWorkclass = false;
-            this.delWorkclass = false;
-            this.store = getModule(WorkclassStore);
+            this.addCourse = false;
+            this.updCourse = false;
+            this.delCourse = false;
+            this.store = getModule(CourseStore);
         }
 
         mounted() {
@@ -54,29 +54,31 @@
         //     }, 500)
         // }
         ok() : any{
+            debugger;
             this.store.verification();
-            this.addWorkclass = false;
+            this.addCourse = false;
         }
         yes() : any{
+            debugger;
             this.store.verifications();
-            this.updWorkclass = false;
-        }
-        deletes() : any{
-            this.store.deleteWorkclass();
-            this.delWorkclass = false;
+            this.updCourse = false;
         }
         popupUpdWorkclass(id) : any{
             this.store.workclassInfo.id = id;
-            this.updWorkclass = !this.updWorkclass;
+            this.updCourse = !this.updCourse;
         }
         popupDelWorkclass(id) : any{
-            this.store.workclassInfo.id = id;
-            this.delWorkclass = !this.delWorkclass;
+            // this.store.deleteWorkclass(id);
+            this.store.workclassInfo.id = id
+            this.delCourse = !this.delCourse
+        }
+        deletes() :any{
+            this.store.deleteWorkclass();
+            this.delCourse = false;
         }
         cancel():any {
-            this.addWorkclass = false;
-            this.updWorkclass = false;
-            this.delWorkclass = false;
+            this.addCourse = false;
+            this.updCourse = false;
         }
 
         onPageSizeChange(pageSize){
@@ -159,5 +161,5 @@
         }
     }
 </script>
-<style scoped src="@/styles/workclass.css" />
-<template lang="pug" src="@/views/workclass.pug" />
+<style scoped src="@/styles/course.css" />
+<template lang="pug" src="@/views/course.pug" />
