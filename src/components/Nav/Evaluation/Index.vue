@@ -20,7 +20,7 @@
             }
         }
     })
-    export default class Ecaluation extends Vue {
+    export default class Evaluation extends Vue {
         public addEvaluation: boolean;
         public delEvaluation: boolean;
         private store: any;

@@ -3,13 +3,13 @@ import store from "../index";
 import request from "../../common/HttpClient";
 import MessageUtils from "../../common/MessageUtils";
 import {Message} from "iview";
-import Workclass from "../../components/Nav/WorkClass/Index.vue";
+import Evaluation from "../../components/Nav/Evaluation/Index.vue";
 
 @Module({
     namespaced: true,
     stateFactory: true,
     dynamic: true,
-    name: "CourseStore",
+    name: "EvaluationStore",
     store,
 })
 export default class EvaluationStore extends VuexModule {
