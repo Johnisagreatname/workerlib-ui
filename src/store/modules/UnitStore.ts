@@ -152,7 +152,7 @@ export default class UnitStore extends VuexModule {
     public pageSize: number;
     public pageTotal:number;
     public unitType: Array<UnitType>;
-
+    public uplodId:Array<any>;
 
     constructor(e) {
         super(e);
@@ -161,7 +161,7 @@ export default class UnitStore extends VuexModule {
         this.pageSize=10;
         this.pageTotal = 0;
         this.unitType = [];
-
+        this.uplodId = [];
         //获取工程列表数据
         this.unit = [];
         //获取项目列表
@@ -184,7 +184,42 @@ export default class UnitStore extends VuexModule {
         this.sUnitName="";
 
     }
+    @Action
+    public getUploadParams() : any {
 
+        return {
+            "joinTables": [{
+                "tablename": "unit",
+                "alias": "u",
+                "joinMode": "Left"
+            }, {
+                "tablename": "project",
+                "alias": "p",
+                "joinMode": "Left",
+                "onList": [{
+                    "name": "u.project_id",
+                    "value": "p.project_id",
+                    "algorithm": "EQ"
+                }]
+            }],
+
+            "conditionList": [{
+                "name": "u.unit_id",
+                "value":  this.uplodId.map(x => x.unit_id),
+                "algorithm": "IN"
+            }],
+            "keywords" : [],
+            "selectList": [
+                {"field": "p.project_name","alias":"项目名称" },
+                {"field": "u.project_license" ,"alias":"施工单位许可证"},
+                {"field": "u.unit_number" ,"alias":"参建单位编号"},
+                {"field": "u.unit_name" ,"alias":"参建单位名称"},
+                {"field": "u.people_number" ,"alias":"当前人数"},
+                {"field": "u.principal","alias":"负责人" },
+                {"field": "u.entrance_time","alias":"入场日期" }
+            ]
+        };
+    }
     @Action
     public getParams() : any {
         return {
@@ -295,16 +330,40 @@ export default class UnitStore extends VuexModule {
     }
 
     @Action
+    public async upload() {
+        debugger
+        let alert: any = Message;
+        await request.post('/api/workerlib/export/join',await this.getUploadParams(),{responseType: 'blob', params: '项目工程档案'}).then((data)=>{
+            alert.warning('成功！');
+        }).catch((e)=>{
+            let alert: any = Message;
+            if(!e) {
+                alert.warning('未知错误！');
+                return
+            }
+            if(e.response && e.response.data && e.response.data.message) {
+                alert.warning(e.response.data.message)
+                return
+            }
+            if(!e.message) {
+                return;
+            }
+            alert.warning(e.message || e)
+        });
+    }
+
+    @Action
     public async insertUnit() {
         debugger
         await request.put('/api/workerlib/unit', {
+            "unit_id":null,
             "project_id":this.project_id,
             "project_license":this.project_license,
             "unit_number":this.unit_number,
             "unit_name":this.unit_name,
             "people_number":this.people_number,
             "unit_type":this.unit_type,
-            "entrance_time":this.entrance_time ? this.entrance_time.getFullYear() + "-" + this.entrance_time.getMonth() + "-" + this.entrance_time.getDate():"",
+            "entrance_time":this.entrance_time ? this.entrance_time.getFullYear() + "-" + this.entrance_time.getMonth() + "-" + this.entrance_time.getDate():null,
             "principal":this.principal,
             "status":this.status
         }).then((data)=>{
@@ -376,6 +435,11 @@ export default class UnitStore extends VuexModule {
     }
 
     @Mutation
+    private setUplodId(data: any) {
+        this.uplodId.push(data);
+    }
+
+    @Mutation
     private success(data: any) {
         this.unit = data.data;
     }
@@ -394,22 +458,86 @@ export default class UnitStore extends VuexModule {
         {
             title: '所属项目',
             key: 'project_name',
-            sortable: true
+            sortable: true,
+            render: (h, params) => {
+                return h('div', [
+                    h('span', {
+                        style: {
+                            display: 'inline-block',
+                            width: '100%',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            whiteSpace: 'nowrap'
+                        },
+                        domProps: {
+                            title: params.row.project_name
+                        }
+                    }, params.row.project_name)
+                ])
+            }
         },
         {
             title: '施工许可证',
             key: 'builder_license',
-            sortable: true
+            sortable: true,
+            render: (h, params) => {
+                return h('div', [
+                    h('span', {
+                        style: {
+                            display: 'inline-block',
+                            width: '100%',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            whiteSpace: 'nowrap'
+                        },
+                        domProps: {
+                            title: params.row.builder_license
+                        }
+                    }, params.row.builder_license)
+                ])
+            }
         },
         {
             title: '参建单位编号',
             key: 'unit_number',
-            sortable: true
+            sortable: true,
+            render: (h, params) => {
+                return h('div', [
+                    h('span', {
+                        style: {
+                            display: 'inline-block',
+                            width: '100%',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            whiteSpace: 'nowrap'
+                        },
+                        domProps: {
+                            title: params.row.unit_number
+                        }
+                    }, params.row.unit_number)
+                ])
+            }
         },
         {
             title: '参建单位名称',
             key: 'unit_name',
-            sortable: true
+            sortable: true,
+            render: (h, params) => {
+                return h('div', [
+                    h('span', {
+                        style: {
+                            display: 'inline-block',
+                            width: '100%',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            whiteSpace: 'nowrap'
+                        },
+                        domProps: {
+                            title: params.row.unit_name
+                        }
+                    }, params.row.unit_name)
+                ])
+            }
         },
         {
             title: '当前人数',
@@ -430,10 +558,6 @@ export default class UnitStore extends VuexModule {
             title: '负责人',
             key: 'principal',
             sortable: true
-        },
-        {
-            title: '操作',
-            slot: 'operation'
         }
     ];
 

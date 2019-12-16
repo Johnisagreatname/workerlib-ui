@@ -53,7 +53,7 @@ export default class CheckEvaluateStore extends VuexModule {
                     "alias": "p",
                     "JoinMode": "left",
                     "onList": [{
-                        "name": "p.id",
+                        "name": "p.project_id",
                         "value": "a.project_id",
                         "algorithm": "EQ"
                     }]
@@ -62,7 +62,7 @@ export default class CheckEvaluateStore extends VuexModule {
                     "alias": "u",
                     "joinMode": "left",
                     "onList": [{
-                        "name": "u.id",
+                        "name": "u.unit_id",
                         "value": "a.unit_id",
                         "algorithm": "EQ"
                     }]

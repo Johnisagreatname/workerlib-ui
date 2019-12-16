@@ -3,9 +3,9 @@
         .divOne
             span 选择公司：
                 Input(v-model="selectOrganization",clearable,style="width: 200px")
-        .divOne
-            span 选择地区：
-                Input(v-model="selectProjectAddress",clearable,style="width: 200px")
+        //.divOne
+        //    span 选择地区：
+        //        Input(v-model="selectProjectAddress",clearable,style="width: 200px")
         .divOne
             span 项目名称：
                 Input(v-model="selectProjectName",clearable,style="width: 200px")
@@ -22,11 +22,26 @@
         Button(type="primary", ghost, icon="ios-log-out",@click="this.store.upload") 导出信息
 
     .bodyTwo
-        Table(border, ref="selection", :columns="getColumns()", :data="getData()",@on-select="handleSelectRow",@on-select-all="handleSelectAll")
+        Table(border, ref="selection", :columns="getColumns()", :data="getData()",
+        @on-select="handleSelectRow",@on-select-all="handleSelectAll",
+        @on-select-cancel="handleSelectRowCancel",@on-select-all-cancel="handleSelectAllCancel")
+            template(slot-scope="{row, index }",slot="operation")
+                template
+                    Dropdown(trigger="click")
+                        a(href="javascript:void(0)" :style={"font-size": "16px"})
+                            span 详细操作
+                            Icon(type="md-arrow-dropdown" )
+                        DropdownMenu(slot="list")
+                            DropdownItem(:name="'add_'+row.unit_id")
+                                Icon(type="ios-book-outline")
+                                span 添加人员
+                            DropdownItem(:name="'view_'+row.unit_id")
+                                Icon(type="ios-create-outline")
+                                span 查看人员
     .footer
         Page(:total="totalRecords",show-sizer,show-elevator,show-total,@on-page-size-change="onPageSizeChange",@on-change="onPageIndexChange")
 
-    Modal(:value="addProject",title="新增项目",@on-ok="ok()",@on-cancel="cancel()",width='50%')
+    Modal(:value="addProject",title="新增项目",@on-ok="ok()",@on-cancel="cancel()",width='50%',:loading = "loading")
         .addBody
             .divTwo
                 .name
@@ -82,12 +97,12 @@
                     span(:style={'color': 'red'}) *
                 .input
                     Input(clearable,style="width: 345px",size=large,v-model="supervising")
-            .divTwo
-                .name
-                    span 项目地址
-                    span(:style={'color': 'red'}) *
-                .input
-                    Input(clearable,style="width: 345px",size=large,v-model="projectAddress")
+            //.divTwo
+            //    .name
+            //        span 项目地址
+            //        span(:style={'color': 'red'}) *
+            //    .input
+            //        Input(clearable,style="width: 345px",size=large,v-model="projectAddress")
             .divTwo
                 .name
                     span 项目状态

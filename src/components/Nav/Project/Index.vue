@@ -3,6 +3,7 @@
     import ProjectStore from '../../../store/modules/ProjectStore';
     import { Component, Vue, Prop, Model} from 'vue-property-decorator';
     import { getModule } from 'vuex-module-decorators';
+    import { Message } from 'iview';
 
     @Component({
         components:{
@@ -23,21 +24,69 @@
     export default class Project extends Vue {
         public addProject: boolean;
         private store: any;
-
+        messageWarningFn (text) {
+            let alert: any = Message;
+            alert.warning(text);
+            setTimeout(() => {
+                this.loading = false;
+                this.$nextTick(() => {
+                    this.loading = true;
+                })
+            }, 1000)
+        }
         constructor() {
             super();
             this.addProject = false;
             this.store = getModule(ProjectStore);
-        }
 
+        }
+        loading = true;
         mounted() {
             this.store.search();
             this.store.getProjectType();
         }
         public search() {
+            this.store.pageSize(10);
+            this.store.pageIndex(1);
             this.store.search();
         }
         ok() : any{
+            if(!this.store.projectInfo.project_name){
+                this.messageWarningFn('请输入项目名称！');
+                return;
+            }
+            if(!this.store.projectInfo.project_brief){
+                this.messageWarningFn('请输入项目简介！');
+                return;
+            }
+            if(!this.store.projectInfo.builder_license){
+                this.messageWarningFn('请输入施工许可证！');
+                return;
+            }
+            if(!this.store.projectInfo.start_time){
+                this.messageWarningFn('请选择开工时间！');
+                return;
+            }
+            if(!this.store.projectInfo.end_time){
+                this.messageWarningFn('请选择合同竣工时间！');
+                return;
+            }
+            if(!this.store.projectInfo.construction){
+                this.messageWarningFn('请输入建设单位！');
+                return;
+            }
+            if(!this.store.projectInfo.organization){
+                this.messageWarningFn('请输入施工单位！');
+                return;
+            }
+            if(!this.store.projectInfo.supervising){
+                this.messageWarningFn('请输入监理单位！');
+                return;
+            }
+            if(!this.store.projectInfo.status){
+                this.messageWarningFn('请选择项目状态！');
+                return;
+            }
             this.store.insertProject();
             this.addProject = false;
         }
@@ -63,15 +112,35 @@
             return '';
         }
         handleSelectRow(selection, row) {
-            console.log(row.id);
-            this.store.setUplodId(row.id)
+            let item = {};
+            item["project_id"] = row.project_id;
+            this.store.setUplodId(item);
 
         }
+        handleSelectRowCancel(selection,row){
+            let index =  this.store.uplodId.findIndex(x => x.project_id == row.project_id);
+            this.store.uplodId.splice(index, 1);
+        }
         handleSelectAll(selection) {
-            console.log(selection)
             for(let i= 0;i<selection.length;i++){
+                let item = {};
                 let row = selection[i];
-                this.store.setUplodId(row.id);
+                let index =  this.store.uplodId.findIndex(x => x.project_id == row.project_id);
+                if(index > -1){
+                    continue;
+                }
+                item["project_id"] = row.project_id;
+                this.store.setUplodId(item);
+            }
+        }
+        handleSelectAllCancel(selection){
+            for(let i= 0;i<selection.length;i++){
+                let item = {};
+                let row = selection[i];
+                let index =  this.store.uplodId.findIndex(x => x.project_id == row.project_id);
+                if(index > -1){
+                    this.store.uplodId.splice(index, 1);
+                }
             }
         }
 
@@ -82,6 +151,11 @@
             return this.store.columns;
         }
         getData() : any{
+            for(let i = 0;i < this.store.project.length;i++) {
+                if(this.store.uplodId.filter(a => a.project_id == this.store.project[i].project_id).length > 0){
+                    this.$set(this.store.project[i], '_checked', true)
+                }
+            }
             return this.store.project;
         }
 

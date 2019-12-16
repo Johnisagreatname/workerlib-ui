@@ -3,6 +3,8 @@
 
 import axios from 'axios';
 
+import router from '../router/.invoke/router'
+
 /* 防止重复提交，利用axios的cancelToken */
 let pending: any[] = []; // 声明一个数组用于存储每个ajax请求的取消函数和ajax标识
 let name: string;
@@ -69,7 +71,6 @@ service.interceptors.request.use((config: any) => {
 /* respone拦截器 */
 service.interceptors.response.use(
     (response: any) => {
-
         // 移除队列中的该请求，注意这时候没有传第二个参数f
         removePending(response.config);
         if(response.status != 200) {
@@ -88,7 +89,14 @@ service.interceptors.response.use(
     (error: any) => {
         // 异常处理
         console.log(error)
+
         pending = [];
+
+        if(error.response.status == 401) {
+            router.push("/login");
+            return;
+        }
+
         if (error.message === '您操作太快了') {
             error.message = false;
             return Promise.reject(error);

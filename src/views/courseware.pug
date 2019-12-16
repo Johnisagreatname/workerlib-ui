@@ -53,7 +53,7 @@
                                         }) 必学
                                 .right
                                     span(:style={'color': '#0090ff'}) {{item.type_work}}
-                            Button.butt(@click="viewData(item.id,item.title)") 新建课程
+                            Button.butt(@click="viewData(item.id,item.title)") 新建培训计划
 
 
 
@@ -70,7 +70,7 @@
                                 Button(@click="this.store.search") 搜索
                         .hr
                         .button
-                            Button(type="primary", ghost, icon="ios-add-circle-outline",@click="addCourseware=!addCourseware") 新建课件
+                            Button(type="primary", ghost, icon="ios-add-circle-outline",@click="addUpCourseware=!addUpCourseware") 新建课件
                         .courseware(v-for="item in getCourseWareList()")
                             .div1
                                 span(:style={
@@ -93,25 +93,8 @@
                             .div2
                                 img(src="~@/assets/css/images/gj.jpeg" :style={'width': '100%', 'height': '100%'})
                             .div31
-                                Button.butt1(@click="viewData(item.id,item.title)") 新建课程
-                            //    .left
-                            //        span(:style={
-                            //            'margin-left': '10%',
-                            //            'margin-top': '5%',
-                            //            'font-size': '18px',
-                            //            'float': 'left',
-                            //            'color': '#000000'
-                            //        }) {{item.total_hours}}课时
-                            //        .ellipse
-                            //            span(:style={
-                            //                'font-size': '12px',
-                            //                'float': 'left',
-                            //                'margin-top': '5%',
-                            //                'margin-left': '25%',
-                            //                'color': '#ffffff'
-                            //            }) 必学
-                            //    .right
-                            //        span(:style={'color': '#0090ff'}) {{item.type_work}}
+                                Button.butt1(@click="viewData(item.id,item.title)") 新建培训计划
+
 
     .footer
         Page(:total="pageTotal",show-sizer,show-elevator,show-total,
@@ -177,6 +160,77 @@
                             Icon(type="ios-add" size="52" style="color: #3399ff")
                             p 点击上传
                             p （请上传某种格式视频）
+                TabPane(label="课件详情",name="name3",icon="ios-folder-outline")
+                    Upload(multiple,type="drag",action="/api/workerlib/upload/courseware/cover_picture",
+                    :on-success="handleSuccessPicture",:format="['jpg','jpeg','png']",:on-format-error="handleFormatPictrueError",
+                    :style={
+                        'width': '60%',
+                        'margin-top': '3%',
+                        'margin-right': 'auto',
+                        'margin-left': 'auto'
+                    })
+                        div(style="padding: 50px 0")
+                            Icon(type="ios-add" size="52" style="color: #3399ff")
+                            p 封面图片
+                            p （点击上传）
+                    .divTwo
+                        .name
+                            span 描述
+                            span(:style={'color': 'red'}) *
+                        .input
+                            Input(clearable,style="width: 345px",size=large,placeholder="请输入描述",v-model="describe")
+                    .divTwo
+                        .name
+                            span 课程详情
+                            span(:style={'color': 'red'}) *
+                        .input
+                            Input(type="textarea",clearable,style="width: 345px",size=large,v-model="particulars")
+
+
+    Modal(:value="addUpCourseware",title="课件上传",@on-ok="okUp()",@on-cancel="cancelUp()",width='70%',:loading="loading")
+        template
+            Tabs(v-model="pageUpName")
+                TabPane(label="基本信息",name="name1", icon="ios-paper-outline")
+                    .addBody
+                        .divTwo
+                            .name
+                                span 课件名称
+                                span(:style={'color': 'red'}) *
+                            .input
+                                Input(clearable,style="width: 345px",size=large,v-model="title",placeholder="请输入课件名称")
+                        .divTwo
+                            .name
+                                span 课程
+                                span(:style={'color': 'red'}) *
+                            .input
+                                Select(filterable,clearable,style="width:345px",v-model="course",placeholder="选择分类")
+                                    Option(v-for="item in getCType()", :value="item.name", :key="item.name") {{item.name}}
+                        .divTwo
+                            .name
+                                span 总课时
+                                span(:style={'color': 'red'}) *
+                            .input
+                                Input(clearable,style="width: 345px",size=large,v-model="totalHours",placeholder="请输入总课时")
+                        .divTwo
+                            .name
+                                span 授课方式
+                                span(:style={'color': 'red'}) *
+                            .input
+                                Button(disabled) 现场培训
+                        .divTwo
+                            .name
+                                span 是否必学课程
+                                span(:style={'color': 'red'}) *
+                            .input
+                                Radio(v-model="whether",disabled) 是
+                        .divTwo
+                            .name
+                                span 绑定课件工种分类
+                                span(:style={'color': 'red'}) *
+                            .input
+                                Select(clearable,multiple,style="width:345px",v-model="typeWork",filterable,placeholder="选择分类",placement="top-start")
+                                    Option(v-for="item in getType()", :value="item.name", :key="item.name") {{item.name}}
+
                 TabPane(label="课件详情",name="name3",icon="ios-folder-outline")
                     Upload(multiple,type="drag",action="/api/workerlib/upload/courseware/cover_picture",
                     :on-success="handleSuccessPicture",:format="['jpg','jpeg','png']",:on-format-error="handleFormatPictrueError",
@@ -338,7 +392,7 @@
                     @on-select="handleSelectRow",@on-select-all="handleSelectAll")
 
                         template(slot-scope="{ row }" ,slot="photo")
-                            img(:src="'/api/workerlib/preview/archives/photo/'+row.id",:style={
+                            img(:src="'http://113.105.121.93:1818/'+row.photo",:style={
                                            'width': '50px', 'height': '50px',
                                            'border-radius': '50%'
                                        })
@@ -346,14 +400,14 @@
                             span(v-if="row.leave==1") 在职
                             span(v-if="row.leave==2") 离职
                         template(slot-scope="{row}",slot="operation")
-                            Button(v-if="offChecked(row.id)",type="primary",style="margin-right: 5px",@click="show(row.id,row.name)") 加入培训
+                            Button(v-if="offChecked(row.id)",type="primary",style="margin-right: 5px",@click="show(row.id,row.name,row.photo)") 加入培训
                             Button(v-else,type="primary",ghost,style="margin-right: 5px") 加入培训
                     Page(:total="pageInTotal",show-elevator,show-total,
                     @on-page-size-change="onPageSizeInChange",@on-change="onPageIndexInChange",:style={'text-align':'center','margin-top': '10px'})
                 .right1
                     .rdiv(v-for="item in this.store.checkeds")
                         .rimg
-                            img(:src="'/api/workerlib/preview/archives/photo/'+item.id",:style={
+                            img(:src="'http://113.105.121.93:1818'+item.photo",:style={
                                 'width': '50px', 'height': '50px',
                                 'border-radius': '50%'
                             })

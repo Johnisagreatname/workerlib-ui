@@ -44,7 +44,6 @@
             this.onLeave = false;
             this.offLeave =false;
         }
-
         mounted() {
             this.store.search();
             this.store.getProjectType();
@@ -90,6 +89,7 @@
         }
 
         viewData(id) {
+            debugger
             this.particulars=!this.particulars;
             this.store.setInfoId(id);
             this.store.searchInfo();
@@ -141,11 +141,6 @@
             }, 500)
         }
         ok() : any{
-            // if(this.store.userName == "" || this.store.userName == null ){
-            //     debugger
-            //     this.messageWarningFn('请输入名称');
-            //     return;
-            // }
             this.store.insertArchives();
             this.addWorker = false;
         }
@@ -171,6 +166,7 @@
         upload():any{
             this.store.setCheck(this.store.checkeds.filter(x => x.id).map(x => x.id));
             this.store.upload();
+            this.store.successUpload();
         }
 
         particularsOk() : any{
@@ -199,7 +195,6 @@
                 this.store.checkeds.splice(index, 1);
                 return;
             }
-            debugger
             itemTrue['id'] = id;
             itemTrue['name'] = name;
             itemTrue['leave'] = leave;

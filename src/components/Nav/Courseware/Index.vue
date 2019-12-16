@@ -33,10 +33,12 @@
         public indeterminate: boolean;
         public checkAll: boolean;
         public addCourseware: boolean;
+        public addUpCourseware: boolean;
         public deleteCourseware: boolean;
         public updateCourseware: boolean;
         public addCultivate: boolean;
         public pageName: string;
+        public pageUpName: string;
         private store: any;
         public id:number;
         public checkAllGroup :Array<any>;
@@ -48,8 +50,10 @@
             this.checkAll = false;
             this.addCultivate = false;
             this.addCourseware = false;
+            this.addUpCourseware = false;
             this.updateCourseware = false;
             this.pageName = "name1";
+            this.pageUpName = "name1";
             this.deleteCourseware = false;
             this.id = null;
             this.checkAllGroup = [];
@@ -92,6 +96,7 @@
             }, 500)
         }
         ok() : any{
+            this.store.setTeachingMethod("录播");
             if(this.store.courseWare.title == "" || this.store.courseWare.title == null ){
                 this.messageWarningFn('请输入课件名称！');
                 return;
@@ -113,15 +118,52 @@
             //     this.pageName = "name2"
             //     return;
             // }
+            this.store.setStatus(1);
             this.store.insertCourseware();
+            this.store.clearCourseWare();
             this.addCourseware = false;
         }
         cancel():any {
+            debugger
+            this.store.clearCourseWare();
             this.addCourseware = false;
+        }
+        okUp() : any{
+            this.store.setTeachingMethod("现场培训");
+            if(this.store.courseWare.title == "" || this.store.courseWare.title == null ){
+                this.messageWarningFn('请输入课件名称！');
+                return;
+            }
+            if(this.store.courseWare.course == "" || this.store.courseWare.course == null ){
+                this.messageWarningFn('请选择课程！');
+                return;
+            }
+            if(this.store.courseWare.total_hours == "" || this.store.courseWare.total_hours == null ){
+                this.messageWarningFn('请输入总课时！');
+                return;
+            }
+            if(this.store.courseWare.type_work == "" || this.store.courseWare.type_work == null ){
+                this.messageWarningFn('请绑定课件工种分类！');
+                return;
+            }
+            // if(this.store.courseWare.video == "" || this.store.courseWare.video == null ){
+            //     this.messageWarningFn('请上传资料！');
+            //     this.pageName = "name2"
+            //     return;
+            // }
+            this.store.setStatus(2);
+            this.store.insertCourseware();
+            this.store.clearCourseWare();
+            this.addUpCourseware = false;
+        }
+        cancelUp():any {
+            this.store.clearCourseWare();
+            this.addUpCourseware = false;
         }
 
         okEdit() : any{
             debugger
+
             if(this.store.courseWareEdit.title == "" || this.store.courseWareEdit.title == null ){
                 this.messageWarningFn('请输入课件名称！');
                 return;
@@ -197,6 +239,7 @@
             var itemTrue = {};
             itemTrue['id'] = row.id;
             itemTrue['name'] = row.name;
+            itemTrue['photo'] = row.photo;
             this.checkAllGroup.push(itemTrue);
         }
 
@@ -207,6 +250,7 @@
                 let row = selection[i];
                 itemTrue['id'] = row.id;
                 itemTrue['name'] = row.name;
+                itemTrue['photo'] = row.photo;
                 this.checkAllGroup.push(itemTrue);
             }
         }
@@ -216,13 +260,14 @@
                 let row = this.checkAllGroup[i];
                 itemTrue['id'] = row.id;
                 itemTrue['name'] = row.name;
+                itemTrue['photo'] = row.photo;
                 this.store.setChecked(itemTrue);
                 let index = this.store.peoples.findIndex(x => x.id == row.id);
                 this.$set(this.store.peoples[index], '_disabled', true)
             }
             this.checkAllGroup = [];
         }
-        show(id: number,name:string): void {
+        show(id: number,name:string,photo:string): void {
             debugger
             let _that = this;
             var itemTrue = {};
@@ -239,6 +284,7 @@
             }
             itemTrue['id'] = id;
             itemTrue['name'] = name;
+            itemTrue['photo'] = photo;
             this.store.setChecked(itemTrue);
             for (let i=0;i<this.store.checkeds.length;i++){
                 let row = this.store.checkeds[i];
@@ -247,7 +293,6 @@
             }
         }
         toggle(name){
-            debugger;
             if(name=="线上培训"){
                 this.store.setSelectStatus(1);
                 this.store.search();

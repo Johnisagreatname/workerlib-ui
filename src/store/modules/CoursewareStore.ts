@@ -278,7 +278,7 @@ export default class CoursewareStore extends VuexModule {
             "title":this.courseWare.title,
             "course":this.courseWare.course,
             "total_hours":this.courseWare.total_hours,
-            "teaching_method":"录播",
+            "teaching_method":this.courseWare.teaching_method,
             "whether":"是",
             "type_work":this.courseWare.type_work,
             "video":this.courseWare.video,
@@ -367,7 +367,7 @@ export default class CoursewareStore extends VuexModule {
     }
     @Action
     public async updateCourseware() {
-        await request.put('/api/workerlib/courseware/update',await this.getUpdateParams()).then((data)=>{
+        await request.post('/api/workerlib/courseware/update',await this.getUpdateParams()).then((data)=>{
             this.successUpdate(data);
         }).catch((e)=>{
             let alert: any = Message;
@@ -434,6 +434,8 @@ export default class CoursewareStore extends VuexModule {
     public successAdd(data: any) {
         if(data.status == 0) {
             this.search();
+            let alert: any = Message;
+            alert.warning("新建课件成功！");
         }
     }
     @Action
@@ -471,6 +473,23 @@ export default class CoursewareStore extends VuexModule {
     @Mutation
     public success(data: any) {
         this.courseWareInfo = data.data;
+    }
+    @Mutation
+    public clearCourseWare(){
+        this.courseWare = {
+            title:null,
+            course:null,
+            total_hours:null,
+            teaching_method:null,
+            whether:null,
+            type_work:null,
+            video:null,
+            cover_picture:null,
+            describe:null,
+            particulars:null,
+            status:null
+
+        };
     }
     @Mutation
     public successPeople(data: any) {
