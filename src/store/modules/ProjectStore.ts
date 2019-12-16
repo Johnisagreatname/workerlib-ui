@@ -34,21 +34,21 @@ export default class ProjectStore extends VuexModule {
 
         return {
             "conditionList": [{
-                "name": "id",
-                "value":  this.uplodId,
+                "name": "project_id",
+                "value":  this.uplodId.map(x => x.project_id),
                 "algorithm": "IN"
             }
             ],
             "keywords" : [],
             "selectList": [
-                {"field": "project_name" },
-                {"field": "project_brief" },
-                {"field": "builder_license" },
-                {"field": "start_time" },
-                {"field": "end_time" },
-                {"field": "construction" },
-                {"field": "organization" },
-                {"field": "supervising" }
+                {"field": "project_name","alias":"项目名称" },
+                {"field": "project_brief" ,"alias":"项目简介"},
+                {"field": "builder_license" ,"alias":"施工许可证"},
+                {"field": "start_time" ,"alias":"开工时间"},
+                {"field": "end_time" ,"alias":"合同竣工时间"},
+                {"field": "construction","alias":"建设单位" },
+                {"field": "organization","alias":"施工单位" },
+                {"field": "supervising","alias":"监理单位" }
             ]
         };
     }
@@ -56,7 +56,7 @@ export default class ProjectStore extends VuexModule {
     public async upload() {
         debugger
         let alert: any = Message;
-        await request.put('/api/workerlib/project/export',await this.getUploadParams()).then((data)=>{
+        await request.post('/api/workerlib/project/export',await this.getUploadParams(),{responseType: 'blob', params: '项目工程档案'}).then((data)=>{
             alert.warning('成功！');
         }).catch((e)=>{
             let alert: any = Message;
@@ -77,6 +77,7 @@ export default class ProjectStore extends VuexModule {
 
     @Action
     public getParams() : any {
+        debugger
         return {
             "pageInfo" : {
                 "pageIndex": this.pageInfo.pageIndex,
@@ -88,16 +89,12 @@ export default class ProjectStore extends VuexModule {
                 "value": this.projectInfo.selectOrganization,
                 "algorithm": "LIKE"
             },{
-                "name": "project_address",
-                "value": this.projectInfo.selectProjectAddress,
-                "algorithm": "LIKE"
-            },{
                 "name": "project_name",
                 "value": this.projectInfo.selectProjectName,
                 "algorithm": "LIKE"
             },{
                 "name": "status",
-                "value": !this.projectInfo.selectStatus ? null : this.projectInfo.selectStatus,
+                "value": this.projectInfo.selectStatus == undefined || this.projectInfo.selectStatus == -1 ? null : this.projectInfo.selectStatus,
                 "algorithm": "EQ"
             }],
 
@@ -171,6 +168,7 @@ export default class ProjectStore extends VuexModule {
     public async insertProject() {
         debugger
         await request.put('/api/workerlib/project', {
+                "project_id":null,
                 "project_name":this.projectInfo.project_name,
                 "project_brief":this.projectInfo.project_brief,
                 "builder_license":this.projectInfo.builder_license,
@@ -243,17 +241,65 @@ export default class ProjectStore extends VuexModule {
         {
             title: '项目名称',
             key: 'project_name',
-            sortable: true
+            sortable: true,
+            render: (h, params) => {
+                return h('div', [
+                    h('span', {
+                        style: {
+                            display: 'inline-block',
+                            width: '100%',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            whiteSpace: 'nowrap'
+                        },
+                        domProps: {
+                            title: params.row.project_name
+                        }
+                    }, params.row.project_name)
+                ])
+            }
         },
         {
             title: '项目简介',
             key: 'project_brief',
-            sortable: true
+            sortable: true,
+            render: (h, params) => {
+                return h('div', [
+                    h('span', {
+                        style: {
+                            display: 'inline-block',
+                            width: '100%',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            whiteSpace: 'nowrap'
+                        },
+                        domProps: {
+                            title: params.row.project_brief
+                        }
+                    }, params.row.project_brief)
+                ])
+            }
         },
         {
             title: '施工许可证',
             key: 'builder_license',
-            sortable: true
+            sortable: true,
+            render: (h, params) => {
+                return h('div', [
+                    h('span', {
+                        style: {
+                            display: 'inline-block',
+                            width: '100%',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            whiteSpace: 'nowrap'
+                        },
+                        domProps: {
+                            title: params.row.builder_license
+                        }
+                    }, params.row.builder_license)
+                ])
+            }
         },
         {
             title: '开工时间',
@@ -269,17 +315,69 @@ export default class ProjectStore extends VuexModule {
         {
             title: '建设单位',
             key: 'construction',
-            sortable: true
+            sortable: true,
+            render: (h, params) => {
+                return h('div', [
+                    h('span', {
+                        style: {
+                            display: 'inline-block',
+                            width: '100%',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            whiteSpace: 'nowrap'
+                        },
+                        domProps: {
+                            title: params.row.construction
+                        }
+                    }, params.row.construction)
+                ])
+            }
         },
         {
             title: '施工单位',
             key: 'organization',
-            sortable: true
+            sortable: true,
+            render: (h, params) => {
+                return h('div', [
+                    h('span', {
+                        style: {
+                            display: 'inline-block',
+                            width: '100%',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            whiteSpace: 'nowrap'
+                        },
+                        domProps: {
+                            title: params.row.organization
+                        }
+                    }, params.row.organization)
+                ])
+            }
         },
         {
             title: '监理单位',
             key: 'supervising',
-            sortable: true
+            sortable: true,
+            render: (h, params) => {
+                return h('div', [
+                    h('span', {
+                        style: {
+                            display: 'inline-block',
+                            width: '100%',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            whiteSpace: 'nowrap'
+                        },
+                        domProps: {
+                            title: params.row.supervising
+                        }
+                    }, params.row.supervising)
+                ])
+            }
+        },
+        {
+            title: '操作',
+            slot: 'operation'
         }
     ];
 
@@ -304,6 +402,7 @@ export default class ProjectStore extends VuexModule {
     private setUplodId(data: any) {
         this.uplodId.push(data);
     }
+
 
 
     @Mutation
@@ -378,7 +477,7 @@ export default class ProjectStore extends VuexModule {
 
     @Mutation
     private selectStatus(data: number) {
-        this.projectInfo.selectStatus = data;
+        this.projectInfo.selectStatus = data-1;
     }
 }
 

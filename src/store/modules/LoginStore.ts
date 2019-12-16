@@ -22,10 +22,13 @@ export default class LoginStore extends VuexModule {
             "username" : this.username,
             "password" : this.password,
         }).then((data)=>{
-            sessionStorage.setItem('loginInfo', JSON.stringify(data));
-            // router.push({path: '/nav/spectaculars'})
-            router.push({path: '/spectaculars'})
-            return data
+            if (data) {
+                sessionStorage.setItem('loginInfo', JSON.stringify(data));
+                router.push({path: '/spectaculars'})
+            } else {
+                let alert: any = Message;
+                alert.warning('账号或密码错误！');
+            }
         }).catch((e)=>{
             console.log(e)
             let alert: any = Message;

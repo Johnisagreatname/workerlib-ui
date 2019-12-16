@@ -16,25 +16,15 @@
     .button
         Button(type="primary", ghost, icon="ios-add-circle-outline",@click="addUnit=!addUnit") 新增单位
         Button(type="primary", ghost, icon="ios-log-in") 同步单位
-        Button(type="primary", ghost, icon="ios-log-out") 导出信息
-        Button(type="primary", ghost, icon="ios-add-circle-outline") 添加单位评价
+        Button(type="primary", ghost, icon="ios-log-out",@click="this.store.upload") 导出信息
+        //Button(type="primary", ghost, icon="ios-add-circle-outline") 添加单位评价
 
     .bodyTwo
         template
-            Table(border,:columns="getColumns()", :data="getData()")
-                template(slot-scope="{row, index }",slot="operation")
-                    template
-                        Dropdown(trigger="click")
-                            a(href="javascript:void(0)" :style={"font-size": "16px"})
-                                span 详细操作
-                                Icon(type="md-arrow-dropdown" )
-                            DropdownMenu(slot="list")
-                                DropdownItem
-                                    Icon(type="ios-book-outline")
-                                    span 添加评价
-                                DropdownItem
-                                    Icon(type="ios-create-outline")
-                                    span 查看评价
+            Table(border,:columns="getColumns()", :data="getData()",
+            @on-select="handleSelectRow",@on-select-all="handleSelectAll",
+            @on-select-cancel="handleSelectRowCancel",@on-select-all-cancel="handleSelectAllCancel")
+
 
     .footer
         Page(:total="pageTotal",show-sizer,show-elevator,show-total,@on-page-size-change="onPageSizeChange",@on-change="onPageIndexChange")
@@ -47,7 +37,7 @@
                     span(:style={'color': 'red'}) *
                 .input
                     Select(clearable,filterable,style="width:345px",v-model="project_id")
-                        Option(v-for="item in getProjectNameList()", :value="item.id",:key="item.id") {{item.project_name}}
+                        Option(v-for="item in getProjectNameList()", :value="item.project_id",:key="item.project_id") {{item.project_name}}
             .divTwo
                 .name
                     span 施工许可证

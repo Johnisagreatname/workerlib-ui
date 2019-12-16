@@ -65,7 +65,6 @@
             this.addLecturer = false;
         }
         cancel():any {
-            this.store.setLecturerInfo();
             this.addLecturer = false;
         }
         handleSuccessPhoto (res, file) {

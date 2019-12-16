@@ -151,6 +151,7 @@ export default class WorkerStore extends VuexModule {
 
     @Action
     public getUpdateParams() : any {
+        debugger
         return  {
             "data": {
                 "leave": this.onLeave
@@ -180,7 +181,7 @@ export default class WorkerStore extends VuexModule {
                 "joinMode": "Left",
                 "onList": [{
                     "name": "a.project_id",
-                    "value": "p.id",
+                    "value": "p.project_id",
                     "algorithm": "EQ"
                 }]
             }],
@@ -193,11 +194,11 @@ export default class WorkerStore extends VuexModule {
 
             "keywords" : [],
             "selectList": [
-                {"field": "name" },
-                {"field": "phone" },
-                {"field": "id_number" },
-                {"field": "work_type" },
-                {"field": "p.project_name" }
+                {"field": "name","alias":"姓名" },
+                {"field": "phone" ,"alias":"手机"},
+                {"field": "id_number","alias":"身份证" },
+                {"field": "work_type","alias":"工种" },
+                {"field": "p.project_name","alias":"所属项目" }
             ]
         };
     }
@@ -208,22 +209,22 @@ export default class WorkerStore extends VuexModule {
                 {
                     "tablename": "involvedproject",
                     "alias": "i",
-                    "joinMode": "Inner"
+                    "joinMode": "Left"
                 },{
                     "tablename": "project",
                     "alias": "p",
-                    "JoinMode": "inner",
+                    "JoinMode": "Left",
                     "onList": [{
-                        "name": "p.id",
+                        "name": "p.project_id",
                         "value": "i.project_id",
                         "algorithm": "EQ"
                     }]
                 }, {
                     "tablename": "unit",
                     "alias": "u",
-                    "joinMode": "Inner",
+                    "joinMode": "Left",
                     "onList": [{
-                        "name": "u.id",
+                        "name": "u.unit_id",
                         "value": "i.unit_id",
                         "algorithm": "EQ"
                     }]
@@ -260,8 +261,7 @@ export default class WorkerStore extends VuexModule {
 
     @Action
     public async update() {
-
-        await request.put('/api/workerlib/archives/update',await this.getUpdateParams()).then((data)=>{
+        await request.post('/api/workerlib/archives/update',await this.getUpdateParams()).then((data)=>{
             this.successUpdate(data);
         }).catch((e)=>{
             let alert: any = Message;
@@ -328,6 +328,7 @@ export default class WorkerStore extends VuexModule {
 
     @Action
     public async searchInfo() {
+        debugger
         await request.post('/api/workerlib/archives',{
             "pageInfo" : {
             },

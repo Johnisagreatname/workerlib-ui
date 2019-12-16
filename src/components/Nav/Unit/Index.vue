@@ -51,11 +51,44 @@
         getMenus() : any {
             if(this.options) return this.options;
             this.options = [
-                { value: '在场', key: 1 },
-                { value: '离场', key: 2}
+                { value: '在场', key: "00" },
+                { value: '离场', key: "01"}
             ];
             return this.options;
         }
+        handleSelectRow(selection, row) {
+            let item = {};
+            item["unit_id"] = row.unit_id;
+            this.store.setUplodId(item);
+
+        }
+        handleSelectRowCancel(selection,row){
+            let index =  this.store.uplodId.findIndex(x => x.unit_id == row.unit_id);
+            this.store.uplodId.splice(index, 1);
+        }
+        handleSelectAll(selection) {
+            for(let i= 0;i<selection.length;i++){
+                let item = {};
+                let row = selection[i];
+                let index =  this.store.uplodId.findIndex(x => x.unit_id == row.unit_id);
+                if(index > -1){
+                    continue;
+                }
+                item["unit_id"] = row.unit_id;
+                this.store.setUplodId(item);
+            }
+        }
+        handleSelectAllCancel(selection){
+            for(let i= 0;i<selection.length;i++){
+                let item = {};
+                let row = selection[i];
+                let index =  this.store.uplodId.findIndex(x => x.unit_id == row.unit_id);
+                if(index > -1){
+                    this.store.uplodId.splice(index, 1);
+                }
+            }
+        }
+
         getType() : any {
             return this.store.unitType;
         }
@@ -67,6 +100,11 @@
             return this.store.columns;
         }
         getData() : any{
+            for(let i = 0;i < this.store.unit.length;i++) {
+                if(this.store.uplodId.filter(a => a.unit_id == this.store.unit[i].unit_id).length > 0){
+                    this.$set(this.store.unit[i], '_checked', true)
+                }
+            }
             return this.store.unit;
         }
         ok() : any{
