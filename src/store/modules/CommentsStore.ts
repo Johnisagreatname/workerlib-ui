@@ -29,6 +29,8 @@ export default class CommentsStore extends VuexModule {
         this.comments = [];
         this.ups = [];
         this.punishments = [];
+        this.allComm = [];
+        this.check = [];
 
     }
     public pageInfo: PageInfo;
@@ -43,47 +45,97 @@ export default class CommentsStore extends VuexModule {
     public comments:Array<any>;
     public punishments:Array<any>;
     public ups:Array<any>;
+    public allComm:Array<any>;
+    public check : Array<any>;
 
     @Action
     public async commentsExport(){
-        await request.post('/api/workerlib/export/join',{
-            "joinTables": [
-                {
-                    "tablename": "archives",
-                    "alias": "b",
-                    "joinMode": "Inner",
-                },
-                {
-                    "tablename": "appraise",
-                    "alias": "a",
-                    "joinMode": "Left",
-                    "onList":[{
-                        "name":"a.archives_id",
-                        "value":"b.id",
-                        "algorithm":"EQ"
-                    }]
-                }, {
-                    "tablename": "appraise_score",
-                    "alias": "c",
-                    "joinMode": "Left",
-                    "onList": [{
-                        "name": "a.id",
-                        "value": "c.appraise_id",
-                        "algorithm": "EQ"
-                    }]
-                }],
+        debugger;
+        let alert: any = Message;
+        await request.post('/api/workerlib/archives_appraise/export',{
+            "conditionList": [{
+                "name": "id",
+                "value":  this.check,
+                "algorithm": "IN"
+            }
+            ],
+
+            "keywords" : [],
+            "selectList": [
+                {"field": "name" ,"alias":"姓名"},
+                {"field": "avg","alias":"平均分" },
+                {"field": "difference","alias":"好评" },
+                {"field": "in","alias":"中评" },
+                {"field": "good" ,"alias":"差评"},
+                {"field": "project","alias":"所属项目" },
+                {"field": "work_type","alias":"工种" }
+            ]
+        }, {responseType: 'blob', params: '评价'}).then((data)=>{
+            this.successUpload();
+        }).catch((e)=>{
+            let alert: any = Message;
+            if(!e) {
+                alert.warning('未知错误！');
+                return
+            }
+            if(e.response && e.response.data && e.response.data.message) {
+                alert.warning(e.response.data.message)
+                return
+            }
+            if(!e.message) {
+                return;
+            }
+            alert.warning(e.message || e)
+        });
+    }
+
+    @Action
+    public getParams() : any {
+        return {
+            "pageInfo" : {
+                "pageIndex": this.pageInfo.pageIndex, //页码
+                "pageSize": this.pageInfo.pageSize  //每页条数
+            },
 
             "conditionList": [],
 
+            "sortList": [],
+
+            "groupList" : [],
+
             "keywords" : [],
 
-            "selectList": [{ //显示字段
-                "field": "name",  //字段名
-                "function": "count",  //数据库相关函数：MAX, MIN, UPPER, LOWER, LENGTH, AVG, COUNT, SUM, GROUP_CONCAT等;
+            "selectList": [{
+                "field": "*",
+                "function": "",
             }]
-        }, {responseType: 'blob', params: '评价'}).then((data)=>{
-            // this.success(data);
-            // this.count();
+        }
+    }
+
+
+    @Action
+    public async count() {
+        await request.post('/api/workerlib/archives/count', await this.getParams()).then((total)=>{
+            this.setPageTotal(total.data)
+        }).catch((e)=>{
+            MessageUtils.warning(e);
+        });
+    }
+
+    @Action
+    public async addAppraise(){
+        debugger;
+        await request.put('/api/workerlib/appraise',{
+            "type": 1,
+            "project_name":this.archivesInfo.project,
+            "appraise_time":this.appraiseInfo.appraise_time,
+            "description":this.appraiseInfo.description,
+            "archives_id":this.archivesInfo.archives_id,
+            "project_to_name":this.appraiseInfo.project_to_name,
+            "punishment":this.appraiseInfo.punishment,
+        }).then((data)=>{
+            this.add(data);
+            this.count();
         }).catch((e)=>{
             console.log(e)
             let alert: any = Message;
@@ -106,85 +158,15 @@ export default class CommentsStore extends VuexModule {
     }
 
     @Action
-    public getParams() : any {
-        return {
-            "joinTables": [
-                {
-                    "tablename": "archives",
-                    "alias": "b",
-                    "joinMode": "Inner",
-
-                },
-                {
-                    "tablename": "appraise",
-                    "alias": "a",
-                    "joinMode": "Left",
-                    "onList":[{
-                        "name":"a.archives_id",
-                        "value":"b.id",
-                        "algorithm":"EQ"
-                    }]
-                }, {
-                "tablename": "appraise_score",
-                "alias": "c",
-                "joinMode": "Left",
-                "onList": [{
-                    "name": "a.id",
-                    "value": "c.appraise_id",
-                    "algorithm": "EQ"
-                }]
-            }],
-            "pageInfo" : {
-                "pageIndex": this.pageInfo.pageIndex, //页码
-                "pageSize": this.pageInfo.pageSize  //每页条数
-            },
-
-            "conditionList": [],
-
-            "sortList": [],
-
-            "groupList" : [
-                "b.id"
-            ],
-
-            "keywords" : [],
-            "selectList": [{ //显示字段
-                "field": "name",  //字段名
-                "function": "NONE",
-            },{
-                "field":"photo",
-                "function":"NONE"
-            },{
-                "field":"project",
-                "function":"NONE"
-            },{
-                "field":"work_type",
-                "function":"NONE"
-            },{
-                "field":"b.id",
-                "function":"NONE"
-            }]
-        };
-    }
-
-    @Action
-    public async count() {
-        await request.post('/api/workerlib/archives/count', await this.getParams()).then((total)=>{
-            this.setPageTotal(total.data)
-        }).catch((e)=>{
-            MessageUtils.warning(e);
-        });
-    }
-
-    @Action
-    public async addAppraise(){
-        debugger;
+    public async addAppraises(){
         await request.put('/api/workerlib/appraise',{
-            "type": 1,
+            "type": 2,
             "description":this.appraiseInfo.description,
-            "archives_id":this.archivesInfo.id,
+            "archives_id":this.archivesInfo.archives_id,
+            "project_name":this.appraiseInfo.project_name,
+            "project_to_name":this.appraiseInfo.project_to_name,
         }).then((data)=>{
-            this.success(data);
+            this.addAppraiseStore(data.data)
             this.count();
         }).catch((e)=>{
             console.log(e)
@@ -208,7 +190,7 @@ export default class CommentsStore extends VuexModule {
     }
     @Action
     public async search() {
-        await request.post('/api/workerlib/join', await this.getParams()).then((data)=>{
+        await request.post('/api/workerlib/archives_appraise', await this.getParams()).then((data)=>{
             this.success(data);
             this.count();
         }).catch((e)=>{
@@ -233,7 +215,6 @@ export default class CommentsStore extends VuexModule {
     }
     @Action
     public async commentType(){
-        debugger;
         await request.post('/api/workerlib/dictionaries',{
             "pageInfo" : {
                 "pageIndex": this.pageInfo.pageIndex,
@@ -268,44 +249,71 @@ export default class CommentsStore extends VuexModule {
             alert.warning(e.message || e)
         });
     }
-    @Action
-    public async dialog(id) {
-        await request.post('/api/workerlib/join', {
-            "joinTables": [
-                {
-                    "tablename": "archives",
-                    "alias": "b",
-                    "joinMode": "Inner",
 
-                },
-                {
-                    "tablename": "appraise",
-                    "alias": "a",
-                    "joinMode": "Left",
-                    "onList":[{
-                        "name":"a.archives_id",
-                        "value":"b.id",
-                        "algorithm":"EQ"
-                    }]
-                }, {
-                    "tablename": "appraise_score",
-                    "alias": "c",
-                    "joinMode": "Left",
-                    "onList": [{
-                        "name": "a.id",
-                        "value": "c.appraise_id",
-                        "algorithm": "EQ"
-                    }]
-                }],
+    @Action
+    public async comment(archives_id) {
+        debugger;
+        await request.post('/api/workerlib/score', {
             "pageInfo" : {
                 "pageIndex": this.pageInfo.pageIndex, //页码
                 "pageSize": this.pageInfo.pageSize  //每页条数
             },
+            "conditionList": [{
+                "name": "archives_id",
+                "value": archives_id,
+                "algorithm": "EQ"
+            }],
+
+            "sortList": [{
+                "name": "createOn",
+                "desc": true
+            }],
+
+            "groupList" : [],
+
+            "keywords" : [],
+
+            "selectList": [{
+                "field": "*",
+                "function": "",
+            }]
+        }).then((data)=>{
+            this.obtains(data);
+            // this.success(data);
+            // this.count();
+        }).catch((e)=>{
+            console.log(e)
+            let alert: any = Message;
+            if(!e) {
+                alert.warning('未知错误！')
+                return
+            }
+
+            if(e.response && e.response.data && e.response.data.message) {
+                alert.warning(e.response.data.message)
+                return
+            }
+
+            if(!e.message) {
+                return;
+            }
+
+            alert.warning(e.message || e)
+        });
+    }
+    @Action
+    public async dialog(archives_id) {
+        debugger;
+        await request.post('/api/workerlib/archives_appraise', {
+            "pageInfo" : {
+                "pageIndex": 0,
+                "pageSize": 1
+            },
 
             "conditionList": [{
-                "name": "b.id",
-                "value": id,
-                "algorithm": "EQ",
+                "name": "archives_id",
+                "value": archives_id,
+                "algorithm": "EQ"
             }],
 
             "sortList": [],
@@ -313,21 +321,10 @@ export default class CommentsStore extends VuexModule {
             "groupList" : [],
 
             "keywords" : [],
-            "selectList": [{ //显示字段
-                "field": "name",  //字段名
+
+            "selectList": [{
+                "field": "*",
                 "function": "",
-            },{
-                "field":"photo",
-                "function":""
-            },{
-                "field":"project",
-                "function":""
-            },{
-                "field":"work_type",
-                "function":""
-            },{
-                "field":"b.id",
-                "function":""
             }]
         }).then((data)=>{
             this.obtain(data);
@@ -353,6 +350,40 @@ export default class CommentsStore extends VuexModule {
             alert.warning(e.message || e)
         });
     }
+    @Action
+    public async addAppraiseStore(appraise_id) {
+        await request.put('/api/workerlib/appraise_score', {
+            "appraise_id": appraise_id,
+            "appraise_score":(Number(this.appraise_scoreInfo.createBy+this.appraise_scoreInfo.appraise_score+this.appraise_scoreInfo.modifyBy)/3).toFixed(1)
+        }).then((data)=>{
+            this.add(data);
+        }).catch((e)=>{
+            console.log(e)
+            let alert: any = Message;
+            if(!e) {
+                alert.warning('未知错误！')
+                return
+            }
+
+            if(e.response && e.response.data && e.response.data.message) {
+                alert.warning(e.response.data.message)
+                return
+            }
+
+            if(!e.message) {
+                return;
+            }
+
+            alert.warning(e.message || e)
+        });
+    }
+    @Action
+    public add(data: any) {
+        if(data.status == 0) {
+            this.search();
+        }
+    }
+    public
     @Mutation
     public setPageTotal(total: any) {
         this.pageInfo = {
@@ -362,7 +393,14 @@ export default class CommentsStore extends VuexModule {
             totalRecords: total
         };
     }
-
+    @Mutation
+    private setCheck(data: any) {
+        this.check = data;
+    }
+    @Mutation
+    private successUpload() {
+        this.check = [];
+    }
     @Mutation
     public punishment (data:any){
         this.punishments = data.data;
@@ -376,6 +414,10 @@ export default class CommentsStore extends VuexModule {
         this.ups = data.data;
     }
     @Mutation
+    public obtains(data:any){
+        this.allComm = data.data;
+    }
+    @Mutation
     private pageIndex(data: number) {
         this.pageInfo.pageIndex = data;
     }
@@ -385,11 +427,11 @@ export default class CommentsStore extends VuexModule {
     }
     @Mutation
     public setArchivesId(data:any){
-        this.archivesInfo.id = data;
+        this.archivesInfo.archives_id = data;
     }
     @Mutation
-    public setPunishment_id(data:any){
-        this.appraiseInfo.punishment_id = data;
+    public setPunishment(data:any){
+        this.appraiseInfo.punishment = data;
     }
     @Mutation
     public setAppraise_scoreId(data:any){
@@ -419,21 +461,46 @@ export default class CommentsStore extends VuexModule {
     public setAppraise_time(data:any){
         this.appraiseInfo.appraise_time = data;
     }
-
+    @Mutation
+    public setProject(data:any){
+        this.archivesInfo.project = data;
+    }
+    @Mutation
+    public setAppraise_score(data:any){
+        this.appraise_scoreInfo.appraise_score = data;
+    }
+    @Mutation
+    public setModifyBy(data:any){
+        this.appraise_scoreInfo.modifyBy = data;
+    }
+    @Mutation
+    public setCreateBy(data:any){
+        this.appraise_scoreInfo.createBy = data;
+    }
+    @Mutation
+    public setProject_name(data:any){
+        this.appraiseInfo.project_name = data;
+    }
+    @Mutation
+    public setProject_to_name(data:any){
+        this.appraiseInfo.project_to_name = data;
+    }
 }
 
 interface AppraiseInfo {
     id?:number;
     type?:number;
     description?: string;
-    archives_id?:number;
+    archives_id?:string;
     appraise_time?:Date;
     userPath?:string;
     modifyBy?:number;
     modifyTime?:Date;
     createOn?:Date;
     createBy?:number;
-    punishment_id?:number;
+    punishment?:string;
+    project_name?:string;
+    project_to_name?:string;
 }
 interface Appraise_photoInfo {
     id?:number;
@@ -463,7 +530,7 @@ interface PageInfo {
     totalRecords?:number;
 }
 interface ArchivesInfo {
-    id?:string;
+    archives_id?:string;
     name?:string;
     phone?:string;
     emergency_name?:string;

@@ -28,11 +28,13 @@
         private store: any;
         public addCommtent: boolean;
         public commtentcInfo: boolean;
+        public checkedArray: Array<any>;
         constructor() {
             super();
             this.store = getModule(CommentsStore)
             this.addCommtent = false;
             this.commtentcInfo = false;
+            this.checkedArray = []
 
         }
 
@@ -46,6 +48,7 @@
         }
 
         commentsExport() :any{
+            this.store.setCheck(this.checkedArray);
             this.store.commentsExport();
         }
         getMenus() : any {
@@ -56,8 +59,8 @@
             ];
             return this.options;
         }
-        addCommtentlist(id) : any {
-            this.store.setArchivesId(id);
+        addCommtentlist(archives_id) : any {
+            this.store.setArchivesId(archives_id);
             this.addCommtent = !this.addCommtent;
         }
 
@@ -86,19 +89,62 @@
         getObtain() :any{
             return this.store.ups;
         }
-
+        getObtains() :any{
+            return this.store.allComm;
+        }
         get totalRecords(){
             return this.store.pageInfo.totalRecords;
         }
 
-        details(id): any {
+        details(archives_id): any {
+            debugger;
             this.commtentcInfo =! this.commtentcInfo
-            this.store.dialog(id)
+            this.store.dialog(archives_id)
+            this.store.comment(archives_id)
+
         }
         ok() : any{
-            this.store.addAppraise();
+            if (this.store.appraiseInfo.appraise_time!=null && this.store.appraiseInfo.appraise_time!="" ){
+                this.store.addAppraise();
+            } else {
+                this.store.addAppraises();
+            }
+
             this.addCommtent = false;
         }
+
+        getStat(avg: any): any {
+            if (avg === undefined) {
+                return 0
+            }
+            let half = avg - Math.floor(avg) > 0.5;
+            if (half) {
+                return Math.floor(avg) + 0.5
+            } else {
+                return Math.floor(avg)
+            }
+        }
+
+        getTime(time: any): any {
+            if (time != undefined) {
+                let date = new Date(time)
+                let newTime = `${date.getFullYear()}-${date.getMonth()+1<10?'0'+(date.getMonth()+1):date.getMonth()+1}-${date.getDate()<10?'0'+date.getDate():date.getDate()}`
+                return newTime
+            }
+        }
+
+        isChecked(id) {
+            return this.checkedArray.includes(id)
+        }
+
+        clickChecked(id) {
+            if (!this.checkedArray.includes(id)) {
+                this.checkedArray.push(id)
+            } else {
+                this.checkedArray.splice(this.checkedArray.indexOf(id), 1)
+            }
+        }
+
         cancel():any {
             this.addCommtent = false;
         }
@@ -125,20 +171,63 @@
             return this.store.appraiseInfo.appraise_time;
         }
         set appraise_time(data:Date){
-            this.store.setAppraise_time(data);
+            debugger;
+            if (data != undefined) {
+                let time = data;
+                let newTime = `${time.getFullYear()}-${time.getMonth()+1<10?'0'+(time.getMonth()+1):time.getMonth()+1}-${time.getDate()<10?'0'+time.getDate():time.getDate()}`
+                this.store.setAppraise_time(newTime);
+            }
+
         }
-        get punishment_id():number{
-            return this.store.appraiseInfo.punishment_id;
+        get punishment():string{
+            return this.store.appraiseInfo.punishment;
         }
-        set punishment_id(data:number){
-            this.store.setPunishment_id(data);
+        set punishment(data:string){
+            this.store.setPunishment(data);
         }
-        get archives_id():number{
+        get archives_id():string{
             return this.store.appraiseInfo.archives_id;
         }
-        set archives_id(data:number){
+        set archives_id(data:string){
             this.store.setArchives_id(data);
         }
+        get project():number{
+            return this.store.archivesInfo.project;
+        }
+        set project(data:number){
+            this.store.setProject(data);
+        }
+        get appraise_score():number{
+            return this.store.appraise_scoreInfo.appraise_score;
+        }
+        set appraise_score(data:number){
+            this.store.setAppraise_score(data);
+        }
+        get modifyBy():number{
+            return this.store.appraise_scoreInfo.modifyBy;
+        }
+        set modifyBy(data:number){
+            this.store.setModifyBy(data);
+        }
+        get createBy():number{
+            return this.store.appraise_scoreInfo.createBy;
+        }
+        set createBy(data:number){
+            this.store.setCreateBy(data);
+        }
+        get project_name():string{
+            return this.store.appraiseInfo.project_name;
+        }
+        set project_name(data:string){
+            this.store.setProject_name(data);
+        }
+        get project_to_name():string{
+            return this.store.appraiseInfo.project_to_name;
+        }
+        set project_to_name(data:string){
+            this.store.setProject_to_name(data);
+        }
+
     }
 </script>
 <style scoped src="@/styles/comments.css" />
