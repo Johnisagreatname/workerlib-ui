@@ -76,7 +76,11 @@ service.interceptors.response.use(
             throw response.data.message;
         }
 
+<<<<<<< HEAD
         if((response.data.status != 0 || response.data.data == undefined) && response.data.type != "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet") {
+=======
+        if(response.data.status != 0 && response.data.type != "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet") {
+>>>>>>> 14364714f1a2d919d31946a127aa2f6449d7c956
             throw response.data.message;
         } else if (response.data.type == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet") {
             downLoad(response.data, name)

@@ -26,7 +26,6 @@
         mounted() {
             this.store.search();
             this.store.getProjectType();
-            this.store.setStatus(1);
         }
 
         single = true;
@@ -184,6 +183,7 @@
                 return true;
             }
         }
+        // 单选
         handleSelectRow(selection, row) {
             let index = this.store.checkeds.findIndex(x => x.id == row.id);
             if(index > -1) {
@@ -199,6 +199,8 @@
             itemTrue['name'] = row.name;
             this.checkAllGroup.push(itemTrue);
         }
+
+        //多选
         handleSelectAll(selection) {
             for(let i= 0;i<selection.length;i++){
                 var itemTrue = {};
@@ -247,9 +249,11 @@
         toggle(name){
             debugger;
             if(name=="线上培训"){
-                this.store.setStatus(1);
+                this.store.setSelectStatus(1);
+                this.store.search();
             }else {
-                this.store.setStatus(2);
+                this.store.setSelectStatus(2);
+                this.store.search();
             }
         }
         private options!: any;
@@ -541,6 +545,12 @@
         }
         get mark():string{
             return this.store.cultivate.mark;
+        }
+        set coursewareBrief(data:string){
+            this.store.setCoursewareBrief(data);
+        }
+        get coursewareBrief():string{
+            return this.store.cultivate.courseware_brief;
         }
     }
 </script>

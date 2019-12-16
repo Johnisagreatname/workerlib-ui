@@ -67,3 +67,6 @@ button i {
 #app .layout .ivu-layout .ivu-layout .ivu-layout-content{
     box-shadow: 0 0 0px 0px #fff;
 }
+#app .ivu-progress .ivu-progress-outer .ivu-progress-inner{
+    background-color: transparent !important;
+}

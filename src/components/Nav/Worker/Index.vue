@@ -290,16 +290,16 @@
             return this.store.project;
         }
 
-        set projectId(data:number){
+        set projectId(data:string){
             debugger
-            this.store.setProject(this.store.projectList.filter(x => x.id == data).map(a=>a.project_name));
-            debugger
+            this.store.setProject(this.store.projectList.filter(x => x.id == data)[0].project_name);
             this.store.setProjectId(data);
         }
-        get projectId():number{
+        get projectId():string{
             return this.store.projectId;
         }
         set unitId(data:number){
+            debugger
             this.store.setUnitId(data);
         }
         get unitId():number{

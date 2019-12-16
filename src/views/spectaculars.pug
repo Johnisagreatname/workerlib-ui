@@ -1,0 +1,390 @@
+.spectaculars
+    .fh(@click="goBack()") 后台
+    .header
+        .headerLeft
+            .headerLogo
+            .headerLogoFont
+                span 筑造宜居城市
+        .headerMiddle
+        .headerRight
+    .body
+        .bodyLeft
+            .bodyLeftTop
+                .topTop
+                    .topLeftLeft
+                    .topLeftMiddle
+                        span 职业证书统计
+                    .topLeftRight
+                        .rightTitle
+                            .circleGreen
+                            span(:style={
+                                'line-height': '50px',
+                                'font-size': '14px',
+                                'margin-left': '8px'
+                            }) 总人数
+                        .rightTitle
+                            .circleBlue
+                            span(:style={
+                                'line-height': '50px',
+                                'font-size': '14px',
+                                'margin-left': '8px'
+                            }) 持证人数
+                .hrBJ
+                .topButtom
+                    .belowLeft
+                        template
+                            Progress(:percent="80",:stroke-width="15",:stroke-color="['#4ea2fe', '#7dbafe']",hide-info)
+                    .belowMiddle
+                        span 普工
+                    .belowRight
+                        template
+                            Progress(:percent="80",:stroke-width="15",:stroke-color="['#6bdfc5', '#90e7d4']",hide-info)
+                .topButtom
+                    .belowLeft
+                        template
+                            Progress(:percent="70",:stroke-width="15",:stroke-color="['#4ea2fe', '#7dbafe']",hide-info)
+                    .belowMiddle
+                        span 普工
+                    .belowRight
+                        template
+                            Progress(:percent="50",:stroke-width="15",:stroke-color="['#6bdfc5', '#90e7d4']",hide-info)
+                .topButtom
+                    .belowLeft
+                        template
+                            Progress(:percent="60",:stroke-width="15",:stroke-color="['#4ea2fe', '#7dbafe']",hide-info)
+                    .belowMiddle
+                        span 普工
+                    .belowRight
+                        template
+                            Progress(:percent="50",:stroke-width="15",:stroke-color="['#6bdfc5', '#90e7d4']",hide-info)
+                .topButtom
+                    .belowLeft
+                        template
+                            Progress(:percent="75",:stroke-width="15",:stroke-color="['#4ea2fe', '#7dbafe']",hide-info)
+                    .belowMiddle
+                        span 普工
+                    .belowRight
+                        template
+                            Progress(:percent="70",:stroke-width="15",:stroke-color="['#6bdfc5', '#90e7d4']",hide-info)
+                .topButtom
+                    .belowLeft
+                        template
+                            Progress(:percent="65",:stroke-width="15",:stroke-color="['#4ea2fe', '#7dbafe']",hide-info)
+                    .belowMiddle
+                        span 普工
+                    .belowRight
+                        template
+                            Progress(:percent="50",:stroke-width="15",:stroke-color="['#6bdfc5', '#90e7d4']",hide-info)
+            .bodyLeftMiddle
+                .middleTop
+                    .middleTopLeft
+                    .topLeftMiddle
+                        span 培训统计
+                    .topLeftRight
+                        .middleRightTitle
+                            span(:style={
+                                'line-height': '50px',
+                                'font-size': '14px'
+                            }) 人数
+                        .middleRightTitleTwo
+                            .middleRightRelative
+                                .div-a
+                                .div-b
+
+                .hrBJ
+                .middleLeftMiddle
+                    .middleMiddleRight
+                        span 人数
+                .middleButtom
+                    #peoples(:style={'height': '160px', 'width': '445px'})
+            .bodyLeftBelow
+                .belowTop
+                    .belowTopLeft
+                    .belowTopMiddle
+                        span 课件培训统计
+                    .topLeftRight
+                        .middleRightTitle
+                            span(:style={
+                                'line-height': '50px',
+                                'font-size': '14px'
+                            }) 月份
+                        .middleRightTitleTwo
+                            .middleRightRelative
+                                .div-a
+                                .div-b
+                .hrBJ
+                .belowMiddleMiddle
+                .cultivateEcharts
+                    #cultivate(:style={'height': '200px', 'width': '418px'})
+        .bodyMiddle
+            .bodyMiddleTop
+            .bodyMiddleMiddle
+                .middleMiddleTop
+                    span 建筑工人总数
+                .middleMiddleBelow
+                    .middleBelow
+                        .belowTopOne
+                            .topLeft
+                            span(:style={
+                                'line-height': '40px',
+                                'font-size': '14px',
+                                'color':'#0068ff'
+                            }) 工种总数(种)
+                        .belowBelow
+                            span(:style={
+                                'line-height': '100px',
+                                'font-size': '38px',
+                                'color': '#0068ff'
+                            })  100
+                    .middleBelow
+                        .belowTopOne
+                            .topLeftWB
+                            span(:style={
+                                'line-height': '40px',
+                                'font-size': '14px',
+                                'color': '#0068ff'
+                            }) 自有队伍人数(人)
+                        .belowBelow
+                            span(:style={
+                                'line-height': '100px',
+                                'font-size': '38px',
+                                'color': '#0068ff'
+                            })  40000
+                    .middleBelow
+                        .belowTopOne
+                            .topLeftWB
+                            span(:style={
+                                'line-height': '40px',
+                                'font-size': '14px',
+                                'color': '#0068ff'
+                            }) 外部队伍人数(人)
+                        .belowBelow
+                            span(:style={
+                                'line-height': '100px',
+                                'font-size': '38px',
+                                'color': '#0068ff'
+                            })  10000
+            .bodyMiddleBelow
+                .middleLeft
+                    .middleBelowT
+                        .belowTopOneT
+                            .topLeftZS
+                            span(:style={
+                                'line-height': '40px',
+                                'font-size': '14px',
+                                'color': '#0068ff'
+                            }) 工程总数
+                        .belowBelowTwo
+                            span(:style={
+                                'line-height': '100px',
+                                'font-size': '38px',
+                                'color': '#0068ff'
+                            })  1
+                            span(:style={
+                                'line-height': '100px',
+                                'font-size': '14px',
+                                'color': '#0068ff'
+                            })  个
+
+                        .belowThree
+                            span(:style={
+                                'line-height': '66px',
+                                'font-size': '14px',
+                                'color': '#0068ff'
+                            }) 在建工程：10
+                            span(:style={
+                                'line-height': '66px',
+                                'font-size': '14px',
+                                'color': '#00e0ef',
+                                'margin-left': '20px'
+                            }) 未开工：0
+                .middleMiddle
+                    .middleBelowT
+                        .belowTopOneT
+                            .topLeftZZ
+                            span(:style={
+                                'line-height': '40px',
+                                'font-size': '14px',
+                                'color': '#0068ff'
+                            }) 在职工人数
+                        .belowBelowTwo
+                            span(:style={
+                                'line-height': '100px',
+                                'font-size': '38px',
+                                'color': '#0068ff'
+                            })  10000
+                            span(:style={
+                                'line-height': '100px',
+                                'font-size': '14px',
+                                'color': '#0068ff'
+                            })  个
+                        .belowThree
+                            span(:style={
+                                'line-height': '66px',
+                                'font-size': '14px',
+                                'color': '#0068ff'
+                            }) 自有工人：10
+                            span(:style={
+                                'line-height': '66px',
+                                'font-size': '14px',
+                                'color': '#00e0ef',
+                                'margin-left': '20px'
+                            }) 外部工人：0
+                .middleRight
+                    .middleBelowT
+                        .belowTopOneT
+                            .topLeftZZ
+                            span(:style={
+                                'line-height': '40px',
+                                'font-size': '14px',
+                                'color': '#0068ff'
+                            }) 离职工人数
+                        .belowBelowTwo
+                            span(:style={
+                                'line-height': '100px',
+                                'font-size': '38px',
+                                'color': '#0068ff'
+                            })  1
+                            span(:style={
+                                'line-height': '100px',
+                                'font-size': '14px',
+                                'color': '#0068ff'
+                            })  个
+
+                        .belowThree
+                            span(:style={
+                                'line-height': '66px',
+                                'font-size': '14px',
+                                'color': '#0068ff'
+                            }) 自有工人：10
+                            span(:style={
+                                'line-height': '66px',
+                                'font-size': '14px',
+                                'color': '#00e0ef',
+                                'margin-left': '20px'
+                            }) 外部工人：0
+        .bodyRight
+            .bodyRightTop
+                .topTop
+                    .topRightRight
+                    .topLeftMiddle
+                        span 工种人数统计
+                .hrBJ
+                .gzEcharts
+                    #gzEcharts(:style={'height': '230px', 'width': '230px'})
+                .gzmm
+                    table(:style={'width': '100%'},border="0",cellpadding="0",cellspacing="0")
+                        tr(:style={'height': '25px'})
+                            td
+                                .tableCircle(:style={'background-color': '#41ccd3'})
+                                span 普工
+
+
+                            td 4000人(40%)
+                        tr(:style={'height': '25px'})
+                            td
+                                .tableCircle(:style={'background-color': '#2498e3'})
+                                span 钢筋工
+
+
+                            td 4000人(40%)
+                        tr(:style={'height': '25px'})
+                            td
+                                .tableCircle(:style={'background-color': '#2268d4'})
+                                span 水泥工
+
+
+                            td 4000人(40%)
+                        tr(:style={'height': '25px'})
+                            td
+                                .tableCircle(:style={'background-color': '#d6c76e'})
+                                span 塔吊工
+
+
+                            td 4000人(40%)
+                        tr(:style={'height': '25px'})
+                            td
+                                .tableCircle(:style={'background-color': '#d39255'})
+                                span 市政工
+
+
+                            td 4000人(40%)
+                        tr(:style={'height': '25px'})
+                            td
+                                .tableCircle(:style={'background-color': '#35c87a'})
+                                span 维护工
+
+
+                            td 4000人(40%)
+                        tr(:style={'height': '25px'})
+                            td
+                                .tableCircle(:style={'background-color': '#44ae2e'})
+                                span 道路工
+
+
+                            td 4000人(40%)
+                        tr(:style={'height': '25px'})
+                            td
+                                .tableCircle(:style={'background-color': '#7d5dcc'})
+                                span 抹灰工
+
+
+                            td 4000人(40%)
+
+            .bodyRightMiddle
+                .topTop
+                    .topRightJN
+                    .topLeftMiddle
+                        span 技能工种评定统计
+                .hrBJ
+                .threeP
+                    #profession(:style={'height': '212px', 'width': '388px'})
+            .bodyRightBelow
+                .topTop
+                    .topRightBL
+                    .topLeftMiddle
+                        span 不良记录统计
+                .hrBJ
+                .q4
+                    Carousel(v-model="carousel", autoplay, :autoplay-speed=3000, dots="none", radius-dot, arrow="always")
+                        CarouselItem
+                            .demo-carousel
+                                img(src="~@/assets/css/images/1.png" :style={'width': '100%', 'height': '100%'})
+                        CarouselItem
+                            .demo-carousel
+                                img(src="~@/assets/css/images/2.png" :style={'width': '100%', 'height': '100%'})
+                        CarouselItem
+                            .demo-carousel
+                                img(src="~@/assets/css/images/3.png" :style={'width': '100%', 'height': '100%'})
+                        CarouselItem
+                            .demo-carousel
+                                img(src="~@/assets/css/images/4.png" :style={'width': '100%', 'height': '100%'})
+                .q5
+                    table(:style={'width': '360px', 'text-align': 'center', 'margin-left':'auto',
+                        'margin-right': 'auto'},border="0",cellpadding="0",cellspacing="0")
+                        tr(:style={'height': '25px', 'background-color': '#002052', 'font-weight': 'bolder','color':'#0067fd'})
+                            td(:style={'width': '25%'}) 排名
+                            td(:style={'width': '25%'}) 工种
+                            td(:style={'width': '25%'}) 人数
+                            td(:style={'width': '25%'}) 占比
+                        tr(:style={'height': '25px'})
+                            td(:style={'width': '25%'}) 1
+                            td(:style={'width': '25%'}) 裴灏杰
+                            td(:style={'width': '25%'}) 寻衅挑事
+                            td(:style={'width': '25%'}) 黑名单
+                        tr(:style={'height': '25px'})
+                            td(:style={'width': '25%'}) 2
+                            td(:style={'width': '25%'}) 范佳超
+                            td(:style={'width': '25%'}) 寻衅挑事
+                            td(:style={'width': '25%'}) 黑名单
+                        tr(:style={'height': '25px'})
+                            td(:style={'width': '25%'}) 3
+                            td(:style={'width': '25%'}) 陈吕
+                            td(:style={'width': '25%'}) 寻衅挑事
+                            td(:style={'width': '25%'}) 黑名单
+                        tr(:style={'height': '25px'})
+                            td(:style={'width': '25%'}) 4
+                            td(:style={'width': '25%'}) 吴之甫
+                            td(:style={'width': '25%'}) 寻衅挑事
+                            td(:style={'width': '25%'}) 黑名单
+

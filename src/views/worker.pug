@@ -41,7 +41,8 @@
              'text-align': 'center', 'font-size': '16px',
              'line-height': '36px', 'color': '#000000', 'margin-top': '8%'
          })
-            span {{item.name}}
+            span(v-if="item.name != null") {{item.name}}
+            span(v-else) 无
             span |
             span(v-if="checkSex(item.id_number)") 男
             span(v-else) 女
@@ -57,9 +58,12 @@
          p 工种
          p 状态
       .y3
-         p {{item.phone}}
-         p {{item.id_number}}
-         p {{item.work_type}}
+         p(v-if="item.phone != null") {{item.phone}}
+         p(v-else) 无
+         p(v-if="item.id_number != null") {{item.id_number}}
+         p(v-else) 无
+         p(v-if="item.work_type != null") {{item.work_type}}
+         p(v-else) 无
          p(v-if="item.leave==1") 在职
          p(v-else) 离职
    .footer
@@ -101,7 +105,7 @@
                   span(:style={'color': 'red'}) *
                .input
                   Select(filterable,clearable,style="width:345px",v-model="projectId",@on-change="selectUnit()")
-                     Option(v-for="item in getProjectList()", :value="item.id", :key="item.id") {{item.project_name}}
+                     Option(v-for="item in getProjectList()", :value="item.project_id", :key="item.project_id") {{item.project_name}}
             .divTwo
                .name
                   span 参建单位
