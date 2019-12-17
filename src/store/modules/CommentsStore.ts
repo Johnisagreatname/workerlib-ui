@@ -52,15 +52,23 @@ export default class CommentsStore extends VuexModule {
     public async commentsExport(){
         debugger;
         let alert: any = Message;
-        await request.post('/api/workerlib/archives_appraise/export',{
-            "conditionList": [{
-                "name": "id",
-                "value":  this.check,
-                "algorithm": "IN"
-            }
-            ],
-
+        await request.post('/api/workerlib/export/join',{
+            "joinTables": [{
+                "tablename": "a",
+                "alias": "a",
+                "joinMode": "inner"
+            }, {
+                "tablename": "b",
+                "alias": "b",
+                "joinMode": "Inner",
+                "onList": [{
+                    "name": "a.archives_id",
+                    "value": "b.eafId",
+                    "algorithm": "EQ"
+                }]
+            },],
             "keywords" : [],
+
             "selectList": [
                 {"field": "name" ,"alias":"姓名"},
                 {"field": "avg","alias":"平均分" },
@@ -92,6 +100,20 @@ export default class CommentsStore extends VuexModule {
     @Action
     public getParams() : any {
         return {
+            "joinTables": [{
+                "tablename": "a",
+                "alias": "a",
+                "joinMode": "inner"
+            }, {
+                "tablename": "b",
+                "alias": "b",
+                "joinMode": "Inner",
+                "onList": [{
+                    "name": "a.archives_id",
+                    "value": "b.eafId",
+                    "algorithm": "EQ"
+                }]
+            },],
             "pageInfo" : {
                 "pageIndex": this.pageInfo.pageIndex, //页码
                 "pageSize": this.pageInfo.pageSize  //每页条数
@@ -99,16 +121,19 @@ export default class CommentsStore extends VuexModule {
 
             "conditionList": [],
 
-            "sortList": [],
+            "sortList": [{ //排序条件
+                "name": "id", //字段名
+                "desc": true  //true为降序，false为升序
+            }],
 
             "groupList" : [],
 
             "keywords" : [],
 
-            "selectList": [{
-                "field": "*",
-                "function": "",
-            }]
+            "selectList": [{ //显示字段
+                "field": "*",  //字段名
+                "function": "NONE",  //数据库相关函数：MAX, MIN, UPPER, LOWER, LENGTH, AVG, COUNT, SUM, GROUP_CONCAT等;
+            } ]
         }
     }
 
@@ -190,7 +215,7 @@ export default class CommentsStore extends VuexModule {
     }
     @Action
     public async search() {
-        await request.post('/api/workerlib/archives_appraise', await this.getParams()).then((data)=>{
+        await request.post('/api/workerlib/join', await this.getParams()).then((data)=>{
             this.success(data);
             this.count();
         }).catch((e)=>{
@@ -304,16 +329,39 @@ export default class CommentsStore extends VuexModule {
     @Action
     public async dialog(archives_id) {
         debugger;
-        await request.post('/api/workerlib/archives_appraise', {
+        await request.post('/api/workerlib/join', {
+            "joinTables": [{
+                "tablename": "a",
+                "alias": "a",
+                "joinMode": "inner"
+            }, {
+                "tablename": "b",
+                "alias": "b",
+                "joinMode": "Inner",
+                "onList": [{
+                    "name": "a.archives_id",
+                    "value": "b.eafId",
+                    "algorithm": "EQ"
+                }]
+            },{
+                "tablename": "c",
+                "alias": "c",
+                "joinMode": "Left",
+                "onList": [{
+                    "name": "b.unit_id",
+                    "value": "c.unit_id",
+                    "algorithm": "EQ"
+                }]
+            }],
             "pageInfo" : {
-                "pageIndex": 0,
-                "pageSize": 1
+                "pageIndex": 0, //页码
+                "pageSize": 1  //每页条数
             },
 
-            "conditionList": [{
-                "name": "archives_id",
-                "value": archives_id,
-                "algorithm": "EQ"
+            "conditionList": [{ //查询条件
+                "name": "archives_id",   //字段名
+                "value": archives_id,   //值
+                "algorithm": "EQ",   //条件: EQ(2, "="), GT(3, ">"), LT(4, "<"), GTEQ(5, ">="), LTEQ(6, "<="), NOT(7, "<>"), NOTEQ(8, "!="), LIKE(9), START(10), END(11), IN(12), NOTIN(13)
             }],
 
             "sortList": [],
@@ -322,10 +370,10 @@ export default class CommentsStore extends VuexModule {
 
             "keywords" : [],
 
-            "selectList": [{
-                "field": "*",
-                "function": "",
-            }]
+            "selectList": [{ //显示字段
+                "field": "*",  //字段名
+                "function": "NONE",  //数据库相关函数：MAX, MIN, UPPER, LOWER, LENGTH, AVG, COUNT, SUM, GROUP_CONCAT等;
+            } ]
         }).then((data)=>{
             this.obtain(data);
             // this.success(data);

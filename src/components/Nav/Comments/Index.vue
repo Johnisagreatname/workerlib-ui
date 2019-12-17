@@ -97,10 +97,9 @@
         }
 
         details(archives_id): any {
-            debugger;
-            this.commtentcInfo =! this.commtentcInfo
-            this.store.dialog(archives_id)
-            this.store.comment(archives_id)
+            this.commtentcInfo =! this.commtentcInfo;
+            this.store.dialog(archives_id);
+            this.store.comment(archives_id);
 
         }
         ok() : any{
