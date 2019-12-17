@@ -11,6 +11,7 @@ var OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin');
 var CleanWebpackPlugin = require('clean-webpack-plugin');
 var CopyWebpackPlugin = require('copy-webpack-plugin');
 var CodeGenerator = require('../CodeGenerator');
+const vuxLoader = require('vux-loader');
 
 const VueRouterInvokeWebpackPlugin = require('vue-router-invoke-webpack-plugin');
 
@@ -141,5 +142,9 @@ if (config.build.productionGzip) {
         })
     );
 }
+
+vuxLoader.merge(webpackConfig, {
+    plugins: ['vux-ui']
+})
 
 module.exports = webpackConfig;

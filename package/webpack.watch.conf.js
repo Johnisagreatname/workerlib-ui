@@ -8,13 +8,14 @@ var HtmlWebpackPlugin = require('html-webpack-plugin')
 var FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
 var CopyWebpackPlugin = require('copy-webpack-plugin')
 const VueRouterInvokeWebpackPlugin = require('vue-router-invoke-webpack-plugin');
+const vuxLoader = require('vux-loader');
 
 // add hot-reload related code to entry chunks
 Object.keys(baseWebpackConfig.entry).forEach(function (name) {
   baseWebpackConfig.entry[name] = ['./package/dev-client'].concat(baseWebpackConfig.entry[name])
 })
 
-module.exports = merge(baseWebpackConfig, {
+var webpackConfig = merge(baseWebpackConfig, {
   module: {
     rules: utils.styleLoaders({ sourceMap: config.dev.cssSourceMap })
   },
@@ -73,3 +74,10 @@ module.exports = merge(baseWebpackConfig, {
     ])
   ]
 })
+
+
+vuxLoader.merge(webpackConfig, {
+    plugins: ['vux-ui']
+})
+
+module.exports = webpackConfig
