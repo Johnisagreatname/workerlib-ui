@@ -5,6 +5,7 @@ var baseWebpackConfig = require('./webpack.base.conf')
 var CopyWebpackPlugin = require('copy-webpack-plugin')
 var publishRoot = path.resolve(__dirname, '../publish');
 const VueRouterInvokeWebpackPlugin = require('vue-router-invoke-webpack-plugin');
+const vuxLoader = require('vux-loader');
 
 var webpackConfig = merge(baseWebpackConfig, {
   module: {
@@ -83,6 +84,10 @@ var webpackConfig = merge(baseWebpackConfig, {
       }
     ])
   ]
+})
+
+vuxLoader.merge(webpackConfig, {
+  plugins: ['vux-ui']
 })
 
 module.exports = webpackConfig
