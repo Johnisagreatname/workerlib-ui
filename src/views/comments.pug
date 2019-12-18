@@ -7,10 +7,10 @@
             Input(clearable,style="width: 260px")
     .divOne
         span 项目名称：
-            Input(clearable,style="width: 260px")
+            Input(clearable,style="width: 260px" )
     .divOne
         span 姓名：
-            Input(clearable,style="width: 260px")
+            Input(clearable,style="width: 260px" , v-model="name")
     .divOne
         span 工种：
             Input(clearable,style="width: 260px")
@@ -148,7 +148,7 @@
                                 .c9
                                     span {{item.work_type}}
                        .c6
-                           span {{item.project}}
+                           span {{item.unit_name}}
                    .c3
                        .ulDiv
                            ul

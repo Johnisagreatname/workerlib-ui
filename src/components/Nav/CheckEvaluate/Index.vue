@@ -24,11 +24,13 @@
         @Model('isCollapsed', { type: Boolean }) private isCollapsed !: boolean;
         private options!: any;
         private commtenGrade!: any;
-        private grade!: any;
+        private grades!: any;
         public addRate: boolean;
+        public checkedArray: Array<any>;
         mounted() {
             this.store.getProjectType();
             this.store.search();
+            this.checkedArray = []
         }
         private store: any;
         constructor() {
@@ -61,7 +63,12 @@
             return this.options;
         }
         handleSelectRow(selection, index) {
-            console.log(selection);
+            let arr = new Array()
+            selection.forEach(a => {
+                arr.push(a.id)
+            })
+            // console.log(arr);
+            this.checkedArray = arr;
         }
         getCommtenGrade() : any {
             if(this.commtenGrade) return this.commtenGrade;
@@ -75,8 +82,8 @@
         }
 
         getGrade() : any {
-            if(this.grade) return this.grade;
-            this.grade = [
+            if(this.grades) return this.grades;
+            this.grades = [
                 {value: '一级', key: '一级' },
                 {value: '二级', key: '二级' },
                 {value: '三级', key: '三级' },
@@ -90,8 +97,15 @@
             ];
             return this.commtenGrade;
         }
+        clickChecked(id) {
+            if (!this.checkedArray.includes(id)) {
+                this.checkedArray.push(id)
+            } else {
+                this.checkedArray.splice(this.checkedArray.indexOf(id), 1)
+            }
+        }
         ok() : any{
-            //this.store.insertArchives();
+            this.store.insertArchives(this.checkedArray);
             this.addRate = false;
         }
         cancel():any {
@@ -107,6 +121,24 @@
         getType(){
 
             return this.store.projectType;
+        }
+        get modifyBy():string{
+            return this.store.modifyBy;
+        }
+        set modifyBy(data:string){
+            this.store.setModifyBy(data);
+        }
+        get rate():string{
+            return this.store.rateInfo.rate;
+        }
+        set rate(data:string){
+            this.store.setRates(data)
+        }
+        get grade():string{
+            return this.store.grade;
+        }
+        set grade(data:string){
+            this.store.setGrade(data);
         }
         set totalRecords(data:number){
             this.store.setPageTotal(data);

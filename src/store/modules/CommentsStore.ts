@@ -54,11 +54,11 @@ export default class CommentsStore extends VuexModule {
         let alert: any = Message;
         await request.post('/api/workerlib/export/join',{
             "joinTables": [{
-                "tablename": "a",
+                "tablename": "alluser_appraise_appraise_score",
                 "alias": "a",
                 "joinMode": "inner"
             }, {
-                "tablename": "b",
+                "tablename": "alluser_arvhives_project",
                 "alias": "b",
                 "joinMode": "Inner",
                 "onList": [{
@@ -101,11 +101,11 @@ export default class CommentsStore extends VuexModule {
     public getParams() : any {
         return {
             "joinTables": [{
-                "tablename": "a",
+                "tablename": "alluser_appraise_appraise_score",
                 "alias": "a",
                 "joinMode": "inner"
             }, {
-                "tablename": "b",
+                "tablename": "alluser_arvhives_project",
                 "alias": "b",
                 "joinMode": "Inner",
                 "onList": [{
@@ -331,11 +331,11 @@ export default class CommentsStore extends VuexModule {
         debugger;
         await request.post('/api/workerlib/join', {
             "joinTables": [{
-                "tablename": "a",
+                "tablename": "alluser_appraise_appraise_score",
                 "alias": "a",
                 "joinMode": "inner"
             }, {
-                "tablename": "b",
+                "tablename": "alluser_arvhives_project",
                 "alias": "b",
                 "joinMode": "Inner",
                 "onList": [{
@@ -344,7 +344,7 @@ export default class CommentsStore extends VuexModule {
                     "algorithm": "EQ"
                 }]
             },{
-                "tablename": "c",
+                "tablename": "alluser_archives_unit",
                 "alias": "c",
                 "joinMode": "Left",
                 "onList": [{
