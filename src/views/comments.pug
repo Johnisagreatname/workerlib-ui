@@ -7,10 +7,10 @@
             Input(clearable,style="width: 260px")
     .divOne
         span 项目名称：
-            Input(clearable,style="width: 260px")
+            Input(clearable,style="width: 260px" )
     .divOne
         span 姓名：
-            Input(clearable,style="width: 260px")
+            Input(clearable,style="width: 260px" , v-model="name")
     .divOne
         span 工种：
             Input(clearable,style="width: 260px")
@@ -40,7 +40,7 @@
             .com 差评{{item.good}}
         .y1
             span(:style={'color':'#000000','font-weight':'bold','font-size':'15px'}) 所在项目
-            span {{item.project}}
+            span {{item.project_name}}
         .y1
             span(:style={'color':'#000000','font-weight':'bold','font-size':'15px'}) 所属工种
             span {{item.work_type}}
@@ -148,7 +148,7 @@
                                 .c9
                                     span {{item.work_type}}
                        .c6
-                           span {{item.project}}
+                           span {{item.unit_name}}
                    .c3
                        .ulDiv
                            ul
