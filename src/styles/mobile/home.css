@@ -1,0 +1,5 @@
+#home {
+    width: 100%;
+    display: list-item;
+    position: fixed;
+}
