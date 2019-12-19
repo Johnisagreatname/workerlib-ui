@@ -31,9 +31,9 @@
 
     .bodyTwo
         Table(border, ref="selection", :columns="getColumns()", :data="getData()",@on-selection-change="handleSelectRow")
-            template(slot-scope="{row, index }",slot="operation")
-                a(href="javascript:void(0)" :style={"font-size": "16px"})
-                    span 编辑
+            //template(slot-scope="{row, index }",slot="operation")
+            //    a(href="javascript:void(0)" :style={"font-size": "16px"})
+            //        span 编辑
     .footer
         Page(:total="totalRecords",show-sizer,show-elevator,show-total,@on-page-size-change="onPageSizeChange",@on-change="onPageIndexChange")
 
@@ -44,19 +44,19 @@
                     span 评级人员
                     span(:style={'color': 'red'}) *
                 .input
-                    Input(clearable,style="width: 345px",size=large,v-model="selectProjectName")
+                    Input(clearable,style="width: 345px",size=large,v-model="modifyBy")
             .divTwo
                 .name
                     span 评选级别
                     span(:style={'color': 'red'}) *
                 .input
-                    Select(filterable,clearable,style="width:260px",v-model="selectStatus")
-                        Option(v-for="item in getCommtenGrade()", :value="item.key", :key="item.key") {{item.value}}
+                    Select(filterable,clearable,style="width:260px",v-model="rate")
+                        Option(v-for="item in getCommtenGrade()", :value="item.value", :key="item.key")
             .divTwo
                 .name
                     span 评选等级
                     span(:style={'color': 'red'}) *
                 .input
-                    Select(filterable,clearable,style="width:260px",v-model="selectStatus")
-                        Option(v-for="item in getGrade()", :value="item.key", :key="item.key") {{item.value}}
+                    Select(filterable,clearable,style="width:260px",v-model="grade")
+                        Option(v-for="item in getGrade()", :value="item.value", :key="item.key")
 

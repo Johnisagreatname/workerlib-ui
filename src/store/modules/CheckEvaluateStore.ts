@@ -25,6 +25,11 @@ export default class CheckEvaluateStore extends VuexModule {
     public selectType:string;
     public selectStatus:number;
     public selectRate:string;
+    public peopleConditionList:Array<any>;
+    public modifyBy:string;
+    public grade:string;
+    public rateInfo:Rate;
+    public checkedArray: Array<any>;
 
     constructor(e) {
         super(e);
@@ -39,15 +44,63 @@ export default class CheckEvaluateStore extends VuexModule {
         this.selectType="";
         this.selectStatus=null;
         this.selectRate="";
+        this.peopleConditionList = [];
+        this.modifyBy = "";
+        this.grade = "";
+        this.rateInfo={};
+        this.checkedArray = [];
     }
     @Action
     public getParams() : any {
+        debugger;
+        if(this.selectProjectName){
+            let item ={};
+            item["name"]="project_name";
+            item["value"]=this.selectProjectName;
+            item["algorithm"] = "LIKE";
+            this.peopleConditionList.push(item);
+        }
+        if(this.selectConstructionUit){
+            let item ={};
+            item["name"]="project_license";
+            item["value"]=this.selectConstructionUit;
+            item["algorithm"] = "LIKE";
+            this.peopleConditionList.push(item);
+        }
+        if(this.selectName){
+            let item ={};
+            item["name"]="name";
+            item["value"]=this.selectName;
+            item["algorithm"] = "LIKE";
+            this.peopleConditionList.push(item);
+        }
+        if(this.selectType){
+            let item ={};
+            item["name"]="work_type";
+            item["value"]=this.selectType;
+            item["algorithm"] = "EQ";
+            this.peopleConditionList.push(item);
+        }
+        if(this.selectStatus){
+            let item ={};
+            item["name"]="leave";
+            item["value"]=this.selectStatus;
+            item["algorithm"] = "EQ";
+            this.peopleConditionList.push(item);
+        }
+        if(this.selectRate){
+            let item ={};
+            item["name"]="rate";
+            item["value"]=this.selectRate;
+            item["algorithm"] = "EQ";
+            this.peopleConditionList.push(item);
+        }
         return {
             "joinTables": [
                 {
                     "tablename": "archives",
                     "alias": "a",
-                    "joinMode": "left"
+                    "joinMode": "Inner"
                 }, {
                     "tablename": "project",
                     "alias": "p",
@@ -57,15 +110,6 @@ export default class CheckEvaluateStore extends VuexModule {
                         "value": "a.project_id",
                         "algorithm": "EQ"
                     }]
-                }, {
-                    "tablename": "unit",
-                    "alias": "u",
-                    "joinMode": "left",
-                    "onList": [{
-                        "name": "u.unit_id",
-                        "value": "a.unit_id",
-                        "algorithm": "EQ"
-                    }]
                 }
             ],
             "pageInfo": {
@@ -73,32 +117,7 @@ export default class CheckEvaluateStore extends VuexModule {
                 "pageSize": this.pageSize
             },
 
-            "conditionList": [{
-                "name": "project_name",
-                "value": this.selectProjectName,
-                "algorithm": "LIKE"
-            },{
-                "name": "project_license",
-                "value": this.selectConstructionUit,
-                "algorithm": "LIKE"
-            },{
-                "name": "name",
-                "value": this.selectName,
-                "algorithm": "LIKE"
-            },{
-                "name": "work_type",
-                "value": this.selectType,
-                "algorithm": "EQ"
-            },{
-                "name": "leave",
-                "value": this.selectStatus,
-                "algorithm": "EQ"
-            },{
-                "name": "rate",
-                "value": this.selectRate,
-                "algorithm": "EQ"
-            }
-            ],
+            "conditionList": this.peopleConditionList,
 
             "sortList": [],
 
@@ -106,14 +125,10 @@ export default class CheckEvaluateStore extends VuexModule {
 
             "keywords": [],
 
-            "selectList": [
-                {"field": "p.project_name"},
-                {"field": "u.project_license"},
-                {"field": "a.rate"},
-                {"field": "a.name"},
-                {"field": "a.work_type"},
-                {"field": "a.rate_time"}
-            ]
+            "selectList": [{ //显示字段
+                    "field": "*",  //字段名
+                    "function": "NONE",  //数据库相关函数：MAX, MIN, UPPER, LOWER, LENGTH, AVG, COUNT, SUM, GROUP_CONCAT等;
+                }]
         }
         };
     @Action
@@ -169,6 +184,7 @@ export default class CheckEvaluateStore extends VuexModule {
     }
     @Mutation
     public setPageTotal(data: number) {
+        this.peopleConditionList = [];
         this.pageTotal = data;
     }
     @Mutation
@@ -179,24 +195,23 @@ export default class CheckEvaluateStore extends VuexModule {
     public setPageSize(data: number) {
         this.pageSize = data;
     }
-   /* @Action
-    public async insertRate() {
-        await request.put('/api/workerlib/archives', {
-            "name":this.userName,
-            "phone":this.phone,
-            "id_number":this.card,
-            "project_id":this.projectId,
-            "photo":this.photo,
-            "work_type":this.type,
-            "unit_id":this.unitId,
-            "leader":this.animal,
-            "leave":1,
-            "id_card_front":this.idCardfront,
-            "id_card_reverse":this.idCardReverse,
-            "grade":this.grade,
-            "certificate":this.certificate
+    @Action
+    public async insertArchives(checkedArray) {debugger;
+        await request.post('/api/workerlib/archives/update', {
+            "data": {
+                "modifyBy":this.modifyBy,
+                "rate":this.rateInfo.rate,
+                "grade":this.grade,
+            },
+            "conditionList": [{ //查询条件
+                "name": "id",   //字段名
+                "value": checkedArray,   //值
+                "algorithm": "IN",   //条件: EQ(2, "="), GT(3, ">"), LT(4, "<"), GTEQ(5, ">="), LTEQ(6, "<="), NOT(7, "<>"), NOTEQ(8, "!="), LIKE(9), START(10), END(11), IN(12), NOTIN(13)
+            }],
+
+            "keywords" : []
         }).then((data)=>{
-            this.added(data)
+            this.search()
         }).catch((e)=>{
             console.log(e)
             let alert: any = Message;
@@ -216,11 +231,28 @@ export default class CheckEvaluateStore extends VuexModule {
 
             alert.warning(e.message || e)
         });
-    }*/
+    }
     @Mutation
     public success(data: any) {
         this.rate = data.data;
     }
+    @Mutation
+    public setCheckedArray(data:Array<any>){
+        this.checkedArray = data;
+    }
+    @Mutation
+    public setModifyBy(data:string) {
+        this.modifyBy = data;
+    }
+    @Mutation
+    public setRates(data:string){
+        this.rateInfo.rate = data;
+    }
+    @Mutation
+    public setGrade(data:string){
+        this.grade = data;
+    }
+
     @Mutation
     public setConstructionUit(data: string) {
         this.selectConstructionUit = data;
@@ -273,11 +305,6 @@ export default class CheckEvaluateStore extends VuexModule {
             sortable: true
         },
         {
-            title: '所属参建单位',
-            key: 'project_license',
-            sortable: true
-        },
-        {
             title: '工种',
             key: 'work_type',
             sortable: true,
@@ -285,14 +312,15 @@ export default class CheckEvaluateStore extends VuexModule {
         },
         {
             title: '评选时间',
-            key: 'rate_time',
-            sortable: true
-        },
-        {
-            title: '操作',
-            slot: 'operation',
+            key: 'createOn',
             sortable: true
         }
+        // ,
+        // {
+        //     title: '操作',
+        //     slot: 'operation',
+        //     sortable: true
+        // }
     ];
 
 }
