@@ -70,6 +70,7 @@ export default class UnitStore extends VuexModule {
 
     @Mutation
     public setPageTotal(data: number) {
+        this.conditionList = [];
         this.pageTotal = data;
     }
 
@@ -153,6 +154,7 @@ export default class UnitStore extends VuexModule {
     public pageTotal:number;
     public unitType: Array<UnitType>;
     public uplodId:Array<any>;
+    public conditionList:Array<any>;
 
     constructor(e) {
         super(e);
@@ -162,6 +164,7 @@ export default class UnitStore extends VuexModule {
         this.pageTotal = 0;
         this.unitType = [];
         this.uplodId = [];
+        this.conditionList = [];
         //获取工程列表数据
         this.unit = [];
         //获取项目列表
@@ -222,6 +225,29 @@ export default class UnitStore extends VuexModule {
     }
     @Action
     public getParams() : any {
+        debugger
+        if(this.sProjectName){
+            let item ={};
+            item["name"]="p.project_name";
+            item["value"]=this.sProjectName;
+            item["algorithm"] = "LIKE"
+            this.conditionList.push(item);
+        }
+        if(this.sUnitName){
+            let item ={};
+            item["name"]="u.unit_name";
+            item["value"]=this.sUnitName;
+            item["algorithm"] = "LIKE"
+            this.conditionList.push(item);
+        }
+        if(this.sStatus != undefined && this.sStatus > -1
+            && this.sStatus != null){
+            let item ={};
+            item["name"]="u.status";
+            item["value"]=this.sStatus;
+            item["algorithm"] = "EQ"
+            this.conditionList.push(item);
+        }
         return {
             "joinTables": [{
                 "tablename": "unit",
@@ -244,19 +270,7 @@ export default class UnitStore extends VuexModule {
                 "pageSize": this.pageSize
             },
 
-            "conditionList": [{
-                "name": "p.project_name",
-                "value": this.sProjectName,
-                "algorithm": "LIKE"
-            },{
-                "name": "u.unit_name",
-                "value": this.sUnitName,
-                "algorithm": "LIKE"
-            },{
-                "name": "u.status",
-                "value": !this.sStatus ? null : this.sStatus,
-                "algorithm": "EQ"
-            }],
+            "conditionList": this.conditionList,
 
             "sortList": [],
 

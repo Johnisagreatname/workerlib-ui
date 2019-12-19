@@ -3,9 +3,6 @@
         .divOne
             span 选择公司：
                 Input(v-model="selectOrganization",clearable,style="width: 200px")
-        //.divOne
-        //    span 选择地区：
-        //        Input(v-model="selectProjectAddress",clearable,style="width: 200px")
         .divOne
             span 项目名称：
                 Input(v-model="selectProjectName",clearable,style="width: 200px")
@@ -13,7 +10,7 @@
             span 项目状态：
                 Select(clearable,filterable,style="width:200px",v-model="selectStatus")
                     Option(v-for="item in getMenus()", :value="item.value",:key="item.value") {{item.name}}
-        .divOne
+        .search
             Button(@click="search()") 搜索
     .hr
     .button
@@ -27,21 +24,114 @@
         @on-select-cancel="handleSelectRowCancel",@on-select-all-cancel="handleSelectAllCancel")
             template(slot-scope="{row, index }",slot="operation")
                 template
-                    Dropdown(trigger="click")
+                    Dropdown(trigger="click",@on-click = "change")
                         a(href="javascript:void(0)" :style={"font-size": "16px"})
                             span 详细操作
                             Icon(type="md-arrow-dropdown" )
                         DropdownMenu(slot="list")
-                            DropdownItem(:name="'add_'+row.unit_id")
+                            DropdownItem(:name="'add_'+row.project_id")
                                 Icon(type="ios-book-outline")
                                 span 添加人员
-                            DropdownItem(:name="'view_'+row.unit_id")
+                            DropdownItem(:name="'view_'+row.project_id")
                                 Icon(type="ios-create-outline")
                                 span 查看人员
     .footer
         Page(:total="totalRecords",show-sizer,show-elevator,show-total,@on-page-size-change="onPageSizeChange",@on-change="onPageIndexChange")
 
     Modal(:value="addProject",title="新增项目",@on-ok="ok()",@on-cancel="cancel()",width='50%',:loading = "loading")
+        .addBody
+            .divTwo
+                .name
+                    span 项目名称
+                    span(:style={'color': 'red'}) *
+                .input
+                    Input(clearable,style="width: 345px",size=large,v-model="projectName")
+            .divTwo
+                .name
+                    span 项目简介
+                    span(:style={'color': 'red'}) *
+                .input
+                    Input(type="textarea",clearable,style="width: 345px",size=large,v-model="projectBrief")
+            .divTwo
+                .name
+                    span 施工许可证
+                    span(:style={'color': 'red'}) *
+                .input
+                    Input(clearable,style="width: 345px",size=large,v-model="builderLicense")
+            .divTwo
+                .name
+                    span 开工时间
+                    span(:style={'color': 'red'}) *
+                .input
+                    template
+                        Row
+                            Col(span="12")
+                                DatePicker(v-model="startTime",type="date",placeholder="请选择",style="width: 345px")
+            .divTwo
+                .name
+                    span 合同竣工时间
+                    span(:style={'color': 'red'}) *
+                .input
+                    template
+                        Row
+                            Col(span="12")
+                                DatePicker(v-model="endTime",type="date",placeholder="请选择",style="width: 345px")
+            .divTwo
+                .name
+                    span 建设单位
+                    span(:style={'color': 'red'}) *
+                .input
+                    Input(clearable,style="width: 345px",size=large,v-model="construction")
+            .divTwo
+                .name
+                    span 施工单位
+                    span(:style={'color': 'red'}) *
+                .input
+                    Input(clearable,style="width: 345px",size=large,v-model="organization")
+            .divTwo
+                .name
+                    span 监理单位
+                    span(:style={'color': 'red'}) *
+                .input
+                    Input(clearable,style="width: 345px",size=large,v-model="supervising")
+            //.divTwo
+            //    .name
+            //        span 项目地址
+            //        span(:style={'color': 'red'}) *
+            //    .input
+            //        Input(clearable,style="width: 345px",size=large,v-model="projectAddress")
+            .divTwo
+                .name
+                    span 项目状态
+                    span(:style={'color': 'red'}) *
+                .input
+                    Select(clearable,filterable,style="width:345px", v-model="status")
+                        Option(v-for="item in getMenus()", :value="item.value",:key="item.value") {{item.name}}
+    Modal(:value="addPeoples",title="添加人员",@on-ok="okAdd()",@on-cancel="cancelAdd()",width='50%',:loading = "loading")
+        .addBody
+            .topOne2
+                .divOne
+                    span 姓名：
+                        Input(v-model="selectUserName",clearable,style="width: 200px")
+                .search
+                    Button(@click="this.store.searchPeople") 搜索
+            .bodyTwo2
+                Table(border=false, ref="selection", :columns="getPeopleColumns()", :data="getPeopleData()",
+                @on-select="handleSelectRowPeople",
+                @on-select-all="handleSelectAllPeople",
+                @on-select-cancel="handleSelectRowCancelPeople",
+                @on-select-all-cancel="handleSelectAllCancelPeople")
+                    template(slot-scope="{row, index }",slot="workType")
+                        Select(clearable,filterable,:value="row.workType+'_'+row.eafId+'_'+row.project_id",@on-change="selectChange")
+                            Option(v-for="item in getWorkTypeMenus()", :value="item.name+'_'+row.eafId+'_'+row.project_id",:key="item.name") {{item.name}}
+
+                Page(:total="pageInTotal",show-elevator,show-total,
+                @on-page-size-change="onPageSizeInChange",@on-change="onPageIndexInChange",:style={
+                    'text-align': 'center',
+                    'margin-top': '10px'
+                })
+
+    Modal(:value="viewPeoples",title="新增项目",@on-ok="ok()",@on-cancel="cancel()",width='50%',:loading = "loading")
         .addBody
             .divTwo
                 .name

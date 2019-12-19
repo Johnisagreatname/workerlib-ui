@@ -72,7 +72,7 @@
         }
         getData() : any{
             for(let i=0;i<this.store.peoples.length;i++) {
-                if(this.store.checkeds.filter(a => a.id == this.store.peoples[i].id).length > 0){
+                if(this.store.checkeds.filter(a => a.id == this.store.peoples[i].eafId).length > 0){
                     this.$set(this.store.peoples[i], '_disabled', true)
                 }
             }
@@ -227,33 +227,40 @@
         }
         // 单选
         handleSelectRow(selection, row) {
-            let index = this.store.checkeds.findIndex(x => x.id == row.id);
-            if(index > -1) {
-                let indexPeople = this.store.peoples.findIndex(x => x.id == row.id);
-                if(indexPeople > -1)  {
-                    this.$set(this.store.peoples[indexPeople], '_disabled', false);
-                }
-                this.store.checkeds.splice(index, 1);
-                return;
-            }
+
             var itemTrue = {};
-            itemTrue['id'] = row.id;
-            itemTrue['name'] = row.name;
-            itemTrue['photo'] = row.photo;
+            itemTrue['id'] = row.eafId;
+            itemTrue['name'] = row.eafName;
+            itemTrue['photo'] = row.cwrPhoto;
             this.checkAllGroup.push(itemTrue);
         }
-
+        handleSelectRowCancel(selection, row){
+            let index =  this.checkAllGroup.findIndex(x => x.id == row.eafId);
+            this.checkAllGroup.splice(index, 1);
+        }
         //多选
         handleSelectAll(selection) {
             for(let i= 0;i<selection.length;i++){
                 var itemTrue = {};
                 let row = selection[i];
-                itemTrue['id'] = row.id;
-                itemTrue['name'] = row.name;
-                itemTrue['photo'] = row.photo;
+                itemTrue['id'] = row.eafId;
+                itemTrue['name'] = row.eafName;
+                itemTrue['photo'] = row.cwrPhoto;
                 this.checkAllGroup.push(itemTrue);
             }
         }
+        handleSelectAllCancel(selection){
+            for(let i = 0;i < this.store.project.length;i++) {
+                if(this.store.uplodId.findIndex(x => x.project_id == this.store.project[i].project_id) > -1){
+                    let index =  this.store.uplodId.findIndex(x => x.project_id == this.store.project[i].project_id);
+                    this.$set(this.store.project[i], '_disabled', false);
+                    this.$set(this.store.project[i], '_checked', false);
+                    this.store.uplodId.splice(index, 1);
+                }
+
+            }
+        }
+
         addSelected(){
             for (let i=0;i<this.checkAllGroup.length;i++){
                 var itemTrue = {};
@@ -262,18 +269,20 @@
                 itemTrue['name'] = row.name;
                 itemTrue['photo'] = row.photo;
                 this.store.setChecked(itemTrue);
-                let index = this.store.peoples.findIndex(x => x.id == row.id);
+                let index = this.store.peoples.findIndex(x => x.eafId == row.id);
                 this.$set(this.store.peoples[index], '_disabled', true)
             }
             this.checkAllGroup = [];
+            console.log(this.checkAllGroup);
         }
+
         show(id: number,name:string,photo:string): void {
             debugger
             let _that = this;
             var itemTrue = {};
             let index = this.store.checkeds.findIndex(x => x.id == id);
             if(index > -1) {
-                let indexPeople = this.store.peoples.findIndex(x => x.id == id);
+                let indexPeople = this.store.peoples.findIndex(x => x.eafId == id);
                 if(indexPeople > -1)  {
                     console.log(this.store.peoples[indexPeople]._disabled);
                     this.$set(this.store.peoples[indexPeople], '_disabled', false);
@@ -288,7 +297,7 @@
             this.store.setChecked(itemTrue);
             for (let i=0;i<this.store.checkeds.length;i++){
                 let row = this.store.checkeds[i];
-                let index = this.store.peoples.findIndex(x => x.id == row.id);
+                let index = this.store.peoples.findIndex(x => x.eafId == row.id);
                 this.$set(this.store.peoples[index], '_disabled', true)
             }
         }
@@ -536,25 +545,19 @@
             return this.store.courseWareEdit.particulars;
         }
 
-        set selectProjectName(data:string){
-            this.store.setSelectProjectName(data);
-        }
-        get selectProjectName():string{
-            return this.store.courseWareEdit.selectProjectName;
-        }
 
         set selectUserName(data:string){
             this.store.setSelectUserName(data);
         }
         get selectUserName():string{
-            return this.store.courseWareEdit.selectUserName;
+            return this.store.selectUserName;
         }
 
         set selectLeave(data:string){
             this.store.setSelectLeave(data);
         }
         get selectLeave():string{
-            return this.store.courseWareEdit.selectLeave;
+            return this.store.selectLeave;
         }
         //-------------------------------------
         set courseId(data:string){

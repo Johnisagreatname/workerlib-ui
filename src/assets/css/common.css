@@ -4,6 +4,7 @@
     margin-top: 5%;
 }
 
+
 #app .freamwork .loginBox .ivu-input-prefix i, #app .freamwork .loginBox .ivu-input-suffix i{
     font-size: 30px;
     line-height: 80px;
@@ -69,4 +70,7 @@ button i {
 }
 #app .ivu-progress .ivu-progress-outer .ivu-progress-inner{
     background-color: transparent !important;
+}
+body .ivu-table-wrapper {
+    overflow: visible;
 }

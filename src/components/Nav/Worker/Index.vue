@@ -150,11 +150,11 @@
         okLeave() : any{
             debugger
             if(this.store.checkeds.filter(x => x.leave=== 1).map(a=>a.leave)[0] == 1) {
-                this.store.setCheck(this.store.checkeds.filter(x => x.id).map(x => x.id));
+                this.store.setCheck(this.store.checkeds.filter(x => x.eafId).map(x => x.eafId));
                 this.store.setOnLeave(2);
                 this.store.update();
             }else {
-                this.store.setCheck(this.store.checkeds.filter(x => x.id).map(x => x.id));
+                this.store.setCheck(this.store.checkeds.filter(x => x.eafId).map(x => x.eafId));
                 this.store.setOnLeave(1);
                 this.store.update();
             }
@@ -189,9 +189,10 @@
         }
 
         onCheck(id: number,name:string,leave:number): void {
+            debugger
             var itemTrue = {};
-            if(this.store.checkeds.findIndex(x => x.id === id) > -1) {
-                let index = this.store.checkeds.findIndex(x => x.id === id);
+            if(this.store.checkeds.findIndex(x => x.id == id) > -1) {
+                let index = this.store.checkeds.findIndex(x => x.id == id);
                 this.store.checkeds.splice(index, 1);
                 return;
             }
@@ -202,8 +203,8 @@
         }
         isdisabledFn():any{
 
-            let disabledTrue = this.store.checkeds.findIndex(x => x.leave=== 1);  //在职
-            let disabledFalse = this.store.checkeds.findIndex(x => x.leave=== 2); //离职
+            let disabledTrue = this.store.checkeds.findIndex(x => x.leave== 1);  //在职
+            let disabledFalse = this.store.checkeds.findIndex(x => x.leave== 2); //离职
             if(disabledTrue > -1  && disabledFalse > -1 || disabledTrue <0 && disabledFalse<0){   //同时选中禁用
                 this.disabled = true;
             }else {
@@ -218,7 +219,8 @@
         }
 
         isChecked(id): boolean {
-            if(this.store.checkeds.find(x => x.id === id)){
+            debugger
+            if(this.store.checkeds.find(x => x.id == id)){
                 return true;
             }
 

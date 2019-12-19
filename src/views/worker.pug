@@ -28,26 +28,26 @@
       Button(type="primary", ghost, icon="ios-log-in") 同步工人
       Button(type="primary", ghost, icon="ios-log-out",@click="upload()") 导出
 
-   div(v-for="(item, index) in getPeopleList()", :key="index", :class="isChecked(item.id) ? 'people-selected' : 'people'")
+   div(v-for="(item, index) in getPeopleList()", :key="index", :class="isChecked(item.eafId) ? 'people-selected' : 'people'")
       .headPhotos
          .circle
-            img(:src="'http://113.105.121.93:1818'+item.photo",:style={'width':'100%','height':'100%',
-                'border-radius': '50%'}, :onerror="this.src='/api/workerlib/preview/archives/photo/'+item.id")
+            img(:src="'http://113.105.121.93:1818'+item.cwrPhoto",:style={'width':'100%','height':'100%',
+                'border-radius': '50%'})
       .top
          p(:style={
              'text-align': 'center', 'font-size': '16px',
              'line-height': '36px', 'color': '#000000', 'margin-top': '8%'
          })
-            span(v-if="item.name != null") {{item.name}}
+            span(v-if="item.eafName != null") {{item.eafName}}
             span(v-else) 无
             span |
-            span(v-if="checkSex(item.id_number)") 男
+            span(v-if="checkSex(item.cwrIdnum)") 男
             span(v-else) 女
             span |
-            span {{getAge(item.id_number)}}岁
-         Button(type="primary", ghost,@click="viewData(item.id)")
+            span {{getAge(item.cwrIdnum)}}岁
+         Button(type="primary", ghost,@click="viewData(item.eafId)")
       .photos
-         div(@click="onCheck(item.id,item.name,item.leave)",:class="isChecked(item.id) ? 'pop' : 'pTop'")
+         div(@click="onCheck(item.eafId,item.eafName,item.leave)",:class="isChecked(item.eafId) ? 'pop' : 'pTop'")
          .pButtom
       .y2
          p 手机号码
@@ -55,11 +55,11 @@
          p 工种
          p 状态
       .y3
-         p(v-if="item.phone != null") {{item.phone}}
+         p(v-if="item.eafPhone != null && item.eafPhone != '' ") {{item.eafPhone}}
          p(v-else) 无
-         p(v-if="item.id_number != null") {{item.id_number}}
+         p(v-if="item.cwrIdnum != null && item.cwrIdnum != ''") {{item.cwrIdnum}}
          p(v-else) 无
-         p(v-if="item.work_type != null") {{item.work_type}}
+         p(v-if="item.workType != null && item.workType != ''") {{item.workType}}
          p(v-else) 无
          p(v-if="item.leave==1") 在职
          p(v-else) 离职
@@ -96,21 +96,6 @@
                .input
                   Select(clearable,style="width:345px",filterable,v-model="type")
                      Option(v-for="item in getType()", :value="item.name", :key="item.name") {{item.name}}
-            //.divTwo
-            //   .name
-            //      span 所属项目
-            //      span(:style={'color': 'red'}) *
-            //   .input
-            //      Select(filterable,clearable,style="width:345px",v-model="projectId",@on-change="selectUnit()")
-            //         Option(v-for="item in getProjectList()", :value="item.project_id", :key="item.project_id") {{item.project_name}}
-            //.divTwo
-            //   .name
-            //      span 参建单位
-            //      span(:style={'color': 'red'}) *
-            //   .input
-            //      Select(filterable,clearable,style="width:345px",v-model="unitId")
-            //         Option(v-for="item in getUnitList()", :value="item.id", :key="item.id") {{item.project_license}}
-
             .divTwo
                .name
                   span 进场日期

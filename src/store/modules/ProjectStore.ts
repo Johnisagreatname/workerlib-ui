@@ -19,19 +19,41 @@ export default class ProjectStore extends VuexModule {
             pageSize: 10
         };
         this.project = [];
+        this.searchConditionList = [];
+        this.searchPeopleConditionList = [];
+        this.peoples = [];
         this.projectInfo = {};
         this.projectType = [];
+        this.workType = [];
         this.uplodId = [];
+        this.peopleId = [];
+        this.selectUserName = null;
+        this.pageInIndex=1;
+        this.pageInSize= 10;
+        this.pageInTotal = 0;
     }
     public project: Array<ProjectInfo>;
     public projectType: Array<ProjectType>;
+    public workType: Array<WorkType>;
     public pageInfo: PageInfo;
     public projectInfo:ProjectInfo;
 
+    public peoples: any;
+
+    public archivesId:number;
+    public selectUserName:string;
+    public pageInIndex: number;
+    public pageInSize: number;
+    public pageInTotal:number;
+
+
+
     public uplodId:Array<any>;
+    public peopleId:Array<any>;
+    public searchConditionList:Array<any>;
+    public searchPeopleConditionList:Array<any>;
     @Action
     public getUploadParams() : any {
-
         return {
             "conditionList": [{
                 "name": "project_id",
@@ -50,6 +72,57 @@ export default class ProjectStore extends VuexModule {
                 {"field": "organization","alias":"施工单位" },
                 {"field": "supervising","alias":"监理单位" }
             ]
+        };
+    }
+    @Action
+    public getPeopleParams() : any {
+        debugger
+
+        if(this.selectUserName){
+            let item ={};
+            item["name"]="a.eafName";
+            item["value"]=this.selectUserName;
+            item["algorithm"] = "LIKE"
+            this.searchPeopleConditionList.push(item);
+        }
+        return {
+            "joinTables": [{
+                "tablename": "alluser",
+                "alias": "a",
+                "joinMode": "Left"
+            }, {
+                "tablename": "archives",
+                "alias": "b",
+                "joinMode": "Left",
+                "onList": [{
+                    "name": "a.eafId",
+                    "value": "b.archives_id",
+                    "algorithm": "EQ"
+                }]
+            },{
+                "tablename": "project",
+                "alias": "p",
+                "joinMode": "Left",
+                "onList": [{
+                    "name": "p.project_id",
+                    "value": "b.project_id",
+                    "algorithm": "EQ"
+                }]
+        }],
+            "pageInfo" : {
+                "pageIndex": this.pageInIndex,
+                "pageSize": this.pageInSize
+            },
+            "conditionList": this.searchPeopleConditionList,
+
+            "sortList": [ ],
+
+            "groupList" : [
+            ],
+
+            "keywords" : [],
+
+            "selectList": []
         };
     }
     @Action
@@ -78,25 +151,35 @@ export default class ProjectStore extends VuexModule {
     @Action
     public getParams() : any {
         debugger
+        if(this.projectInfo.selectOrganization){
+            let item ={};
+            item["name"]="organization";
+            item["value"]=this.projectInfo.selectOrganization;
+            item["algorithm"] = "LIKE"
+            this.searchConditionList.push(item);
+        }
+        if(this.projectInfo.selectProjectName){
+            let item ={};
+            item["name"]="project_name";
+            item["value"]=this.projectInfo.selectProjectName;
+            item["algorithm"] = "LIKE"
+            this.searchConditionList.push(item);
+        }
+        if(this.projectInfo.selectStatus != undefined && this.projectInfo.selectStatus > -1
+            && this.projectInfo.selectStatus != null){
+            let item ={};
+            item["name"]="status";
+            item["value"]=this.projectInfo.selectStatus;
+            item["algorithm"] = "EQ"
+            this.searchConditionList.push(item);
+        }
         return {
             "pageInfo" : {
                 "pageIndex": this.pageInfo.pageIndex,
                 "pageSize": this.pageInfo.pageSize
             },
 
-            "conditionList": [{
-                "name": "organization",
-                "value": this.projectInfo.selectOrganization,
-                "algorithm": "LIKE"
-            },{
-                "name": "project_name",
-                "value": this.projectInfo.selectProjectName,
-                "algorithm": "LIKE"
-            },{
-                "name": "status",
-                "value": this.projectInfo.selectStatus == undefined || this.projectInfo.selectStatus == -1 ? null : this.projectInfo.selectStatus,
-                "algorithm": "EQ"
-            }],
+            "conditionList": this.searchConditionList,
 
             "sortList": [],
 
@@ -110,8 +193,10 @@ export default class ProjectStore extends VuexModule {
     @Action
     public async search() {
         await request.post('/api/workerlib/project', await this.getParams()).then((data)=>{
-            this.success(data);
-            this.count();
+            if(data) {
+                this.success(data);
+                this.count();
+            }
         }).catch((e)=>{
             console.log(e)
             let alert: any = Message;
@@ -119,7 +204,6 @@ export default class ProjectStore extends VuexModule {
                 alert.warning('未知错误！')
                 return
             }
-
             if(e.response && e.response.data && e.response.data.message) {
                 alert.warning(e.response.data.message)
                 return
@@ -158,7 +242,33 @@ export default class ProjectStore extends VuexModule {
             "keywords" : [],
             "selectList": []
         }).then((data)=>{
-            this.successType(data);
+            if(data){
+                this.successType(data);
+            }
+        }).catch((e)=>{
+            MessageUtils.warning(e);
+        });
+    }
+
+    @Action
+    public async getWorkType(){
+        await request.post('/api/workerlib/dictionaries', {
+            "pageInfo" : {},
+            "conditionList": [{
+                "name": "category",
+                "value": "工种",
+                "algorithm": "EQ"
+            }],
+            "sortList": [],
+
+            "groupList" : [],
+
+            "keywords" : [],
+            "selectList": []
+        }).then((data)=>{
+            if(data) {
+                this.successWorkType(data);
+            }
         }).catch((e)=>{
             MessageUtils.warning(e);
         });
@@ -202,6 +312,69 @@ export default class ProjectStore extends VuexModule {
             alert.warning(e.message || e)
         });
     }
+    @Action
+    public async searchPeople() {
+        debugger
+        await request.post('/api/workerlib/join',await this.getPeopleParams()).then((data)=>{
+            if(data){
+                this.successPeople(data);
+                this.countPeople();
+            }
+        }).catch((e)=>{
+            let alert: any = Message;
+            if(!e) {
+                alert.warning('未知错误！')
+                return
+            }
+            if(e.response && e.response.data && e.response.data.message) {
+                alert.warning(e.response.data.message)
+                return
+            }
+            if(!e.message) {
+                return;
+            }
+            alert.warning(e.message || e)
+        });
+    }
+    @Action
+    public async countPeople() {
+        await request.post('/api/workerlib/join/count', await this.getPeopleParams()).then((total)=>{
+            this.setInPageTotal(total.data);
+        }).catch((e)=>{
+            MessageUtils.warning(e);
+        });
+    }
+    @Action
+    public addIn(data: any) {
+        debugger
+        if(data.status == 0) {
+            this.search();
+        }
+    }
+
+    @Mutation
+    public successPeople(data: any) {
+        debugger
+        this.peoples = data.data;
+
+    }
+
+    @Mutation
+    public setInPageTotal(data: number) {
+        this.searchPeopleConditionList=[];
+        this.pageInTotal = data;
+    }
+
+
+    @Mutation
+    public setInPageSize(data: number) {
+        this.pageInSize = data;
+    }
+
+    @Mutation
+    public setInPageIndex(data: number) {
+        this.pageInIndex = data;
+    }
 
     @Mutation
     public success(data: any) {
@@ -211,6 +384,10 @@ export default class ProjectStore extends VuexModule {
     @Mutation
     public successType(data: any) {
         this.projectType = data.data;
+    }
+    @Mutation
+    public successWorkType(data: any) {
+        this.workType = data.data;
     }
 
     @Action
@@ -223,6 +400,8 @@ export default class ProjectStore extends VuexModule {
 
     @Mutation
     public setPageTotal(total: any) {
+        debugger
+        this.searchConditionList = [];
         this.pageInfo = {
             pageIndex: this.pageInfo.pageIndex,
             pageSize:  this.pageInfo.pageSize,
@@ -380,8 +559,69 @@ export default class ProjectStore extends VuexModule {
             slot: 'operation'
         }
     ];
+    public peopleColumns = [
+        {
+            type: 'selection',
+            width: 60,
+            align: 'center'
+        },
+        {
+            title: '姓名',
+            key: 'eafName',
+            sortable: true
+        },
+        {
+            title: '工种',
+            slot: 'workType'
+        },
+        {
+            title: '身份证',
+            key: 'cwrIdnum',
+            sortable: true,
+            render: (h, params) => {
+                return h('div', [
+                    h('span', {
+                        style: {
+                            display: 'inline-block',
+                            width: '100%',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            whiteSpace: 'nowrap'
+                        },
+                        domProps: {
+                            title: params.row.cwrIdnum
+                        }
+                    }, params.row.cwrIdnum)
+                ])
+            }
 
+        },{
+            title: '参与项目',
+            key: 'project_name',
+            sortable: true,
+            render: (h, params) => {
+                return h('div', [
+                    h('span', {
+                        style: {
+                            display: 'inline-block',
+                            width: '100%',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            whiteSpace: 'nowrap'
+                        },
+                        domProps: {
+                            title: params.row.project_name
+                        }
+                    }, params.row.project_name)
+                ])
+            }
+        }
+    ];
 
+    @Mutation
+    public setSelectUserName(data:string){
+        this.selectUserName = data;
+    }
 
     @Mutation
     private pageIndex(data: number) {
@@ -401,6 +641,11 @@ export default class ProjectStore extends VuexModule {
     @Mutation
     private setUplodId(data: any) {
         this.uplodId.push(data);
+    }
+
+    @Mutation
+    private setPeoplesId(data: any) {
+        this.peopleId.push(data);
     }
 
 
@@ -492,7 +737,10 @@ interface ProjectType {
     value?: string;
     name?: string;
 }
-
+interface WorkType {
+    value?: string;
+    name?: string;
+}
 interface ProjectInfo {
     id?:number;
     project_name?:string;
