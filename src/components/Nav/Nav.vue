@@ -88,7 +88,7 @@
                 }
             }
           if(!selectedItem){
-              this.title = '首页';
+              this.title = '产业工人档案';
               return;
           }
           this.title = selectedItem.text;

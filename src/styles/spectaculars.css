@@ -1,3 +1,4 @@
+
 .spectaculars{
     width: 100%;
     height: 100%;
@@ -9,6 +10,7 @@
     overflow-x: hidden;
     position: relative;
 }
+
 .header{
     width: 100%;
     height: 80px;
@@ -364,6 +366,23 @@
     margin-right: 24px;
     line-height: 50px;
 }
+.qq{
+    width: 50px;
+    height: 50px;
+    float: left;
+}
+.qq2{
+    width: 90px;
+    height: 50px;
+    float: right;
+}
+.qq3{
+    margin-right: 30px;
+    padding-top: 10px;
+    width: 100px;
+    height: 50px;
+    float: right;
+}
 .belowMiddleMiddle{
     width: 490px;
     height: 45px;
@@ -493,19 +512,21 @@
     background-position: center;
 }
 .gzmm{
-    width: 200px;
-    height: 230px;
+    width: 210px;
+    height: 220px;
     float: left;
-    margin-left: 50px;
+    margin-left: 40px;
+    margin-top: 10px;
 }
 .tableCircle{
     display: block;
     width: 20px;
     height: 10px;
-    background-color: #3e9afe;
+    /*background-color: #3e9afe;*/
     float: left;
     margin: 5px;
 }
+
 .q4{
     width: 490px;
     height: 100px;
@@ -543,3 +564,9 @@
 .fh:hover {
     right: 0;
  }
+
+.spectaculars #startDate .ivu-date-picker-rel .ivu-input-wrapper .ivu-input {
+    background-color: #01183e !important;
+    border: 1px solid #0068ff !important;
+    color: #fff !important;
+}

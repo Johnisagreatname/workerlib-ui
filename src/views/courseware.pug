@@ -33,7 +33,7 @@
                                                 Icon(type="ios-trash-outline" )
                                                 span 删除
                             .div2
-                                img(src="~@/assets/css/images/gj.jpeg" :style={'width': '100%', 'height': '100%'})
+                                img(:src="'/api/workerlib/preview/courseware/cover_picture/'+item.id", :style={'width': '100%', 'height': '100%'})
                             .div3
                                 .left
                                     span(:style={
@@ -382,17 +382,18 @@
             .top
                 .left1
                     Button(type="primary",ghost,style="margin-left: 10px",@click="addSelected()") 添加所选
-                    Input(v-model="selectUserName",:style={'width': '100px', 'margin-left': '300px'},placeholder="名字",icon="ios-search-outline",@on-click="search")
+                    Input(v-model="selectUserName",:style={'width': '100px', 'margin-left': '10px'},placeholder="名字",icon="ios-search-outline",@on-click="search")
+
                     Select(clearable,filterable,:style={'width': '100px', 'margin-left': '10px'},placeholder="状态",v-model="selectLeave")
                         Option(v-for="item in getMenus()", :value="item.key",:key="item.key") {{item.value}}
-                    Select(clearable,filterable,:style={'width': '100px', 'margin-left': '10px'},placeholder="培训情况")
-                        Option(v-for="item in getMenus()", :value="item.key",:key="item.key") {{item.value}}
+
                     Table(border=false, ref="selection", :columns="getColumns()", :data="getData()",:row-class-name="rowClass", id="communal",
                     :style="{'margin-top': '10px'}",
-                    @on-select="handleSelectRow",@on-select-all="handleSelectAll")
-
+                    @on-select="handleSelectRow",@on-select-all="handleSelectAll",
+                    @on-select-cancel="handleSelectRowCancel",@on-select-all-cancel = "handleSelectAllCancel"
+                    )
                         template(slot-scope="{ row }" ,slot="photo")
-                            img(:src="'http://113.105.121.93:1818/'+row.photo",:style={
+                            img(:src="'http://113.105.121.93:1818/'+row.cwrPhoto",:style={
                                            'width': '50px', 'height': '50px',
                                            'border-radius': '50%'
                                        })
@@ -400,8 +401,9 @@
                             span(v-if="row.leave==1") 在职
                             span(v-if="row.leave==2") 离职
                         template(slot-scope="{row}",slot="operation")
-                            Button(v-if="offChecked(row.id)",type="primary",style="margin-right: 5px",@click="show(row.id,row.name,row.photo)") 加入培训
+                            Button(v-if="offChecked(row.eafId)",type="primary",style="margin-right: 5px",@click="show(row.eafId,row.eafName,row.cwrPhoto)") 加入培训
                             Button(v-else,type="primary",ghost,style="margin-right: 5px") 加入培训
+
                     Page(:total="pageInTotal",show-elevator,show-total,
                     @on-page-size-change="onPageSizeInChange",@on-change="onPageIndexInChange",:style={'text-align':'center','margin-top': '10px'})
                 .right1

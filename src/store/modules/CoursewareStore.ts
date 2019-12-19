@@ -15,6 +15,7 @@ export default class CoursewareStore extends VuexModule {
     public checkeds: Array<any>;
     public checkAllGroup: Array<any>;
     public cultivateArchivesList:Array<any>;
+    public peopleConditionList:Array<any>;
 
     public projectType: Array<ProjectType>;
     public courseWareInfo:Array<CourseWareInfo>;
@@ -59,6 +60,7 @@ export default class CoursewareStore extends VuexModule {
         this.pageInTotal = 0;
 
         this.cultivateArchivesList = [];
+        this.peopleConditionList = [];
         this.peoples = [];
         this.courseWareEdit={};
         this.projectType = [];
@@ -113,31 +115,39 @@ export default class CoursewareStore extends VuexModule {
     }
     @Action
     public getPeopleParams() : any {
-        debugger
+
+        if(this.selectProjectName){
+            let item ={};
+            item["name"]="project_name";
+            item["value"]=this.selectProjectName;
+            item["algorithm"] = "LIKE";
+            this.peopleConditionList.push(item);
+        }
+        if(this.selectUserName){
+            let item ={};
+            item["name"]="eafName";
+            item["value"]=this.selectUserName;
+            item["algorithm"] = "LIKE";
+            this.peopleConditionList.push(item);
+        }
+        if(this.selectLeave != undefined && this.selectLeave > -1
+            && this.selectLeave != null){
+            let item ={};
+            item["name"]="leave";
+            item["value"]=this.selectLeave;
+            item["algorithm"] = "EQ";
+            this.peopleConditionList.push(item);
+        }
         return {
             "pageInfo" : {
                 "pageIndex": this.pageInIndex,
                 "pageSize": this.pageInSize
             },
-            "conditionList": [{
-                "name": "project",
-                "value": this.selectProjectName,
-                "algorithm": "LIKE"
-            },{
-                "name": "name",
-                "value": this.selectUserName,
-                "algorithm": "LIKE"
-            },{
-                "name": "leave",
-                "value": !this.selectLeave ? null : this.selectLeave,
-                "algorithm": "EQ"
-            }
-            ],
+            "conditionList": this.peopleConditionList,
 
             "sortList": [ ],
 
-            "groupList" : [
-            ],
+            "groupList" : [],
 
             "keywords" : [],
 
@@ -205,7 +215,7 @@ export default class CoursewareStore extends VuexModule {
     }
     @Action
     public async countPeople() {
-        await request.post('/api/workerlib/archives/count', await this.getPeopleParams()).then((total)=>{
+        await request.post('/api/workerlib/people/count', await this.getPeopleParams()).then((total)=>{
             this.setInPageTotal(total.data)
         }).catch((e)=>{
             MessageUtils.warning(e);
@@ -410,7 +420,7 @@ export default class CoursewareStore extends VuexModule {
     @Action
     public async searchPeople() {
         debugger
-        await request.post('/api/workerlib/archives',await this.getPeopleParams()).then((data)=>{
+        await request.post('/api/workerlib/people',await this.getPeopleParams()).then((data)=>{
             this.successPeople(data);
             this.countPeople();
         }).catch((e)=>{
@@ -520,17 +530,15 @@ export default class CoursewareStore extends VuexModule {
         {
             title: '照片',
             slot: 'photo',
-            width: 80
         },
         {
             title: '姓名',
-            key: 'name',
-            width: 100,
+            key: 'eafName',
             sortable: true
         },
         {
             title: '身份证',
-            key: 'id_number',
+            key: 'cwrIdnum',
             sortable: true,
             render: (h, params) => {
                 return h('div', [
@@ -543,57 +551,11 @@ export default class CoursewareStore extends VuexModule {
                             whiteSpace: 'nowrap'
                         },
                         domProps: {
-                            title: params.row.id_number
+                            title: params.row.cwrIdnum
                         }
-                    }, params.row.id_number)
+                    }, params.row.cwrIdnum)
                 ])
             }
-        },
-        {
-            title: '工种',
-            key: 'work_type',
-            sortable: true,
-            render: (h, params) => {
-                return h('div', [
-                    h('span', {
-                        style: {
-                            display: 'inline-block',
-                            width: '100%',
-                            overflow: 'hidden',
-                            textOverflow: 'ellipsis',
-                            whiteSpace: 'nowrap'
-                        },
-                        domProps: {
-                            title: params.row.work_type
-                        }
-                    }, params.row.work_type)
-                ])
-            }
-        },
-        {
-            title: '分包',
-            key: 'construction_unit',
-            sortable: true,
-            render: (h, params) => {
-                return h('div', [
-                    h('span', {
-                        style: {
-                            display: 'inline-block',
-                            width: '100%',
-                            overflow: 'hidden',
-                            textOverflow: 'ellipsis',
-                            whiteSpace: 'nowrap'
-                        },
-                        domProps: {
-                            title: params.row.construction_unit
-                        }
-                    }, params.row.construction_unit)
-                ])
-            }
-        },
-        {
-            title: '在职状态',
-            slot: 'leave'
         },
         {
             title: '操作',
@@ -616,10 +578,6 @@ export default class CoursewareStore extends VuexModule {
         this.pageSize = data;
     }
 
-    @Mutation
-    public setInPageTotal(data: number) {
-        this.pageInTotal = data;
-    }
 
     @Mutation
     private setChecked(data: any) {
@@ -628,6 +586,12 @@ export default class CoursewareStore extends VuexModule {
     @Mutation
     private setCheckAllGroup(data: any) {
         this.checkAllGroup.push(data);
+    }
+
+    @Mutation
+    public setInPageTotal(data: number) {
+        this.peopleConditionList = [];
+        this.pageInTotal = data;
     }
 
 

@@ -30,51 +30,16 @@
                                 'margin-left': '8px'
                             }) 持证人数
                 .hrBJ
-                .topButtom
+                .topButtom(v-for="item in getWorkType()")
                     .belowLeft
                         template
-                            Progress(:percent="80",:stroke-width="15",:stroke-color="['#4ea2fe', '#7dbafe']",hide-info)
+                            Progress(:percent="((item.certificateTotal/peopleTotal)*100 ? (item.certificateTotal/peopleTotal)*100 : 0)",:stroke-width="15",:stroke-color="['#4ea2fe', '#7dbafe']",hide-info)
                     .belowMiddle
-                        span 普工
+                        span {{item.workType}}
                     .belowRight
                         template
-                            Progress(:percent="80",:stroke-width="15",:stroke-color="['#6bdfc5', '#90e7d4']",hide-info)
-                .topButtom
-                    .belowLeft
-                        template
-                            Progress(:percent="70",:stroke-width="15",:stroke-color="['#4ea2fe', '#7dbafe']",hide-info)
-                    .belowMiddle
-                        span 普工
-                    .belowRight
-                        template
-                            Progress(:percent="50",:stroke-width="15",:stroke-color="['#6bdfc5', '#90e7d4']",hide-info)
-                .topButtom
-                    .belowLeft
-                        template
-                            Progress(:percent="60",:stroke-width="15",:stroke-color="['#4ea2fe', '#7dbafe']",hide-info)
-                    .belowMiddle
-                        span 普工
-                    .belowRight
-                        template
-                            Progress(:percent="50",:stroke-width="15",:stroke-color="['#6bdfc5', '#90e7d4']",hide-info)
-                .topButtom
-                    .belowLeft
-                        template
-                            Progress(:percent="75",:stroke-width="15",:stroke-color="['#4ea2fe', '#7dbafe']",hide-info)
-                    .belowMiddle
-                        span 普工
-                    .belowRight
-                        template
-                            Progress(:percent="70",:stroke-width="15",:stroke-color="['#6bdfc5', '#90e7d4']",hide-info)
-                .topButtom
-                    .belowLeft
-                        template
-                            Progress(:percent="65",:stroke-width="15",:stroke-color="['#4ea2fe', '#7dbafe']",hide-info)
-                    .belowMiddle
-                        span 普工
-                    .belowRight
-                        template
-                            Progress(:percent="50",:stroke-width="15",:stroke-color="['#6bdfc5', '#90e7d4']",hide-info)
+                            Progress(:percent="((item.total/peopleTotal)*100 ? (item.total/peopleTotal)*100 : 0 )",:stroke-width="15",:stroke-color="['#6bdfc5', '#90e7d4']",hide-info)
+
             .bodyLeftMiddle
                 .middleTop
                     .middleTopLeft
@@ -94,7 +59,13 @@
                 .hrBJ
                 .middleLeftMiddle
                     .middleMiddleRight
-                        span 人数
+                        .qq
+                            img(src="~@/assets/css/images/rs.png" :style={'width': '13px', 'height': '7px'})
+                            span(:style={'margin-left':'5px'}) 人数
+                        .qq2
+                            Col( span="12")
+                                DatePicker(type="year",placeholder="请选择",:style="{width: '80px',color:'#000000'}",
+                                :start-date="new Date()",format="yyyy",v-model="saleDate",confirm,@on-ok="dateOK()")
                 .middleButtom
                     #peoples(:style={'height': '160px', 'width': '445px'})
             .bodyLeftBelow
@@ -114,6 +85,10 @@
                                 .div-b
                 .hrBJ
                 .belowMiddleMiddle
+                    .qq3
+                        Col( span="12")
+                            DatePicker(type="month",placeholder="请选择",:style="{width: '100px',color:'#000000'}",
+                            :start-date="new Date()",format="yyyy-MM",v-model="saleMonthDate",confirm,@on-ok="dateMonthOK()")
                 .cultivateEcharts
                     #cultivate(:style={'height': '200px', 'width': '418px'})
         .bodyMiddle
@@ -135,7 +110,7 @@
                                 'line-height': '100px',
                                 'font-size': '38px',
                                 'color': '#0068ff'
-                            })  100
+                            })  {{workTypeCount}}
                     .middleBelow
                         .belowTopOne
                             .topLeftWB
@@ -149,7 +124,7 @@
                                 'line-height': '100px',
                                 'font-size': '38px',
                                 'color': '#0068ff'
-                            })  40000
+                            })  {{this.store.projectCountBE.beOn}}
                     .middleBelow
                         .belowTopOne
                             .topLeftWB
@@ -163,7 +138,7 @@
                                 'line-height': '100px',
                                 'font-size': '38px',
                                 'color': '#0068ff'
-                            })  10000
+                            })  {{this.store.projectCountBE.dimission}}
             .bodyMiddleBelow
                 .middleLeft
                     .middleBelowT
@@ -179,7 +154,7 @@
                                 'line-height': '100px',
                                 'font-size': '38px',
                                 'color': '#0068ff'
-                            })  1
+                            })  {{this.store.projectCount.total}}
                             span(:style={
                                 'line-height': '100px',
                                 'font-size': '14px',
@@ -191,7 +166,7 @@
                                 'line-height': '66px',
                                 'font-size': '14px',
                                 'color': '#0068ff'
-                            }) 在建工程：10
+                            }) 在建工程：{{this.store.projectCount.doing}}
                             span(:style={
                                 'line-height': '66px',
                                 'font-size': '14px',
@@ -212,7 +187,7 @@
                                 'line-height': '100px',
                                 'font-size': '38px',
                                 'color': '#0068ff'
-                            })  10000
+                            })  {{this.store.projectCountBE.theirOwn}}
                             span(:style={
                                 'line-height': '100px',
                                 'font-size': '14px',
@@ -223,13 +198,13 @@
                                 'line-height': '66px',
                                 'font-size': '14px',
                                 'color': '#0068ff'
-                            }) 自有工人：10
+                            }) 自有工人：{{this.store.projectCountBE.beOnTheirOwn}}
                             span(:style={
                                 'line-height': '66px',
                                 'font-size': '14px',
                                 'color': '#00e0ef',
                                 'margin-left': '20px'
-                            }) 外部工人：0
+                            }) 外部工人：{{this.store.projectCountBE.dimissionTheirOwn}}
                 .middleRight
                     .middleBelowT
                         .belowTopOneT
@@ -244,7 +219,7 @@
                                 'line-height': '100px',
                                 'font-size': '38px',
                                 'color': '#0068ff'
-                            })  1
+                            })  {{this.store.projectCountBE.external}}
                             span(:style={
                                 'line-height': '100px',
                                 'font-size': '14px',
@@ -256,13 +231,13 @@
                                 'line-height': '66px',
                                 'font-size': '14px',
                                 'color': '#0068ff'
-                            }) 自有工人：10
+                            }) 自有工人：{{this.store.projectCountBE.beOnExternal}}
                             span(:style={
                                 'line-height': '66px',
                                 'font-size': '14px',
                                 'color': '#00e0ef',
                                 'margin-left': '20px'
-                            }) 外部工人：0
+                            }) 外部工人：{{this.store.projectCountBE.dimissionExternal}}
         .bodyRight
             .bodyRightTop
                 .topTop
@@ -274,62 +249,12 @@
                     #gzEcharts(:style={'height': '230px', 'width': '230px'})
                 .gzmm
                     table(:style={'width': '100%'},border="0",cellpadding="0",cellspacing="0")
-                        tr(:style={'height': '25px'})
+                        tr(:style={'height': '25px'},v-for="(item, index) in getWorkTypeCount()")
                             td
-                                .tableCircle(:style={'background-color': '#41ccd3'})
-                                span 普工
+                                .tableCircle(:style="{backgroundColor: backgroundColor(index)}")
+                                span {{item.workType}}
+                            td {{item.total}}人({{((item.total/peopleTotal)*100).toFixed(2)}}%)
 
-
-                            td 4000人(40%)
-                        tr(:style={'height': '25px'})
-                            td
-                                .tableCircle(:style={'background-color': '#2498e3'})
-                                span 钢筋工
-
-
-                            td 4000人(40%)
-                        tr(:style={'height': '25px'})
-                            td
-                                .tableCircle(:style={'background-color': '#2268d4'})
-                                span 水泥工
-
-
-                            td 4000人(40%)
-                        tr(:style={'height': '25px'})
-                            td
-                                .tableCircle(:style={'background-color': '#d6c76e'})
-                                span 塔吊工
-
-
-                            td 4000人(40%)
-                        tr(:style={'height': '25px'})
-                            td
-                                .tableCircle(:style={'background-color': '#d39255'})
-                                span 市政工
-
-
-                            td 4000人(40%)
-                        tr(:style={'height': '25px'})
-                            td
-                                .tableCircle(:style={'background-color': '#35c87a'})
-                                span 维护工
-
-
-                            td 4000人(40%)
-                        tr(:style={'height': '25px'})
-                            td
-                                .tableCircle(:style={'background-color': '#44ae2e'})
-                                span 道路工
-
-
-                            td 4000人(40%)
-                        tr(:style={'height': '25px'})
-                            td
-                                .tableCircle(:style={'background-color': '#7d5dcc'})
-                                span 抹灰工
-
-
-                            td 4000人(40%)
 
             .bodyRightMiddle
                 .topTop
@@ -363,28 +288,14 @@
                     table(:style={'width': '360px', 'text-align': 'center', 'margin-left':'auto',
                         'margin-right': 'auto'},border="0",cellpadding="0",cellspacing="0")
                         tr(:style={'height': '25px', 'background-color': '#002052', 'font-weight': 'bolder','color':'#0067fd'})
-                            td(:style={'width': '25%'}) 排名
-                            td(:style={'width': '25%'}) 工种
-                            td(:style={'width': '25%'}) 人数
-                            td(:style={'width': '25%'}) 占比
-                        tr(:style={'height': '25px'})
-                            td(:style={'width': '25%'}) 1
-                            td(:style={'width': '25%'}) 裴灏杰
-                            td(:style={'width': '25%'}) 寻衅挑事
-                            td(:style={'width': '25%'}) 黑名单
-                        tr(:style={'height': '25px'})
-                            td(:style={'width': '25%'}) 2
-                            td(:style={'width': '25%'}) 范佳超
-                            td(:style={'width': '25%'}) 寻衅挑事
-                            td(:style={'width': '25%'}) 黑名单
-                        tr(:style={'height': '25px'})
-                            td(:style={'width': '25%'}) 3
-                            td(:style={'width': '25%'}) 陈吕
-                            td(:style={'width': '25%'}) 寻衅挑事
-                            td(:style={'width': '25%'}) 黑名单
-                        tr(:style={'height': '25px'})
-                            td(:style={'width': '25%'}) 4
-                            td(:style={'width': '25%'}) 吴之甫
-                            td(:style={'width': '25%'}) 寻衅挑事
-                            td(:style={'width': '25%'}) 黑名单
+                            td(:style={'width': '25%'}) 编号
+                            td(:style={'width': '25%'}) 姓名
+                            td(:style={'width': '25%'}) 行为
+                            td(:style={'width': '25%'}) 处罚
+                        tr(:style={'height': '25px'},v-for="(item,index) in getAppraiseList()")
+                            td(:style={'width': '25%'}) {{index+1}}
+                            td(:style={'width': '25%'}) {{item.eafName}}
+                            td(:style={'width': '25%'}) {{item.description}}
+                            td(:style={'width': '25%'}) {{item.punishment}}
+
 
