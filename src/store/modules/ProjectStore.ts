@@ -76,7 +76,7 @@ export default class ProjectStore extends VuexModule {
     }
     @Action
     public getPeopleParams() : any {
-        debugger
+
 
         if(this.selectUserName){
             let item ={};
@@ -127,7 +127,7 @@ export default class ProjectStore extends VuexModule {
     }
     @Action
     public async upload() {
-        debugger
+
         let alert: any = Message;
         await request.post('/api/workerlib/project/export',await this.getUploadParams(),{responseType: 'blob', params: '项目工程档案'}).then((data)=>{
             alert.warning('成功！');
@@ -150,7 +150,7 @@ export default class ProjectStore extends VuexModule {
 
     @Action
     public getParams() : any {
-        debugger
+
         if(this.projectInfo.selectOrganization){
             let item ={};
             item["name"]="organization";
@@ -276,7 +276,7 @@ export default class ProjectStore extends VuexModule {
 
     @Action
     public async insertProject() {
-        debugger
+
         await request.put('/api/workerlib/project', {
                 "project_id":null,
                 "project_name":this.projectInfo.project_name,
@@ -314,7 +314,7 @@ export default class ProjectStore extends VuexModule {
     }
     @Action
     public async searchPeople() {
-        debugger
+
         await request.post('/api/workerlib/join',await this.getPeopleParams()).then((data)=>{
             if(data){
                 this.successPeople(data);
@@ -346,7 +346,7 @@ export default class ProjectStore extends VuexModule {
     }
     @Action
     public addIn(data: any) {
-        debugger
+
         if(data.status == 0) {
             this.search();
         }
@@ -354,7 +354,7 @@ export default class ProjectStore extends VuexModule {
 
     @Mutation
     public successPeople(data: any) {
-        debugger
+
         this.peoples = data.data;
 
     }
@@ -392,7 +392,7 @@ export default class ProjectStore extends VuexModule {
 
     @Action
      public added(data: any) {
-        debugger
+
         if(data.status == 0) {
             this.search();
         }
@@ -400,7 +400,7 @@ export default class ProjectStore extends VuexModule {
 
     @Mutation
     public setPageTotal(total: any) {
-        debugger
+
         this.searchConditionList = [];
         this.pageInfo = {
             pageIndex: this.pageInfo.pageIndex,
