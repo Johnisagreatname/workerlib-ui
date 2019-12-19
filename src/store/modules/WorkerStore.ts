@@ -168,7 +168,6 @@ export default class WorkerStore extends VuexModule {
 
     @Action
     public getUpdateParams() : any {
-        debugger
         return  {
             "data": {
                 "leave": this.onLeave
@@ -307,7 +306,6 @@ export default class WorkerStore extends VuexModule {
 
     @Action
     public async search() {
-        debugger
         await request.post('/api/workerlib/people',await this.getParams()).then((data)=>{
             if(!data) {
                 return;
@@ -333,13 +331,14 @@ export default class WorkerStore extends VuexModule {
 
     @Action
     public async searchInfo() {
-        debugger
-        await request.post('/api/workerlib/archives',{
+        await request.post('/api/workerlib/people',{
             "pageInfo" : {
+                "pageIndex": 1,
+                "pageSize": 1
             },
 
             "conditionList": [{
-                "name": "id",
+                "name": "eafId",
                 "value": this.infoId,
                 "algorithm": "EQ"
             }
@@ -565,7 +564,6 @@ export default class WorkerStore extends VuexModule {
         let alert: any = Message;
         if(data.status == 0) {
             this.clear();
-            debugger
             this.search();
             alert.warning("成功！");
 
@@ -591,6 +589,10 @@ export default class WorkerStore extends VuexModule {
         this.peoples = data.data;
     }
 
+    @Mutation
+    private setPeopleInfo(data) {
+        this.peopleInfo = data;
+    }
 
     @Mutation
     private successInvolvedProject(data: any) {
@@ -599,6 +601,7 @@ export default class WorkerStore extends VuexModule {
 
     @Mutation
     private successInfo(data: any) {
+        debugger
         this.peopleInfo = data.data[0];
     }
 
@@ -716,7 +719,6 @@ export default class WorkerStore extends VuexModule {
     }
     @Mutation
     public setUnitId(data:number){
-        debugger
         this.unitId = data;
     }
     @Mutation

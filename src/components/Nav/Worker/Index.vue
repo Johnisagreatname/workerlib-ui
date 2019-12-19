@@ -89,7 +89,6 @@
         }
 
         viewData(id) {
-            debugger
             this.particulars=!this.particulars;
             this.store.setInfoId(id);
             this.store.searchInfo();
@@ -189,7 +188,6 @@
         }
 
         onCheck(id: number,name:string,leave:number): void {
-            debugger
             var itemTrue = {};
             if(this.store.checkeds.findIndex(x => x.id == id) > -1) {
                 let index = this.store.checkeds.findIndex(x => x.id == id);
@@ -219,7 +217,6 @@
         }
 
         isChecked(id): boolean {
-            debugger
             if(this.store.checkeds.find(x => x.id == id)){
                 return true;
             }
@@ -288,7 +285,6 @@
         }
 
         set projectId(data:string){
-            debugger
             this.store.setProject(this.store.projectList.filter(x => x.id == data)[0].project_name);
             this.store.setProjectId(data);
         }
@@ -296,7 +292,6 @@
             return this.store.projectId;
         }
         set unitId(data:number){
-            debugger
             this.store.setUnitId(data);
         }
         get unitId():number{
@@ -407,6 +402,14 @@
         }
         get grade():string{
             return this.store.grade;
+        }
+
+        @Watch("particulars")
+        particularsWatch(x: boolean) {
+
+            if (x) return;
+
+            this.store.setPeopleInfo(null);
         }
     }
 </script>
