@@ -250,14 +250,12 @@
             }
         }
         handleSelectAllCancel(selection){
-            for(let i = 0;i < this.store.project.length;i++) {
-                if(this.store.uplodId.findIndex(x => x.project_id == this.store.project[i].project_id) > -1){
-                    let index =  this.store.uplodId.findIndex(x => x.project_id == this.store.project[i].project_id);
-                    this.$set(this.store.project[i], '_disabled', false);
-                    this.$set(this.store.project[i], '_checked', false);
-                    this.store.uplodId.splice(index, 1);
-                }
-
+            debugger
+            for(let i = 0;i < this.store.peoples.length;i++) {
+                let index =  this.checkAllGroup.findIndex(x => x.id == this.store.peoples[i].eafId);
+                this.$set(this.store.peoples[i], '_disabled', false);
+                this.$set(this.store.peoples[i], '_checked', false);
+                this.checkAllGroup.splice(index, 1);
             }
         }
 

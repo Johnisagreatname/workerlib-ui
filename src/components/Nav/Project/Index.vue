@@ -142,41 +142,37 @@
         handleSelectRow(selection, row) {
             let item = {};
             item["project_id"] = row.project_id;
-            item["archives_id"] = row.eafId
             this.store.setUplodId(item);
-            console.log(this.store.uplodId)
+
         }
         handleSelectRowCancel(selection,row){
-            let index =  this.store.uplodId.findIndex(x => x.archives_id == row.eafId);
+            let index =  this.store.uplodId.findIndex(x => x.project_id == row.project_id);
             this.store.uplodId.splice(index, 1);
-            console.log(this.store.uplodId)
         }
         handleSelectAll(selection) {
             for(let i= 0;i<selection.length;i++){
                 let item = {};
                 let row = selection[i];
-                let index =  this.store.uplodId.findIndex(x => x.archives_id == row.eafId);
+                let index =  this.store.uplodId.findIndex(x => x.project_id == row.project_id);
                 if(index > -1){
                     continue;
                 }
                 item["project_id"] = row.project_id;
-                item["archives_id"] = row.eafId
                 this.store.setUplodId(item);
             }
-            console.log(this.store.uplodId)
         }
         handleSelectAllCancel(selection){
-            debugger
-            console.log("qqqqqqqqqqqq"+selection)
+
             for(let i = 0;i < this.store.project.length;i++) {
-                if(this.store.uplodId.findIndex(x => x.archives_id == this.store.project[i].eafId) > -1){
-                    let index =  this.store.uplodId.findIndex(x => x.archives_id == this.store.project[i].eafId);
+                if(this.store.uplodId.findIndex(x => x.project_id == this.store.project[i].project_id) > -1){
+                    let index =  this.store.uplodId.findIndex(x => x.project_id == this.store.project[i].project_id);
                     this.$set(this.store.project[i], '_disabled', false);
                     this.$set(this.store.project[i], '_checked', false);
                     this.store.uplodId.splice(index, 1);
                 }
 
             }
+
             console.log(this.store.uplodId)
         }
 
@@ -210,7 +206,7 @@
                 if(this.store.peoples[i].eafId == row.eafId){
                     this.$set(this.store.peoples[i], '_disabled', false);
                     this.$set(this.store.peoples[i], '_checked', false);
-                    debugger
+
                 }
             }
             this.store.peopleId.splice(index, 1);
@@ -223,6 +219,7 @@
                 let row = selection[i];
                 let index =  this.store.peopleId.findIndex(x => x.eafId == row.eafId);
                 if(index > -1){
+                    this.$set(this.store.peoples[i], '_disabled', true);
                     continue;
                 }
                 item["eafId"] = row.eafId;
@@ -239,6 +236,7 @@
             console.log(this.store.peopleId)
         }
         handleSelectAllCancelPeople(selection){
+            debugger
             for(let i = 0;i < this.store.peoples.length;i++) {
                 if(this.store.peopleId.findIndex(x => x.eafId == this.store.peoples[i].eafId) > -1){
                     let index =  this.store.peopleId.findIndex(x => x.eafId == this.store.peoples[i].eafId);
