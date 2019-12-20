@@ -26,11 +26,11 @@
     .hr
     .button
         Button(type="primary", ghost, icon="ios-add-circle-outline",@click="addRate=!addRate") 评级
-        Button(type="primary", ghost, icon="ios-log-in") 导入
-        Button(type="primary", ghost, icon="ios-log-out") 导出
+        //Button(type="primary", ghost, icon="ios-log-in") 导入
+        //Button(type="primary", ghost, icon="ios-log-out") 导出
 
     .bodyTwo
-        Table(border, ref="selection", :columns="getColumns()", :data="getData()",@on-selection-change="handleSelectRow")
+        Table(border, ref="selection", :columns="getColumns()", :data="getData()",@on-selection-change="handleSelectRow", :style={width: '100%'})
             //template(slot-scope="{row, index }",slot="operation")
             //    a(href="javascript:void(0)" :style={"font-size": "16px"})
             //        span 编辑
@@ -42,7 +42,6 @@
             .divTwo
                 .name
                     span 评级人员
-                    span(:style={'color': 'red'}) *
                 .input
                     Input(clearable,style="width: 345px",size=large,v-model="modifyBy")
             .divTwo
