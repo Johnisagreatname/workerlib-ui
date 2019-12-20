@@ -208,24 +208,24 @@ export default class WorkerStore extends VuexModule {
     public getInParams() : any {
         return {
             "joinTables": [{
-                    "tablename": "project",
-                    "alias": "p",
-                    "JoinMode": "Left",
-                    "onList": [{
-                        "name": "p.project_id",
-                        "value": "i.project_id",
-                        "algorithm": "EQ"
-                    }]
-                }, {
-                    "tablename": "unit",
-                    "alias": "u",
-                    "joinMode": "Left",
-                    "onList": [{
-                        "name": "u.unit_id",
-                        "value": "i.unit_id",
-                        "algorithm": "EQ"
-                    }]
-                }
+                "tablename": "project",
+                "alias": "p",
+                "JoinMode": "Left",
+                "onList": [{
+                    "name": "p.project_id",
+                    "value": "i.project_id",
+                    "algorithm": "EQ"
+                }]
+            }, {
+                "tablename": "unit",
+                "alias": "u",
+                "joinMode": "Left",
+                "onList": [{
+                    "name": "u.unit_id",
+                    "value": "i.unit_id",
+                    "algorithm": "EQ"
+                }]
+            }
             ],
             "pageInfo" : {
                 "pageIndex": this.inPageIndex,

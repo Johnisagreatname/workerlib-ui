@@ -182,7 +182,7 @@
                .oTop
                   .oTop1
                      .oCircle
-                        img(:src="'/api/workerlib/preview/archives/photo/'+this.store.peopleInfo.cwrPhoto",:style={
+                        img(:src="'http://113.105.121.93:1818'+this.store.peopleInfo.cwrPhoto",:style={
                             'width': '100%', 'height': '100%',
                             'border-radius': '50%'
                         })
@@ -204,7 +204,7 @@
                      p 是否班组长
                      p 评定等级
                   .y7
-                     p(v-if="this.store.peopleInfo.eafPhone") {{this.store.peopleInfo.eafPhone}}
+                     p(v-if="this.store.peopleInfo.phone") {{this.store.peopleInfo.phone}}
                      p(v-else) 无
                      p(v-if="this.store.peopleInfo.cwrIdnum") {{this.store.peopleInfo.cwrIdnum}}
                      p(v-else) 无

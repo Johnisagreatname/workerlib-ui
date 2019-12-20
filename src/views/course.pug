@@ -1,7 +1,7 @@
 .body
     .topOne
         .divOne
-            span 课程名称：
+            span 课程类型：
                 Input(clearable,style="width: 200px" ,v-model="name")
         .divOne
             span
@@ -24,10 +24,10 @@
                     DropdownMenu(slot="list")
                         DropdownItem
                             Icon(type="ios-remove-circle-outline")
-                            span(@click="popupUpdWorkclass(row.id)") 修改课程名称
+                            span(@click="popupUpdWorkclass(row.id)") 修改课程类型
                         DropdownItem
                             Icon(type="ios-remove-circle-outline")
-                            span(@click="popupDelWorkclass(row.id)") 刪除课程
+                            span(@click="popupDelWorkclass(row.id)") 刪除课程类型
     .footer
         Page(:total="totalRecords",show-sizer,show-elevator,show-total,@on-page-size-change="onPageSizeChange",@on-change="onPageIndexChange")
 
@@ -35,15 +35,15 @@
         .addBody
             .divTwo
                 .name
-                    span 课程名称
+                    span 课程类型
                     span(:style={'color': 'red'}) *
                 .input
                     Input(clearable,style="width: 345px",size=large,v-model="name")
-    Modal(:value="updCourse",title="修改课程",@on-ok="yes()",@on-cancel="cancel()",width='50%')
+    Modal(:value="updCourse",title="修改课程类型",@on-ok="yes()",@on-cancel="cancel()",width='50%')
         .addBody
             .divTwo
                 .name
-                    span 课程名称
+                    span 课程类型
                     span(:style={'color': 'red'}) *
                 .input
                     Input(clearable,style="width: 345px",size=large,v-model="name")
@@ -51,7 +51,7 @@
         .addBody
             .divTwo
                 .name
-                    span 是否删除该课程
+                    span 是否删除该课程类型
                     span(:style={'color': 'red'})
                 .input
                     //Input(clearable,style="width: 345px",size=large,v-model="name")

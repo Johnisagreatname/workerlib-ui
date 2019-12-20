@@ -292,11 +292,13 @@ export default class CheckEvaluateStore extends VuexModule {
         {
             title: '评选等级',
             key: 'rate',
+            width: 130,
             sortable: true
         },
         {
             title: '姓名',
             key: 'name',
+            width: 120,
             sortable: true
         },
         {
@@ -313,6 +315,7 @@ export default class CheckEvaluateStore extends VuexModule {
         {
             title: '评选时间',
             key: 'createOn',
+            width: 130,
             sortable: true
         }
         // ,
