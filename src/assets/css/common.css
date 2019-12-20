@@ -71,6 +71,3 @@ button i {
 #app .ivu-progress .ivu-progress-outer .ivu-progress-inner{
     background-color: transparent !important;
 }
-body .ivu-table-wrapper {
-    overflow: visible;
-}

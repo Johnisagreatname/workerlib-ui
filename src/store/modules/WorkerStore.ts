@@ -207,12 +207,7 @@ export default class WorkerStore extends VuexModule {
     @Action
     public getInParams() : any {
         return {
-            "joinTables": [
-                {
-                    "tablename": "involvedproject",
-                    "alias": "i",
-                    "joinMode": "Left"
-                },{
+            "joinTables": [{
                     "tablename": "project",
                     "alias": "p",
                     "JoinMode": "Left",
@@ -251,12 +246,7 @@ export default class WorkerStore extends VuexModule {
 
             "keywords" : [],
 
-            "selectList": [
-                {"field": "p.project_name"},
-                {"field": "u.project_license"},
-                {"field": "i.start_time"},
-                {"field": "i.end_time"}
-            ]
+            "selectList": []
 
         }
     }
@@ -285,7 +275,7 @@ export default class WorkerStore extends VuexModule {
     @Action
     public async upload() {
         let alert: any = Message;
-        await request.post('/api/workerlib/export/peple',await this.getUploadParams(),{responseType: 'blob', params: '人员档案'}).then((data)=>{
+        await request.post('/api/workerlib/export/people',await this.getUploadParams(),{responseType: 'blob', params: '人员档案'}).then((data)=>{
             this.successUpload();
         }).catch((e)=>{
             let alert: any = Message;
@@ -334,12 +324,12 @@ export default class WorkerStore extends VuexModule {
     @Action
     public async searchInfo() {
         debugger
-        await request.post('/api/workerlib/archives',{
+        await request.post('/api/workerlib/alluser',{
             "pageInfo" : {
             },
 
             "conditionList": [{
-                "name": "id",
+                "name": "eafId",
                 "value": this.infoId,
                 "algorithm": "EQ"
             }

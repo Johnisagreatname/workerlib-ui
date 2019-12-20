@@ -37,18 +37,22 @@
         public deleteCourseware: boolean;
         public updateCourseware: boolean;
         public addCultivate: boolean;
+        public addUpCultivate: boolean;
         public pageName: string;
         public pageUpName: string;
         private store: any;
         public id:number;
         public checkAllGroup :Array<any>;
         public onTitle:string;
+        public onUpTitle:string;
         constructor() {
             super();
             this.onTitle = null;
+            this.onUpTitle = null;
             this.indeterminate= true;
             this.checkAll = false;
             this.addCultivate = false;
+            this.addUpCultivate = false;
             this.addCourseware = false;
             this.addUpCourseware = false;
             this.updateCourseware = false;
@@ -146,11 +150,6 @@
                 this.messageWarningFn('请绑定课件工种分类！');
                 return;
             }
-            // if(this.store.courseWare.video == "" || this.store.courseWare.video == null ){
-            //     this.messageWarningFn('请上传资料！');
-            //     this.pageName = "name2"
-            //     return;
-            // }
             this.store.setStatus(2);
             this.store.insertCourseware();
             this.store.clearCourseWare();
@@ -202,11 +201,13 @@
         }
 
         okAdd() : any{
+            debugger
             this.store.setPeoples(this.store.checkeds.length);
             this.store.setState("待学习");
+            this.store.setCStatus(1);
             for(let i = 0; i< this.store.checkeds.length;i++){
                 var itemTrue = {};
-                itemTrue['archives_id'] = Number(this.store.checkeds[i].id);
+                itemTrue['archives_id'] = this.store.checkeds[i].id;
                 itemTrue['cultivate_id'] = this.store.cultivate.course_id;
                 this.store.setCultivateArchivesList(itemTrue);
             }
@@ -215,6 +216,23 @@
         }
         cancelAdd():any {
             this.addCultivate = false;
+        }
+        okUpAdd() : any{
+            debugger
+            this.store.setPeoples(this.store.checkeds.length);
+            this.store.setState("待学习");
+            this.store.setCStatus(2);
+            // for(let i = 0; i< this.store.checkeds.length;i++){
+            //     var itemTrue = {};
+            //     itemTrue['archives_id'] = this.store.checkeds[i].id;
+            //     itemTrue['cultivate_id'] = this.store.cultivate.course_id;
+            //     this.store.setCultivateArchivesList(itemTrue);
+            // }
+            this.store.insertUpCultivate();
+            this.addUpCultivate = false;
+        }
+        cancelUpAdd():any {
+            this.addUpCultivate = false;
         }
 
         offChecked(id): boolean {
@@ -340,6 +358,12 @@
             this.store.setCourseName(title)
             this.onTitle = title;
             this.store.searchPeople();
+        }
+        viewUpData(id,title) {
+            this.addUpCultivate=!this.addUpCultivate;
+            this.store.setCourseId(id);
+            this.store.setCourseName(title)
+            this.onUpTitle = title;
         }
         handleSuccessVideo (res, file) {
             this.store.setVideo(res.file);
@@ -597,6 +621,25 @@
         }
         get coursewareBrief():string{
             return this.store.cultivate.courseware_brief;
+        }
+        set trainingInstitution(data:string){
+            this.store.setTrainingInstitution(data);
+        }
+        get trainingInstitution():string{
+            return this.store.cultivate.trainingInstitution;
+        }
+        set trainingTeacher(data:string){
+            debugger
+            this.store.setTrainingTeacher(data);
+        }
+        get trainingTeacher():string{
+            return this.store.cultivate.trainingTeacher;
+        }
+        set trainingAddress(data:string){
+            this.store.setTrainingAddress(data);
+        }
+        get trainingAddress():string{
+            return this.store.cultivate.trainingAddress;
         }
     }
 </script>

@@ -15,6 +15,7 @@ export default class CultivateStore extends VuexModule {
     public studyType: Array<StudyType>;
     public cultivate: Array<Cultivate>;
     public cultivateArchives: Array<CultivateArchives>;
+    public checkAllGroup: Array<any>;
 
     public pageIndex: number;
     public pageSize: number;
@@ -25,20 +26,26 @@ export default class CultivateStore extends VuexModule {
     public inPageTotal:number;
 
     public checkedDelete:Array<any>;
+    public conditionList:Array<any>;
+    public cList:Array<any>;
 
     public infoId:number;
 
     public selectCourseName:string;
     public selectState:string;
     public selectStartTime:Date;
+    public selectStatus:number;
 
     public selectUserName:string;
     constructor(e){
         super(e);
         this.studyType = [];
         this.cultivate = [];
+        this.checkAllGroup = [];
         this.cultivateArchives = [];
         this.checkedDelete = [];
+        this.conditionList = [];
+        this.cList = [];
 
         this.pageIndex=1;
         this.pageSize= 10;
@@ -47,6 +54,7 @@ export default class CultivateStore extends VuexModule {
         this.inPageIndex=1;
         this.inPageSize= 10;
         this.inPageTotal = 0;
+        this.selectStatus = 1;
 
         this.selectCourseName = "";
         this.selectState = "";
@@ -80,6 +88,34 @@ export default class CultivateStore extends VuexModule {
 
     @Action
     public getParams() : any {
+        if(this.selectCourseName){
+            let item ={};
+            item["name"]="course_name";
+            item["value"]=this.selectCourseName;
+            item["algorithm"] = "LIKE"
+            this.cList.push(item);
+        }
+        if(this.selectState){
+            let item ={};
+            item["name"]="state";
+            item["value"]=this.selectState;
+            item["algorithm"] = "LIKE"
+            this.cList.push(item);
+        }
+        if(this.selectStartTime){
+            let item ={};
+            item["name"]="startTime";
+            item["value"]=this.selectStartTime != null ?this.selectStartTime.getFullYear() + "-" + (this.selectStartTime.getMonth()+1) + "-" + this.selectStartTime.getDate():null;
+            item["algorithm"] = "EQ"
+            this.cList.push(item);
+        }
+        if(this.selectStatus){
+            let item ={};
+            item["name"]="c.status";
+            item["value"]=this.selectStatus;
+            item["algorithm"] = "EQ"
+            this.cList.push(item);
+        }
         return {
             "joinTables": [{
                 "tablename": "cultivate",
@@ -93,6 +129,8 @@ export default class CultivateStore extends VuexModule {
                     "name": "c.createBy",
                     "value": "u.id",
                     "algorithm": "EQ"
+                },{
+
                 }]
             }
             ],
@@ -101,20 +139,7 @@ export default class CultivateStore extends VuexModule {
                 "pageSize": this.pageSize
             },
 
-            "conditionList": [{
-                "name": "course_name",
-                "value": this.selectCourseName,
-                "algorithm": "LIKE"
-            },{
-                "name": "state",
-                "value": this.selectState,
-                "algorithm": "LIKE"
-            },{
-                "name": "startTime",
-                "value": this.selectStartTime != null ?this.selectStartTime.getFullYear() + "-" + (this.selectStartTime.getMonth()+1) + "-" + this.selectStartTime.getDate():null,
-                "algorithm": "EQ"
-            }
-            ],
+            "conditionList": this.cList,
 
             "sortList": [ ],
 
@@ -129,25 +154,39 @@ export default class CultivateStore extends VuexModule {
 
     @Action
     public getInParams() : any {
+        if(this.infoId){
+            let item ={};
+            item["name"]="c.cultivate_id";
+            item["value"]=this.infoId;
+            item["algorithm"] = "EQ"
+            this.conditionList.push(item);
+        }
+        if(this.selectUserName){
+            let item ={};
+            item["name"]="a.eafName";
+            item["value"]=this.selectUserName;
+            item["algorithm"] = "LIKE"
+            this.conditionList.push(item);
+        }
         return {
             "joinTables": [
                 {
                     "tablename": "cultivate_archives",
                     "alias": "c",
-                    "joinMode": "inner"
+                    "joinMode": "Left"
                 },{
-                    "tablename": "archives",
+                    "tablename": "alluser",
                     "alias": "a",
-                    "JoinMode": "inner",
+                    "JoinMode": "Left",
                     "onList": [{
                         "name": "c.archives_id",
-                        "value": "a.id",
+                        "value": "a.eafId",
                         "algorithm": "EQ"
                     }]
                 }, {
                     "tablename": "courseware",
                     "alias": "o",
-                    "joinMode": "inner",
+                    "joinMode": "Left",
                     "onList": [{
                         "name": "c.cultivate_id",
                         "value": "o.id",
@@ -160,16 +199,7 @@ export default class CultivateStore extends VuexModule {
                 "pageSize": this.inPageSize
             },
 
-            "conditionList": [{
-                "name": "c.cultivate_id",
-                "value": this.infoId,
-                "algorithm": "EQ"
-            },{
-                "name":"a.name",
-                "value":this.selectUserName,
-                "algorithm": "Like"
-            }
-            ],
+            "conditionList": this.conditionList,
 
             "sortList": [ ],
 
@@ -178,16 +208,7 @@ export default class CultivateStore extends VuexModule {
 
             "keywords" : [],
 
-            "selectList": [
-                {"field": "o.total_hours"},
-                {"field": "c.training_time"},
-                {"field": "c.whether"},
-                {"field": "a.name"},
-                {"field": "a.id"},
-                {"field": "a.id_number"},
-                {"field": "a.project"},
-                {"field": "o.title"}
-            ]
+            "selectList": []
 
         }
     }
@@ -238,7 +259,7 @@ export default class CultivateStore extends VuexModule {
     @Action
     public async delete() {
         debugger
-        await request.post('/api/workerlib/batch/cultivate',this.checkedDelete).then((data)=>{
+        await request.post('/api/workerlib/cultivate/delete',this.checkedDelete.map(x => x.id)).then((data)=>{
             this.successDelete(data);
         }).catch((e)=>{
             let alert: any = Message;
@@ -259,7 +280,7 @@ export default class CultivateStore extends VuexModule {
 
     @Action
     public async count() {
-        await request.post('/api/workerlib/cultivate/count', await this.getParams()).then((total)=>{
+        await request.post('/api/workerlib/join/count', await this.getParams()).then((total)=>{
             this.setPageTotal(total.data)
         }).catch((e)=>{
             MessageUtils.warning(e);
@@ -267,7 +288,7 @@ export default class CultivateStore extends VuexModule {
     }
     @Action
     public async countInfo() {
-        await request.post('/api/workerlib/cultivate_archives/count', await this.getInParams()).then((total)=>{
+        await request.post('/api/workerlib/join/count', await this.getInParams()).then((total)=>{
             this.setInPageTotal(total.data)
         }).catch((e)=>{
             MessageUtils.warning(e);
@@ -294,6 +315,7 @@ export default class CultivateStore extends VuexModule {
     }
     @Mutation
     public setPageTotal(data: number) {
+        this.cList = [];
         this.pageTotal = data;
     }
     @Mutation
@@ -302,6 +324,7 @@ export default class CultivateStore extends VuexModule {
     }
     @Mutation
     public setInPageTotal(data: number) {
+        this.conditionList = [];
         this.inPageTotal = data;
     }
     @Mutation
@@ -341,6 +364,18 @@ export default class CultivateStore extends VuexModule {
     @Mutation
     public setCheckedDelete(data:any){
         this.checkedDelete.push(data);
+    }
+    @Mutation
+    public clearCheckedDelete(){
+        this.checkedDelete = new Array<any>();
+    }
+    @Mutation
+    public setSelectStatus(data: number) {
+        this.selectStatus = data;
+    }
+    @Mutation
+    public setCheckAllGroup(data: any) {
+        this.checkAllGroup.push(data) ;
     }
 
 
@@ -418,20 +453,15 @@ export default class CultivateStore extends VuexModule {
             sortable: true
         }
     ];
-    public getColumnsInfo = [
+    public columnsUp = [
         {
-            title: '头像',
-            slot: 'photo',
-            sortable: true
+            type: 'selection',
+            width: 60,
+            align: 'center'
         },
         {
-            title: '姓名',
-            slot: 'name',
-            sortable: true
-        },
-        {
-            title: '所属项目',
-            key: 'project',
+            title: '培训课程',
+            key: 'course_name',
             sortable: true,
             render: (h, params) => {
                 return h('div', [
@@ -444,11 +474,52 @@ export default class CultivateStore extends VuexModule {
                             whiteSpace: 'nowrap'
                         },
                         domProps: {
-                            title: params.row.project
+                            title: params.row.course_name
                         }
-                    }, params.row.project)
+                    }, params.row.course_name)
                 ])
             }
+        },
+        {
+            title: '开始培训时间',
+            slot: 'startTime',
+            sortable: true
+        },
+        {
+            title: '培训人数',
+            key: 'peoples',
+            sortable: true
+        },{
+            title: '培训讲师',
+            key: 'trainingTeacher',
+            sortable: true
+        },
+        {
+            title: '培训地点',
+            key: 'trainingAddress',
+            sortable: true
+        },
+        {
+            title: '任务状态',
+            key: 'state',
+            sortable: true
+        },
+        {
+            title: '发起人',
+            key: 'username',
+            sortable: true
+        }
+    ];
+    public getColumnsInfo = [
+        {
+            title: '头像',
+            slot: 'cwrPhoto',
+            sortable: true
+        },
+        {
+            title: '姓名',
+            slot: 'eafName',
+            sortable: true
         },
         {
             title: '培训课程',

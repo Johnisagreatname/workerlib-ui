@@ -21,17 +21,22 @@ export default class ProjectStore extends VuexModule {
         this.project = [];
         this.searchConditionList = [];
         this.searchPeopleConditionList = [];
+        this.updateList = [];
+        this.insertList = [];
         this.peoples = [];
         this.projectInfo = {};
         this.projectType = [];
         this.workType = [];
+        this.viewPeople = [];
         this.uplodId = [];
         this.peopleId = [];
         this.selectUserName = null;
+        this.viewProjectId = null;
         this.pageInIndex=1;
         this.pageInSize= 10;
         this.pageInTotal = 0;
     }
+
     public project: Array<ProjectInfo>;
     public projectType: Array<ProjectType>;
     public workType: Array<WorkType>;
@@ -45,10 +50,14 @@ export default class ProjectStore extends VuexModule {
     public pageInIndex: number;
     public pageInSize: number;
     public pageInTotal:number;
+    public viewProjectId:string;
 
 
 
     public uplodId:Array<any>;
+    public viewPeople:Array<any>;
+    public updateList:Array<any>;
+    public insertList:Array<any>;
     public peopleId:Array<any>;
     public searchConditionList:Array<any>;
     public searchPeopleConditionList:Array<any>;
@@ -87,12 +96,13 @@ export default class ProjectStore extends VuexModule {
         }
         return {
             "joinTables": [{
-                "tablename": "alluser",
-                "alias": "a",
-                "joinMode": "Left"
-            }, {
                 "tablename": "archives",
                 "alias": "b",
+                "joinMode": "Left"
+
+            }, {
+                "tablename": "alluser",
+                "alias": "a",
                 "joinMode": "Left",
                 "onList": [{
                     "name": "a.eafId",
@@ -108,7 +118,17 @@ export default class ProjectStore extends VuexModule {
                     "value": "b.project_id",
                     "algorithm": "EQ"
                 }]
-        }],
+            }, {
+                "tablename": "unit",
+                "alias": "u",
+                "joinMode": "Left",
+                "onList": [{
+                    "name": "a.unit_id",
+                    "value": "u.unit_id",
+                    "algorithm": "EQ"
+                }]
+            }
+        ],
             "pageInfo" : {
                 "pageIndex": this.pageInIndex,
                 "pageSize": this.pageInSize
@@ -122,7 +142,40 @@ export default class ProjectStore extends VuexModule {
 
             "keywords" : [],
 
-            "selectList": []
+            "selectList": [{
+                    "field": "b.id",
+                    "alias": "aId"
+                },
+                {
+                    "field": "a.eafId",
+                    "alias": "eafId"
+                },
+                {
+                    "field": "b.project_id",
+                    "alias":"project_id"
+                },
+                {
+                    "field": "b.unit_id",
+                    "alias":"unit_id"
+                },
+                {
+                    "field": "u.unit_name",
+                    "alias":"unit_name"
+                },
+                {
+                    "field": "a.workType",
+                    "alias":"workType"
+                } ,
+                {
+                    "field": "a.cwrIdnum",
+                    "alias":"cwrIdnum"
+                }
+                ,
+                {
+                    "field": "a.eafName",
+                    "alias":"eafName"
+                }
+            ]
         };
     }
     @Action
@@ -131,6 +184,109 @@ export default class ProjectStore extends VuexModule {
         let alert: any = Message;
         await request.post('/api/workerlib/project/export',await this.getUploadParams(),{responseType: 'blob', params: '项目工程档案'}).then((data)=>{
             alert.warning('成功！');
+        }).catch((e)=>{
+            let alert: any = Message;
+            if(!e) {
+                alert.warning('未知错误！');
+                return
+            }
+            if(e.response && e.response.data && e.response.data.message) {
+                alert.warning(e.response.data.message)
+                return
+            }
+            if(!e.message) {
+                return;
+            }
+            alert.warning(e.message || e)
+        });
+    }
+    @Action
+    public async insert() {
+
+        let alert: any = Message;
+        await request.put('/api/workerlib/archives',this.insertList
+            ).then((data)=>{
+            this.sucessInsert(data);
+        }).catch((e)=>{
+            let alert: any = Message;
+            if(!e) {
+                alert.warning('未知错误！');
+                return
+            }
+            if(e.response && e.response.data && e.response.data.message) {
+                alert.warning(e.response.data.message)
+                return
+            }
+            if(!e.message) {
+                return;
+            }
+            alert.warning(e.message || e)
+        });
+    }
+    @Action
+    public async update() {
+
+        let alert: any = Message;
+        await request.post('/api/workerlib/archives/update',{
+            "data":{
+                "leave": 1
+            },
+            "conditionList": [{
+                "name": "id",
+                "value": this.updateList,
+                "algorithm": "IN"
+            }],
+            "keywords" : []
+            }
+        ).then((data)=>{
+            this.sucessUpdate(data);
+        }).catch((e)=>{
+            let alert: any = Message;
+            if(!e) {
+                alert.warning('未知错误！');
+                return
+            }
+            if(e.response && e.response.data && e.response.data.message) {
+                alert.warning(e.response.data.message)
+                return
+            }
+            if(!e.message) {
+                return;
+            }
+            alert.warning(e.message || e)
+        });
+    }
+    @Action
+    public async searchViewPeople() {
+
+        let alert: any = Message;
+        await request.post('/api/workerlib/join',{
+                "joinTables": [{
+                    "tablename": "archives",
+                    "alias": "a",
+                    "joinMode": "Left"
+                }, {
+                    "tablename": "alluser",
+                    "alias": "u",
+                    "joinMode": "Left",
+                    "onList": [{
+                        "name": "a.archives_id",
+                        "value": "u.eafId",
+                        "algorithm": "EQ"
+                    }]
+                }],
+                "conditionList": [{
+                    "name": "project_id",
+                    "value": this.viewProjectId,
+                    "algorithm": "EQ"
+                }],
+
+                "groupList" : [],
+
+                "keywords" : []
+            }
+        ).then((data)=>{
+            this.sucessViewPeople(data);
         }).catch((e)=>{
             let alert: any = Message;
             if(!e) {
@@ -615,6 +771,26 @@ export default class ProjectStore extends VuexModule {
                     }, params.row.project_name)
                 ])
             }
+        },{
+            title: '参见单位',
+            key: 'unit_name',
+            sortable: true,
+            render: (h, params) => {
+                return h('div', [
+                    h('span', {
+                        style: {
+                            display: 'inline-block',
+                            width: '100%',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            whiteSpace: 'nowrap'
+                        },
+                        domProps: {
+                            title: params.row.unit_name
+                        }
+                    }, params.row.unit_name)
+                ])
+            }
         }
     ];
 
@@ -646,6 +822,10 @@ export default class ProjectStore extends VuexModule {
     @Mutation
     private setPeoplesId(data: any) {
         this.peopleId.push(data);
+    }
+    @Mutation
+    private sucessViewPeople(data: any) {
+        this.viewPeople=data.data;
     }
 
 
@@ -684,6 +864,10 @@ export default class ProjectStore extends VuexModule {
     private construction(data: string) {
         this.projectInfo.construction = data;
     }
+    @Mutation
+    private setViewProjectId(data: string) {
+        this.viewProjectId = data;
+    }
 
     @Mutation
     private organization(data: string) {
@@ -718,6 +902,24 @@ export default class ProjectStore extends VuexModule {
     @Mutation
     private status(data: number) {
         this.projectInfo.status = data;
+    }
+
+    @Mutation
+    private setUpdateList(data: any) {
+        this.updateList.push(data) ;
+    }
+    @Mutation
+    private sucessUpdate(data: any) {
+        this.updateList = new Array<any>() ;
+    }
+    @Mutation
+    private sucessInsert(data: any) {
+        this.insertList = new Array<any>() ;
+    }
+
+    @Mutation
+    private setInsertList(data: any) {
+        this.insertList.push(data) ;
     }
 
     @Mutation

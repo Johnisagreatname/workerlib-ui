@@ -104,21 +104,51 @@
         }
 
         okAdd() : any{
+            for(let i = 0;i<this.store.peopleId.length;i++){
+                let insert = {};
+                let people = this.store.peopleId[i];
+                if(people[i] == this.projectId){
+                    this.store.setUpdateList(people.aId)
+                }else {
+                    insert["project_id"] = this.projectId;
+                    insert["archives_id"] = people.eafId;
+                    insert["unit_id"] = people.unit_id;
+                    insert["leave"] = 1;
 
+                    this.store.setInsertList(insert);
+
+                }
+            }
+            this.store.insert();
+            this.store.update();
             this.addPeoples = false;
         }
         cancelAdd():any {
             this.addPeoples = false;
         }
+        okView():any{
+            this.viewPeoples = false
+        }
+        cancelView():any {
+            this.viewPeoples = false
+        }
+        getViewPeoples(): any{
+            debugger
+            return this.store.viewPeople;
+        }
         change(name){
-                this.projectId= name.split('_')[1];
-                if(name.split('_')[0] == 'add') {
-                    this.store.getWorkType();
-                    this.store.searchPeople();
-                    this.addPeoples = true;
-                }else {
-                    this.viewPeoples = true;
-                }
+            this.projectId= name.split('_')[1];
+            if(name.split('_')[0] == 'add') {
+                this.store.getWorkType();
+                this.store.searchPeople();
+                this.addPeoples = true;
+            }else {
+                debugger
+                this.store.setViewProjectId(this.projectId);
+                this.store.searchViewPeople();
+                this.viewPeoples = true;
+
+            }
 
         }
 
@@ -140,12 +170,14 @@
             return '';
         }
         handleSelectRow(selection, row) {
+
             let item = {};
             item["project_id"] = row.project_id;
             this.store.setUplodId(item);
 
         }
         handleSelectRowCancel(selection,row){
+
             let index =  this.store.uplodId.findIndex(x => x.project_id == row.project_id);
             this.store.uplodId.splice(index, 1);
         }
@@ -183,7 +215,9 @@
                         this.$set(this.store.peoples[i], '_checked', true);
                         let item = {};
                         item["eafId"] = row.eafId;
+                        item["aId"] = row.aId;
                         item["project_id"] = row.project_id;
+                        item["unit_id"] = row.unit_id;
                         for(let j = 0;j = this.selectWorkType.length;j++){
                             if(this.selectWorkType[i].eafId == row.eafId && this.selectWorkType[i].project_id == row.project_id){
                                 item["workType"] = this.selectWorkType[i].workType;
@@ -192,8 +226,6 @@
                             }
                         }
                         this.store.setPeoplesId(item);
-                    }else {
-                        this.$set(this.store.peoples[i], '_disabled', true);
                     }
                 }
             }
@@ -213,7 +245,6 @@
             console.log(this.store.peopleId)
         }
         handleSelectAllPeople(selection) {
-            debugger
             for(let i= 0;i<selection.length;i++){
                 let item = {};
                 let row = selection[i];
@@ -223,7 +254,9 @@
                     continue;
                 }
                 item["eafId"] = row.eafId;
+                item["aId"] = row.aId;
                 item["project_id"] = row.project_id;
+                item["unit_id"] = row.unit_id;
                 for(let j = 0;j = this.selectWorkType.length;j++){
                     if(this.selectWorkType[i].eafId == row.eafId && this.selectWorkType[i].project_id == row.project_id){
                         item["workType"] = this.selectWorkType[i].workType;
@@ -236,7 +269,6 @@
             console.log(this.store.peopleId)
         }
         handleSelectAllCancelPeople(selection){
-            debugger
             for(let i = 0;i < this.store.peoples.length;i++) {
                 if(this.store.peopleId.findIndex(x => x.eafId == this.store.peoples[i].eafId) > -1){
                     let index =  this.store.peopleId.findIndex(x => x.eafId == this.store.peoples[i].eafId);

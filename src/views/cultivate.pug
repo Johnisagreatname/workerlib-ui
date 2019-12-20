@@ -1,33 +1,74 @@
 .body
-    .topOne
-        .divOne
-            span 培训课程：
-                Input(clearable,style="width: 260px",v-model="selectCourseName")
-        .divOne
-            span 课程状态：
-                Select(filterable,clearable,style="width:260px",v-model="selectState")
-                    Option(v-for="item in getStudy()", :value="item.name", :key="item.name") {{item.name}}
-        .search
-            Button(@click="this.store.search") 搜索
-    .hr
-    .button
-        Button(type="primary", ghost, icon="ios-log-out") 导出
-        Button(type="primary", ghost, icon="ios-remove-circle-outline",@click="deleteCultivate()") 删除
-    .hr
-    .bodyTwo
-            Table(border,:columns="getColumns()", :data="getData()",@on-select="handleSelectRow",@on-select-all="handleSelectAll")
-                template(slot-scope="{row, index }",slot="startTime")
-                    span {{getDateFormat(row.startTime)}}
-                template(slot-scope="{row, index }",slot="operation")
-                    template
-                        Dropdown(trigger="click",@on-click = "change",placement="top-start")
-                            a(href="javascript:void(0)" :style={"font-size": "16px"})
-                                span 详细操作
-                                Icon(type="md-arrow-dropdown" )
-                            DropdownMenu(slot="list")
-                                DropdownItem(:name="row.course_id")
-                                    Icon(type="ios-contact-outline")
-                                    span 培训详情
+    template
+        Tabs(value="线上培训",@on-click="toggle")
+            TabPane(label="线上培训",name="线上培训",icon="ios-paper-outline")
+                .topOne
+                    .divOne
+                        span 培训课程：
+                            Input(clearable,style="width: 260px",v-model="selectCourseName")
+                    .divOne
+                        span 课程状态：
+                            Select(filterable,clearable,style="width:260px",v-model="selectState")
+                                Option(v-for="item in getStudy()", :value="item.name", :key="item.name") {{item.name}}
+                    .search
+                        Button(@click="this.store.search") 搜索
+                .hr
+                .button
+                    //Button(type="primary", ghost, icon="ios-log-out") 导出
+                    Button(type="primary", ghost, icon="ios-remove-circle-outline",@click="deleteCultivate()") 删除
+                .hr
+                .bodyTwo
+                    Table(border,:columns="getColumns()", :data="getData()",
+                    @on-select="handleSelectRow",@on-select-all="handleSelectAll",
+                    @on-select-cancel="handleSelectRowCancel",@on-select-all-cancel="handleSelectAllCancel")
+                        template(slot-scope="{row, index }",slot="startTime")
+                            span {{getDateFormat(row.startTime)}}
+                        template(slot-scope="{row, index }",slot="operation")
+                            template
+                                Dropdown(trigger="click",@on-click = "change",placement="top-start")
+                                    a(href="javascript:void(0)" :style={"font-size": "16px"})
+                                        span 详细操作
+                                        Icon(type="md-arrow-dropdown" )
+                                    DropdownMenu(slot="list")
+                                        DropdownItem(:name="row.course_id")
+                                            Icon(type="ios-contact-outline")
+                                            span 培训详情
+
+
+
+            TabPane(label="线下培训",name="线下培训",icon="ios-paper-outline")
+                .topOne
+                    .divOne
+                        span 培训课程：
+                            Input(clearable,style="width: 260px",v-model="selectCourseName")
+                    .divOne
+                        span 课程状态：
+                            Select(filterable,clearable,style="width:260px",v-model="selectState")
+                                Option(v-for="item in getStudy()", :value="item.name", :key="item.name") {{item.name}}
+                    .search
+                        Button(@click="this.store.search") 搜索
+                .hr
+                .button
+                    //Button(type="primary", ghost, icon="ios-log-out") 导出
+                    Button(type="primary", ghost, icon="ios-remove-circle-outline",@click="deleteCultivate()") 删除
+                .hr
+                .bodyTwo
+                    Table(border,:columns="getColumnsUp()",:data="getData()",
+                    @on-select="handleSelectRow",@on-select-all="handleSelectAll",
+                    @on-select-cancel="handleSelectRowCancel",@on-select-all-cancel="handleSelectAllCancel")
+                        template(slot-scope="{row, index }",slot="startTime")
+                            span {{getDateFormat(row.startTime)}}
+                        //template(slot-scope="{row, index }",slot="operation")
+                        //    template
+                        //        Dropdown(trigger="click",@on-click = "change",placement="top-start")
+                        //            a(href="javascript:void(0)" :style={"font-size": "16px"})
+                        //                span 详细操作
+                        //                Icon(type="md-arrow-dropdown" )
+                        //            DropdownMenu(slot="list")
+                        //                DropdownItem(:name="row.course_id")
+                        //                    Icon(type="ios-contact-outline")
+                        //                    span 培训详情
+
 
     .footer
         Page(:total="pageTotal",show-sizer,show-elevator,show-total,@on-page-size-change="onPageSizeChange",@on-change="onPageIndexChange")
@@ -38,15 +79,15 @@
                 'margin-bottom': '10px'
             },placeholder="名字",icon="ios-search-outline",@on-click="search")
             Table(border=false, ref="selection", :columns="getColumnsInfo()", :data="getDataInfo()",:row-class-name="rowClass", id="communal")
-                template(slot-scope="{ row }" ,slot="photo")
-                    img(:src="'/api/workerlib/preview/archives/photo/'+row.id",:style={
+                template(slot-scope="{ row }" ,slot="cwrPhoto")
+                    img(:src="'http://113.105.121.93:1818'+row.cwrPhoto",:style={
                         'width': '50px', 'height': '50px',
                         'border-radius': '50%'
                     })
-                template(slot-scope="{ row }" ,slot="name")
-                    span {{row.name}}
+                template(slot-scope="{ row }" ,slot="eafName")
+                    span {{row.eafName}}
                     br
-                    span {{row.id_number}}
+                    span {{row.cwrIdnum}}
                 template(slot-scope="{row}",slot="whether")
                     span(v-if="row.whether==1") 通过
                     span(v-if="row.whether==2") 未通过
@@ -58,5 +99,5 @@
             Page(:total="inPageTotal",show-elevator,show-total,@on-page-size-change="onInPageSizeChange",@on-change="onPageIndexChange",:style={'text-align': 'center'})
     Modal(title="是否将以下课件删除？",v-model="onDelete",:styles="{top: '20px'}",@on-ok="okDelete()",@on-cancel="cancelDelete()")
         .divL
-            .divCheck(v-for="item in this.checkAllGroup")
+            .divCheck(v-for="item in this.store.checkedDelete")
                 p {{item.name}}

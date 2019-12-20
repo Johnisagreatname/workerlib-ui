@@ -28,7 +28,7 @@
       Button(type="primary", ghost, icon="ios-log-in") 同步工人
       Button(type="primary", ghost, icon="ios-log-out",@click="upload()") 导出
 
-   div(v-for="(item, index) in getPeopleList()", :key="index", :class="isChecked(item.eafId) ? 'people-selected' : 'people'")
+   div(v-for="(item, index) in getPeopleList()", :key="index",@click="onCheck(item.eafId,item.eafName,item.leave)", :class="isChecked(item.eafId) ? 'people-selected' : 'people'")
       .headPhotos
          .circle
             img(:src="'http://113.105.121.93:1818'+item.cwrPhoto",:style={'width':'100%','height':'100%',
@@ -45,9 +45,10 @@
             span(v-else) 女
             span |
             span {{getAge(item.cwrIdnum)}}岁
+            //查看详情
          Button(type="primary", ghost,@click="viewData(item.eafId)")
       .photos
-         div(@click="onCheck(item.eafId,item.eafName,item.leave)",:class="isChecked(item.eafId) ? 'pop' : 'pTop'")
+         div(:class="isChecked(item.eafId) ? 'pop' : 'pTop'")
          .pButtom
       .y2
          p 手机号码
@@ -181,18 +182,18 @@
                .oTop
                   .oTop1
                      .oCircle
-                        img(:src="'/api/workerlib/preview/archives/photo/'+this.store.peopleInfo.id",:style={
+                        img(:src="'/api/workerlib/preview/archives/photo/'+this.store.peopleInfo.cwrPhoto",:style={
                             'width': '100%', 'height': '100%',
                             'border-radius': '50%'
                         })
                   .oTop2
                      .top2
-                        span {{this.store.peopleInfo.name}}
+                        span {{this.store.peopleInfo.eafName}}
                         span |
-                        span(v-if="checkSex(this.store.peopleInfo.id_number)") 男
+                        span(v-if="checkSex(this.store.peopleInfo.cwrIdnum)") 男
                         span(v-else) 女
                         span |
-                        span {{getAge(this.store.peopleInfo.id_number)}}岁
+                        span {{getAge(this.store.peopleInfo.cwrIdnum)}}岁
                   .oTop3
                      .photos
                   .y6
@@ -203,11 +204,11 @@
                      p 是否班组长
                      p 评定等级
                   .y7
-                     p(v-if="this.store.peopleInfo.phone") {{this.store.peopleInfo.phone}}
+                     p(v-if="this.store.peopleInfo.eafPhone") {{this.store.peopleInfo.eafPhone}}
                      p(v-else) 无
-                     p(v-if="this.store.peopleInfo.id_number") {{this.store.peopleInfo.id_number}}
+                     p(v-if="this.store.peopleInfo.cwrIdnum") {{this.store.peopleInfo.cwrIdnum}}
                      p(v-else) 无
-                     p(v-if="this.store.peopleInfo.work_type") {{this.store.peopleInfo.id_number}}
+                     p(v-if="this.store.peopleInfo.workType") {{this.store.peopleInfo.workType}}
                      p(v-else) 无
                      p(v-if="this.store.peopleInfo.leave==1") 在职
                      p(v-else) 离职

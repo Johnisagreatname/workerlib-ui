@@ -81,7 +81,6 @@ export default class CoursewareStore extends VuexModule {
     }
     @Action
     public getParams() : any {
-        debugger
         return {
             "pageInfo" : {
                 "pageIndex": this.pageIndex,
@@ -223,6 +222,7 @@ export default class CoursewareStore extends VuexModule {
     }
     @Action
     public async searchInfo() {
+
         await request.post('/api/workerlib/courseware',{
             "pageInfo" : {
             },
@@ -324,7 +324,7 @@ export default class CoursewareStore extends VuexModule {
         await request.put('/api/workerlib/cultivate', {
             "course_id":this.cultivate.course_id,
             "course_name":this.cultivate.course_name,
-            "startTime":this.cultivate.startTime ?this.cultivate.startTime.getFullYear() + "-" + (this.cultivate.startTime.getMonth()+1) + "-" + this.cultivate.startTime.getDate():null,
+            "startTime":this.cultivate.startTime ? this.cultivate.startTime.getFullYear() + "-" + (this.cultivate.startTime.getMonth()+1) + "-" + this.cultivate.startTime.getDate():null,
             "peoples":this.cultivate.peoples,
             "state":this.cultivate.state,
             "mark":this.cultivate.mark,
@@ -351,8 +351,71 @@ export default class CoursewareStore extends VuexModule {
             alert.warning(e.message || e)
         });
     }
+
+    @Action
+    public async insertUpCultivate() {
+        debugger
+        await request.put('/api/workerlib/cultivate', {
+            "course_id":this.cultivate.course_id,
+            "course_name":this.cultivate.course_name,
+            "startTime":this.cultivate.startTime ? this.cultivate.startTime.getFullYear() + "-" + (this.cultivate.startTime.getMonth()+1) + "-" + this.cultivate.startTime.getDate():null,
+            "peoples":this.cultivate.peoples,
+            "state":this.cultivate.state,
+            "mark":this.cultivate.mark,
+            "courseware_brief":this.cultivate.courseware_brief,
+            "status":this.cultivate.status,
+            "trainingInstitution":this.cultivate.trainingInstitution,
+            "trainingTeacher":this.cultivate.trainingTeacher,
+            "trainingAddress":this.cultivate.trainingAddress
+        }).then((data)=>{
+            this.successUpAddCultivate(data)
+        }).catch((e)=>{
+            let alert: any = Message;
+            if(!e) {
+                alert.warning('未知错误！');
+                return;
+            }
+
+            if(e.response && e.response.data && e.response.data.message) {
+                alert.warning(e.response.data.message)
+                return
+            }
+
+            if(!e.message) {
+                return;
+            }
+
+            alert.warning(e.message || e)
+        });
+    }
+
     @Action
     public async insertCultivateArchives(){
+        debugger
+        await request.put('/api/workerlib/cultivate_archives', this.cultivateArchivesList).then((data)=>{
+            this.successAddCultivateArchives(data);
+        }).catch((e)=>{
+            console.log(e)
+            let alert: any = Message;
+            if(!e) {
+                alert.warning('未知错误！');
+                return;
+            }
+
+            if(e.response && e.response.data && e.response.data.message) {
+                alert.warning(e.response.data.message)
+                return
+            }
+
+            if(!e.message) {
+                return;
+            }
+
+            alert.warning(e.message || e)
+        });
+    }
+    @Action
+    public async insertUpCultivateArchives(){
         await request.put('/api/workerlib/cultivate_archives', this.cultivateArchivesList).then((data)=>{
             this.successAddCultivateArchives(data);
         }).catch((e)=>{
@@ -419,7 +482,6 @@ export default class CoursewareStore extends VuexModule {
     }
     @Action
     public async searchPeople() {
-        debugger
         await request.post('/api/workerlib/people',await this.getPeopleParams()).then((data)=>{
             this.successPeople(data);
             this.countPeople();
@@ -454,6 +516,28 @@ export default class CoursewareStore extends VuexModule {
             this.insertCultivateArchives();
         }
     }
+
+    @Mutation
+    public successUpAddCultivate(data: any) {
+        this.cultivate ={
+            id:null,
+            course_name:null,
+            course_id:null,
+            startTime:null,
+            peoples:null,
+            state:null,
+            mark:null,
+            courseware_brief:null,
+            trainingInstitution:null,
+            trainingTeacher:null,
+            trainingAddress:null,
+            status:null
+        }
+        if(data.status == 0) {
+            let alert: any = Message;
+            alert.warning("新建课程成功！");
+        }
+    }
     @Action
     public successUpdate(data: any) {
         let alert: any = Message;
@@ -473,8 +557,8 @@ export default class CoursewareStore extends VuexModule {
     @Mutation
     public successAddCultivateArchives(data: any) {
         if(data.status == 0) {
-            this.checkeds = [];
-            this.checkAllGroup = [];
+            this.checkeds = new Array<any>();
+            this.checkAllGroup = new Array<any>();
             let alert: any = Message;
             alert.warning("新建课程成功！");
         }
@@ -785,6 +869,7 @@ export default class CoursewareStore extends VuexModule {
     public setState(data:string){
         this.cultivate.state = data;
     }
+
     @Mutation
     public setMark(data:string){
         this.cultivate.mark = data;
@@ -792,6 +877,22 @@ export default class CoursewareStore extends VuexModule {
     @Mutation
     public setCoursewareBrief(data:string){
         this.cultivate.courseware_brief = data;
+    }
+    @Mutation
+    public setTrainingInstitution(data:string){
+        this.cultivate.trainingInstitution = data;
+    }
+    @Mutation
+    public setTrainingTeacher(data:string){
+        this.cultivate.trainingTeacher = data;
+    }
+    @Mutation
+    public setTrainingAddress(data:string){
+        this.cultivate.trainingAddress = data;
+    }
+    @Mutation
+    public setCStatus(data:number){
+        this.cultivate.status = data;
     }
     @Mutation
     public setCourseName(data:string){
@@ -837,4 +938,8 @@ interface Cultivate {
     state?:string;
     mark?:string;
     courseware_brief?:string;
+    trainingInstitution?:string;
+    trainingTeacher?:string;
+    trainingAddress?:string;
+    status?:number;
 }
