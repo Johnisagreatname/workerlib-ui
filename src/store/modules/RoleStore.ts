@@ -102,7 +102,6 @@ export default class RoleStore extends VuexModule {
 
     @Action
     public async insertRole() {
-        debugger;
         await request.put('/api/workerlib/role', {
             "roleName": this.roleInfo.roleName,
             "roleId": this.roleInfo.roleName,

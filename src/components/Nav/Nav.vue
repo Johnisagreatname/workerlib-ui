@@ -73,6 +73,7 @@
         }
 
         select(e) : void {
+          debugger
           this['$router'].push(e);
 
             let selectedItem: any = null;

@@ -210,7 +210,6 @@ export default class CheckEvaluateStore extends VuexModule {
             "keywords" : [],
             "selectList": []
         }).then((data)=>{
-            debugger
             if(!data) {
                 return
             }
@@ -316,7 +315,6 @@ export default class CheckEvaluateStore extends VuexModule {
     }
     @Mutation
     public successGrade(data: any) {
-        debugger
         this.grades = data.data;
     }
     @Mutation
