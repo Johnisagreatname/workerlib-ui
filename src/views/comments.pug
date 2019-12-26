@@ -122,13 +122,18 @@
                 .c2
                     .c5
                         .c7
-                            span 裴灏杰
+                            span {{this.particulars.eafName}}
                         .c8
                             .c9
-                                span 水泥工
-                                span 水泥工
+                                span(:title="this.particulars.workType",:style= {
+                                display: 'inline-block',
+                                width: '100%',
+                                overflow: 'hidden',
+                                textOverflow: 'ellipsis',
+                                whiteSpace: 'nowrap'
+                                }) {{this.particulars.workType}}
                     .c6
-                        span 建兴劳务公司
+
                 .c3
                     .ulDiv
                         ul
@@ -139,61 +144,28 @@
                             li 5
                 .c4
                     .cc
-                        span 4.9
-                    Rate(v-model="custom",disabled)
-            .c10
+                        span {{this.particulars.synthesize}}
+                    Rate(:value="Number(this.particulars.synthesize)",disabled,allow-half)
             .c11
-                .threeDiv
-                    .c12
-                        .c15
-                            p 恶意讨薪
-                        .c16
-                            .c17
-                                p 2019-11-28
-                            .c17
-                                img(src="~@/assets/css/images/commentOne.png" :style={'width': '59px', 'height': '25px'})
-                    .c13
-                        p 处罚：简易不予录用
-                    .c14
-                        p(:style={'color': '#1397ff', 'font-size': '16px'}) 深圳市白石龙项目
-                        p(:style={'color': '#9b9b9b', 'font-size': '12px', 'margin-top': '45px'}) 陈吕 现场管理员人员
-                        //p(:style={'color': '#000000', 'font-size': '14px'}) 干活它是，人踏实，继续努力
-                        //Rate(disabled)
-                .middleHr
-                .threeDiv
-                    .c12
-                        .c15
-                            p 工作热情高；人品端正、德行优良、自身修养较高、对待客户诚信；对待工作严谨、处处为公司考虑，能够虚心接受同事给予的建议并改正；学习进步较快、受到大多数客户的好评。
-                        .c16
-                            .c17
-                                p 2019-11-19
-                            .c17
-                                img(src="~@/assets/css/images/commentsTwo.png" :style={
-                                    'width': '59px',
-                                    'height': '25px'
-                                })
-                    .c13
-                        Rate(v-model="vaueCustomText",disabled)
-                    .c14
-                        p(:style={'color': '#1397ff', 'font-size': '16px'}) 深圳市南山项目
-                        p(:style={'color': '#9b9b9b', 'font-size': '12px', 'margin-top': '45px'}) 范佳超 现场管理员人员
-                        //p(:style={'color': '#000000', 'font-size': '14px'}) 干活它是，人踏实，继续努力
+                div(v-for="item in getCommentSparticularsList()")
+                    .middleHr
+                    .threeDiv
+                        .c12
+                            .c15
+                                p {{item.description}}
+                            .c16
+                                .c17
+                                    p(v-if="item.type == 1") {{item.appraise_time}}
+                                    p(v-else) {{item.createOn}}
+                                .c17
 
-                .middleHr
-                .threeDiv
-                    .c12
-                        .c15
-                            p 退场前闹事，建议不予录用
-                        .c16
-                            .c17
-                                p 2019-11-19
-                            .c17
-                                img(src="~@/assets/css/images/commentThree.png" :style={
-                                    'width': '59px',
-                                    'height': '25px'
-                                })
-                    .c13
-                        Rate(v-model="vaueCustom",disabled)
-                    .c14
-                        p(:style={'color': '#1397ff', 'font-size': '16px'}) 布吉项目
-                        p(:style={'color': '#9b9b9b', 'font-size': '12px', 'margin-top': '45px'}) 林陆锐 现场管理员人员
+                                    img(src="~@/assets/css/images/commentOne.png" :style={'width': '59px', 'height': '25px'},v-if="item.type == 1")
+                                    img(src="~@/assets/css/images/commentsTwo.png" :style={'width': '59px','height': '25px'},v-else)
+                        .c13
+
+                            p(v-if="item.type == 1") 处罚：{{item.punishment}}
+                            Rate(disabled,:value="Number(item.score)",allow-half,v-else)
+                        .c14
+                            p(:style={'color': '#1397ff', 'font-size': '16px'}) {{item.project_name}}
+                            p(:style={'color': '#9b9b9b', 'font-size': '12px', 'margin-top': '45px'}) {{item.username}}
+

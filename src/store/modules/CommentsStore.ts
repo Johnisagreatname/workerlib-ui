@@ -38,6 +38,7 @@ export default class CommentsStore extends VuexModule {
         this.insertPhotoList = [];
         this.punishments = [];
         this.comments = [];
+        this.commentSparticularsList = [];
         this.selectName = null;
         this.selectEafId = null;
         this.selectComments = [];
@@ -51,6 +52,7 @@ export default class CommentsStore extends VuexModule {
         this.insertPunishment = null;
         this.insertPhoto = [];
         this.insertAppraiseTime = null;
+        this.punishmentsId = null;
     }
     public pageInfo: PageInfo;
     public appraise: Array<AppraiseInfo>;
@@ -85,10 +87,14 @@ export default class CommentsStore extends VuexModule {
     public pageIndex: number;
     public pageSize: number;
 
+    public punishmentsId :number;
+
     public comments:Array<any>;
+    public commentSparticularsList:Array<any>;
     public projectList:Array<any>;
     public selectComments:Array<any>;
     public punishments:Array<any>;
+
     @Action
     public getParams() : any {
         if(this.selectName){
@@ -115,7 +121,6 @@ export default class CommentsStore extends VuexModule {
             "selectList": []
         }
     }
-
     @Action
     public async search() {
         await request.post('/api/workerlib/comments', await this.getParams()).then((data)=>{
@@ -124,6 +129,51 @@ export default class CommentsStore extends VuexModule {
             }
             this.success(data);
             this.count();
+        }).catch((e)=>{
+            console.log(e)
+            let alert: any = Message;
+            if(!e) {
+                alert.warning('未知错误！')
+                return
+            }
+
+            if(e.response && e.response.data && e.response.data.message) {
+                alert.warning(e.response.data.message)
+                return
+            }
+
+            if(!e.message) {
+                return;
+            }
+
+            alert.warning(e.message || e)
+        });
+    }
+    @Action
+    public async searchCommentSparticulars() {
+        debugger
+        await request.post('/api/workerlib/commentsparticulars',{
+            "pageInfo" : {},
+
+            "conditionList": {
+                "name" : "archives_id ",
+                "value" : this.punishmentsId,
+                "algorithm" : "EQ"
+            },
+
+            "sortList": [],
+
+            "groupList" : [],
+
+            "keywords" : [],
+
+            "selectList": []
+
+        }).then((data)=>{
+            if(!data){
+                return;
+            }
+            this.successCommentSparticulars(data);
         }).catch((e)=>{
             console.log(e)
             let alert: any = Message;
@@ -322,7 +372,6 @@ export default class CommentsStore extends VuexModule {
     }
     @Action
     public async insertSynthesizeAppraise(){
-        debugger
         await request.put('/api/workerlib/appraise',{
             "type": this.insertType,
             "description":this.insertDescription,
@@ -356,7 +405,6 @@ export default class CommentsStore extends VuexModule {
     }
     @Action
     public async insertAppraisePhoto(data){
-        debugger
         for(let i=0;i < this.insertPhoto.length;i++) {
             let item = {};
             item["appraise_id"] = data;
@@ -392,7 +440,6 @@ export default class CommentsStore extends VuexModule {
     }
     @Action
     public async insertAppraiseScore(data){
-        debugger
         for(let i in this.appraiseList) {
             let item = {};
             item["appraise_id"] = data;
@@ -673,6 +720,10 @@ export default class CommentsStore extends VuexModule {
     public success(data: any) {
         this.comments = data.data;
     }
+    @Mutation
+    public successCommentSparticulars(data: any) {
+        this.commentSparticularsList = data.data;
+    }
     @Action
     public sucessInsertBadnessAppraise(data: any) {
         this.clearInsertDataList();
@@ -725,6 +776,10 @@ export default class CommentsStore extends VuexModule {
         this.insertType = data;
     }
     @Mutation
+    public setPunishmentsId(data:number){
+        this.punishmentsId = data;
+    }
+    @Mutation
     public setInsertProject(data: string) {
         this.insertProject = data;
     }
@@ -739,7 +794,6 @@ export default class CommentsStore extends VuexModule {
     @Mutation
     public setInsertPhoto(data: any) {
         this.insertPhoto.push(data);
-        debugger
     }
     @Mutation
     public setInsertAppraiseTime(data: Date) {
@@ -759,7 +813,6 @@ export default class CommentsStore extends VuexModule {
     public clearAppraiseList() {
         this.appraiseList = new Array<any>();
     }
-
     @Mutation
     public clearInsertDataList() {
         this.insertProject = null;
@@ -857,6 +910,7 @@ export default class CommentsStore extends VuexModule {
     public setProject_to_name(data:any){
         this.appraiseInfo.project_to_name = data;
     }
+
 }
 
 interface AppraiseInfo {
