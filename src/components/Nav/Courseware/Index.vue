@@ -199,7 +199,9 @@
         cancelDel():any {
             this.deleteCourseware = false;
         }
-
+        getTeacher(){
+            return this.store.teacherList;
+        }
         okAdd() : any{
             debugger
             this.store.setPeoples(this.store.checkeds.length);
@@ -330,8 +332,8 @@
         getMenus() : any {
             if(this.options) return this.options;
             this.options = [
-                { value: '在职', key: 1 },
-                { value: '离职', key: 2 }
+                { value: '在场', key: 1 },
+                { value: '离场', key: 2 }
             ];
             return this.options;
         }
@@ -361,6 +363,7 @@
         }
         viewUpData(id,title) {
             this.addUpCultivate=!this.addUpCultivate;
+            this.store.getTeacherList();
             this.store.setCourseId(id);
             this.store.setCourseName(title)
             this.onUpTitle = title;

@@ -42,6 +42,9 @@
                         span 培训课程：
                             Input(clearable,style="width: 260px",v-model="selectCourseName")
                     .divOne
+                        span 培训讲师：
+                            Input(clearable,style="width: 260px",v-model="selectTrainingTeacher")
+                    .divOne
                         span 课程状态：
                             Select(filterable,clearable,style="width:260px",v-model="selectState")
                                 Option(v-for="item in getStudy()", :value="item.name", :key="item.name") {{item.name}}
@@ -71,7 +74,7 @@
 
 
     .footer
-        Page(:total="pageTotal",show-sizer,show-elevator,show-total,@on-page-size-change="onPageSizeChange",@on-change="onPageIndexChange")
+        Page(:total="pageTotal",show-sizer,show-elevator,show-total,@on-page-size-change="onPageSizeChange",@on-change="onPageIndexChange",:page-size=20)
     Modal(:value="startTraining",title="开始培训",@on-ok="okStart()",@on-cancel="cancelStart()",width='75%',:loading="loading")
         .addBody1
             Input(v-model="selectUserName",:style={

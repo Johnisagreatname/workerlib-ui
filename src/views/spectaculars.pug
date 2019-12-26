@@ -30,15 +30,15 @@
                                 'margin-left': '8px'
                             }) 持证人数
                 .hrBJ
-                .topButtom(v-for="item in getWorkType()")
+                .topButtom(v-for="(item,index) in getWorkType()")
                     .belowLeft
                         template
-                            Progress(:percent="((item.certificateTotal/peopleTotal)*100 ? (item.certificateTotal/peopleTotal)*100 : 0)",:stroke-width="15",:stroke-color="['#4ea2fe', '#7dbafe']",hide-info)
+                            Progress(:percent="((item.certificateTotal/peopleTotal)*100 ? (item.certificateTotal/peopleTotal)*100 : 0)",:stroke-width="15",:stroke-color="getColorTwo(index)",hide-info)
                     .belowMiddle
                         span {{item.workType}}
                     .belowRight
                         template
-                            Progress(:percent="((item.total/peopleTotal)*100 ? (item.total/peopleTotal)*100 : 0 )",:stroke-width="15",:stroke-color="['#6bdfc5', '#90e7d4']",hide-info)
+                            Progress(:percent="((item.total/peopleTotal)*100 ? (item.total/peopleTotal)*100 : 0 )",:stroke-width="15",:stroke-color="getColor(index)",hide-info)
 
             .bodyLeftMiddle
                 .middleTop
@@ -148,13 +148,13 @@
                                 'line-height': '40px',
                                 'font-size': '14px',
                                 'color': '#0068ff'
-                            }) 工程总数
+                            }) 在建工程总数
                         .belowBelowTwo
                             span(:style={
                                 'line-height': '100px',
                                 'font-size': '38px',
                                 'color': '#0068ff'
-                            })  {{this.store.projectCount.total}}
+                            })  {{this.store.projectCount.doing}}
                             span(:style={
                                 'line-height': '100px',
                                 'font-size': '14px',
@@ -166,13 +166,13 @@
                                 'line-height': '66px',
                                 'font-size': '14px',
                                 'color': '#0068ff'
-                            }) 在建工程：{{this.store.projectCount.doing}}
+                            }) 工程总数：{{this.store.projectCount.total}}
                             span(:style={
                                 'line-height': '66px',
                                 'font-size': '14px',
                                 'color': '#00e0ef',
                                 'margin-left': '20px'
-                            }) 未开工：0
+                            }) 未开工：{{this.store.projectCount.notInService}}
                 .middleMiddle
                     .middleBelowT
                         .belowTopOneT
@@ -181,7 +181,7 @@
                                 'line-height': '40px',
                                 'font-size': '14px',
                                 'color': '#0068ff'
-                            }) 在职工人数
+                            }) 在场工人数
                         .belowBelowTwo
                             span(:style={
                                 'line-height': '100px',
@@ -213,7 +213,7 @@
                                 'line-height': '40px',
                                 'font-size': '14px',
                                 'color': '#0068ff'
-                            }) 离职工人数
+                            }) 离场工人数
                         .belowBelowTwo
                             span(:style={
                                 'line-height': '100px',

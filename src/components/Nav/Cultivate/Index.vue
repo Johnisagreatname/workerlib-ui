@@ -100,7 +100,6 @@
             this.onDelete = true;
         }
         handleSelectRow(selection, row) {
-            debugger
             var itemTrue = {};
             itemTrue['id'] = row.id;
             itemTrue['name'] = row.course_name;
@@ -122,7 +121,6 @@
         }
 
         handleSelectAllCancel(selection){
-            debugger
             for(let i= 0;i<this.store.cultivate.length;i++){
                 let item = {};
                 let row = this.store.cultivate[i];
@@ -207,6 +205,12 @@
         }
         get selectUserName():string{
             return this.store.selectUserName;
+        }
+        set selectTrainingTeacher(data:string){
+            this.store.setSelectTrainingTeacher(data);
+        }
+        get selectTrainingTeacher():string{
+            return this.store.selectTrainingTeacher;
         }
     }
 </script>

@@ -16,6 +16,8 @@ export default class CoursewareStore extends VuexModule {
     public checkAllGroup: Array<any>;
     public cultivateArchivesList:Array<any>;
     public peopleConditionList:Array<any>;
+    public teacherList:Array<any>;
+
 
     public projectType: Array<ProjectType>;
     public courseWareInfo:Array<CourseWareInfo>;
@@ -60,11 +62,13 @@ export default class CoursewareStore extends VuexModule {
         this.pageInTotal = 0;
 
         this.cultivateArchivesList = [];
+
         this.peopleConditionList = [];
         this.peoples = [];
         this.courseWareEdit={};
         this.projectType = [];
         this.courseWareInfo = [];
+        this.teacherList = [];
         this.cultivateArchives = [];
         this.cultivate ={};
 
@@ -155,7 +159,6 @@ export default class CoursewareStore extends VuexModule {
     }
     @Action
     public getUpdateParams() : any {
-        debugger
         return  {
             "data": {
                 "title":this.courseWareEdit.title,
@@ -184,7 +187,6 @@ export default class CoursewareStore extends VuexModule {
 
     @Action
     public async search() {
-        debugger
         await request.post('/api/workerlib/courseware',await this.getParams()).then((data)=>{
             this.success(data);
             this.count();
@@ -204,6 +206,7 @@ export default class CoursewareStore extends VuexModule {
             alert.warning(e.message || e)
         });
     }
+
     @Action
     public async count() {
         await request.post('/api/workerlib/courseware/count', await this.getParams()).then((total)=>{
@@ -282,8 +285,27 @@ export default class CoursewareStore extends VuexModule {
         });
     }
     @Action
+    public async getTeacherList(){
+        await request.post('/api/workerlib/lecturer', {
+            "pageInfo" : {},
+            "conditionList": [],
+            "sortList": [],
+
+            "groupList" : [],
+
+            "keywords" : [],
+            "selectList": []
+        }).then((data)=>{
+            if(!data){
+                return;
+            }
+            this.sucessTeacherList(data);
+        }).catch((e)=>{
+            MessageUtils.warning(e);
+        });
+    }
+    @Action
     public async insertCourseware() {
-        debugger
         await request.put('/api/workerlib/courseware', {
             "title":this.courseWare.title,
             "course":this.courseWare.course,
@@ -320,7 +342,6 @@ export default class CoursewareStore extends VuexModule {
     }
     @Action
     public async insertCultivate() {
-        debugger
         await request.put('/api/workerlib/cultivate', {
             "course_id":this.cultivate.course_id,
             "course_name":this.cultivate.course_name,
@@ -351,10 +372,8 @@ export default class CoursewareStore extends VuexModule {
             alert.warning(e.message || e)
         });
     }
-
     @Action
     public async insertUpCultivate() {
-        debugger
         await request.put('/api/workerlib/cultivate', {
             "course_id":this.cultivate.course_id,
             "course_name":this.cultivate.course_name,
@@ -388,10 +407,8 @@ export default class CoursewareStore extends VuexModule {
             alert.warning(e.message || e)
         });
     }
-
     @Action
     public async insertCultivateArchives(){
-        debugger
         await request.put('/api/workerlib/cultivate_archives', this.cultivateArchivesList).then((data)=>{
             this.successAddCultivateArchives(data);
         }).catch((e)=>{
@@ -460,7 +477,6 @@ export default class CoursewareStore extends VuexModule {
     }
     @Action
     public async deleteCourseware() {
-        debugger
         await request.delete('/api/workerlib/courseware/'+this.id
         ).then((data)=>{
             this.successDelete(data);
@@ -501,7 +517,6 @@ export default class CoursewareStore extends VuexModule {
             alert.warning(e.message || e)
         });
     }
-
     @Action
     public successAdd(data: any) {
         if(data.status == 0) {
@@ -516,7 +531,6 @@ export default class CoursewareStore extends VuexModule {
             this.insertCultivateArchives();
         }
     }
-
     @Mutation
     public successUpAddCultivate(data: any) {
         this.cultivate ={
@@ -588,8 +602,8 @@ export default class CoursewareStore extends VuexModule {
     @Mutation
     public successPeople(data: any) {
         this.peoples = data.data;
-
     }
+
     @Mutation
     private successInfo(data: any) {
         this.courseWareEdit = data.data[0];
@@ -739,6 +753,10 @@ export default class CoursewareStore extends VuexModule {
     @Mutation
     public setEditWhether(data:string){
         this.courseWareEdit.whether = data;
+    }
+    @Mutation
+    public sucessTeacherList(data:any){
+        this.teacherList = data.data;
     }
 
     @Mutation

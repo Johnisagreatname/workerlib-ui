@@ -274,7 +274,8 @@
                     span 培训老师
                     span(:style={'color': 'red'}) *
                 .input
-                    Input(clearable,style="width: 345px",size=large,v-model="trainingTeacher",placeholder="请输入培训老师")
+                    Select(filterable,clearable,style="width:345px",v-model="trainingTeacher")
+                        Option(v-for="item in getTeacher()", :value="item.name", :key="item.name") {{item.name}}
             .divTwo
                 .name
                     span 培训机构
@@ -288,7 +289,7 @@
                 .input
                     Row
                         Col(span="12")
-                            DatePicker(v-model="startTime",type="date",placeholder="请选择",style="width: 240px")
+                            DatePicker(v-model="startTime",type="date",placeholder="请选择",style="width: 345px")
             .divTwo
                 .name
                     span 培训地点
@@ -445,8 +446,8 @@
                                            'border-radius': '50%'
                                        })
                         template(slot-scope="{row}",slot="leave")
-                            span(v-if="row.leave==1") 在职
-                            span(v-if="row.leave==2") 离职
+                            span(v-if="row.leave==1") 在场
+                            span(v-if="row.leave==2") 离场
                         template(slot-scope="{row}",slot="operation")
                             Button(v-if="offChecked(row.eafId)",type="primary",style="margin-right: 5px",@click="show(row.eafId,row.eafName,row.cwrPhoto)") 加入培训
                             Button(v-else,type="primary",ghost,style="margin-right: 5px") 加入培训

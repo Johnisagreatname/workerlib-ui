@@ -224,7 +224,7 @@
 .y6 p{
     font-weight: bold;
     font-size:16px;
-    line-height:30px;
+    line-height:56px;
     text-align:left;
     padding-left: 20%;
     color: #000000;
@@ -239,7 +239,7 @@
     color: #0b93ff;
     font-weight: bold;
     font-size:16px;
-    line-height:30px;
+    line-height:56px;
     text-align: right;
 }
 .footer{
@@ -288,7 +288,7 @@ p span{
 }
 .buttonDiv{
     width: 100%;
-    height: 250px;
+    height: 310px;
 }
 .left{
     width: 50%;
@@ -388,6 +388,10 @@ p span{
     width: 100%;
     height: 30%;
 }
+.CDiv{
+    min-height: 70px;
+    height: auto;
+ }
 .oTop1{
     width: 25%;
     height: 100%;
@@ -422,7 +426,7 @@ p span{
 }
 .text{
     width: 100%;
-    height: 50px;
+    height: 42px;
     margin-top: 3%;
     padding-left: 6%;
     font-size: 16px;
@@ -432,13 +436,17 @@ p span{
     width: 60%;
     float: left;
 }
+.ch{
+    height: 304px;
+    overflow: auto;
+}
 .twoTextL{
     width: 100%;
-    height: 17%;
-    margin-top: 3%;
-    padding-left: 6%;
+    height: 70px;
+    /* margin-top: 3%; */
+    padding-left: 10px;
     font-size: 16px;
-    color: #000000;
+    color: #000000
 }
 .twoRight{
     width: 40%;
@@ -447,63 +455,60 @@ p span{
 .twoTextR{
     width: 100%;
     height: 17%;
-    margin-top: 3%;
-    padding-left: 6%;
     font-size: 16px;
     color: #000000;
-    padding-top: 4%;
 }
 .middleHr{
-    width: 100%;
-    height: 1px;
-    background-color: #e7e7e7;
+width: 100%;
+height: 1px;
+background-color: #e7e7e7;
 }
 .middleHrBu{
-    width: 100%;
-    height: 1px;
-    background-color: #e5f4ff;
+width: 100%;
+height: 1px;
+background-color: #e5f4ff;
 }
 .middle{
-    width: 100%;
-    height: 25%;
-    padding-left: 6%;
-    font-size: 16px;
-    color: #000000;
-    margin-top: 5%;
+width: 100%;
+height: 25%;
+padding-left: 6%;
+font-size: 16px;
+color: #000000;
+margin-top: 5%;
 }
 .threeDiv{
-    width: 100%;
-    min-height: 10%;
-    padding-left: 5%;
-    padding-top: 5%;
-    height: auto;
+width: 100%;
+min-height: 10%;
+padding-left: 5%;
+padding-top: 5%;
+height: auto;
 }
 .com{
-    width: 70px;
-    height: 25px;
-    margin-left: 17px;
-    margin-top: 3px;
-    float: left;
-    text-align: center;
-    line-height: 25px;
-    border: 1px solid #d7d7d7;
-    box-shadow: 3px 3px 3px -1px #d7d7d7;
+width: 70px;
+height: 25px;
+margin-left: 17px;
+margin-top: 3px;
+float: left;
+text-align: center;
+line-height: 25px;
+border: 1px solid #d7d7d7;
+box-shadow: 3px 3px 3px -1px #d7d7d7;
 }
 .threeDiv p{
-    margin-bottom: 2%;
+margin-bottom: 2%;
 }
 .divCheck{
-    border: 1px solid #2d8cf0;
-    float: left;
-    width: 50px;
-    text-align: center;
-    height: 20px;
-    border-radius: 10px;
-    margin-left: 5px;
-    margin-right: 5px;
+border: 1px solid #2d8cf0;
+float: left;
+width: 50px;
+text-align: center;
+height: 20px;
+border-radius: 10px;
+margin-left: 5px;
+margin-right: 5px;
 }
 .divL{
-    width: 100%;
-    height: 200px;
-    overflow-y: auto;
+width: 100%;
+height: 200px;
+overflow-y: auto;
 }

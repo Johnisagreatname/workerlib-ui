@@ -36,7 +36,7 @@
                                 Icon(type="ios-create-outline")
                                 span 查看人员
     .footer
-        Page(:total="totalRecords",show-sizer,show-elevator,show-total,@on-page-size-change="onPageSizeChange",@on-change="onPageIndexChange")
+        Page(:total="totalRecords",show-sizer,show-elevator,show-total,@on-page-size-change="onPageSizeChange",@on-change="onPageIndexChange",:page-size=20)
 
     Modal(:value="addProject",title="新增项目",@on-ok="ok()",@on-cancel="cancel()",width='50%',:loading = "loading")
         .addBody

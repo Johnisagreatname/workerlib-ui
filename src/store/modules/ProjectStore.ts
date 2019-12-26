@@ -16,7 +16,7 @@ export default class ProjectStore extends VuexModule {
         super(e);
         this.pageInfo = {
             pageIndex: 1,
-            pageSize: 10
+            pageSize: 20
         };
         this.project = [];
         this.searchConditionList = [];
@@ -827,8 +827,6 @@ export default class ProjectStore extends VuexModule {
     private sucessViewPeople(data: any) {
         this.viewPeople=data.data;
     }
-
-
 
     @Mutation
     private projectName(data: string) {

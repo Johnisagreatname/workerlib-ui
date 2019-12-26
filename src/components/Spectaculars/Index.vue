@@ -56,6 +56,20 @@
             this.selectWorkType = [];
 
         }
+        getColor(index){
+            if(index%2!=0){
+                return ['#6bdfc5', '#90e7d4'];
+            }else {
+                return ['#88d0df', '#40e7e4'];
+            }
+        }
+        getColorTwo(index){
+            if(index%2 != 0){
+                return ['#4ea2fe', '#7dbafe'];
+            }else {
+                return ['#74ccfe', '#2cdbfe']
+            }
+        }
         goBack(){
             this['$router'].push("/nav/worker");
         }

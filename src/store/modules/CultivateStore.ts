@@ -32,6 +32,7 @@ export default class CultivateStore extends VuexModule {
     public infoId:number;
 
     public selectCourseName:string;
+    public selectTrainingTeacher:string;
     public selectState:string;
     public selectStartTime:Date;
     public selectStatus:number;
@@ -48,7 +49,7 @@ export default class CultivateStore extends VuexModule {
         this.cList = [];
 
         this.pageIndex=1;
-        this.pageSize= 10;
+        this.pageSize= 20;
         this.pageTotal = 0;
 
         this.inPageIndex=1;
@@ -57,6 +58,7 @@ export default class CultivateStore extends VuexModule {
         this.selectStatus = 1;
 
         this.selectCourseName = "";
+        this.selectTrainingTeacher = "";
         this.selectState = "";
         this.selectStartTime=null;
         this.selectUserName = "";
@@ -92,6 +94,13 @@ export default class CultivateStore extends VuexModule {
             let item ={};
             item["name"]="course_name";
             item["value"]=this.selectCourseName;
+            item["algorithm"] = "LIKE"
+            this.cList.push(item);
+        }
+        if(this.selectTrainingTeacher){
+            let item ={};
+            item["name"]="trainingTeacher";
+            item["value"]=this.selectTrainingTeacher;
             item["algorithm"] = "LIKE"
             this.cList.push(item);
         }
@@ -258,7 +267,7 @@ export default class CultivateStore extends VuexModule {
     }
     @Action
     public async delete() {
-        debugger
+
         await request.post('/api/workerlib/cultivate/delete',this.checkedDelete.map(x => x.id)).then((data)=>{
             this.successDelete(data);
         }).catch((e)=>{
@@ -348,6 +357,10 @@ export default class CultivateStore extends VuexModule {
     @Mutation
     public setSelectState(data: string) {
         this.selectState = data;
+    }
+    @Mutation
+    public setSelectTrainingTeacher(data: string) {
+        this.selectTrainingTeacher = data;
     }
     @Mutation
     public setSelectStartTime(data: Date) {

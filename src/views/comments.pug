@@ -1,185 +1,199 @@
 .body
     .divOne
-        span 项目：
-            Input(clearable,style="width: 260px")
-    .divOne
-        span 参建单位：
-            Input(clearable,style="width: 260px")
-    .divOne
-        span 项目名称：
-            Input(clearable,style="width: 260px" )
-    .divOne
         span 姓名：
-            Input(clearable,style="width: 260px" , v-model="name")
-    .divOne
-        span 工种：
-            Input(clearable,style="width: 260px")
-    .divOne
-        span 类型：
-            Input(clearable,style="width: 260px")
-    .divOne
-        Button 搜索
+            Input(clearable,style="width: 260px",v-model="selectName")
+    .search
+        Button(@click="this.store.search") 搜索
     .hr
     .button
         Button(type="primary", ghost, icon="ios-log-out",@click="commentsExport()") 导出
     .hr
     .people(v-for="item in getComments()")
-        div(:class="isChecked(item.id) ? 'pop' : 'pTop'", @click="clickChecked(item.id)")
+        div(:class="isChecked(item.eafId) ? 'pop' : 'pTop'", @click="clickChecked(item.eafId)")
         .circle
-            img(:src="'http://113.105.121.93:1818'+item.photo",:style={
+            img(:src="'http://113.105.121.93:1818'+item.cwrPhoto",:style={
                 'width': '100%', 'height': '100%',
                 'border-radius': '50%'
             })
         .name
-            span {{item.name}}
-        Rate(disabled, :value="getStat(item.avg)")
-        span(:style={'color': '#f78803','margin-left':'70px','font-size':'18px'}) {{getStat(item.avg)}}
+            span {{item.eafName}}
+
+        Rate(disabled,:value="Number(item.synthesize)",allow-half)
+        span(:style={'color': '#f78803','margin-left':'70px','font-size':'18px'}) {{item.synthesize}}
         .comment
-            .com 好评{{item.difference}}
-            .com 中评{{item.in}}
-            .com 差评{{item.good}}
-        .y1
-            span(:style={'color':'#000000','font-weight':'bold','font-size':'15px'}) 所在项目
-            span {{item.project_name}}
+            .com 好评{{item.commGood}}
+            .com 中评{{item.commMiddle}}
+            .com 差评{{item.commBad}}
         .y1
             span(:style={'color':'#000000','font-weight':'bold','font-size':'15px'}) 所属工种
-            span {{item.work_type}}
+            span {{item.workType}}
         .y2
-            Button(type="primary", ghost,@click="details(item.archives_id)") 查看详情
-            Button(type="primary", ghost,@click="addCommtentlist(item.archives_id)") 添加评价
+            Button(type="primary", ghost,@click="details(item.eafId)") 查看详情
+            Button(type="primary", ghost,@click="addCommtentlist(item.eafId)") 添加评价
 
     .footer
-        Page(:total="totalRecords",show-sizer,show-elevator,show-total,@on-page-size-change="onPageSizeChange",@on-change="onPageIndexChange")
-    Modal(:value="addCommtent",title="添加评价",@on-ok="ok()",@on-cancel="cancel()",width='70%')
+        Page(:total="this.store.totalRecords",show-sizer,show-elevator,show-total,
+        @on-page-size-change="onPageSizeChange",@on-change="onPageIndexChange")
+
+    Modal(:value="addCommtent",title="添加评价",@on-ok="ok()",@on-cancel="cancel()",width='70%',:loading = "loading")
      .maxBody
-         Tabs(value="name1")
-             TabPane( label="不良评价",name="name1")
+         Tabs(value="不良评价",@on-click="toggle")
+             TabPane( label="不良评价",name="不良评价")
                  .div
                      .d1
                          span 选择项目
                          span(:style={'color': 'red'}) *
                      .d2
-                         Input(clearable,style="width: 380px",size=large,v-model="project")
-                 .div
-                     .d1
-                         span 添加人姓名
-                         span(:style={'color': 'red'}) *
-                     .d2
-                         Input(clearable,style="width: 380px",size=large,v-model="project_to_name")
+                         Select(clearable,filterable,style="width:380px",v-model="insertProject",v-if="this.store.projectList.length>0")
+                             Option(v-for="item in getProjectList()", :value="item.project_name", :key="item.project_name") {{item.project_name}}
+                         Select(clearable,filterable,style="width:380px",v-model="insertProject",disabled,v-else)
+                             Option(v-for="item in getProjectList()", :value="item.project_name", :key="item.project_name") {{item.project_name}}
                  .div
                      .d1
                          span 不良记录评价
                          span(:style={'color': 'red'}) *
                      .d2
-                         Input(clearable,style={'width': '380px' ,'height':'70px'},size=large,type="textarea",v-model="description")
+                         Input(clearable,style={'width': '380px' ,'height':'70px'},size=large,type="textarea",v-model="insertDescription")
                  .div
                      .d1
                         span 事件时间
                         span(:style={'color': 'red'}) *
                      .d2
-                        DatePicker(type="date",v-model="appraise_time")
-                 .div
-                     .d1
-                         span 添加图片
-                     .d2
-                         Upload(multiple,type="drag",action="//jsonplaceholder.typicode.com/posts/",:style={
-                             'width': '30%'
-                         })
-                             div(style="padding: 20px 0")
-                                 Icon(type="ios-add" size="52" style="color: #3399ff")
-                                 p 点击上传
+                        DatePicker(type="date",v-model="insertAppraiseTime")
                  .div
                      .d1
                          span 处罚
                          span(:style={'color': 'red'}) *
                      .d2
-                         Select(clearable,style="width:380px",v-model="punishment")
-                            Option(v-for="item in getCommentType()", :value="item.name", :key="item.name")
-             TabPane( label="综合评价",name="name2",style="height: 430px")
+                         Select(clearable,style="width:380px",v-model="insertPunishment")
+                             Option(v-for="item in getCommentType()", :value="item.name", :key="item.name") {{item.name}}
+                 .div
+                     .d1
+                         span 添加图片
+                     .d2
+
+                         Upload(multiple,type="drag",action="/api/workerlib/upload/appraise_photo/photo",
+                         :on-success="handleSuccessPhoto",:format="['jpg','jpeg','png']",:on-format-error="handleFormatError",
+                         :show-upload-list="false",
+                         :style={'width': '30%'})
+                             div(style="padding: 20px 0")
+                                 Icon(type="ios-add" size="52" style="color: #3399ff")
+                                 p 点击上传
+                         div(v-for="item in upload()") {{item}}
+             TabPane( label="综合评价",name="综合评价",style="height: 430px")
                 .yu1
                     .dd
                         .m1
-                            span 所属项目
+                            span 选择项目
                             span(:style={'color': 'red'}) *
                         .m2
-                            Input(clearable,style="width: 380px",size=large,type="textarea",v-model="project_name")
-                    .dd
-                        .m1
-                            span 添加人姓名
-                            span(:style={'color': 'red'}) *
-                        .m2
-                            Input(clearable,style="width: 380px",size=large,type="textarea",v-model="project_to_name")
+                            Select(clearable,filterable,style="width:380px",v-model="insertProject",v-if="this.store.projectList.length>0")
+                                Option(v-for="item in getProjectList()", :value="item.project_name", :key="item.project_name") {{item.project_name}}
+                            Select(clearable,filterable,style="width:380px",v-model="insertProject",disabled,v-else)
+                                Option(v-for="item in getProjectList()", :value="item.project_name", :key="item.project_name") {{item.project_name}}
+
                     .dd
                         .m1
                             span 评语
                             span(:style={'color': 'red'}) *
                         .m2
-                            Input(clearable,style="width: 380px",size=large,type="textarea",v-model="description")
+                            Input(clearable,style="width: 380px",size=large,type="textarea",v-model="insertDescription")
                     .dd
                         .m1
                             span 添加图片
                         .m2
-                            Upload(multiple,type="drag",action="//jsonplaceholder.typicode.com/posts/",:style={
-                                'width': '30%'
-                            })
+                            Upload(multiple,type="drag",action="/api/workerlib/upload/appraise_photo/photo",
+                            :on-success="handleSuccessPhoto",:format="['jpg','jpeg','png']",:on-format-error="handleFormatError",
+                            :show-upload-list="false",
+                            :style={'width': '30%'})
                                 div(style="padding: 20px 0")
                                     Icon(type="ios-add" size="52" style="color: #3399ff")
                                     p 点击上传
+                            div(v-for="item in upload()") {{item}}
                 .yu2
-                    .x
-                        span 态度
-                        Rate(v-model="appraise_score")
-                    .x
-                        span 技术
-                        Rate(v-model="modifyBy")
-                    .x
-                        span 专业
-                        Rate(v-model="createBy")
-    Modal(:value="commtentcInfo",title="评价详情",@on-ok="okInfo()",@on-cancel="cancelInfo()",width='1180px')
-        .peoples(v-for="item in getObtain()")
-            .middleHr
-            .minBody
-               .c1
-                   .c2
-                       .c5
-                            .c7
-                                span {{item.name}}
-                            .c8
-                                .c9
-                                    span {{item.work_type}}
-                       .c6
-                           span {{item.unit_name}}
-                   .c3
-                       .ulDiv
-                           ul
-                               li 1
-                               li 2
-                               li 3
-                               li 4
-                               li 5
-                   .c4
-                       .cc
-                           span {{getStat(item.avg)}}
-                       Rate(:value="getStat(item.avg)",disabled)
-               .c10
-               .peoples(v-for="items in getObtains()")
-                   .c11
-                       .threeDiv
-                           .c12
-                               .c15
-                                   p {{items.description}}
-                               .c16
-                                   .c17
-                                       p(v-if="items.type == 1") {{getTime(items.appraise_time)}}
-                                       p(v-if="items.type == 2") {{getTime(items.createOn)}}
-                                   .c17
-                                       img(src="~@/assets/css/images/commentOne.png" :style={'width':'59px','height':'25px'}, v-if="items.type == 1")
-                                       img(src="~@/assets/css/images/commentsTwo.png" :style={'width': '59px','height': '25px'}, v-else-if="items.type == 2")
-                                       img(src="~@/assets/css/images/commentThree.png" :style={'width': '59px','height': '25px'}, v-else-if="items.type == 3")
-                           .c13
-                               p(v-if="items.type == 1")  处罚：{{items.punishment}}
-                               Rate(:value="items.appraise_score",disabled , v-else-if="items.type == 2")
-                           .c14
-                               p(:style={'color': '#1397ff', 'font-size': '16px', 'margin-right': '20px'}) {{items.project_name}}
-                               p(:style={'color': '#9b9b9b', 'font-size': '12px','margin-top':'45px', 'margin-right': '20px'}) {{items.project_to_name}}
-                       hr
+                    .x(v-for="item in getAppraiseList()")
+                        span {{item.name}}
+                        Rate(v-model="item.score")
+
+
+    Modal(:value="commtentcInfo",title="评价详情",@on-ok="okInfo()",@on-cancel="cancelInfo()",width='64%')
+        .minBody
+            .c1
+                .c2
+                    .c5
+                        .c7
+                            span 裴灏杰
+                        .c8
+                            .c9
+                                span 水泥工
+                                span 水泥工
+                    .c6
+                        span 建兴劳务公司
+                .c3
+                    .ulDiv
+                        ul
+                            li 1
+                            li 2
+                            li 3
+                            li 4
+                            li 5
+                .c4
+                    .cc
+                        span 4.9
+                    Rate(v-model="custom",disabled)
+            .c10
+            .c11
+                .threeDiv
+                    .c12
+                        .c15
+                            p 恶意讨薪
+                        .c16
+                            .c17
+                                p 2019-11-28
+                            .c17
+                                img(src="~@/assets/css/images/commentOne.png" :style={'width': '59px', 'height': '25px'})
+                    .c13
+                        p 处罚：简易不予录用
+                    .c14
+                        p(:style={'color': '#1397ff', 'font-size': '16px'}) 深圳市白石龙项目
+                        p(:style={'color': '#9b9b9b', 'font-size': '12px', 'margin-top': '45px'}) 陈吕 现场管理员人员
+                        //p(:style={'color': '#000000', 'font-size': '14px'}) 干活它是，人踏实，继续努力
+                        //Rate(disabled)
+                .middleHr
+                .threeDiv
+                    .c12
+                        .c15
+                            p 工作热情高；人品端正、德行优良、自身修养较高、对待客户诚信；对待工作严谨、处处为公司考虑，能够虚心接受同事给予的建议并改正；学习进步较快、受到大多数客户的好评。
+                        .c16
+                            .c17
+                                p 2019-11-19
+                            .c17
+                                img(src="~@/assets/css/images/commentsTwo.png" :style={
+                                    'width': '59px',
+                                    'height': '25px'
+                                })
+                    .c13
+                        Rate(v-model="vaueCustomText",disabled)
+                    .c14
+                        p(:style={'color': '#1397ff', 'font-size': '16px'}) 深圳市南山项目
+                        p(:style={'color': '#9b9b9b', 'font-size': '12px', 'margin-top': '45px'}) 范佳超 现场管理员人员
+                        //p(:style={'color': '#000000', 'font-size': '14px'}) 干活它是，人踏实，继续努力
+
+                .middleHr
+                .threeDiv
+                    .c12
+                        .c15
+                            p 退场前闹事，建议不予录用
+                        .c16
+                            .c17
+                                p 2019-11-19
+                            .c17
+                                img(src="~@/assets/css/images/commentThree.png" :style={
+                                    'width': '59px',
+                                    'height': '25px'
+                                })
+                    .c13
+                        Rate(v-model="vaueCustom",disabled)
+                    .c14
+                        p(:style={'color': '#1397ff', 'font-size': '16px'}) 布吉项目
+                        p(:style={'color': '#9b9b9b', 'font-size': '12px', 'margin-top': '45px'}) 林陆锐 现场管理员人员

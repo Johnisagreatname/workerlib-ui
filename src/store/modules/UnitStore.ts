@@ -160,7 +160,7 @@ export default class UnitStore extends VuexModule {
         super(e);
         //分页
         this.pageIndex= 1;
-        this.pageSize=10;
+        this.pageSize=20;
         this.pageTotal = 0;
         this.unitType = [];
         this.uplodId = [];
@@ -225,7 +225,7 @@ export default class UnitStore extends VuexModule {
     }
     @Action
     public getParams() : any {
-        debugger
+
         if(this.sProjectName){
             let item ={};
             item["name"]="p.project_name";
@@ -255,12 +255,12 @@ export default class UnitStore extends VuexModule {
                 "joinMode": "Left",
 
             }, {
-                "tablename": "project",
-                "alias": "p",
+                "tablename": "archives ",
+                "alias": "a",
                 "JoinMode": "Left",
                 "onList": [{
-                    "name": "p.project_id",
-                    "value": "u.project_id",
+                    "name": "a.unit_id",
+                    "value": "u.unit_id ",
                     "algorithm": "EQ"
                 }]
             }
@@ -274,10 +274,24 @@ export default class UnitStore extends VuexModule {
 
             "sortList": [],
 
-            "groupList" : [],
+            "groupList" : [
+                "a.unit_id"
+            ],
 
             "keywords" : [],
-            "selectList": []
+            "selectList": [
+                {"field": "unit_id" },
+                {"field": "unit_number" },
+                {"field": "unit_name" },
+                {"field": "principal" },
+                {"field": "entrance_time" },
+                {"field": "unit_type" },
+                {
+                    "field": "a.id" ,
+                    "alias":"worker_count",
+                    "function": "COUNT"
+                }
+            ]
         };
     }
 
@@ -293,11 +307,10 @@ export default class UnitStore extends VuexModule {
             "groupList" : [],
 
             "keywords" : [],
-            "selectList": [{
-                "field": "project_id"
-            },{
-                "field": "project_name"
-            }]
+            "selectList": [
+                { "field": "project_id"},
+                {"field": "project_name"}
+                ]
         }).then((data)=>{
             this.successProject(data);
         }).catch((e)=>{
@@ -345,7 +358,6 @@ export default class UnitStore extends VuexModule {
 
     @Action
     public async upload() {
-        debugger
         let alert: any = Message;
         await request.post('/api/workerlib/export/join',await this.getUploadParams(),{responseType: 'blob', params: '项目工程档案'}).then((data)=>{
             alert.warning('成功！');
@@ -368,7 +380,7 @@ export default class UnitStore extends VuexModule {
 
     @Action
     public async insertUnit() {
-        debugger
+
         await request.put('/api/workerlib/unit', {
             "unit_id":null,
             "project_id":this.project_id,
@@ -384,7 +396,7 @@ export default class UnitStore extends VuexModule {
             this.added(data)
         }).catch((e)=>{
             console.log(e)
-            debugger
+
             let alert: any = Message;
             if(!e) {
                 alert.warning('未知错误！');
@@ -437,7 +449,7 @@ export default class UnitStore extends VuexModule {
 
     @Action
     public added(data: any) {
-        debugger
+
         if(data.status == 0) {
             this.search();
         }
@@ -468,48 +480,6 @@ export default class UnitStore extends VuexModule {
             type: 'selection',
             width: 60,
             align: 'center'
-        },
-        {
-            title: '所属项目',
-            key: 'project_name',
-            sortable: true,
-            render: (h, params) => {
-                return h('div', [
-                    h('span', {
-                        style: {
-                            display: 'inline-block',
-                            width: '100%',
-                            overflow: 'hidden',
-                            textOverflow: 'ellipsis',
-                            whiteSpace: 'nowrap'
-                        },
-                        domProps: {
-                            title: params.row.project_name
-                        }
-                    }, params.row.project_name)
-                ])
-            }
-        },
-        {
-            title: '施工许可证',
-            key: 'builder_license',
-            sortable: true,
-            render: (h, params) => {
-                return h('div', [
-                    h('span', {
-                        style: {
-                            display: 'inline-block',
-                            width: '100%',
-                            overflow: 'hidden',
-                            textOverflow: 'ellipsis',
-                            whiteSpace: 'nowrap'
-                        },
-                        domProps: {
-                            title: params.row.builder_license
-                        }
-                    }, params.row.builder_license)
-                ])
-            }
         },
         {
             title: '参建单位编号',
@@ -555,7 +525,7 @@ export default class UnitStore extends VuexModule {
         },
         {
             title: '当前人数',
-            key: 'people_number',
+            key: 'worker_count',
             sortable: true
         },
         {
@@ -569,7 +539,7 @@ export default class UnitStore extends VuexModule {
             sortable: true
         },
         {
-            title: '负责人',
+            title: '法人代表',
             key: 'principal',
             sortable: true
         }

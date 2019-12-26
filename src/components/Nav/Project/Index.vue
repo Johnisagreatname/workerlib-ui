@@ -120,7 +120,7 @@
                 }
             }
             this.store.insert();
-            this.store.update();
+            // this.store.update();
             this.addPeoples = false;
         }
         cancelAdd():any {
