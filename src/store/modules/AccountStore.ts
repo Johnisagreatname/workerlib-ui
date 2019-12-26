@@ -18,7 +18,7 @@ export default class AccountStore extends VuexModule {
             pageIndex: 1,
             pageSize: 10
         };
-        this.project = [];
+        this.group = [];
         this.projectInfo = {};
         this.projectType = [];
         this.userInfo = {
@@ -27,13 +27,26 @@ export default class AccountStore extends VuexModule {
             password: ''
         };
         this.uid = "";
+        this.role = [];
+        this.userList = [];
+        this.insertList = [];
+        this.moderole ='';
+        this.modegroup = '';
+        this.userId='';
+
     }
-    public project: Array<ProjectInfo>;
+    public userId:String;
+    public moderole: String;
+    public modegroup:String;
+    public userList: Array<UserInfos>;
     public projectType: Array<ProjectType>;
     public pageInfo: PageInfo;
     public projectInfo:ProjectInfo;
     public userInfo:UserInfos;
     public uid:string;
+    public role:Array<Role>;
+    public group:Array<Group>;
+    public insertList:Array<any>;
 
     @Action
     public getParams() : any {
@@ -71,7 +84,7 @@ export default class AccountStore extends VuexModule {
             "keywords" : [],
             "selectList": []
         }).then((data)=>{
-            this.success(data);
+            this.successUser(data);
             //this.count();
         }).catch((e)=>{
             console.log(e)
@@ -93,6 +106,89 @@ export default class AccountStore extends VuexModule {
             alert.warning(e.message || e)
         });
     }
+
+    @Action
+    public async findRole() {
+        await request.post('/api/workerlib/role', {
+            "conditionList": [],
+
+            "sortList": [],
+
+            "groupList" : [],
+
+            "keywords" : [],
+            "selectList": []
+        }).then((data)=>{
+            this.successRole(data);
+        }).catch((e)=>{
+            console.log(e)
+            let alert: any = Message;
+            if(!e) {
+                alert.warning('未知错误！')
+                return
+            }
+
+            if(e.response && e.response.data && e.response.data.message) {
+                alert.warning(e.response.data.message)
+                return
+            }
+
+            if(!e.message) {
+                return;
+            }
+
+            alert.warning(e.message || e)
+        });
+    }
+
+
+    /**
+     * 使用group和project连表查询
+     */
+    @Action
+    public getGroupId() : any  {
+        return{
+            "conditionList": [],
+
+            "sortList": [],
+
+            "groupList" : [],
+
+            "keywords" : [],
+
+            "selectList": [
+                { "field": "groupId"},
+                { "field": "groupName"},
+
+            ]
+        }
+    }
+
+
+    @Action
+    public async searchGroupId() {
+        await request.post('/api/workerlib/group',await this.getGroupId()).then((data)=>{
+            this.successGroupId(data);
+        }).catch((e)=>{
+            let alert: any = Message;
+            if(!e) {
+                alert.warning('未知错误！')
+                return
+            }
+            if(e.response && e.response.data && e.response.data.message) {
+                alert.warning(e.response.data.message)
+                return
+            }
+            if(!e.message) {
+                return;
+            }
+            alert.warning(e.message || e)
+        });
+    }
+
+
+
+
     @Action
     public async deleteUser(){
         await request.delete('/api/workerlib/user/'+this.uid).then((data)=>{
@@ -116,6 +212,7 @@ export default class AccountStore extends VuexModule {
             alert.warning(e.message || e)
         });
     }
+
     @Action
     public async count() {
         await request.post('/api/workerlib/user/count', {
@@ -160,6 +257,9 @@ export default class AccountStore extends VuexModule {
             MessageUtils.warning(e);
         });
     }
+
+
+
     @Action
     public async updateUser() {
         await request.put('/api/workerlib/user/'+this.uid,{
@@ -183,13 +283,17 @@ export default class AccountStore extends VuexModule {
             alert.warning(e.message || e)
         });
     }
+
+
+
     @Action
     public async insertUser() {
         debugger;
         await request.put('/api/workerlib/user', {
                 "username":this.userInfo.username,
-                "password":this.userInfo.password
+                "password":this.userInfo.password,
             }).then((data)=>{
+
                 this.added(data)
         }).catch((e)=>{
             console.log(e)
@@ -211,10 +315,60 @@ export default class AccountStore extends VuexModule {
             alert.warning(e.message || e)
         });
     }
+
+
+    @Action
+    public async insertUserGroupRole(id) {
+        for(let i in this.insertList) {
+            this.insertList[i]['userId'] = id;
+        }
+        debugger
+        await request.put('/api/workerlib/usergrouprole',this.insertList
+        ).then((data)=>{
+            this.addedt(data)
+        }).catch((e)=>{
+            console.log(e)
+            let alert: any = Message;
+            if(!e) {
+                alert.warning('未知错误！');
+                return;
+            }
+            if(e.response && e.response.data && e.response.data.message) {
+                alert.warning(e.response.data.message)
+                return
+            }
+            if(!e.message) {
+                return;
+            }
+            alert.warning(e.message || e)
+        });
+    }
+
+    @Mutation
+    public setModerole(data) {
+        this.moderole = data;
+    }
+
+    @Mutation
+    public setModegroup(data) {
+        debugger
+        this.insertList = new Array<any>();
+        for(let i in data) {
+            let item = {};
+            item["userGroupRoleId"] = null;
+            item["userId"] = this.userId;
+            item["roleId"] = this.moderole;
+            item["groupId"] = data[i];
+            this.insertList.push(item);
+        }
+
+    }
+
     @Mutation
     public setUsername(data:any){
         this.userInfo.username = data;
     }
+
     @Mutation
     public setUid(uid:any){
         this.uid = uid;
@@ -225,8 +379,8 @@ export default class AccountStore extends VuexModule {
     }
 
     @Mutation
-    public success(data: any) {
-        this.project = data.data;
+    public successUser(data: any) {
+        this.userList = data.data;
     }
 
     @Mutation
@@ -236,10 +390,19 @@ export default class AccountStore extends VuexModule {
 
     @Action
      public added(data: any) {
+        debugger
+        if(data.status == 0) {
+            this.insertUserGroupRole(data.data);
+        }
+    }
+
+    @Mutation
+    public addedt(data: any) {
         if(data.status == 0) {
             this.search();
         }
     }
+
 
     @Mutation
     public setPageTotal(total: any) {
@@ -249,6 +412,16 @@ export default class AccountStore extends VuexModule {
             pageCount: this.pageInfo.pageCount,
             totalRecords: total
         };
+    }
+
+    @Mutation
+    public successRole(data:any){
+        this.role =  data.data;
+    }
+
+    @Mutation
+    public successGroupId(data:any){
+        this.group =  data.data;
     }
 
 
@@ -402,4 +575,41 @@ interface UserInfos {
     id?:number;
     username?:string;
     password?:string;
+    createOn?: Date;
+}
+
+interface Role {
+    roleId?:string;
+    roleName?:string;
+    description?:string;
+    userPath?:string;
+    modifyTime?:Date;
+    modifyBy?:number;
+    createOn?:Date;
+    createBy?:number;
+}
+
+
+interface UserGroupRole {
+    userGroupRoleId?:string;
+    userId?:number;
+    groupId?:string;
+    roleId?:string;
+    userPath?:string;
+    modifyBy?:number;
+    modifyTime?:number;
+    createOn?:Date;
+    createBy?:number;
+}
+
+
+interface Group {
+    groupId?:string;
+    groupName?:string;
+    description?:string;
+    userPath?:string;
+    modifyTime?:Date;
+    modifyBy?:number;
+    createOn?:Date;
+    createBy?:number;
 }

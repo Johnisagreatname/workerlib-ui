@@ -52,12 +52,12 @@ function downLoad(data, name) {
 /* request拦截器 */
 service.interceptors.request.use((config: any) => {
     // neverCancel 配置项，允许多个请求
-    // if (!config.neverCancel) {
-    //     // 生成cancelToken
-    //     config.cancelToken = new CancelToken((c: any) => {
-    //         removePending(config, c);
-    //     });
-    // }
+    if (!config.neverCancel) {
+        // 生成cancelToken
+        config.cancelToken = new CancelToken((c: any) => {
+            removePending(config, c);
+        });
+    }
     // 在这里可以统一修改请求头，例如 加入 用户 token 等操作
     //   if (store.getters.sessionId) {
     //     config.headers['X-SessionId'] = getSessionId(); // 让每个请求携带token--['X-Token']为自定义key
@@ -70,39 +70,34 @@ service.interceptors.request.use((config: any) => {
 
 /* respone拦截器 */
 service.interceptors.response.use(
-
     (response: any) => {
         // 移除队列中的该请求，注意这时候没有传第二个参数f
         removePending(response.config);
-        if(response.status){
-            if(response.status != 200) {
-                throw response.data.message;
-            }
+        if(response.status != 200) {
+            throw response.data.message;
         }
 
-        if(response.data) {
-            if (response.data.status != 0 && response.data.type != "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet") {
-                throw response.data.message;
-            } else if (response.data.type == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet") {
-                downLoad(response.data, name)
-            }
-            const data = response.data;
-            return data;
+
+        if(response.data.status != 0 && response.data.type != "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet") {
+            throw response.data.message;
+        } else if (response.data.type == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet") {
+            downLoad(response.data, name)
         }
 
+        const data = response.data;
+        return data;
     },
     (error: any) => {
-        debugger
         // 异常处理
         console.log(error)
 
         pending = [];
-        if(error.response != undefined) {
-            if (error.response.status == 401) {
-                router.push("/login");
-                return;
-            }
+
+        if(error.response.status == 401) {
+            router.push("/login");
+            return;
         }
+
         if (error.message === '您操作太快了') {
             error.message = false;
             return Promise.reject(error);

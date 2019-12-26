@@ -25,6 +25,7 @@
         private store: any;
         private options!: Array<any>;
         private uid:string;
+        private getDispaly:string;
         private updUser:boolean;
         public delUser: boolean;
 
@@ -34,6 +35,7 @@
             this.store = getModule(AccountStore);
             this.updUser=false;
             this.delUser = false;
+            this.getDispaly = 'none';
         }
         rowClassName (row, index) : string {
             if(index == 0) {
@@ -43,13 +45,27 @@
         }
         mounted() {
             this.store.search();
-
+            this.store.findRole();
+            this.store.searchGroupId();
         }
         public search() {
             this.store.search();
         }
-        ok() : any{
-            this.store.insertUser();
+        get moderole() {
+            return this.store.moderole;
+        }
+        set moderole(data) {
+            this.store.setModerole(data);
+        }
+        get modegroup() {
+            return this.store.modegroup;
+        }
+        set modegroup(data) {
+
+            this.store.setModegroup(data);
+        }
+        async ok() {
+            await this.store.insertUser();
             this.addProject = false;
         }
         yes() : any{
@@ -92,7 +108,28 @@
             return this.store.columns;
         }
         getData() : any{
-            return this.store.project;
+            return this.store.userList;
+        }
+
+
+        getRoles() : any{
+            return this.store.role;
+        }
+
+        getGroup() : any{
+            return this.store.group;
+        }
+
+        changeRole(value):any{
+            if(this.store.role.filter(x => x.roleName == "管理员" && x.roleId==value).length>0){
+                this.getDispaly = "display:block";
+            }else {
+                this.getDispaly = "display:none";
+            }
+        }
+
+        set getdisplay(data:string){
+            this.store.setGetDisplay(data);
         }
 
 
