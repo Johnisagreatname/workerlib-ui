@@ -16,6 +16,8 @@ export default class CoursewareStore extends VuexModule {
     public checkAllGroup: Array<any>;
     public cultivateArchivesList:Array<any>;
     public peopleConditionList:Array<any>;
+    public teacherList:Array<any>;
+
 
     public projectType: Array<ProjectType>;
     public courseWareInfo:Array<CourseWareInfo>;
@@ -60,11 +62,13 @@ export default class CoursewareStore extends VuexModule {
         this.pageInTotal = 0;
 
         this.cultivateArchivesList = [];
+
         this.peopleConditionList = [];
         this.peoples = [];
         this.courseWareEdit={};
         this.projectType = [];
         this.courseWareInfo = [];
+        this.teacherList = [];
         this.cultivateArchives = [];
         this.cultivate ={};
 
@@ -81,7 +85,6 @@ export default class CoursewareStore extends VuexModule {
     }
     @Action
     public getParams() : any {
-        debugger
         return {
             "pageInfo" : {
                 "pageIndex": this.pageIndex,
@@ -156,7 +159,6 @@ export default class CoursewareStore extends VuexModule {
     }
     @Action
     public getUpdateParams() : any {
-        debugger
         return  {
             "data": {
                 "title":this.courseWareEdit.title,
@@ -185,7 +187,6 @@ export default class CoursewareStore extends VuexModule {
 
     @Action
     public async search() {
-        debugger
         await request.post('/api/workerlib/courseware',await this.getParams()).then((data)=>{
             this.success(data);
             this.count();
@@ -205,6 +206,7 @@ export default class CoursewareStore extends VuexModule {
             alert.warning(e.message || e)
         });
     }
+
     @Action
     public async count() {
         await request.post('/api/workerlib/courseware/count', await this.getParams()).then((total)=>{
@@ -223,6 +225,7 @@ export default class CoursewareStore extends VuexModule {
     }
     @Action
     public async searchInfo() {
+
         await request.post('/api/workerlib/courseware',{
             "pageInfo" : {
             },
@@ -282,8 +285,27 @@ export default class CoursewareStore extends VuexModule {
         });
     }
     @Action
+    public async getTeacherList(){
+        await request.post('/api/workerlib/lecturer', {
+            "pageInfo" : {},
+            "conditionList": [],
+            "sortList": [],
+
+            "groupList" : [],
+
+            "keywords" : [],
+            "selectList": []
+        }).then((data)=>{
+            if(!data){
+                return;
+            }
+            this.sucessTeacherList(data);
+        }).catch((e)=>{
+            MessageUtils.warning(e);
+        });
+    }
+    @Action
     public async insertCourseware() {
-        debugger
         await request.put('/api/workerlib/courseware', {
             "title":this.courseWare.title,
             "course":this.courseWare.course,
@@ -320,11 +342,10 @@ export default class CoursewareStore extends VuexModule {
     }
     @Action
     public async insertCultivate() {
-        debugger
         await request.put('/api/workerlib/cultivate', {
             "course_id":this.cultivate.course_id,
             "course_name":this.cultivate.course_name,
-            "startTime":this.cultivate.startTime ?this.cultivate.startTime.getFullYear() + "-" + (this.cultivate.startTime.getMonth()+1) + "-" + this.cultivate.startTime.getDate():null,
+            "startTime":this.cultivate.startTime ? this.cultivate.startTime.getFullYear() + "-" + (this.cultivate.startTime.getMonth()+1) + "-" + this.cultivate.startTime.getDate():null,
             "peoples":this.cultivate.peoples,
             "state":this.cultivate.state,
             "mark":this.cultivate.mark,
@@ -352,7 +373,66 @@ export default class CoursewareStore extends VuexModule {
         });
     }
     @Action
+    public async insertUpCultivate() {
+        await request.put('/api/workerlib/cultivate', {
+            "course_id":this.cultivate.course_id,
+            "course_name":this.cultivate.course_name,
+            "startTime":this.cultivate.startTime ? this.cultivate.startTime.getFullYear() + "-" + (this.cultivate.startTime.getMonth()+1) + "-" + this.cultivate.startTime.getDate():null,
+            "peoples":this.cultivate.peoples,
+            "state":this.cultivate.state,
+            "mark":this.cultivate.mark,
+            "courseware_brief":this.cultivate.courseware_brief,
+            "status":this.cultivate.status,
+            "trainingInstitution":this.cultivate.trainingInstitution,
+            "trainingTeacher":this.cultivate.trainingTeacher,
+            "trainingAddress":this.cultivate.trainingAddress
+        }).then((data)=>{
+            this.successUpAddCultivate(data)
+        }).catch((e)=>{
+            let alert: any = Message;
+            if(!e) {
+                alert.warning('未知错误！');
+                return;
+            }
+
+            if(e.response && e.response.data && e.response.data.message) {
+                alert.warning(e.response.data.message)
+                return
+            }
+
+            if(!e.message) {
+                return;
+            }
+
+            alert.warning(e.message || e)
+        });
+    }
+    @Action
     public async insertCultivateArchives(){
+        await request.put('/api/workerlib/cultivate_archives', this.cultivateArchivesList).then((data)=>{
+            this.successAddCultivateArchives(data);
+        }).catch((e)=>{
+            console.log(e)
+            let alert: any = Message;
+            if(!e) {
+                alert.warning('未知错误！');
+                return;
+            }
+
+            if(e.response && e.response.data && e.response.data.message) {
+                alert.warning(e.response.data.message)
+                return
+            }
+
+            if(!e.message) {
+                return;
+            }
+
+            alert.warning(e.message || e)
+        });
+    }
+    @Action
+    public async insertUpCultivateArchives(){
         await request.put('/api/workerlib/cultivate_archives', this.cultivateArchivesList).then((data)=>{
             this.successAddCultivateArchives(data);
         }).catch((e)=>{
@@ -397,7 +477,6 @@ export default class CoursewareStore extends VuexModule {
     }
     @Action
     public async deleteCourseware() {
-        debugger
         await request.delete('/api/workerlib/courseware/'+this.id
         ).then((data)=>{
             this.successDelete(data);
@@ -419,7 +498,6 @@ export default class CoursewareStore extends VuexModule {
     }
     @Action
     public async searchPeople() {
-        debugger
         await request.post('/api/workerlib/people',await this.getPeopleParams()).then((data)=>{
             this.successPeople(data);
             this.countPeople();
@@ -439,7 +517,6 @@ export default class CoursewareStore extends VuexModule {
             alert.warning(e.message || e)
         });
     }
-
     @Action
     public successAdd(data: any) {
         if(data.status == 0) {
@@ -452,6 +529,27 @@ export default class CoursewareStore extends VuexModule {
     public successAddCultivate(data: any) {
         if(data.status == 0) {
             this.insertCultivateArchives();
+        }
+    }
+    @Mutation
+    public successUpAddCultivate(data: any) {
+        this.cultivate ={
+            id:null,
+            course_name:null,
+            course_id:null,
+            startTime:null,
+            peoples:null,
+            state:null,
+            mark:null,
+            courseware_brief:null,
+            trainingInstitution:null,
+            trainingTeacher:null,
+            trainingAddress:null,
+            status:null
+        }
+        if(data.status == 0) {
+            let alert: any = Message;
+            alert.warning("新建课程成功！");
         }
     }
     @Action
@@ -473,8 +571,8 @@ export default class CoursewareStore extends VuexModule {
     @Mutation
     public successAddCultivateArchives(data: any) {
         if(data.status == 0) {
-            this.checkeds = [];
-            this.checkAllGroup = [];
+            this.checkeds = new Array<any>();
+            this.checkAllGroup = new Array<any>();
             let alert: any = Message;
             alert.warning("新建课程成功！");
         }
@@ -504,8 +602,8 @@ export default class CoursewareStore extends VuexModule {
     @Mutation
     public successPeople(data: any) {
         this.peoples = data.data;
-
     }
+
     @Mutation
     private successInfo(data: any) {
         this.courseWareEdit = data.data[0];
@@ -656,6 +754,10 @@ export default class CoursewareStore extends VuexModule {
     public setEditWhether(data:string){
         this.courseWareEdit.whether = data;
     }
+    @Mutation
+    public sucessTeacherList(data:any){
+        this.teacherList = data.data;
+    }
 
     @Mutation
     public setEditTypeWork(data:any){
@@ -785,6 +887,7 @@ export default class CoursewareStore extends VuexModule {
     public setState(data:string){
         this.cultivate.state = data;
     }
+
     @Mutation
     public setMark(data:string){
         this.cultivate.mark = data;
@@ -792,6 +895,22 @@ export default class CoursewareStore extends VuexModule {
     @Mutation
     public setCoursewareBrief(data:string){
         this.cultivate.courseware_brief = data;
+    }
+    @Mutation
+    public setTrainingInstitution(data:string){
+        this.cultivate.trainingInstitution = data;
+    }
+    @Mutation
+    public setTrainingTeacher(data:string){
+        this.cultivate.trainingTeacher = data;
+    }
+    @Mutation
+    public setTrainingAddress(data:string){
+        this.cultivate.trainingAddress = data;
+    }
+    @Mutation
+    public setCStatus(data:number){
+        this.cultivate.status = data;
     }
     @Mutation
     public setCourseName(data:string){
@@ -837,4 +956,8 @@ interface Cultivate {
     state?:string;
     mark?:string;
     courseware_brief?:string;
+    trainingInstitution?:string;
+    trainingTeacher?:string;
+    trainingAddress?:string;
+    status?:number;
 }

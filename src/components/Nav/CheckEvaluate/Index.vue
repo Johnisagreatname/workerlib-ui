@@ -23,14 +23,15 @@
     export default class CheckEvaluate extends Vue {
         @Model('isCollapsed', { type: Boolean }) private isCollapsed !: boolean;
         private options!: any;
-        private commtenGrade!: any;
-        private grades!: any;
         public addRate: boolean;
         public checkedArray: Array<any>;
+
         mounted() {
             this.store.getProjectType();
             this.store.search();
-            this.checkedArray = []
+            this.store.getGrade();
+            this.store.getCommtenGrade();
+            this.checkedArray = [];
         }
         private store: any;
         constructor() {
@@ -56,56 +57,70 @@
         getMenus() : any {
             if(this.options) return this.options;
             this.options = [
-                {value: '在职', key: 1 },
-                {value: '离职', key: 2 }
+                {value: '在场', key: 1 },
+                {value: '离场', key: 2 }
 
             ];
             return this.options;
         }
-        handleSelectRow(selection, index) {
-            let arr = new Array()
-            selection.forEach(a => {
-                arr.push(a.id)
-            })
-            // console.log(arr);
-            this.checkedArray = arr;
+        onSelect(selection,row){
+            var itemTrue = {};
+            itemTrue['eafId'] = row.eafId;
+            itemTrue['eafName'] = row.eafName;
+            this.store.setCheckedUser(itemTrue);
+            console.log(this.store.checkedUser)
+        }
+        onSelectCancel(selection,row){
+            let index =  this.store.checkedUser.findIndex(x => x.eafId == row.eafId);
+            this.store.checkedUser.splice(index, 1);
+            console.log(this.store.checkedUser)
+        }
+        onSelectAll(selection) {
+            for(let i= 0;i<selection.length;i++){
+                let row = selection[i];
+                var itemTrue = {};
+                let index =  this.store.checkedUser.findIndex(x => x.eafId == row.eafId);
+                if(index > -1){
+                    continue;
+                }
+                itemTrue['eafId'] = row.eafId;
+                itemTrue['eafName'] = row.eafName;
+                this.store.setCheckedUser(itemTrue)
+            }
+            console.log(this.store.checkedUser)
+        }
+        onSelectAllCancel(selection){
+            for(let i= 0;i<this.store.rate.length;i++){
+                let item = {};
+                let row = this.store.rate[i];
+                let index =  this.store.checkedUser.findIndex(x => x.eafId == row.eafId);
+                if(index > -1){
+                    this.store.checkedUser.splice(index, 1);
+                }
+            }
+            console.log(this.store.checkedUser)
         }
         getCommtenGrade() : any {
-            if(this.commtenGrade) return this.commtenGrade;
-            this.commtenGrade = [
-                {value: '高级', key: '高级' },
-                {value: '中级', key: '中级' },
-                {value: '低级', key: '低级' }
-
-            ];
-            return this.commtenGrade;
+            return this.store.commtenGrade;
         }
-
         getGrade() : any {
-            if(this.grades) return this.grades;
-            this.grades = [
-                {value: '一级', key: '一级' },
-                {value: '二级', key: '二级' },
-                {value: '三级', key: '三级' },
-                {value: '四级', key: '四级' },
-                {value: '五级', key: '五级' },
-                {value: '六级', key: '六级' },
-                {value: '七级', key: '七级' },
-                {value: '八级', key: '八级' },
-                {value: '九级', key: '九级' }
-
-            ];
-            return this.commtenGrade;
-        }
-        clickChecked(id) {
-            if (!this.checkedArray.includes(id)) {
-                this.checkedArray.push(id)
-            } else {
-                this.checkedArray.splice(this.checkedArray.indexOf(id), 1)
-            }
+            return this.store.grades;
         }
         ok() : any{
-            this.store.insertArchives(this.checkedArray);
+            for(let i = 0;i<this.store.checkedUser.length;i++){
+                let row = this.store.checkedUser[i];
+                let item = {};
+                item["userId"] = row.eafId;
+                item["grade"] = this.store.grade;
+                item["rank"] = this.store.rank;
+                item["evaluateTime"]=
+                    this.store.evaluateTime.getFullYear()+"-"+
+                    (Number(this.store.evaluateTime.getMonth())+1)+"-"+
+                    this.store.evaluateTime.getDay();
+                this.store.setInsertUser(item)
+            }
+            this.store.insertArchives();
+            this.store.clearCheckedUser();
             this.addRate = false;
         }
         cancel():any {
@@ -117,22 +132,26 @@
         getData() : any{
             return this.store.rate;
         }
-
         getType(){
-
             return this.store.projectType;
         }
-        get modifyBy():string{
-            return this.store.modifyBy;
+        get checkedUser():any{
+            return this.store.checkedUser;
         }
-        set modifyBy(data:string){
-            this.store.setModifyBy(data);
+        get user(){
+            return this.store.checkedUser.map(x => x.eafName);
         }
-        get rate():string{
-            return this.store.rateInfo.rate;
+        get rank():string{
+            return this.store.rank;
         }
-        set rate(data:string){
-            this.store.setRates(data)
+        set rank(data:string){
+            this.store.setRank(data)
+        }
+        get evaluateTime():Date{
+            return this.store.evaluateTime;
+        }
+        set evaluateTime(data:Date){
+            this.store.setEvaluateTime(data)
         }
         get grade():string{
             return this.store.grade;

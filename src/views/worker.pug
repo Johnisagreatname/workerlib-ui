@@ -28,7 +28,7 @@
       Button(type="primary", ghost, icon="ios-log-in") 同步工人
       Button(type="primary", ghost, icon="ios-log-out",@click="upload()") 导出
 
-   div(v-for="(item, index) in getPeopleList()", :key="index", :class="isChecked(item.eafId) ? 'people-selected' : 'people'")
+   div(v-for="(item, index) in getPeopleList()", :key="index",@click="onCheck(item.eafId,item.eafName,item.leave)", :class="isChecked(item.eafId) ? 'people-selected' : 'people'")
       .headPhotos
          .circle
             img(:src="'http://113.105.121.93:1818'+item.cwrPhoto",:style={'width':'100%','height':'100%',
@@ -45,9 +45,10 @@
             span(v-else) 女
             span |
             span {{getAge(item.cwrIdnum)}}岁
+            //查看详情
          Button(type="primary", ghost,@click="viewData(item.eafId)")
       .photos
-         div(@click="onCheck(item.eafId,item.eafName,item.leave)",:class="isChecked(item.eafId) ? 'pop' : 'pTop'")
+         div(:class="isChecked(item.eafId) ? 'pop' : 'pTop'")
          .pButtom
       .y2
          p 手机号码
@@ -61,8 +62,8 @@
          p(v-else) 无
          p(v-if="item.workType != null && item.workType != ''") {{item.workType}}
          p(v-else) 无
-         p(v-if="item.leave==1") 在职
-         p(v-else) 离职
+         p(v-if="item.leave==1") 在场
+         p(v-else) 离场
    .footer
       Page(:total="pageTotal",show-sizer,show-elevator,show-total,
       @on-page-size-change="onPageSizeChange",@on-change="onPageIndexChange")
@@ -94,34 +95,34 @@
                   span 工种
                   span(:style={'color': 'red'}) *
                .input
-                  Select(clearable,style="width:345px",filterable,v-model="type")
+                  Select(clearable,filterable,multiple,style="width:345px",v-model="type")
                      Option(v-for="item in getType()", :value="item.name", :key="item.name") {{item.name}}
-            .divTwo
-               .name
-                  span 进场日期
-                  span(:style={'color': 'red'}) *
-               .input
-                  template
-                     Row
-                        Col(span="12")
-                           DatePicker(v-model="startTime",type="date",placeholder="请选择",style="width: 345px")
-            .divTwo
-               .name
-                  span 退场日期
-               .input
-                  template
-                     Row
-                        Col(span="12")
-                           DatePicker(v-model="endTime",type="date",placeholder="请选择",style="width: 345px")
+            //.divTwo
+            //   .name
+            //      span 进场日期
+            //      span(:style={'color': 'red'}) *
+            //   .input
+            //      template
+            //         Row
+            //            Col(span="12")
+            //               DatePicker(v-model="startTime",type="date",placeholder="请选择",style="width: 345px")
+            //.divTwo
+            //   .name
+            //      span 退场日期
+            //   .input
+            //      template
+            //         Row
+            //            Col(span="12")
+            //               DatePicker(v-model="endTime",type="date",placeholder="请选择",style="width: 345px")
 
-            .divTwo
-               .name
-                  span 是否班组长
-                  span(:style={'color': 'red'}) *
-               .input
-                  RadioGroup(v-model="animal")
-                     Radio(label="1") 是
-                     Radio(label="2") 否
+            //.divTwo
+            //   .name
+            //      span 是否班组长
+            //      span(:style={'color': 'red'}) *
+            //   .input
+            //      RadioGroup(v-model="animal")
+            //         Radio(label="1") 是
+            //         Radio(label="2") 否
          .right
             h2(:style={'text-ag': '18px', 'text-align': 'center'}) 证件信息
             .box
@@ -187,32 +188,27 @@
                         })
                   .oTop2
                      .top2
-                        span {{this.store.peopleInfo.name}}
+                        span {{this.store.peopleInfo.eafName}}
                         span |
-                        span(v-if="checkSex(this.store.peopleInfo.id_number)") 男
+                        span(v-if="checkSex(this.store.peopleInfo.cwrIdnum)") 男
                         span(v-else) 女
                         span |
-                        span {{getAge(this.store.peopleInfo.id_number)}}岁
+                        span {{getAge(this.store.peopleInfo.cwrIdnum)}}岁
                   .oTop3
                      .photos
                   .y6
                      p 手机号码
                      p 身份证号
-                     p 工种
-                     p 状态
-                     p 是否班组长
+                     //p 是否班组长
                      p 评定等级
                   .y7
-                     p(v-if="this.store.peopleInfo.phone") {{this.store.peopleInfo.phone}}
+                     p(v-if="this.store.peopleInfo.eafPhone") {{this.store.peopleInfo.eafPhone}}
                      p(v-else) 无
-                     p(v-if="this.store.peopleInfo.id_number") {{this.store.peopleInfo.id_number}}
+                     p(v-if="this.store.peopleInfo.cwrIdnum") {{this.store.peopleInfo.cwrIdnum}}
                      p(v-else) 无
-                     p(v-if="this.store.peopleInfo.work_type") {{this.store.peopleInfo.id_number}}
-                     p(v-else) 无
-                     p(v-if="this.store.peopleInfo.leave==1") 在职
-                     p(v-else) 离职
-                     p(v-if="this.store.peopleInfo.leader==1") 是
-                     p(v-else) 否
+
+                     //p(v-if="this.store.peopleInfo.leader==1") 是
+                     //p(v-else) 否
                      p(v-if="this.store.peopleInfo.grade==null") 无
                      p(v-else) {{this.store.peopleInfo.grade}}
             .oneButtom
@@ -221,40 +217,60 @@
                .buttonDiv(v-for="invlo in getInvolvedProjectList()")
                   .text
                      p(:style={'font-weight':'bold'}) 项目名称
-                     p {{invlo.project_name}}
+                     p(:style={
+                     display: 'inline-block',
+                     width: '100%',
+                     overflow: 'hidden',
+                     textOverflow: 'ellipsis',
+                     whiteSpace: 'nowrap'
+                     },:title ='invlo.project_name') {{invlo.project_name}}
                   .text
                      p(:style={'font-weight':'bold'}) 所在参建单位
-                     p {{invlo.project_license}}
+                     p {{invlo.unit_name}}
+                  .text
+                     p(:style={'font-weight':'bold'}) 工种:
+                        span(v-if="invlo.work_Type") {{invlo.work_Type}}
+                        span(v-else) 无
+                  .text
+                     p(:style={'font-weight':'bold'}) 状态：
+                        span(v-if="invlo.leave==1") 在场
+                        span(v-else) 离场
                   .text
                      p(:style={'font-weight':'bold'}) 进场时间：
-                        span(:style={'color':'#0E93FF'}) {{getDateFormat(invlo.start_time)}}
+                        span(:style={'color':'#0E93FF'}) {{getDateFormat(invlo.cwrUserIn)}}
                   .text
                      p(:style={'font-weight':'bold'}) 退场时间：
-                        span(:style={'color':'#0E93FF'}) {{getDateFormat(invlo.end_time)}}
+                        span(:style={'color':'#0E93FF'}) {{getDateFormat(invlo.cwrUserOut)}}
                Page(:total="inPageTotal",show-total,@on-page-size-change="onInPageSizeChange",@on-change="onInPageIndexChange",:page-size=1)
          .boxTwo
             .twoTop
                .buttonTop
                   h2 参与培训
-               .twoLeft
-                  .twoTextL
-                     p(:style={'padding-top': '3%', 'font-weight': 'bold'}) 两制安全教育
-                     p(:style={'color':'#0E93FF','font-size':'14px'}) 线上学习时长：4小时
-                  .twoTextL
-               .twoRight
-                  .twoTextR
-                     p(:style={'padding-top': '3%', 'font-weight': 'bold'}) 待考试
-                     p(:style={'color': '#0E93FF','font-size':'12px'}) 时间：201-01-01
+               .ch
+                  .CDiv(v-for="item in getCultivateList()")
+                     .twoLeft
+                        .twoTextL
+                           p(:style={'padding-top': '3%', 'font-weight': 'bold'}) {{item.course_name}}
+                           p(:style={'color':'#0E93FF','font-size':'14px'},v-if="item.status==1") 线上学习时长：{{item.training_time}}小时
+                           p(:style={'color':'#0E93FF','font-size':'14px'},v-else) 线下学习时长：{{item.training_time}} 小时
+                     .twoRight
+                        .twoTextR
+                           p(:style={'padding-top': '3%', 'font-weight': 'bold'})   {{item.archivesStatus}}
+                           p(:style={'color': '#0E93FF','font-size':'12px'}) 开始时间：{{item.startTime}}
+                           p(v-if="item.endTime != null && item.endTime!= null",:style={'color': '#0E93FF','font-size':'12px'}) 结束时间：{{item.endTime}}
+                           p(v-else,:style={'color': '#0E93FF','font-size':'12px'}) 结束时间：无
             .twoMiddle
                .buttonTop
                   h2 出勤记录
                .middle
                   p(:style={'font-weight': 'bold'}) 本月出勤天数
-                     span(:style={'text-align':'right','color':'#0E93FF','float': 'right','margin-right': '10%'}) 29天
+                     span(:style={'text-align':'right','color':'#0E93FF','float': 'right','margin-right': '10%'},
+                     v-if="this.store.checkWorkceMonth.total!=null && this.store.checkWorkceMonth.total != '' ") {{this.store.checkWorkceMonth.total}}天
+                     span(:style={'text-align':'right','color':'#0E93FF','float': 'right','margin-right': '10%'},v-else) 0 天
                .middleHr
                .middle
                   p(:style={'font-weight': 'bold'}) 总出勤天数
-                     span(:style={'text-align':'right','color':'#0E93FF','float': 'right','margin-right': '10%'}) 299天
+                     span(:style={'text-align':'right','color':'#0E93FF','float': 'right','margin-right': '10%'}) {{this.store.checkWorkce}} 天
             .twoButtom
                .buttonTop
                   h2 工资明细
@@ -274,27 +290,27 @@
                          'color': '#0E93FF',
                          'float': 'right',
                          'margin-right': '10%'
-                     }) ¥20，000
+                     }) ¥0
          .boxThree
             .three
                .buttonTop
                   h2 员工评价
                .threeDiv
                   span(:style={'font-size':'16px'}) 平均分：
-                     span(:style={'font-size':'18px','font-weight':'bold'}) 4.9
+                     span(:style={'font-size':'18px','font-weight':'bold'}) 0
                         Rate(disabled)
                .middleHrBu
                .threeDiv
                   .com 好评
                   .com 中评
                   .com 差评
-                  .com 离职评价
+                  .com 离场评价
                .middleHr
                .threeDiv
-                  p(:style={'color':'#1397ff','font-size': '16px'}) 深圳市白石龙项目
-                  p(:style={'color':'#9b9b9b','font-size': '12px'}) 某某 现场管理员人员  |  2019-01-01
-                  p(:style={'color':'#000000','font-size': '14px'}) 干活它是，人踏实，继续努力
-                  Rate(disabled)
+                  //p(:style={'color':'#1397ff','font-size': '16px'}) 深圳市白石龙项目
+                  //p(:style={'color':'#9b9b9b','font-size': '12px'}) 某某 现场管理员人员  |  2019-01-01
+                  //p(:style={'color':'#000000','font-size': '14px'}) 干活它是，人踏实，继续努力
+                  //Rate(disabled)
                .middleHr
             //Button(type="primary", ghost,@click="certificateOpen()")
 

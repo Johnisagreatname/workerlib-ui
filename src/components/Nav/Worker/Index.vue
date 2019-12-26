@@ -82,17 +82,23 @@
         getInvolvedProjectList():any{
             return this.store.involvedProjectInfo;
         }
-
+        getCultivateList():any{
+            return this.store.cultivateList;
+        }
         getDateFormat (d: number) : string {
             let date = new Date(d);
             return date.getFullYear() + "-" + (date.getMonth()+1) + "-" + date.getDate();
         }
 
         viewData(id) {
+            debugger
             this.particulars=!this.particulars;
             this.store.setInfoId(id);
             this.store.searchInfo();
             this.store.searchInvolvedProject();
+            this.store.selectCultivate();
+            this.store.selectCheckWorkce();
+            this.store.selectCheckWorkceMonth();
         }
         checkLeave() {
             this.onLeave=!this.onLeave;
@@ -107,7 +113,6 @@
             ];
             return this.options;
         }
-
         getType(){
             return this.store.projectType
         }
@@ -147,7 +152,6 @@
             this.addWorker = false;
         }
         okLeave() : any{
-            debugger
             if(this.store.checkeds.filter(x => x.leave=== 1).map(a=>a.leave)[0] == 1) {
                 this.store.setCheck(this.store.checkeds.filter(x => x.eafId).map(x => x.eafId));
                 this.store.setOnLeave(2);
@@ -167,7 +171,6 @@
             this.store.upload();
             this.store.successUpload();
         }
-
         particularsOk() : any{
             this.particulars = false;
         }
@@ -201,8 +204,8 @@
         }
         isdisabledFn():any{
 
-            let disabledTrue = this.store.checkeds.findIndex(x => x.leave== 1);  //在职
-            let disabledFalse = this.store.checkeds.findIndex(x => x.leave== 2); //离职
+            let disabledTrue = this.store.checkeds.findIndex(x => x.leave== 1);  //在场
+            let disabledFalse = this.store.checkeds.findIndex(x => x.leave== 2); //离场
             if(disabledTrue > -1  && disabledFalse > -1 || disabledTrue <0 && disabledFalse<0){   //同时选中禁用
                 this.disabled = true;
             }else {
@@ -232,7 +235,6 @@
             this.store.setPageIndex(pageIndex);
             this.store.search();
         }
-
         onInPageSizeChange(pageSize){
             this.store.setInPageIndex(pageSize);
             this.store.setInPageIndex(1);
@@ -270,11 +272,14 @@
             return this.store.phone;
         }
 
-        set type(data:number){
+        set type(data:string){
             this.store.setType(data);
         }
-        get type():number{
-            return this.store.type;
+        get type():string{
+            if(!this.store.type) {
+                return '';
+            }
+            return this.store.type.toString().split(",");
         }
 
         set project(data:string){

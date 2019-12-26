@@ -3,7 +3,7 @@
     import CommentsStore from '../../../store/modules/CommentsStore';
     import { Component, Vue, Prop, Model} from 'vue-property-decorator';
     import { getModule } from 'vuex-module-decorators';
-
+    import { Message } from 'iview';
     @Component({
         components:{
         },
@@ -29,12 +29,14 @@
         public addCommtent: boolean;
         public commtentcInfo: boolean;
         public checkedArray: Array<any>;
+        public appraiseList: Array<any>;
         constructor() {
             super();
             this.store = getModule(CommentsStore)
             this.addCommtent = false;
             this.commtentcInfo = false;
-            this.checkedArray = []
+            this.checkedArray = [];
+            this.appraiseList = [];
 
         }
 
@@ -45,84 +47,114 @@
         mounted() {
             this.store.search();
             this.store.commentType();
+            this.appraiseList = null;
         }
-
-        commentsExport() :any{
-            this.store.setCheck(this.checkedArray);
-            this.store.commentsExport();
+        loading = true;
+        messageWarningFn (text) {
+            let alert: any = Message;
+            alert.warning(text);
+            setTimeout(() => {
+                this.loading = false;
+                this.$nextTick(() => {
+                    this.loading = true;
+                })
+            }, 1000)
+        }
+        getComments() : any{
+            return this.store.comments;
         }
         getMenus() : any {
             if(this.options) return this.options;
             this.options = [
-                { value: '在职', key: 1 },
-                { value: '离职', key: 2 }
+                { value: '在场', key: 1 },
+                { value: '离场', key: 2 }
             ];
             return this.options;
         }
-        addCommtentlist(archives_id) : any {
-            this.store.setArchivesId(archives_id);
+
+        getAppraiseList(){
+            return this.store.appraiseList;
+        }
+
+        addCommtentlist(id) : any {
+            debugger
+            this.store.setSelectEafId(id);
+            this.store.searchAppraiseList();
+            this.store.searchProjectList();
             this.addCommtent = !this.addCommtent;
+        }
+        getProjectList(){
+            return this.store.projectList;
+        }
+        onPageSizeChange(pageSize){
+            this.store.setPageSize(pageSize);
+            this.store.setPageIndex(1);
+            this.onPageIndexChange(1);
+        }
+        onPageIndexChange(pageIndex){
+            this.store.setPageIndex(pageIndex);
+            this.store.search();
+        }
+        toggle(name){
+            if(name=="不良评价"){
+                this.store.setInsertType(1);
+                this.store.clearInsertDataList();
+            }else {
+                this.store.clearInsertDataList();
+                this.store.searchAppraiseList();
+                this.store.setInsertType(2);
+            }
+        }
+        ok() : any{
+            if(this.store.insertType == 1){//不良评价
+                this.store.insertBadnessAppraise();
+            }else {//综合评价
+                this.store.insertSynthesizeAppraise();
+            }
+            this.addCommtent = false;
+        }
+        cancel():any {
+            this.addCommtent = false;
+
+        }
+        handleSuccessPhoto (res, file) {
+            this.store.setInsertPhoto(res.file);
+        }
+        handleFormatError (file) {
+            let alert: any = Message;
+            alert.warning(file.name + ' 文件格式错误！请上传jpg、jpeg、png格式文件！');
+        }
+
+
+
+
+
+
+
+        commentsExport() :any{
+            this.store.setCheck(this.checkedArray);
+            this.store.commentsExport();
         }
 
         getCommentType() : any {
             return this.store.punishments;
         }
 
-        onPageSizeChange(pageSize){
-
-            this.store.pageSize(pageSize);
-            this.store.pageIndex(1);
-            this.onPageIndexChange(1);
-        }
-
-        onPageIndexChange(pageIndex){
-
-            console.log(pageIndex)
-
-            this.store.pageIndex(pageIndex);
-            this.store.search();
-        }
-
-        getComments() : any{
-            return this.store.comments;
-        }
         getObtain() :any{
             return this.store.ups;
         }
         getObtains() :any{
             return this.store.allComm;
         }
-        get totalRecords(){
-            return this.store.pageInfo.totalRecords;
-        }
+
 
         details(archives_id): any {
             this.commtentcInfo =! this.commtentcInfo;
-            this.store.dialog(archives_id);
-            this.store.comment(archives_id);
+            // this.store.dialog(archives_id);
+            // this.store.comment(archives_id);
 
         }
-        ok() : any{
-            if (this.store.appraiseInfo.appraise_time!=null && this.store.appraiseInfo.appraise_time!="" ){
-                this.store.addAppraise();
-            } else {
-                this.store.addAppraises();
-            }
 
-            this.addCommtent = false;
-        }
-
-        getStat(avg: any): any {
-            if (avg === undefined) {
-                return 0
-            }
-            let half = avg - Math.floor(avg) > 0.5;
-            if (half) {
-                return Math.floor(avg) + 0.5
-            } else {
-                return Math.floor(avg)
-            }
-        }
 
         getTime(time: any): any {
             if (time != undefined) {
@@ -144,15 +176,68 @@
             }
         }
 
-        cancel():any {
-            this.addCommtent = false;
-        }
         okInfo() : any{
             this.commtentcInfo = false;
         }
         cancelInfo():any {
             this.commtentcInfo = false;
         }
+
+        get selectName():string{
+            return this.store.selectName;
+        }
+        set selectName(data:string){
+            this.store.setSelectName(data);
+        }
+
+        get insertType():number{
+            return this.store.insertType;
+        }
+        set insertType(data:number){
+            this.store.setInsertType(data);
+        }
+
+        get insertProject():string{
+            return this.store.insertProject;
+        }
+        set insertProject(data:string){
+            this.store.setInsertProject(data);
+        }
+
+        get insertDescription():string{
+            return this.store.insertDescription;
+        }
+        set insertDescription(data:string){
+            this.store.setInsertDescription(data);
+        }
+
+        get insertPunishment():string{
+            return this.store.insertPunishment;
+        }
+        set insertPunishment(data:string){
+            this.store.setInsertPunishment(data);
+        }
+
+        get insertPhoto():string{
+            return this.store.insertPhoto;
+        }
+        set insertPhoto(data:string){
+            this.store.setInsertPhoto(data);
+        }
+
+        get insertAppraiseTime():Date{
+            return this.store.insertAppraiseTime;
+        }
+        set insertAppraiseTime(data:Date){
+            this.store.setInsertAppraiseTime(data);
+        }
+        upload():any{
+            debugger
+            return this.store.insertPhoto;
+        }
+
+
+
 
         get type():number{
             return this.store.appraiseInfo.type;
@@ -170,12 +255,8 @@
             return this.store.appraiseInfo.appraise_time;
         }
         set appraise_time(data:Date){
-            debugger;
-            if (data != undefined) {
-                let time = data;
-                let newTime = `${time.getFullYear()}-${time.getMonth()+1<10?'0'+(time.getMonth()+1):time.getMonth()+1}-${time.getDate()<10?'0'+time.getDate():time.getDate()}`
-                this.store.setAppraise_time(newTime);
-            }
+          this.store.setAppraise_time(data);
+
 
         }
         get punishment():string{
@@ -190,12 +271,7 @@
         set archives_id(data:string){
             this.store.setArchives_id(data);
         }
-        get project():number{
-            return this.store.archivesInfo.project;
-        }
-        set project(data:number){
-            this.store.setProject(data);
-        }
+
         get appraise_score():number{
             return this.store.appraise_scoreInfo.appraise_score;
         }

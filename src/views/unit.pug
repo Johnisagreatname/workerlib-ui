@@ -27,17 +27,17 @@
 
 
     .footer
-        Page(:total="pageTotal",show-sizer,show-elevator,show-total,@on-page-size-change="onPageSizeChange",@on-change="onPageIndexChange")
+        Page(:total="pageTotal",show-sizer,show-elevator,show-total,@on-page-size-change="onPageSizeChange",@on-change="onPageIndexChange",:page-size=20)
 
     Modal(:value="addUnit",title="新增单位",@on-ok="ok()",@on-cancel="cancel()",width='50%')
         .addBody
-            .divTwo
-                .name
-                    span 项目名称
-                    span(:style={'color': 'red'}) *
-                .input
-                    Select(clearable,filterable,style="width:345px",v-model="project_id")
-                        Option(v-for="item in getProjectNameList()", :value="item.project_id",:key="item.project_id") {{item.project_name}}
+            //.divTwo
+            //    .name
+            //        span 项目名称
+            //        span(:style={'color': 'red'}) *
+            //    .input
+            //        Select(clearable,filterable,style="width:345px",v-model="project_id")
+            //            Option(v-for="item in getProjectNameList()", :value="item.project_id",:key="item.project_id") {{item.project_name}}
             .divTwo
                 .name
                     span 施工许可证
@@ -46,14 +46,14 @@
                     Input(clearable,style="width: 345px",size=large,v-model="project_license")
             .divTwo
                 .name
-                    span 参见单位名称
+                    span 参建单位名称
                     span(:style={'color': 'red'}) *
                 .input
                     Input(clearable,style="width: 345px",size=large,v-model="unit_name")
 
             .divTwo
                 .name
-                    span 参见单位编号
+                    span 参建单位编号
                     span(:style={'color': 'red'}) *
                 .input
                     Input(clearable,style="width: 345px",size=large,v-model="unit_number")
