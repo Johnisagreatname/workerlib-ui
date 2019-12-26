@@ -27,7 +27,6 @@ export default class PunishmentStore extends VuexModule {
 
     @Action
     public getParams() : any {
-        debugger;
         return {
             "pageInfo" : {
                 "pageIndex": this.pageInfo.pageIndex,
@@ -47,7 +46,6 @@ export default class PunishmentStore extends VuexModule {
 
     @Action
     public getVerification() : any {
-        debugger;
         return {
             "pageInfo" : {
                 "pageIndex": this.pageInfo.pageIndex,
@@ -72,7 +70,6 @@ export default class PunishmentStore extends VuexModule {
 
     @Action
     public async verification(){
-        debugger
         await request.post('/api/workerlib/dictionaries/exist ', await this.getVerification()).then((data)=>{
             this.sucess(data);
 
@@ -98,7 +95,6 @@ export default class PunishmentStore extends VuexModule {
     }
     @Action
     public async search() {
-        debugger;
         await request.post('/api/workerlib/dictionaries', await this.getParams()).then((data)=>{
             this.success(data);
             this.count();
@@ -124,7 +120,6 @@ export default class PunishmentStore extends VuexModule {
     }
     @Action
     public async deletePunishment(){
-        debugger;
         await request.delete('/api/workerlib/dictionaries/'+this.punishmentInfo.id).then((data)=>{
             this.added(data)
         }).catch((e)=>{
@@ -156,7 +151,6 @@ export default class PunishmentStore extends VuexModule {
     }
     @Action
     public async insertPunishment() {
-        debugger;
         await request.put('/api/workerlib/dictionaries', {
                 "name":this.punishmentInfo.name,
                 "value":this.pageInfo.totalRecords+1,
@@ -212,7 +206,6 @@ export default class PunishmentStore extends VuexModule {
     }
     @Action
     public sucess(data: any) {
-        debugger;
         if(data.data == false) {
             this.insertPunishment();
         }else {

@@ -288,7 +288,6 @@ export default class AccountStore extends VuexModule {
 
     @Action
     public async insertUser() {
-        debugger;
         await request.put('/api/workerlib/user', {
                 "username":this.userInfo.username,
                 "password":this.userInfo.password,
@@ -322,7 +321,6 @@ export default class AccountStore extends VuexModule {
         for(let i in this.insertList) {
             this.insertList[i]['userId'] = id;
         }
-        debugger
         await request.put('/api/workerlib/usergrouprole',this.insertList
         ).then((data)=>{
             this.addedt(data)
@@ -351,7 +349,6 @@ export default class AccountStore extends VuexModule {
 
     @Mutation
     public setModegroup(data) {
-        debugger
         this.insertList = new Array<any>();
         for(let i in data) {
             let item = {};
@@ -390,7 +387,6 @@ export default class AccountStore extends VuexModule {
 
     @Action
      public added(data: any) {
-        debugger
         if(data.status == 0) {
             this.insertUserGroupRole(data.data);
         }

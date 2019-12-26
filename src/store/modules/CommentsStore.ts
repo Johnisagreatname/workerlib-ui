@@ -151,7 +151,6 @@ export default class CommentsStore extends VuexModule {
     }
     @Action
     public async searchCommentSparticulars() {
-        debugger
         await request.post('/api/workerlib/commentsparticulars',{
             "pageInfo" : {},
 
@@ -416,7 +415,7 @@ export default class CommentsStore extends VuexModule {
                 this.clearInsertDataList();
                 return;
             }
-                debugger
+
             if(this.insertType == 1){
                 this.sucessInsertBadnessAppraise(data);
             }

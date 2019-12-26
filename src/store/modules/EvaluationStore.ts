@@ -28,7 +28,6 @@ export default class EvaluationStore extends VuexModule {
 
     @Action
     public getParams() : any {
-        debugger;
         return {
             "pageInfo" : {
                 "pageIndex": this.pageInfo.pageIndex,
@@ -48,7 +47,6 @@ export default class EvaluationStore extends VuexModule {
 
     @Action
     public getVerification() : any {
-        debugger;
         return {
             "pageInfo" : {
                 "pageIndex": this.pageInfo.pageIndex,
@@ -73,7 +71,6 @@ export default class EvaluationStore extends VuexModule {
 
     @Action
     public async verification(){
-        debugger
         await request.post('/api/workerlib/dictionaries/exist ', await this.getVerification()).then((data)=>{
             this.sucess(data);
 
@@ -99,7 +96,6 @@ export default class EvaluationStore extends VuexModule {
     }
     @Action
     public async search() {
-        debugger;
         await request.post('/api/workerlib/dictionaries', await this.getParams()).then((data)=>{
             this.success(data);
             this.count();
@@ -125,7 +121,6 @@ export default class EvaluationStore extends VuexModule {
     }
     @Action
     public async deleteEvaluation(){
-        debugger;
         await request.delete('/api/workerlib/dictionaries/'+this.evaluetionInfo.id).then((data)=>{
             this.added(data)
         }).catch((e)=>{
@@ -157,7 +152,6 @@ export default class EvaluationStore extends VuexModule {
     }
     @Action
     public async insertEvaluation() {
-        debugger;
         await request.put('/api/workerlib/dictionaries', {
                 "name":this.evaluetionInfo.name,
                 "value":this.pageInfo.totalRecords+1,
@@ -213,7 +207,6 @@ export default class EvaluationStore extends VuexModule {
     }
     @Action
     public sucess(data: any) {
-        debugger;
         if(data.data == false) {
             this.insertEvaluation();
         }else {

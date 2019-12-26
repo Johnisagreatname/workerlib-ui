@@ -196,7 +196,6 @@ export default class OptionsStore extends VuexModule {
 
     @Action
     public async selectOptions(){
-        debugger;
         await request.post('/api/workerlib/options',await this.getId()).then((data)=>{
             this.answer(data);
             // this.count();
