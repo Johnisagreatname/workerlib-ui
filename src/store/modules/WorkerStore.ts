@@ -579,7 +579,6 @@ export default class WorkerStore extends VuexModule {
     }
     @Action
     public async insertArchives() {
-        debugger
         await request.put('/api/workerlib/alluser', {
             "eafName":this.userName,
             "eafPhone":this.phone,

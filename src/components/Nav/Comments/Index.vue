@@ -30,6 +30,7 @@
         public commtentcInfo: boolean;
         public checkedArray: Array<any>;
         public appraiseList: Array<any>;
+        public particulars:any;
         constructor() {
             super();
             this.store = getModule(CommentsStore)
@@ -37,6 +38,7 @@
             this.commtentcInfo = false;
             this.checkedArray = [];
             this.appraiseList = [];
+            this.particulars = {};
 
         }
 
@@ -71,11 +73,12 @@
             ];
             return this.options;
         }
-
         getAppraiseList(){
             return this.store.appraiseList;
         }
-
+        getCommentSparticularsList():any{
+            return this.store.commentSparticularsList;
+        }
         addCommtentlist(id) : any {
             debugger
             this.store.setSelectEafId(id);
@@ -124,8 +127,20 @@
             let alert: any = Message;
             alert.warning(file.name + ' 文件格式错误！请上传jpg、jpeg、png格式文件！');
         }
+        details(id): any {
+            debugger
+            this.store.setPunishmentsId(id);
+            this.particulars = this.store.comments.filter(x => x.eafId == id)[0];
+            this.commtentcInfo =! this.commtentcInfo;
+            this.store.searchCommentSparticulars();
 
+            // this.store.dialog(archives_id);
+            // this.store.comment(archives_id);
 
+        }
+        upload():any{
+            return this.store.insertPhoto;
+        }
 
 
 
@@ -148,12 +163,7 @@
         }
 
 
-        details(archives_id): any {
-            this.commtentcInfo =! this.commtentcInfo;
-            // this.store.dialog(archives_id);
-            // this.store.comment(archives_id);
 
-        }
 
 
         getTime(time: any): any {
@@ -231,10 +241,7 @@
         set insertAppraiseTime(data:Date){
             this.store.setInsertAppraiseTime(data);
         }
-        upload():any{
-            debugger
-            return this.store.insertPhoto;
-        }
+
 
 
 

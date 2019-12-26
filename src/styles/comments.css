@@ -176,9 +176,7 @@
 
 .minBody{
     width: 1180px;
-    height: auto;
-    min-height: 500px;
-    max-height: 500px;
+    height: 500px;
     overflow-y: auto;
 }
 .maxBody{
@@ -375,7 +373,7 @@
     margin-left: 3%;
 }
 .c15 p{
-    font-size: 12px;
+    font-size: 16px;
     color: #000000;
     margin-left: 3%;
 }
@@ -392,7 +390,7 @@
 }
 .threeDiv{
      width: 1180px;
-     height: 100px;
+     height: 126px;
      margin-top: 20px;
  }
 .c17{
