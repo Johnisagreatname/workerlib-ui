@@ -45,6 +45,22 @@
                     span(:style={'color': 'red'}) *
                 .input
                     Input(clearable,style="width: 345px",size=large,v-model="password",placeholder="请输入密码",type="password")
+            .divTwo
+                 .name
+                     span 角色
+                     span(:style={'color': 'red'}) *
+                 .input
+                    Select(filterable,v-model="moderole",@on-change="changeRole",clearable,style="width:345px")
+                        Option(v-for="item in getRoles()", :value="item.roleId", :key="item.roleId") {{item.roleName}}
+
+            #projectSelect(:style="this.getDispaly")
+                .divTwo
+                    .name
+                        span 项目名称
+                        span(:style={'color': 'red'}) *
+                    .input
+                        Select(filterable,v-model="modegroup",multiple,clearable,style="width:345px")
+                            Option(v-for="item in getGroup()", :value="item.groupId", :key="item.groupId") {{item.groupName}}
             //.divTwo
             //    .name
             //        span 用户权限
