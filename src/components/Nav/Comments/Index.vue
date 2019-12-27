@@ -128,64 +128,38 @@
             alert.warning(file.name + ' 文件格式错误！请上传jpg、jpeg、png格式文件！');
         }
         details(id): any {
-            debugger
             this.store.setPunishmentsId(id);
             this.particulars = this.store.comments.filter(x => x.eafId == id)[0];
             this.commtentcInfo =! this.commtentcInfo;
             this.store.searchCommentSparticulars();
-
-            // this.store.dialog(archives_id);
-            // this.store.comment(archives_id);
-
         }
         upload():any{
             return this.store.insertPhoto;
         }
+        clickChecked(id) {
 
+            if(this.store.check.findIndex(x => x==id) > -1) {
+                let index = this.store.check.findIndex(x => x==id);
+                this.store.check.splice(index, 1);
+                return;
+            }
+            this.store.setCheck(id);
 
+        }
+        isChecked(id) {
+            if(this.store.check.filter(x => x==id).length>0){
+                return true;
+            }
 
-
-
+            return false;
+        }
         commentsExport() :any{
-            this.store.setCheck(this.checkedArray);
-            this.store.commentsExport();
+            this.store.upload();
         }
 
         getCommentType() : any {
             return this.store.punishments;
         }
-
-        getObtain() :any{
-            return this.store.ups;
-        }
-        getObtains() :any{
-            return this.store.allComm;
-        }
-
-
-
-
-
-        getTime(time: any): any {
-            if (time != undefined) {
-                let date = new Date(time)
-                let newTime = `${date.getFullYear()}-${date.getMonth()+1<10?'0'+(date.getMonth()+1):date.getMonth()+1}-${date.getDate()<10?'0'+date.getDate():date.getDate()}`
-                return newTime
-            }
-        }
-
-        isChecked(id) {
-            return this.checkedArray.includes(id)
-        }
-
-        clickChecked(id) {
-            if (!this.checkedArray.includes(id)) {
-                this.checkedArray.push(id)
-            } else {
-                this.checkedArray.splice(this.checkedArray.indexOf(id), 1)
-            }
-        }
-
         okInfo() : any{
             this.commtentcInfo = false;
         }
@@ -244,71 +218,6 @@
 
 
 
-
-
-        get type():number{
-            return this.store.appraiseInfo.type;
-        }
-        set type(data:number){
-            this.store.setType(data);
-        }
-        get description():string{
-            return this.store.appraiseInfo.description;
-        }
-        set description(data:string){
-            this.store.setDescription(data);
-        }
-        get appraise_time():Date{
-            return this.store.appraiseInfo.appraise_time;
-        }
-        set appraise_time(data:Date){
-          this.store.setAppraise_time(data);
-
-
-        }
-        get punishment():string{
-            return this.store.appraiseInfo.punishment;
-        }
-        set punishment(data:string){
-            this.store.setPunishment(data);
-        }
-        get archives_id():string{
-            return this.store.appraiseInfo.archives_id;
-        }
-        set archives_id(data:string){
-            this.store.setArchives_id(data);
-        }
-
-        get appraise_score():number{
-            return this.store.appraise_scoreInfo.appraise_score;
-        }
-        set appraise_score(data:number){
-            this.store.setAppraise_score(data);
-        }
-        get modifyBy():number{
-            return this.store.appraise_scoreInfo.modifyBy;
-        }
-        set modifyBy(data:number){
-            this.store.setModifyBy(data);
-        }
-        get createBy():number{
-            return this.store.appraise_scoreInfo.createBy;
-        }
-        set createBy(data:number){
-            this.store.setCreateBy(data);
-        }
-        get project_name():string{
-            return this.store.appraiseInfo.project_name;
-        }
-        set project_name(data:string){
-            this.store.setProject_name(data);
-        }
-        get project_to_name():string{
-            return this.store.appraiseInfo.project_to_name;
-        }
-        set project_to_name(data:string){
-            this.store.setProject_to_name(data);
-        }
 
     }
 </script>

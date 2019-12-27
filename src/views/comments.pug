@@ -8,8 +8,7 @@
     .button
         Button(type="primary", ghost, icon="ios-log-out",@click="commentsExport()") 导出
     .hr
-    .people(v-for="item in getComments()")
-        div(:class="isChecked(item.eafId) ? 'pop' : 'pTop'", @click="clickChecked(item.eafId)")
+    .people(v-for="(item, index) in getComments()", :value="item.eafId", @click="clickChecked(item.eafId)", :key="index")
         .circle
             img(:src="'http://113.105.121.93:1818'+item.cwrPhoto",:style={
                 'width': '100%', 'height': '100%',
@@ -17,7 +16,8 @@
             })
         .name
             span {{item.eafName}}
-
+        .photos
+            div(:class="isChecked(item.eafId) ? 'pop' : 'pTop'")
         Rate(disabled,:value="Number(item.synthesize)",allow-half)
         span(:style={'color': '#f78803','margin-left':'70px','font-size':'18px'}) {{item.synthesize}}
         .comment

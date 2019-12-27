@@ -282,7 +282,7 @@ export default class WorkerStore extends VuexModule {
     @Action
     public async upload() {
         let alert: any = Message;
-        await request.post('/api/workerlib/export/people',await this.getUploadParams(),{responseType: 'blob', params: '人员档案'}).then((data)=>{
+        await request.post('/api/workerlib/people/export',await this.getUploadParams(),{responseType: 'blob', params: '人员档案'}).then((data)=>{
             this.successUpload();
         }).catch((e)=>{
             let alert: any = Message;
