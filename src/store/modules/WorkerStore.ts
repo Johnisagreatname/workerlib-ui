@@ -3,6 +3,7 @@ import store from "../index";
 import request from "../../common/HttpClient";
 import {Message} from "iview";
 import MessageUtils from "../../common/MessageUtils";
+import { QRCode, ErrorCorrectLevel, QRNumber, QRAlphaNum, QR8BitByte, QRKanji } from 'qrcode-generator-ts/js';
 
 @Module({
     namespaced: true,
@@ -742,6 +743,9 @@ export default class WorkerStore extends VuexModule {
     @Mutation
     private success(data: any) {
         this.peoples = data.data;
+        if(!this.peoples) {
+            return;
+        }
     }
 
 
