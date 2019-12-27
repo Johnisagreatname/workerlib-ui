@@ -28,7 +28,9 @@
       Button(type="primary", ghost, icon="ios-log-in") 同步工人
       Button(type="primary", ghost, icon="ios-log-out",@click="upload()") 导出
 
-   div(v-for="(item, index) in getPeopleList()", :key="index",@click="onCheck(item.eafId,item.eafName,item.leave)", :class="isChecked(item.eafId) ? 'people-selected' : 'people'")
+   div(v-for="(item, index) in getPeopleList()", :key="index",
+   @click="onCheck(item.eafId,item.eafName,item.leave)",
+   :class="isChecked(item.eafId) ? 'people-selected' : 'people'")
       .headPhotos
          .circle
             img(:src="'http://113.105.121.93:1818'+item.cwrPhoto",:style={'width':'100%','height':'100%',

@@ -280,7 +280,7 @@ export default class UnitStore extends VuexModule {
 
             "keywords" : [],
             "selectList": [
-                {"field": "unit_id" },
+                {"field": "u.unit_id" },
                 {"field": "unit_number" },
                 {"field": "unit_name" },
                 {"field": "principal" },
