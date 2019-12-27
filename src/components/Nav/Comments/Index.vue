@@ -80,7 +80,6 @@
             return this.store.commentSparticularsList;
         }
         addCommtentlist(id) : any {
-            debugger
             this.store.setSelectEafId(id);
             this.store.searchAppraiseList();
             this.store.searchProjectList();
@@ -128,7 +127,6 @@
             alert.warning(file.name + ' 文件格式错误！请上传jpg、jpeg、png格式文件！');
         }
         details(id): any {
-            debugger
             this.store.setPunishmentsId(id);
             this.particulars = this.store.comments.filter(x => x.eafId == id)[0];
             this.commtentcInfo =! this.commtentcInfo;

@@ -133,7 +133,6 @@
             this.viewPeoples = false
         }
         getViewPeoples(): any{
-            debugger
             return this.store.viewPeople;
         }
         change(name){
@@ -143,7 +142,6 @@
                 this.store.searchPeople();
                 this.addPeoples = true;
             }else {
-                debugger
                 this.store.setViewProjectId(this.projectId);
                 this.store.searchViewPeople();
                 this.viewPeoples = true;

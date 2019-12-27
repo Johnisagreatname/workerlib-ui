@@ -4,6 +4,7 @@
     import { Component, Vue, Prop, Model, Watch} from 'vue-property-decorator';
     import { getModule } from 'vuex-module-decorators';
     import { Message } from 'iview';
+    import { QRCode, ErrorCorrectLevel, QRNumber, QRAlphaNum, QR8BitByte, QRKanji } from 'qrcode-generator-ts/js';
 
     @Component({
         components:{
@@ -91,7 +92,6 @@
         }
 
         viewData(id) {
-            debugger
             this.particulars=!this.particulars;
             this.store.setInfoId(id);
             this.store.searchInfo();

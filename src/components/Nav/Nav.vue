@@ -10,6 +10,7 @@
         directives: { // 自定义指令
         },
         mounted() {
+            this.select(this['$router'].currentRoute.path, true)
         },
         computed: {
             menuitemClasses: () => {
@@ -72,9 +73,12 @@
             return this.menus;
         }
 
-        select(e) : void {
-          debugger
-          this['$router'].push(e);
+        select(e, isInit) : void {
+
+            if(isInit) {
+                this['$router'].push(e);
+            }
+
 
             let selectedItem: any = null;
             for(let i=0; i<this.getMenus().length; i++) {

@@ -54,12 +54,10 @@
         //     }, 500)
         // }
         ok() : any{
-            debugger;
             this.store.verification();
             this.addCourse = false;
         }
         yes() : any{
-            debugger;
             this.store.verifications();
             this.updCourse = false;
         }
