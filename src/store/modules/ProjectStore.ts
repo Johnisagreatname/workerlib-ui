@@ -85,8 +85,6 @@ export default class ProjectStore extends VuexModule {
     }
     @Action
     public getPeopleParams() : any {
-
-
         if(this.selectUserName){
             let item ={};
             item["name"]="a.eafName";
@@ -95,40 +93,6 @@ export default class ProjectStore extends VuexModule {
             this.searchPeopleConditionList.push(item);
         }
         return {
-            "joinTables": [{
-                "tablename": "archives",
-                "alias": "b",
-                "joinMode": "Left"
-
-            }, {
-                "tablename": "alluser",
-                "alias": "a",
-                "joinMode": "Left",
-                "onList": [{
-                    "name": "a.eafId",
-                    "value": "b.archives_id",
-                    "algorithm": "EQ"
-                }]
-            },{
-                "tablename": "project",
-                "alias": "p",
-                "joinMode": "Left",
-                "onList": [{
-                    "name": "p.project_id",
-                    "value": "b.project_id",
-                    "algorithm": "EQ"
-                }]
-            }, {
-                "tablename": "unit",
-                "alias": "u",
-                "joinMode": "Left",
-                "onList": [{
-                    "name": "a.unit_id",
-                    "value": "u.unit_id",
-                    "algorithm": "EQ"
-                }]
-            }
-        ],
             "pageInfo" : {
                 "pageIndex": this.pageInIndex,
                 "pageSize": this.pageInSize
@@ -142,45 +106,11 @@ export default class ProjectStore extends VuexModule {
 
             "keywords" : [],
 
-            "selectList": [{
-                    "field": "b.id",
-                    "alias": "aId"
-                },
-                {
-                    "field": "a.eafId",
-                    "alias": "eafId"
-                },
-                {
-                    "field": "b.project_id",
-                    "alias":"project_id"
-                },
-                {
-                    "field": "b.unit_id",
-                    "alias":"unit_id"
-                },
-                {
-                    "field": "u.unit_name",
-                    "alias":"unit_name"
-                },
-                {
-                    "field": "a.workType",
-                    "alias":"workType"
-                } ,
-                {
-                    "field": "a.cwrIdnum",
-                    "alias":"cwrIdnum"
-                }
-                ,
-                {
-                    "field": "a.eafName",
-                    "alias":"eafName"
-                }
-            ]
+            "selectList": []
         };
     }
     @Action
     public async upload() {
-
         let alert: any = Message;
         await request.post('/api/workerlib/project/export',await this.getUploadParams(),{responseType: 'blob', params: '项目工程档案'}).then((data)=>{
             alert.warning('成功！');
@@ -225,8 +155,6 @@ export default class ProjectStore extends VuexModule {
     }
     @Action
     public async update() {
-
-        let alert: any = Message;
         await request.post('/api/workerlib/archives/update',{
             "data":{
                 "leave": 1
@@ -258,8 +186,6 @@ export default class ProjectStore extends VuexModule {
     }
     @Action
     public async searchViewPeople() {
-
-        let alert: any = Message;
         await request.post('/api/workerlib/join',{
                 "joinTables": [{
                     "tablename": "archives",
@@ -303,7 +229,6 @@ export default class ProjectStore extends VuexModule {
             alert.warning(e.message || e)
         });
     }
-
     @Action
     public getParams() : any {
 
@@ -345,7 +270,6 @@ export default class ProjectStore extends VuexModule {
             "selectList": []
         };
     }
-
     @Action
     public async search() {
         await request.post('/api/workerlib/project', await this.getParams()).then((data)=>{
@@ -372,7 +296,6 @@ export default class ProjectStore extends VuexModule {
             alert.warning(e.message || e)
         });
     }
-
     @Action
     public async count() {
         await request.post('/api/workerlib/project/count', await this.getParams()).then((total)=>{
@@ -381,7 +304,6 @@ export default class ProjectStore extends VuexModule {
             MessageUtils.warning(e);
         });
     }
-
     @Action
     public async getProjectType(){
         await request.post('/api/workerlib/dictionaries', {
@@ -405,7 +327,6 @@ export default class ProjectStore extends VuexModule {
             MessageUtils.warning(e);
         });
     }
-
     @Action
     public async getWorkType(){
         await request.post('/api/workerlib/dictionaries', {
@@ -429,10 +350,8 @@ export default class ProjectStore extends VuexModule {
             MessageUtils.warning(e);
         });
     }
-
     @Action
     public async insertProject() {
-
         await request.put('/api/workerlib/project', {
                 "project_id":null,
                 "project_name":this.projectInfo.project_name,
@@ -470,8 +389,7 @@ export default class ProjectStore extends VuexModule {
     }
     @Action
     public async searchPeople() {
-
-        await request.post('/api/workerlib/join',await this.getPeopleParams()).then((data)=>{
+        await request.post('/api/workerlib/alluser',await this.getPeopleParams()).then((data)=>{
             if(data){
                 this.successPeople(data);
                 this.countPeople();
@@ -507,14 +425,12 @@ export default class ProjectStore extends VuexModule {
             this.search();
         }
     }
-
     @Mutation
     public successPeople(data: any) {
 
         this.peoples = data.data;
 
     }
-
     @Mutation
     public setInPageTotal(data: number) {
         this.searchPeopleConditionList=[];
@@ -750,47 +666,6 @@ export default class ProjectStore extends VuexModule {
                     }, params.row.cwrIdnum)
                 ])
             }
-
-        },{
-            title: '参与项目',
-            key: 'project_name',
-            sortable: true,
-            render: (h, params) => {
-                return h('div', [
-                    h('span', {
-                        style: {
-                            display: 'inline-block',
-                            width: '100%',
-                            overflow: 'hidden',
-                            textOverflow: 'ellipsis',
-                            whiteSpace: 'nowrap'
-                        },
-                        domProps: {
-                            title: params.row.project_name
-                        }
-                    }, params.row.project_name)
-                ])
-            }
-        },{
-            title: '参见单位',
-            key: 'unit_name',
-            sortable: true,
-            render: (h, params) => {
-                return h('div', [
-                    h('span', {
-                        style: {
-                            display: 'inline-block',
-                            width: '100%',
-                            overflow: 'hidden',
-                            textOverflow: 'ellipsis',
-                            whiteSpace: 'nowrap'
-                        },
-                        domProps: {
-                            title: params.row.unit_name
-                        }
-                    }, params.row.unit_name)
-                ])
-            }
         }
     ];
 
@@ -798,27 +673,22 @@ export default class ProjectStore extends VuexModule {
     public setSelectUserName(data:string){
         this.selectUserName = data;
     }
-
     @Mutation
     private pageIndex(data: number) {
         this.pageInfo.pageIndex = data;
     }
-
     @Mutation
     private pageSize(data: number) {
         this.pageInfo.pageSize = data;
     }
-
     @Mutation
     private id(data: number) {
         this.projectInfo.id = data;
     }
-
     @Mutation
     private setUplodId(data: any) {
         this.uplodId.push(data);
     }
-
     @Mutation
     private setPeoplesId(data: any) {
         this.peopleId.push(data);
@@ -827,37 +697,30 @@ export default class ProjectStore extends VuexModule {
     private sucessViewPeople(data: any) {
         this.viewPeople=data.data;
     }
-
     @Mutation
     private projectName(data: string) {
         this.projectInfo.project_name = data;
     }
-
     @Mutation
     private selectProjectName(data: string) {
         this.projectInfo.selectProjectName = data;
     }
-
     @Mutation
     private projectBrief(data: string) {
         this.projectInfo.project_brief = data;
     }
-
     @Mutation
     private builderLicense(data: string) {
         this.projectInfo.builder_license = data;
     }
-
     @Mutation
     private startTime(data: Date) {
         this.projectInfo.start_time = data;
     }
-
     @Mutation
     private endTime(data: Date) {
         this.projectInfo.end_time = data;
     }
-
     @Mutation
     private construction(data: string) {
         this.projectInfo.construction = data;
@@ -866,42 +729,34 @@ export default class ProjectStore extends VuexModule {
     private setViewProjectId(data: string) {
         this.viewProjectId = data;
     }
-
     @Mutation
     private organization(data: string) {
         this.projectInfo.organization = data;
     }
-
     @Mutation
     private selectOrganization(data: string) {
         this.projectInfo.selectOrganization = data;
     }
-
     @Mutation
     private supervising(data: string) {
         this.projectInfo.supervising = data;
     }
-
     @Mutation
     private projectSupervision(data: string) {
         this.projectInfo.project_supervision = data;
     }
-
     @Mutation
     private projectAddress(data: string) {
         this.projectInfo.project_address = data;
     }
-
     @Mutation
     private selectProjectAddress(data: string) {
         this.projectInfo.selectProjectAddress = data;
     }
-
     @Mutation
     private status(data: number) {
         this.projectInfo.status = data;
     }
-
     @Mutation
     private setUpdateList(data: any) {
         this.updateList.push(data) ;

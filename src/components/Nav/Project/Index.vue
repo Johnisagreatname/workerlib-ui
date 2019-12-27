@@ -205,6 +205,22 @@
 
             console.log(this.store.uplodId)
         }
+        getData() : any{
+            for(let i = 0;i < this.store.project.length;i++) {
+                if(this.store.uplodId.filter(a => a.project_id == this.store.project[i].project_id).length > 0){
+                    this.$set(this.store.project[i], '_checked', true)
+                }
+            }
+            return this.store.project;
+        }
+        getPeopleData() : any{
+            for(let i = 0;i < this.store.peoples.length;i++) {
+                if(this.store.peopleId.filter(a => a.eafId == this.store.peoples[i].eafId ).length > 0){
+                    this.$set(this.store.peoples[i], '_checked', true)
+                }
+            }
+            return this.store.peoples;
+        }
 
         handleSelectRowPeople(selection, row) {
             for(let i = 0;i < this.store.peoples.length;i++) {
@@ -230,7 +246,6 @@
             console.log(this.store.peopleId)
         }
         handleSelectRowCancelPeople(selection,row){
-
             let index =  this.store.peopleId.findIndex(x => x.eafId == row.eafId);
             for(let i = 0;i < this.store.peoples.length;i++) {
                 if(this.store.peoples[i].eafId == row.eafId){
@@ -307,30 +322,11 @@
         getColumns() : any{
             return this.store.columns;
         }
-        getData() : any{
-            for(let i = 0;i < this.store.project.length;i++) {
-                if(this.store.uplodId.filter(a => a.project_id == this.store.project[i].project_id).length > 0){
-                    this.$set(this.store.project[i], '_checked', true)
-                }
-            }
-            return this.store.project;
-        }
+
         getPeopleColumns() : any{
             return this.store.peopleColumns;
         }
-        getPeopleData() : any{
-            for(let i = 0;i < this.store.peoples.length;i++) {
-                if(this.store.peopleId.filter(a => a.eafId == this.store.peoples[i].eafId ).length > 0){
-                    this.$set(this.store.peoples[i], '_checked', true)
-                }
-                //peoplesProject
-                if(this.store.peoples[i].project_id == this.projectId && this.store.peoples[i].leave == 1){
-                    this.$set(this.store.peoples[i], '_disabled', true)
-                }
-            }
 
-            return this.store.peoples;
-        }
         onPageSizeInChange(pageSize){
             this.store.setInPageSize(pageSize);
             this.store.setInPageIndex(1);

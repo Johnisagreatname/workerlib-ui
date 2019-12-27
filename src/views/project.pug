@@ -116,11 +116,7 @@
                 .search
                     Button(@click="this.store.searchPeople") 搜索
             .bodyTwo2
-                Table(border=false, ref="selection", :columns="getPeopleColumns()", :data="getPeopleData()",
-                @on-select="handleSelectRowPeople",
-                @on-select-all="handleSelectAllPeople",
-                @on-select-cancel="handleSelectRowCancelPeople",
-                @on-select-all-cancel="handleSelectAllCancelPeople")
+                Table(border=false, ref="selection", :columns="getPeopleColumns()", :data="getPeopleData()")
                     template(slot-scope="{row, index }",slot="workType")
                         Select(clearable,filterable,:value="row.workType+'_'+row.eafId+'_'+row.project_id",@on-change="selectChange")
                             Option(v-for="item in getWorkTypeMenus()", :value="item.name+'_'+row.eafId+'_'+row.project_id",:key="item.name") {{item.name}}
