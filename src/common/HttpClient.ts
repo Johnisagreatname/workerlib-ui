@@ -72,6 +72,7 @@ service.interceptors.request.use((config: any) => {
 service.interceptors.response.use(
 
     (response: any) => {
+
         // 移除队列中的该请求，注意这时候没有传第二个参数f
         removePending(response.config);
         if(response.status){
@@ -79,7 +80,6 @@ service.interceptors.response.use(
                 throw response.data.message;
             }
         }
-
         if(response.data) {
             if (response.data.status != 0 && response.data.type != "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet") {
                 throw response.data.message;
@@ -92,7 +92,7 @@ service.interceptors.response.use(
 
     },
     (error: any) => {
-        debugger
+
         // 异常处理
         console.log(error)
 

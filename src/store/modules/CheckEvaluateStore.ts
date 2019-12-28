@@ -14,7 +14,7 @@ import {Message} from "iview";
 export default class CheckEvaluateStore extends VuexModule {
     public projectType: Array<ProjectType>;
     public rate: Array<Rate>;
-
+    public checkedUser: Array<any>;
     public pageIndex:number;
     public pageSize:number;
     public pageTotal:number;
@@ -26,17 +26,25 @@ export default class CheckEvaluateStore extends VuexModule {
     public selectStatus:number;
     public selectRate:string;
     public peopleConditionList:Array<any>;
-    public modifyBy:string;
-    public grade:string;
+    public commtenGrade:Array<any>;
+    public grades:Array<any>;
     public rateInfo:Rate;
     public checkedArray: Array<any>;
+    public insertUser: Array<any>;
+    //新增
+    public grade:string;
+    public rank:string;
+    public evaluateTime:Date;
+
+
 
     constructor(e) {
         super(e);
         this.projectType=[];
+        this.checkedUser=[];
         this.rate=[];
         this.pageIndex = 1;
-        this.pageSize = 10;
+        this.pageSize = 20;
         this.pageTotal = null;
         this.selectConstructionUit="";
         this.selectProjectName="";
@@ -45,52 +53,27 @@ export default class CheckEvaluateStore extends VuexModule {
         this.selectStatus=null;
         this.selectRate="";
         this.peopleConditionList = [];
-        this.modifyBy = "";
+        this.commtenGrade = [];
+        this.grades = [];
         this.grade = "";
+        this.rank = "";
+        this.evaluateTime = null;
         this.rateInfo={};
         this.checkedArray = [];
+        this.insertUser = [];
     }
     @Action
     public getParams() : any {
-        debugger;
-        if(this.selectProjectName){
-            let item ={};
-            item["name"]="project_name";
-            item["value"]=this.selectProjectName;
-            item["algorithm"] = "LIKE";
-            this.peopleConditionList.push(item);
-        }
-        if(this.selectConstructionUit){
-            let item ={};
-            item["name"]="project_license";
-            item["value"]=this.selectConstructionUit;
-            item["algorithm"] = "LIKE";
-            this.peopleConditionList.push(item);
-        }
         if(this.selectName){
             let item ={};
-            item["name"]="name";
+            item["name"]="a.eafName";
             item["value"]=this.selectName;
             item["algorithm"] = "LIKE";
             this.peopleConditionList.push(item);
         }
-        if(this.selectType){
-            let item ={};
-            item["name"]="work_type";
-            item["value"]=this.selectType;
-            item["algorithm"] = "EQ";
-            this.peopleConditionList.push(item);
-        }
-        if(this.selectStatus){
-            let item ={};
-            item["name"]="leave";
-            item["value"]=this.selectStatus;
-            item["algorithm"] = "EQ";
-            this.peopleConditionList.push(item);
-        }
         if(this.selectRate){
             let item ={};
-            item["name"]="rate";
+            item["name"]="u.grade";
             item["value"]=this.selectRate;
             item["algorithm"] = "EQ";
             this.peopleConditionList.push(item);
@@ -98,16 +81,16 @@ export default class CheckEvaluateStore extends VuexModule {
         return {
             "joinTables": [
                 {
-                    "tablename": "archives",
+                    "tablename": "alluser",
                     "alias": "a",
-                    "joinMode": "Inner"
+                    "joinMode": "Left"
                 }, {
-                    "tablename": "project",
-                    "alias": "p",
-                    "JoinMode": "left",
+                    "tablename": "alluser_rate",
+                    "alias": "u",
+                    "JoinMode": "Left",
                     "onList": [{
-                        "name": "p.project_id",
-                        "value": "a.project_id",
+                        "name": "a.eafId",
+                        "value": "u.userId",
                         "algorithm": "EQ"
                     }]
                 }
@@ -125,10 +108,7 @@ export default class CheckEvaluateStore extends VuexModule {
 
             "keywords": [],
 
-            "selectList": [{ //显示字段
-                    "field": "*",  //字段名
-                    "function": "NONE",  //数据库相关函数：MAX, MIN, UPPER, LOWER, LENGTH, AVG, COUNT, SUM, GROUP_CONCAT等;
-                }]
+            "selectList": []
         }
         };
     @Action
@@ -147,15 +127,20 @@ export default class CheckEvaluateStore extends VuexModule {
             "keywords" : [],
             "selectList": []
         }).then((data)=>{
+            if(!data){
+                return;
+            }
             this.successType(data);
         }).catch((e)=>{
             MessageUtils.warning(e);
         });
     }
-
     @Action
     public async search() {
         await request.post('/api/workerlib/join',await this.getParams()).then((data)=>{
+            if(!data){
+                return;
+            }
             this.success(data);
             this.count();
         }).catch((e)=>{
@@ -176,42 +161,73 @@ export default class CheckEvaluateStore extends VuexModule {
     }
     @Action
     public async count() {
-        await request.post('/api/workerlib/archives/count', await this.getParams()).then((total)=>{
-            this.setPageTotal(total.data)
+        await request.post('/api/workerlib/archives/count', await this.getParams()).then((data)=>{
+            if(!data){
+                return;
+            }
+            this.setPageTotal(data.data)
         }).catch((e)=>{
             MessageUtils.warning(e);
         });
     }
-    @Mutation
-    public setPageTotal(data: number) {
-        this.peopleConditionList = [];
-        this.pageTotal = data;
-    }
-    @Mutation
-    public setPageIndex(data: number) {
-        this.pageIndex = data;
-    }
-    @Mutation
-    public setPageSize(data: number) {
-        this.pageSize = data;
+    @Action
+    public async getCommtenGrade(){
+        await request.post('/api/workerlib/dictionaries', {
+            "pageInfo" : {},
+            "conditionList": [{
+                "name": "category",
+                "value": "评定级别",
+                "algorithm": "EQ"
+            }],
+            "sortList": [],
+
+            "groupList" : [],
+
+            "keywords" : [],
+            "selectList": []
+        }).then((data)=>{
+            if(!data){
+                return;
+            }
+            this.successCommtenGrade(data);
+        }).catch((e)=>{
+            MessageUtils.warning(e);
+        });
     }
     @Action
-    public async insertArchives(checkedArray) {debugger;
-        await request.post('/api/workerlib/archives/update', {
-            "data": {
-                "modifyBy":this.modifyBy,
-                "rate":this.rateInfo.rate,
-                "grade":this.grade,
-            },
-            "conditionList": [{ //查询条件
-                "name": "id",   //字段名
-                "value": checkedArray,   //值
-                "algorithm": "IN",   //条件: EQ(2, "="), GT(3, ">"), LT(4, "<"), GTEQ(5, ">="), LTEQ(6, "<="), NOT(7, "<>"), NOTEQ(8, "!="), LIKE(9), START(10), END(11), IN(12), NOTIN(13)
+    public async getGrade(){
+        await request.post('/api/workerlib/dictionaries', {
+            "pageInfo" : {},
+            "conditionList": [{
+                "name": "category",
+                "value": "评定等级",
+                "algorithm": "EQ"
             }],
+            "sortList": [],
 
-            "keywords" : []
+            "groupList" : [],
+
+            "keywords" : [],
+            "selectList": []
         }).then((data)=>{
-            this.search()
+            if(!data) {
+                return
+            }
+                this.successGrade(data);
+
+        }).catch((e)=>{
+            MessageUtils.warning(e);
+        });
+    }
+    @Action
+    public async insertArchives() {
+        await request.put('/api/workerlib/user_rate',this.insertUser).then((data)=>{
+            if(!data){
+                return;
+            }
+            let alert: any = Message;
+            alert.warning('成功！');
+            this.search();
         }).catch((e)=>{
             console.log(e)
             let alert: any = Message;
@@ -233,6 +249,19 @@ export default class CheckEvaluateStore extends VuexModule {
         });
     }
     @Mutation
+    public setPageTotal(data: number) {
+        this.peopleConditionList = [];
+        this.pageTotal = data;
+    }
+    @Mutation
+    public setPageIndex(data: number) {
+        this.pageIndex = data;
+    }
+    @Mutation
+    public setPageSize(data: number) {
+        this.pageSize = data;
+    }
+    @Mutation
     public success(data: any) {
         this.rate = data.data;
     }
@@ -241,18 +270,13 @@ export default class CheckEvaluateStore extends VuexModule {
         this.checkedArray = data;
     }
     @Mutation
-    public setModifyBy(data:string) {
-        this.modifyBy = data;
-    }
-    @Mutation
-    public setRates(data:string){
-        this.rateInfo.rate = data;
+    public setRank(data:string){
+        this.rank = data;
     }
     @Mutation
     public setGrade(data:string){
         this.grade = data;
     }
-
     @Mutation
     public setConstructionUit(data: string) {
         this.selectConstructionUit = data;
@@ -273,15 +297,39 @@ export default class CheckEvaluateStore extends VuexModule {
     public setType(data: string) {
         this.selectType = data;
     }
-
     @Mutation
     public setRate(data: string) {
         this.selectRate = data;
     }
     @Mutation
+    public setEvaluateTime(data: Date) {
+        this.evaluateTime = data;
+    }
+    @Mutation
     public successType(data: any) {
         this.projectType = data.data;
     }
+    @Mutation
+    public successCommtenGrade(data: any) {
+        this.commtenGrade = data.data;
+    }
+    @Mutation
+    public successGrade(data: any) {
+        this.grades = data.data;
+    }
+    @Mutation
+    public setCheckedUser(data: any) {
+        this.checkedUser.push(data);
+    }
+    @Mutation
+    public setInsertUser(data: any) {
+        this.insertUser.push(data);
+    }
+    @Mutation
+    public clearCheckedUser() {
+        this.checkedUser=[];
+    }
+
 
     public columns = [
         {
@@ -290,33 +338,60 @@ export default class CheckEvaluateStore extends VuexModule {
             align: 'center'
         },
         {
-            title: '评选等级',
-            key: 'rate',
-            width: 130,
-            sortable: true
-        },
-        {
             title: '姓名',
-            key: 'name',
-            width: 120,
-            sortable: true
-        },
-        {
-            title: '所属项目',
-            key: 'project_name',
+            key: 'eafName',
             sortable: true
         },
         {
             title: '工种',
-            key: 'work_type',
+            key: 'workType',
             sortable: true,
-            width: 180
+            render: (h, params) => {
+                return h('div', [
+                    h('span', {
+                        style: {
+                            display: 'inline-block',
+                            width: '100%',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            whiteSpace: 'nowrap'
+                        },
+                        domProps: {
+                            title: params.row.workType
+                        }
+                    }, params.row.workType)
+                ])
+            }
+        },{
+            title: '等级',
+            key: 'grade',
+            sortable: true
         },
         {
-            title: '评选时间',
-            key: 'createOn',
-            width: 130,
+            title: '级别',
+            key: 'rank',
             sortable: true
+        },
+        {
+            title: '评定时间',
+            key: 'evaluateTime',
+            sortable: true,
+            render: (h, params) => {
+                return h('div', [
+                    h('span', {
+                        style: {
+                            display: 'inline-block',
+                            width: '100%',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            whiteSpace: 'nowrap'
+                        },
+                        domProps: {
+                            title: params.row.evaluateTime
+                        }
+                    }, params.row.evaluateTime)
+                ])
+            }
         }
         // ,
         // {

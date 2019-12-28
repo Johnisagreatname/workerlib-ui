@@ -25,8 +25,10 @@
         public addProject: boolean;
         public addPeoples: boolean;
         public viewPeoples: boolean;
+        public viewProjectPeople: boolean;
         public projectId:number;
         public selectWorkType:Array<any>;
+        public noProjectPeople:Array<any>;
         private store: any;
         messageWarningFn (text) {
             let alert: any = Message;
@@ -43,18 +45,21 @@
             this.addProject = false;
             this.addPeoples = false;
             this.selectWorkType = [];
+            this.noProjectPeople = [];
             this.viewPeoples = false;
+            this.viewProjectPeople = false;
             this.projectId = null;
             this.store = getModule(ProjectStore);
 
         }
         loading = true;
         mounted() {
+            this.store.getWorkType();
             this.store.search();
             this.store.getProjectType();
-
+            this.store.searchProjectPeople();
         }
-        public search() {
+        search() {
             this.store.pageSize(10);
             this.store.pageIndex(1);
             this.store.search();
@@ -102,23 +107,63 @@
         cancel():any {
             this.addProject = false;
         }
-
         okAdd() : any{
+            debugger
+            let list = this.store.projectPeoples.filter(a => a.project_id ==this.projectId && a.leave == 1).map(b=>b.archives_id);
+            this.noProjectPeople = this.store.peopleId.filter(a=>list.indexOf(a)>-1);
+            if(!this.noProjectPeople.length) {
+                for(let i = 0;i<this.store.peopleId.length;i++){
+                    let insert = {};
+                    let people = this.store.peopleId[i];
+                    if(people[i] == this.projectId){
+                        this.store.setUpdateList(people.aId)
+                    }else {
+                        insert["project_id"] = this.projectId;
+                        insert["archives_id"] = people.eafId;
+                        insert["unit_id"] = people.unit_id;
+                        insert["leave"] = 1;
+
+                        this.store.setInsertList(insert);
+
+                    }
+                }
+                this.store.insert();
+                // this.store.update();
+            }else {
+                this.viewProjectPeople = true;
+            }
 
             this.addPeoples = false;
         }
         cancelAdd():any {
             this.addPeoples = false;
         }
+        okView():any{
+            this.viewPeoples = false
+        }
+        cancelView():any {
+            this.viewPeoples = false
+        }
+        okProjectPeople():any{
+            this.viewProjectPeople = false
+        }
+        cancelProjectPeople():any {
+            this.viewProjectPeople = false
+        }
+        getViewPeoples(): any{
+            return this.store.viewPeople;
+        }
         change(name){
-                this.projectId= name.split('_')[1];
-                if(name.split('_')[0] == 'add') {
-                    this.store.getWorkType();
-                    this.store.searchPeople();
-                    this.addPeoples = true;
-                }else {
-                    this.viewPeoples = true;
-                }
+            this.projectId= name.split('_')[1];
+            if(name.split('_')[0] == 'add') {
+                this.store.searchPeople();
+                this.addPeoples = true;
+            }else {
+                this.store.setViewProjectId(this.projectId);
+                this.store.searchViewPeople();
+                this.viewPeoples = true;
+
+            }
 
         }
 
@@ -127,12 +172,10 @@
             this.store.pageIndex(1);
             this.onPageIndexChange(1);
         }
-
         onPageIndexChange(pageIndex){
             this.store.pageIndex(pageIndex);
             this.store.search();
         }
-
         rowClassNastatusme (row, index) : string {
             if(index == 0) {
                 return 'table-header'
@@ -140,12 +183,14 @@
             return '';
         }
         handleSelectRow(selection, row) {
+
             let item = {};
             item["project_id"] = row.project_id;
             this.store.setUplodId(item);
 
         }
         handleSelectRowCancel(selection,row){
+
             let index =  this.store.uplodId.findIndex(x => x.project_id == row.project_id);
             this.store.uplodId.splice(index, 1);
         }
@@ -162,7 +207,6 @@
             }
         }
         handleSelectAllCancel(selection){
-
             for(let i = 0;i < this.store.project.length;i++) {
                 if(this.store.uplodId.findIndex(x => x.project_id == this.store.project[i].project_id) > -1){
                     let index =  this.store.uplodId.findIndex(x => x.project_id == this.store.project[i].project_id);
@@ -172,110 +216,6 @@
                 }
 
             }
-
-            console.log(this.store.uplodId)
-        }
-
-        handleSelectRowPeople(selection, row) {
-            for(let i = 0;i < this.store.peoples.length;i++) {
-                if(this.store.peoples[i].eafId == row.eafId){
-                    if(this.store.peoples[i].project_id == row.project_id){
-                        this.$set(this.store.peoples[i], '_checked', true);
-                        let item = {};
-                        item["eafId"] = row.eafId;
-                        item["project_id"] = row.project_id;
-                        for(let j = 0;j = this.selectWorkType.length;j++){
-                            if(this.selectWorkType[i].eafId == row.eafId && this.selectWorkType[i].project_id == row.project_id){
-                                item["workType"] = this.selectWorkType[i].workType;
-                            }else {
-                                item["workType"] = row.workType;
-                            }
-                        }
-                        this.store.setPeoplesId(item);
-                    }else {
-                        this.$set(this.store.peoples[i], '_disabled', true);
-                    }
-                }
-            }
-            console.log(this.store.peopleId)
-        }
-        handleSelectRowCancelPeople(selection,row){
-
-            let index =  this.store.peopleId.findIndex(x => x.eafId == row.eafId);
-            for(let i = 0;i < this.store.peoples.length;i++) {
-                if(this.store.peoples[i].eafId == row.eafId){
-                    this.$set(this.store.peoples[i], '_disabled', false);
-                    this.$set(this.store.peoples[i], '_checked', false);
-
-                }
-            }
-            this.store.peopleId.splice(index, 1);
-            console.log(this.store.peopleId)
-        }
-        handleSelectAllPeople(selection) {
-            debugger
-            for(let i= 0;i<selection.length;i++){
-                let item = {};
-                let row = selection[i];
-                let index =  this.store.peopleId.findIndex(x => x.eafId == row.eafId);
-                if(index > -1){
-                    this.$set(this.store.peoples[i], '_disabled', true);
-                    continue;
-                }
-                item["eafId"] = row.eafId;
-                item["project_id"] = row.project_id;
-                for(let j = 0;j = this.selectWorkType.length;j++){
-                    if(this.selectWorkType[i].eafId == row.eafId && this.selectWorkType[i].project_id == row.project_id){
-                        item["workType"] = this.selectWorkType[i].workType;
-                    }else {
-                        item["workType"] = row.workType;
-                    }
-                }
-                this.store.setPeoplesId(item);
-            }
-            console.log(this.store.peopleId)
-        }
-        handleSelectAllCancelPeople(selection){
-            debugger
-            for(let i = 0;i < this.store.peoples.length;i++) {
-                if(this.store.peopleId.findIndex(x => x.eafId == this.store.peoples[i].eafId) > -1){
-                    let index =  this.store.peopleId.findIndex(x => x.eafId == this.store.peoples[i].eafId);
-                    this.$set(this.store.peoples[i], '_disabled', false);
-                    this.$set(this.store.peoples[i], '_checked', false);
-                    this.store.peopleId.splice(index, 1);
-                }
-
-            }
-
-            console.log(this.store.peopleId)
-        }
-
-        selectChange(name) {
-            if (name) {
-                let index = this.selectWorkType.findIndex(x => x.eafId == name.split('_')[1] && x.project_Id == name.split('_')[2]);
-                if (index > -1) {
-                    this.selectWorkType.splice(index, 1);
-                }
-                let item = {};
-                item["workType"] = name.split('_')[0];
-                item["eafId"] = name.split('_')[1];
-                item["project_Id"] = name.split('_')[2];
-                this.selectWorkType.push(item);
-                console.log(this.selectWorkType)
-            }
-        }
-
-        searchPeople(){
-            this.store.searchPeople();
-        }
-        getMenus() : any {
-          return this.store.projectType;
-        }
-        getWorkTypeMenus() : any {
-            return this.store.workType;
-        }
-        getColumns() : any{
-            return this.store.columns;
         }
         getData() : any{
             for(let i = 0;i < this.store.project.length;i++) {
@@ -285,21 +225,87 @@
             }
             return this.store.project;
         }
-        getPeopleColumns() : any{
-            return this.store.peopleColumns;
-        }
         getPeopleData() : any{
             for(let i = 0;i < this.store.peoples.length;i++) {
                 if(this.store.peopleId.filter(a => a.eafId == this.store.peoples[i].eafId ).length > 0){
                     this.$set(this.store.peoples[i], '_checked', true)
                 }
-                //peoplesProject
-                if(this.store.peoples[i].project_id == this.projectId && this.store.peoples[i].leave == 1){
-                    this.$set(this.store.peoples[i], '_disabled', true)
+            }
+            return this.store.peoples;
+        }
+
+        handleSelectRowPeople(selection, row) {
+            let item = {};
+            item["eafId"] = row.eafId;
+            item["eafName"] = row.eafName;
+            this.store.setPeoplesId(item);
+        }
+        handleSelectRowCancelPeople(selection,row){
+            let index =  this.store.peopleId.findIndex(x => x.eafId == row.eafId);
+            this.store.peopleId.splice(index, 1);
+            console.log(this.store.peopleId)
+        }
+        handleSelectAllPeople(selection) {
+            for(let i= 0;i<selection.length;i++){
+                let item = {};
+                let row = selection[i];
+                let index =  this.store.peopleId.findIndex(x => x.eafId == row.eafId);
+                if(index > -1){
+                    continue;
                 }
+                item["eafId"] = row.eafId;
+                item["eafName"] = row.eafName
+                this.store.setPeoplesId(item);
+            }
+        }
+        handleSelectAllCancelPeople(selection){
+            for(let i = 0;i < this.store.peoples.length;i++) {
+                if(this.store.peopleId.findIndex(x => x.eafId == this.store.peoples[i].eafId) > -1){
+                    let index =  this.store.peopleId.findIndex(x => x.eafId == this.store.peoples[i].eafId);
+                    this.$set(this.store.peoples[i], '_disabled', false);
+                    this.$set(this.store.peoples[i], '_checked', false);
+                    this.store.peopleId.splice(index, 1);
+                }
+
+            }
+            console.log(this.store.peopleId)
+        }
+        selectChange(list) {
+            if (list) {
+                this.selectWorkType = new Array<any>();
+                for(let i=0;i<list.length;i++){
+                    let name = list[i];
+                    let item = {};
+                    item["workType"] = name.split('_')[0];
+                    item["eafId"] = name.split('_')[1];
+                    this.selectWorkType.push(item);
+                }
+
+            }
+        }
+        searchPeople(){
+            this.store.searchPeople();
+        }
+        getMenus() : any {
+          return this.store.projectType;
+        }
+        getWorkTypeMenus() : any {
+            return this.store.workType;
+        }
+        getUserWorkTypeMenus(workType) : any {
+            let workTypeList = workType.split(",");
+            let list = this.store.workType.filter(a => workTypeList.indexOf(a.name)>-1);
+            if(!list) {
+                list = new Array();
             }
 
-            return this.store.peoples;
+            return list;
+        }
+        getColumns() : any{
+            return this.store.columns;
+        }
+        getPeopleColumns() : any{
+            return this.store.peopleColumns;
         }
         onPageSizeInChange(pageSize){
             this.store.setInPageSize(pageSize);

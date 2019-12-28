@@ -60,6 +60,9 @@
         getColumns() : any{
             return this.store.columns;
         }
+        getColumnsUp() : any{
+            return this.store.columnsUp;
+        }
         getData() : any{
             return this.store.cultivate;
         }
@@ -82,27 +85,53 @@
             this.store.searchInfo();
             this.startTraining = true;
         }
+        toggle(name){
+            if(name=="线上培训"){
+                this.store.setSelectStatus(1);
+                this.store.search();
+                this.store.clearCheckedDelete();
+            }else {
+                this.store.setSelectStatus(2);
+                this.store.search();
+                this.store.clearCheckedDelete();
+            }
+        }
         deleteCultivate(){
             this.onDelete = true;
         }
         handleSelectRow(selection, row) {
             var itemTrue = {};
             itemTrue['id'] = row.id;
-            itemTrue['name'] = row.name;
-            this.checkAllGroup.push(itemTrue);
-            this.store.setCheckedDelete(row.id)
+            itemTrue['name'] = row.course_name;
+            this.store.setCheckedDelete(itemTrue)
 
+        }
+        handleSelectRowCancel(selection,row){
+            let index =  this.store.checkedDelete.findIndex(x => x.id == row.id);
+            this.store.checkedDelete.splice(index, 1);
         }
         handleSelectAll(selection) {
             for(let i= 0;i<selection.length;i++){
                 let row = selection[i];
                 var itemTrue = {};
                 itemTrue['id'] = row.id;
-                itemTrue['name'] = row.name;
-                this.checkAllGroup.push(itemTrue);
-                this.store.setCheckedDelete(row.id)
+                itemTrue['name'] = row.course_name;
+                this.store.setCheckedDelete(itemTrue)
             }
         }
+
+        handleSelectAllCancel(selection){
+            for(let i= 0;i<this.store.cultivate.length;i++){
+                let item = {};
+                let row = this.store.cultivate[i];
+                let index =  this.store.checkedDelete.findIndex(x => x.id == row.id);
+                if(index > -1){
+                    this.store.checkedDelete.splice(index, 1);
+                }
+            }
+            console.log(this.store.checkedDelete)
+        }
+
         okDelete() : any{
             this.store.delete();
             this.onDelete = false;
@@ -176,6 +205,12 @@
         }
         get selectUserName():string{
             return this.store.selectUserName;
+        }
+        set selectTrainingTeacher(data:string){
+            this.store.setSelectTrainingTeacher(data);
+        }
+        get selectTrainingTeacher():string{
+            return this.store.selectTrainingTeacher;
         }
     }
 </script>

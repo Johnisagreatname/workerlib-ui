@@ -35,7 +35,7 @@
             if(this.options) return this.options;
             this.options = [
                 { value: '离场', key: '0' },
-                { value: '在场', key: '1' }
+                { value: '在场 ', key: '1' }
             ];
             return this.options;
         }
