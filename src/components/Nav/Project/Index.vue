@@ -164,9 +164,11 @@
         cancelView():any {
             this.viewPeoples = false
         }
+
         okProjectPeople():any{
             this.viewProjectPeople = false
         }
+        
         cancelProjectPeople():any {
             this.viewProjectPeople = false
         }
@@ -178,6 +180,7 @@
 
                 this.addPeoples = true;
             }else {
+
                 this.store.setViewProjectId(this.store.projectId);
                 this.store.searchViewPeople();
                 this.viewPeoples = true;
@@ -251,7 +254,10 @@
             }
             return this.store.peoples;
         }
-        getViewPeoples(): any{
+        
+        
+        
+        (): any{
             for(let i = 0;i < this.store.viewPeople.length;i++) {
                 if(this.store.checkeds.filter(a => a.archives_id == this.store.viewPeople[i].archives_id ).length > 0){
                     this.$set(this.store.viewPeople[i], '_checked', true)

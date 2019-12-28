@@ -28,7 +28,7 @@ export default class WoekclassStore extends VuexModule {
 
     @Action
     public getParams() : any {
-        return {
+        let param =  {
             "pageInfo" : {
                 "pageIndex": this.pageInfo.pageIndex,
                 "pageSize": this.pageInfo.pageSize
@@ -42,7 +42,17 @@ export default class WoekclassStore extends VuexModule {
             "groupList" : [],
             "keywords" : [],
             "selectList": []
-        };
+        }
+
+        if(this.workclassInfo.name && this.workclassInfo.name.trim()) {
+            param.conditionList.push({
+                "name": "name",
+                "value": this.workclassInfo.name,
+                "algorithm": "LIKE",
+            })
+        }
+
+        return param;
     }
 
     @Action
