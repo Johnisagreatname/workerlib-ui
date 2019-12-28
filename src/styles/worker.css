@@ -9,11 +9,9 @@
 }
 .topOne{
     display: block;
-    height: 140px;
     width: 100%;
     height: auto;
     float: right;
-    min-height: 140px;
 }
 .divOne{
     display: block;
@@ -83,6 +81,8 @@
 .button Button {
     margin-left: 20px;
     margin-top: 20px;
+    border-color: #2d8cf0;
+    color: #2d8cf0;
 }
 .people{
     display: inline-block;
@@ -199,7 +199,7 @@
 .y2 p{
     font-weight: bold;
     font-size:16px;
-    line-height:40px;
+    line-height:76px;
     text-align:left;
     padding-left: 20%;
 }
@@ -213,7 +213,7 @@
     color: #0b93ff;
     font-weight: bold;
     font-size:16px;
-    line-height:40px;
+    line-height:76px;
     text-align: right;
 }
 .y6{
@@ -482,6 +482,7 @@ min-height: 10%;
 padding-left: 5%;
 padding-top: 5%;
 height: auto;
+border-bottom:1px solid #e7e7e7;
 }
 .com{
 width: 70px;

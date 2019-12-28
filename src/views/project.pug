@@ -15,7 +15,7 @@
     .hr
     .button
         Button(type="primary", ghost, icon="ios-add-circle-outline",@click="addProject=!addProject") 新增项目
-        Button(type="primary", ghost, icon="ios-log-in") 同步项目
+        Button(type="primary", ghost, icon="ios-log-in",@@click="this.store.synchronization") 同步项目
         Button(type="primary", ghost, icon="ios-log-out",@click="this.store.upload") 导出信息
 
     .bodyTwo
@@ -116,10 +116,15 @@
                 .search
                     Button(@click="this.store.searchPeople") 搜索
             .bodyTwo2
-                Table(border=false, ref="selection", :columns="getPeopleColumns()", :data="getPeopleData()")
+                Table(border=false, ref="selection", :columns="getPeopleColumns()", :data="getPeopleData()",
+                @on-select="handleSelectRowPeople",
+                @on-select-cancel="handleSelectRowCancelPeople",
+                @on-select-all="handleSelectAllPeople",
+                @on-select-all-cancel="handleSelectAllCancelPeople"
+                )
                     template(slot-scope="{row, index }",slot="workType")
-                        Select(clearable,filterable,:value="row.workType+'_'+row.eafId+'_'+row.project_id",@on-change="selectChange")
-                            Option(v-for="item in getWorkTypeMenus()", :value="item.name+'_'+row.eafId+'_'+row.project_id",:key="item.name") {{item.name}}
+                        Select(clearable,filterable,multiple,@on-change="selectChange")
+                            Option(v-for="item in getUserWorkTypeMenus(row.workType)", :value="item.name+'_'+row.eafId",:key="item.name") {{item.name}}
 
 
 
@@ -130,7 +135,19 @@
                 })
 
     Modal(:value="viewPeoples",title="查看人员",@on-ok="okView()",@on-cancel="cancelView()",width='50%',:loading = "loading")
+        .addBody
+            Button(type="primary", ghost, icon="ios-log-out",@click="updatePeople()",:style="{'margin-bottom': '10px'}") 退场
+            Table(border=false, ref="selection", :columns="getPeopleProjectColumns()", :data="getViewPeoples()",
+            @on-select="handleSelectRowProject",
+            @on-select-cancel="handleSelectRowCancelProject",
+            @on-select-all="handleSelectAllProject",
+            @on-select-all-cancel="handleSelectAllCancelProject")
+            Page(:total="pageProjectTotal",show-elevator,show-total,
+            @on-page-size-change="onPageSizeProjectChange",@on-change="onPageIndexProjectChange",:style={
+                'text-align': 'center',
+                'margin-top': '10px'
+            })
+    Modal(title="以下人员已在当前项目，请取消选中!",:value="viewProjectPeople",:styles="{top: '20px'}",@on-ok="okProjectPeople()",@on-cancel="cancelProjectPeople()",:loading = "loading")
         .divL
-            .divCheck(v-for="item in getViewPeoples()")
-                span {{item.eafName}}
-
+            .divCheck(v-for="item in this.noProjectPeople")
+                p {{item.eafName}}
