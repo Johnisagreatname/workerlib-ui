@@ -1,32 +1,36 @@
 .body
    .topOne
-      .divOne
-         span 项目名称：
-            Input(clearable,style="width: 260px",v-model="selectProjectName")
-      .divOne
-         span 参建单位：
-            Input(clearable,style="width: 260px",v-model="selectContractors")
+      //.divOne
+      //   span 项目名称：
+      //      Input(clearable,style="width: 260px",v-model="selectProjectName")
+      //.divOne
+      //   span 参建单位：
+      //      Input(clearable,style="width: 260px",v-model="selectContractors")
       .divOne
          span 姓名：
             Input(clearable,style="width: 260px",v-model="selectUserName")
-      .divOne
-         span 工种：
-            Select(filterable,clearable,style="width:260px",v-model="selectType")
-               Option(v-for="item in getType()", :value="item.name", :key="item.name") {{item.name}}
-      .divOne
-         span 状态：
-            Select(filterable,clearable,style="width:260px",v-model="selectStatus")
-               Option(v-for="item in getMenus()", :value="item.key", :key="item.key") {{item.value}}
+      //.divOne
+      //   span 工种：
+      //      Select(filterable,clearable,style="width:260px",v-model="selectType")
+      //         Option(v-for="item in getType()", :value="item.name", :key="item.name") {{item.name}}
+      //.divOne
+      //   span 状态：
+      //      Select(filterable,clearable,style="width:260px",v-model="selectStatus")
+      //         Option(v-for="item in getMenus()", :value="item.key", :key="item.key") {{item.value}}
       .search
          Button(@click="this.store.search") 搜索
    .hr
    .button
       Button(type="primary", ghost,@click="addWorker=!addWorker",icon="ios-add-circle-outline") 新增
-      Button(type="primary", ghost, icon="ios-contact-outline",@click="checkLeave()",:disabled="isdisabledFn()")
-         span(v-if="offLeave == false") 退场
-         span(v-if="offLeave == true") 进场
+      //Button(type="primary", ghost, icon="ios-contact-outline",@click="checkLeave()",:disabled="isdisabledFn()")
+      //   span(v-if="offLeave == false") 退场
+      //   span(v-if="offLeave == true") 进场
       Button(type="primary", ghost, icon="ios-log-in") 同步工人
       Button(type="primary", ghost, icon="ios-log-out",@click="upload()") 导出
+      Upload(action="/api/workerlib/salary/import",
+      :on-success="handleSuccessExcel",:format="['xls','xlsx']",:on-format-error="handleFormatErrorExcel",
+      :style={'float':'left'})
+         Button(icon="ios-cloud-upload-outline") 导入薪资
 
    div(v-for="(item, index) in getPeopleList()", :key="index",
    @click="onCheck(item.eafId,item.eafName,item.leave)",
@@ -48,24 +52,18 @@
             span |
             span {{getAge(item.cwrIdnum)}}岁
             //查看详情
-         Button(type="primary", ghost,@click="viewData(item.eafId)")
+         Button(type="primary", ghost,@click="viewData(item.eafId,item.cwrIdnum)")
       .photos
          div(:class="isChecked(item.eafId) ? 'pop' : 'pTop'")
          .pButtom
       .y2
          p 手机号码
          p 身份证号
-         p 工种
-         p 状态
       .y3
          p(v-if="item.eafPhone != null && item.eafPhone != '' ") {{item.eafPhone}}
          p(v-else) 无
          p(v-if="item.cwrIdnum != null && item.cwrIdnum != ''") {{item.cwrIdnum}}
          p(v-else) 无
-         p(v-if="item.workType != null && item.workType != ''") {{item.workType}}
-         p(v-else) 无
-         p(v-if="item.leave==1") 在场
-         p(v-else) 离场
    .footer
       Page(:total="pageTotal",show-sizer,show-elevator,show-total,
       @on-page-size-change="onPageSizeChange",@on-change="onPageIndexChange")
@@ -239,10 +237,12 @@
                         span(v-else) 离场
                   .text
                      p(:style={'font-weight':'bold'}) 进场时间：
-                        span(:style={'color':'#0E93FF'}) {{getDateFormat(invlo.cwrUserIn)}}
+                        span(:style={'color':'#0E93FF'},v-if="invlo.cwrUserIn == null")
+                        span(:style={'color':'#0E93FF'},v-else) {{getDateFormat(invlo.cwrUserIn)}}
                   .text
                      p(:style={'font-weight':'bold'}) 退场时间：
-                        span(:style={'color':'#0E93FF'}) {{getDateFormat(invlo.cwrUserOut)}}
+                        span(:style={'color':'#0E93FF'},v-if="invlo.cwrUserOut == null")
+                        span(:style={'color':'#0E93FF'},v-if="invlo.cwrUserOut == null") {{getDateFormat(invlo.cwrUserOut)}}
                Page(:total="inPageTotal",show-total,@on-page-size-change="onInPageSizeChange",@on-change="onInPageIndexChange",:page-size=1)
          .boxTwo
             .twoTop
@@ -277,43 +277,71 @@
                .buttonTop
                   h2 工资明细
                .middle
-                  p(:style={'font-weight': 'bold'}) 总收入
+                  p(v-if="this.store.salaryInfo.pay == null",:style={'font-weight': 'bold'}) 总收入
                      span(:style={
                          'text-align': 'right',
                          'color': '#0E93FF',
                          'float': 'right',
                          'margin-right': '10%'
-                     }) ¥20，000
+                     }) ¥ 0
+                  p(v-else,:style={'font-weight': 'bold'}) 总收入
+                     span(:style={
+                         'text-align': 'right',
+                         'color': '#0E93FF',
+                         'float': 'right',
+                         'margin-right': '10%'
+                     }) ¥ {{this.store.salaryInfo.pay}}
                .middleHr
                .middle
-                  p(:style={'font-weight': 'bold'}) 总到账
+                  p(v-if="this.store.salaryInfo.income == null",:style={'font-weight': 'bold'}) 总到账
                      span(:style={
                          'text-align': 'right',
                          'color': '#0E93FF',
                          'float': 'right',
                          'margin-right': '10%'
-                     }) ¥0
+                     }) ¥ 0
+                  p(v-else,:style={'font-weight': 'bold'}) 总到账
+                     span(:style={
+                         'text-align': 'right',
+                         'color': '#0E93FF',
+                         'float': 'right',
+                         'margin-right': '10%'
+                     }) ¥ {{this.store.salaryInfo.income}}
          .boxThree
             .three
                .buttonTop
                   h2 员工评价
                .threeDiv
                   span(:style={'font-size':'16px'}) 平均分：
-                     span(:style={'font-size':'18px','font-weight':'bold'}) 0
-                        Rate(disabled)
+                     span(:style={'font-size':'18px','font-weight':'bold'}) {{this.store.commentInfo.synthesize}}
+                        Rate(disabled,:value="Number(this.store.commentInfo.synthesize)",allow-half)
                .middleHrBu
                .threeDiv
-                  .com 好评
-                  .com 中评
-                  .com 差评
-                  .com 离场评价
+                  .com 好评 {{this.store.commentInfo.commGood}}
+                  .com 中评 {{this.store.commentInfo.commMiddle}}
+                  .com 差评 {{this.store.commentInfo.commBad}}
                .middleHr
-               .threeDiv
-                  //p(:style={'color':'#1397ff','font-size': '16px'}) 深圳市白石龙项目
-                  //p(:style={'color':'#9b9b9b','font-size': '12px'}) 某某 现场管理员人员  |  2019-01-01
-                  //p(:style={'color':'#000000','font-size': '14px'}) 干活它是，人踏实，继续努力
-                  //Rate(disabled)
-               .middleHr
+               .threeDiv(v-for="item in getCommentSparticularsList()")
+                  p(:style={
+                      color:'#1397ff',
+                      fontSize: '16px',
+                      display: 'inline-block',
+                      width: '100%',
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                      whiteSpace: 'nowrap'},:title="item.project_name") {{item.project_name}}
+                  p(:style={'color':'#9b9b9b','font-size': '12px'},v-if="item.type == 1") {{item.username}}  |  {{item.appraise_time}}
+                  p(:style={'color':'#9b9b9b','font-size': '12px'},v-else) {{item.username}}  |  {{item.createOn}}
+
+                  p(v-if="item.type == 1") 处罚：{{item.punishment}}
+                  p(:style={'color':'#000000','font-size': '14px'},v-else) {{item.description}}
+                     Rate(disabled,:value="Number(item.score)",allow-half)
+                  img(src="~@/assets/css/images/commentOne.png" :style={
+                      'width': '59px',
+                      'height': '25px'
+                  },v-if="item.type == 1")
+                  img(src="~@/assets/css/images/commentsTwo.png" :style={'width': '59px', 'height': '25px'},v-else)
+               //.middleHr
             //Button(type="primary", ghost,@click="certificateOpen()")
 
       //Modal(:value="certificat",title="人员详情",@on-ok="certificateOk()",@on-cancel="certificateCancel()",width='70%')
