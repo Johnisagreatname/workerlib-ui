@@ -15,7 +15,7 @@
     .hr
     .button
         Button(type="primary", ghost, icon="ios-add-circle-outline",@click="addProject=!addProject") 新增项目
-        Button(type="primary", ghost, icon="ios-log-in") 同步项目
+        Button(type="primary", ghost, icon="ios-log-in",@@click="this.store.synchronization") 同步项目
         Button(type="primary", ghost, icon="ios-log-out",@click="this.store.upload") 导出信息
 
     .bodyTwo
@@ -135,10 +135,19 @@
                 })
 
     Modal(:value="viewPeoples",title="查看人员",@on-ok="okView()",@on-cancel="cancelView()",width='50%',:loading = "loading")
-        .divL
-            .divCheck(v-for="item in getViewPeoples()")
-                span {{item.eafName}}
-    Modal(title="以下人员已在当前项目，请取消选中!",:value="viewProjectPeople",:styles="{top: '20px'}",@on-ok="okProjectPeople()",@on-cancel="cancelProjectPeople()")
+        .addBody
+            Button(type="primary", ghost, icon="ios-log-out",@click="updatePeople()",:style="{'margin-bottom': '10px'}") 退场
+            Table(border=false, ref="selection", :columns="getPeopleProjectColumns()", :data="getViewPeoples()",
+            @on-select="handleSelectRowProject",
+            @on-select-cancel="handleSelectRowCancelProject",
+            @on-select-all="handleSelectAllProject",
+            @on-select-all-cancel="handleSelectAllCancelProject")
+            Page(:total="pageProjectTotal",show-elevator,show-total,
+            @on-page-size-change="onPageSizeProjectChange",@on-change="onPageIndexProjectChange",:style={
+                'text-align': 'center',
+                'margin-top': '10px'
+            })
+    Modal(title="以下人员已在当前项目，请取消选中!",:value="viewProjectPeople",:styles="{top: '20px'}",@on-ok="okProjectPeople()",@on-cancel="cancelProjectPeople()",:loading = "loading")
         .divL
             .divCheck(v-for="item in this.noProjectPeople")
                 p {{item.eafName}}

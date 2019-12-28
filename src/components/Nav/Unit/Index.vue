@@ -212,7 +212,6 @@
         set unit(data:any){
             this.store.setUnit(data);
         }
-
         get unit() : any {
             return this.store.unit;
         }
