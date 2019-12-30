@@ -139,7 +139,6 @@
             }
         }
 
-
         get username():string{
             return this.store.userInfo.username;
         }

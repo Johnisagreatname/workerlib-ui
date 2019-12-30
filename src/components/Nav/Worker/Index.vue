@@ -51,6 +51,7 @@
             this.store.search();
             this.store.getProjectType();
             this.store.selectProject();
+            this.store.findRole();
         }
         getCommentSparticularsList():any{
             return this.storeComm.commentSparticularsList;
@@ -162,6 +163,7 @@
             }, 500)
         }
         ok() : any{
+            debugger
             this.store.insertArchives();
             this.addWorker = false;
         }
