@@ -166,7 +166,6 @@
                          fontSize: 12,
                      },
                      formatter: function(value) {
-                         //debugger
                          var ret = ""; //拼接加\n返回的类目项
                          var maxLength = 5; //每项显示文字个数
                          var valLength = value.length; //X轴类目项的文字个数

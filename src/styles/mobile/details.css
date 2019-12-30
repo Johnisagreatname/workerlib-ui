@@ -1,0 +1,79 @@
+
+#home {
+    width: 100%;
+    display: list-item;
+    position: fixed;
+}
+#home .vux-cell-bd .vux-label {
+    font-size: 16px !important;
+}
+html, body {
+    height: 100%;
+    width: 100%;
+    overflow-x: hidden;
+}
+.flex-demo {
+    margin-top: 15px;
+    text-align: center;
+    color: #1a1a1a;
+    height: 20px;
+}
+.flex-demo2 {
+    margin-bottom: 10px;
+    text-align: center;
+    color: #fff;
+    background-color: #f78e0f;
+    border-radius: 10px;
+    background-clip: padding-box;
+    height: 20px;
+}
+.img-header {
+    margin-top: 10px;
+    margin-left: 20px;
+    margin-bottom: 10px;
+    border-radius: 50%;
+    background-clip: padding-box;
+    height: 60px;
+    width: 60px;
+}
+.img-rq {
+    margin-top: 10px;
+    margin-left: 30px;
+    margin-bottom: 10px;
+    background-clip: padding-box;
+    height: 60px;
+    width: 60px;
+}
+.img-vedio {
+    margin-left: 10px;
+    background-clip: padding-box;
+    height: 30px;
+    width: 30px;
+}
+.text-title {
+    margin-top: 10px;
+    text-align: center;
+    font-size: 16px;
+    font-weight: bold;
+}
+.text-main {
+     padding: 10px;
+     text-align: left;
+     font-size: 12px;
+     color: #1a1a1a;
+ }
+.text-gray {
+    text-align: left;
+    font-size: 12px;
+    color:#6f7882;
+}
+.text-blue {
+    text-align: left;
+    font-size: 12px;
+    color: #2d8cf0;
+}
+.badge-main {
+    margin-left: 10px;
+    text-align: left;
+    font-size: 12px;
+}

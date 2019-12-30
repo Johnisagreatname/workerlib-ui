@@ -10,6 +10,7 @@
         directives: { // 自定义指令
         },
         mounted() {
+            this.select(this['$router'].currentRoute.path, true)
         },
         computed: {
             menuitemClasses: () => {
@@ -64,17 +65,24 @@
                         {secondName:'评价管理', path: '/nav/comments', text: '评价管理'}
                     ] },
                 { name: '设置', icon: 'md-settings', second: [
-                        {secondName:'账号', path: '/nav/account', text: '账号管理'},
-                        {secondName:'工种', path: '/nav/workclass', text: '工种管理'},
+                        {secondName:'账号', path: '/nav/account', text: '账号设置'},
+                        {secondName:'工种', path: '/nav/workclass', text: '工种设置'},
                         {secondName:'评价', path: '/nav/commentType', text: '评价管理'},
-                        {secondName:'题库', path: '/nav/options', text: '题库管理'}
+                        {secondName:'题库', path: '/nav/options', text: '题库设置'},
+                        {secondName:'课件', path: '/nav/course', text: '课件设置'},
+                        {secondName:'处罚', path: '/nav/punishment', text: '处罚设置'},
+                        {secondName:'角色', path: '/nav/role', text: '角色设置'}
                     ] }
             ];
             return this.menus;
         }
 
-        select(e) : void {
-          this['$router'].push(e);
+        select(e, isInit) : void {
+
+            if(!isInit) {
+                this['$router'].push(e);
+            }
+
 
             let selectedItem: any = null;
             for(let i=0; i<this.getMenus().length; i++) {
@@ -88,6 +96,7 @@
                     break;
                 }
             }
+
           if(!selectedItem){
               this.title = '产业工人档案';
               return;

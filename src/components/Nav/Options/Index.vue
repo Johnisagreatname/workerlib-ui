@@ -68,14 +68,12 @@
         }
 
         popupAddOption(id) {
-            debugger;
             this.currentId = id;
             this.subject_id = id;
             this.addSubject = !this.addSubject;
         }
 
         popupDelOptions(id) {
-            debugger
             this.id = id;
             this.subject_id = id;
             this.store.selectOptions();

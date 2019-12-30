@@ -382,7 +382,7 @@ export default class CommentsStore extends VuexModule {
                 this.clearInsertDataList();
                 return;
             }
-                debugger
+
             if(this.insertType == 1){
                 this.sucessInsertBadnessAppraise(data);
             }

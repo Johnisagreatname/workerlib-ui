@@ -104,6 +104,7 @@
             let date = new Date(d);
             return date.getFullYear() + "-" + (date.getMonth()+1) + "-" + date.getDate();
         }
+
         viewData(id,idNum) {
             this.particulars=!this.particulars;
             this.store.setInfoId(id);

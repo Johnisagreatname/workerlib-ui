@@ -28,8 +28,7 @@ export default class WoekclassStore extends VuexModule {
 
     @Action
     public getParams() : any {
-        debugger;
-        return {
+        let param =  {
             "pageInfo" : {
                 "pageIndex": this.pageInfo.pageIndex,
                 "pageSize": this.pageInfo.pageSize
@@ -43,12 +42,21 @@ export default class WoekclassStore extends VuexModule {
             "groupList" : [],
             "keywords" : [],
             "selectList": []
-        };
+        }
+
+        if(this.workclassInfo.name && this.workclassInfo.name.trim()) {
+            param.conditionList.push({
+                "name": "name",
+                "value": this.workclassInfo.name,
+                "algorithm": "LIKE",
+            })
+        }
+
+        return param;
     }
 
     @Action
     public getVerification() : any {
-        debugger;
         return {
             "pageInfo" : {
                 "pageIndex": this.pageInfo.pageIndex,
@@ -98,7 +106,6 @@ export default class WoekclassStore extends VuexModule {
 
     @Action
     public async verifications(){
-        debugger
         await request.post('/api/workerlib/dictionaries/exist ', await this.getVerification()).then((data)=>{
             this.update(data);
         }).catch((e)=>{
@@ -124,7 +131,6 @@ export default class WoekclassStore extends VuexModule {
 
     @Action
     public async search() {
-        debugger;
         await request.post('/api/workerlib/dictionaries', await this.getParams()).then((data)=>{
             this.success(data);
             this.count();
@@ -150,7 +156,6 @@ export default class WoekclassStore extends VuexModule {
     }
     @Action
     public async deleteWorkclass(){
-        debugger;
         await request.delete('/api/workerlib/dictionaries/'+this.workclassInfo.id).then((data)=>{
             this.added(data)
         }).catch((e)=>{
@@ -182,7 +187,6 @@ export default class WoekclassStore extends VuexModule {
     }
     @Action
     public async updateWorkclass() {
-        debugger;
         await request.put('/api/workerlib/dictionaries/'+this.workclassInfo.id,{
             "name":this.workclassInfo.name,
         }).then((data)=>{
@@ -206,7 +210,6 @@ export default class WoekclassStore extends VuexModule {
     }
     @Action
     public async insertWorkclass() {
-        debugger;
         await request.put('/api/workerlib/dictionaries', {
                 "name":this.workclassInfo.name,
                 "value":this.pageInfo.totalRecords+3,
@@ -262,7 +265,6 @@ export default class WoekclassStore extends VuexModule {
     }
     @Action
     public sucess(data: any) {
-        debugger;
         if(data.data == false) {
             this.insertWorkclass();
         }else {
@@ -273,7 +275,6 @@ export default class WoekclassStore extends VuexModule {
     }
     @Action
     public update(data: any) {
-        debugger;
         if(data.data == false) {
             this.updateWorkclass();
         }else {

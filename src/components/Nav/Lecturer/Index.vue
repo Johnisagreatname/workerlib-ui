@@ -50,7 +50,6 @@
             return this.options;
         }
         toggle(name){
-            debugger;
             if(name=="内部讲师"){
                 this.store.setSelectType(1);
                 this.store.search();

@@ -69,7 +69,7 @@ export default class AccountStore extends VuexModule {
 
     @Action
     public async search() {
-        await request.post('/api/workerlib/user', {
+        let param = {
             "pageInfo" : {
                 "pageIndex": this.pageInfo.pageIndex,
                 "pageSize": this.pageInfo.pageSize
@@ -83,9 +83,19 @@ export default class AccountStore extends VuexModule {
 
             "keywords" : [],
             "selectList": []
-        }).then((data)=>{
+        }
+
+        if(this.userInfo.username && this.userInfo.username.trim()) {
+            param.conditionList.push({
+                "name": "username",
+                "value": this.userInfo.username,
+                "algorithm": "LIKE",
+            })
+        }
+
+        await request.post('/api/workerlib/user', param).then((data)=>{
             this.successUser(data);
-            //this.count();
+            this.count();
         }).catch((e)=>{
             console.log(e)
             let alert: any = Message;
@@ -288,7 +298,6 @@ export default class AccountStore extends VuexModule {
 
     @Action
     public async insertUser() {
-        debugger;
         await request.put('/api/workerlib/user', {
                 "username":this.userInfo.username,
                 "password":this.userInfo.password,
@@ -322,7 +331,6 @@ export default class AccountStore extends VuexModule {
         for(let i in this.insertList) {
             this.insertList[i]['userId'] = id;
         }
-        debugger
         await request.put('/api/workerlib/usergrouprole',this.insertList
         ).then((data)=>{
             this.addedt(data)
@@ -351,7 +359,6 @@ export default class AccountStore extends VuexModule {
 
     @Mutation
     public setModegroup(data) {
-        debugger
         this.insertList = new Array<any>();
         for(let i in data) {
             let item = {};
@@ -377,7 +384,10 @@ export default class AccountStore extends VuexModule {
     public setPassword(data:any){
         this.userInfo.password = data;
     }
-
+    @Mutation
+    public setName(data:any){
+        this.userInfo.username = data;
+    }
     @Mutation
     public successUser(data: any) {
         this.userList = data.data;
@@ -390,7 +400,6 @@ export default class AccountStore extends VuexModule {
 
     @Action
      public added(data: any) {
-        debugger
         if(data.status == 0) {
             this.insertUserGroupRole(data.data);
         }

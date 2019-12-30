@@ -47,7 +47,6 @@
             this.store.search();
         }
         ok() : any{
-            debugger;
             this.store.insertRole();
             this.addRole = false;
         }

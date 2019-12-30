@@ -8,12 +8,46 @@
         @on-cancel="onCancel",
         @on-submit="onSubmit",
         ref="search")
-    img(src="https://ws1.sinaimg.cn/large/663d3650gy1fq685v5csyj208c06ygm0.jpg")
-    group
-        cell(title="keyword") {{ value }}
-    div(style="padding:15px;")
-        x-button(@click.native="setFocus", type="primary") set focus
-    group
-        cell(title="static position demo",
-            is-link,
-            link="/component/search-static")
+
+    //swiper(:list="demo01_list",
+    //    v-model="demo02_index",
+    //    :min-moving-distance="120",
+    //    @on-index-change="demo01_onIndexChange")
+
+    //swiper(:list="demo03_list",
+    //    auto style="width:80%;margin:0 auto;",
+    //    height="180px",
+    //    dots-class="custom-bottom",
+    //    dots-position="center")
+
+    swiper(auto height="150px",
+        dots-position="center")
+        swiper-item(class="black")
+            h2(class="title fadeInUp animated") 它无孔不入
+        swiper-item(class="black")
+            h2(class="title fadeInUp animated") 你无处可藏
+        swiper-item(class="black")
+            h2(class="title fadeInUp animated") 不是它可恶
+        swiper-item(class="black")
+            h2(class="title fadeInUp animated") 而是它不懂你
+    flexbox
+        flexbox-item
+            div(class="flex-demo2") 1
+        flexbox-item
+            flexbox(orient="vertical")
+                flexbox-item
+                    div(class="flex-demo") 2
+                flexbox-item
+                    div(class="flex-demo") 3
+    cell(is-link,
+        title="最新录入",
+        style={'font-size': '20px'},
+        link="/component/pullup",
+    )
+        span(style={
+            'font-size': '12px', 'display': 'table - cell',
+            'vertical-align': 'middle', 'text-align': 'center'
+        }) 查看全部
+    div
+        p(v-for="i in 10") {{i}}
+

@@ -886,6 +886,9 @@ export default class WorkerStore extends VuexModule {
     @Mutation
     private success(data: any) {
         this.peoples = data.data;
+        if(!this.peoples) {
+            return;
+        }
     }
     @Mutation
     private successInvolvedProject(data: any) {

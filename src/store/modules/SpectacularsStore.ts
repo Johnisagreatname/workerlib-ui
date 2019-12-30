@@ -169,7 +169,6 @@ export default class SpectacularsStore extends VuexModule {
     }
     @Action
     public async skill() {
-        debugger
         await request.post('/api/workerlib/grade',
             {
                 "pageInfo" : {},
@@ -337,7 +336,6 @@ export default class SpectacularsStore extends VuexModule {
 
     @Action
     public async countCultivateCount() {
-        debugger
         await request.post('/api/workerlib/cultivate_count', {
             "pageInfo" : {
                 "pageIndex": 1,
@@ -627,7 +625,6 @@ export default class SpectacularsStore extends VuexModule {
                         fontSize: 12,
                     },
                     formatter: function (value) {
-                        //debugger
                         var ret = ""; //拼接加\n返回的类目项
                         var maxLength = 5; //每项显示文字个数
                         var valLength = value.length; //X轴类目项的文字个数
