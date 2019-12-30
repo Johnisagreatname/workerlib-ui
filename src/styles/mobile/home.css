@@ -1,5 +1,25 @@
+
+.flex-demo {
+    text-align: center;
+    color: #fff;
+    background-color: #20b907;
+    border-radius: 4px;
+    background-clip: padding-box;
+    height: 20px;
+}
+.flex-demo2 {
+    text-align: center;
+    color: #fff;
+    background-color: #2d8cf0;
+    border-radius: 10px;
+    background-clip: padding-box;
+    height: 40px;
+}
 #home {
     width: 100%;
     display: list-item;
     position: fixed;
+}
+#home .vux-cell-bd .vux-label {
+    font-size: 16px !important;
 }
