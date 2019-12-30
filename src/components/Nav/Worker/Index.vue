@@ -51,6 +51,7 @@
             this.store.search();
             this.store.getProjectType();
             this.store.selectProject();
+            this.store.findRole();
         }
         getCommentSparticularsList():any{
             return this.storeComm.commentSparticularsList;
@@ -164,6 +165,7 @@
             }, 500)
         }
         ok() : any{
+
             if(!this.store.userName){
                 this.messageWarningFn('请输入姓名！');
                 return;
@@ -180,6 +182,7 @@
                 this.messageWarningFn('请选择工种！');
                 return;
             }
+
             this.store.insertArchives();
             this.addWorker = false;
         }
