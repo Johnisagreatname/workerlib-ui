@@ -80,7 +80,6 @@
             return this.store.commentSparticularsList;
         }
         addCommtentlist(id) : any {
-            debugger
             this.store.setSelectEafId(id);
             this.store.searchAppraiseList();
             this.store.searchProjectList();

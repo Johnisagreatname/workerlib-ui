@@ -89,6 +89,17 @@
             this.addProject = false;
         }
 
+        get name(): string {
+            return this.store.userInfo.username;
+        }
+        set name(data: string) {
+            this.store.setName(data);
+        }
+
+        getTotalRecords() {
+            return this.store.pageInfo.totalRecords;
+        }
+
         onPageSizeChange(pageSize){
 
             this.store.pageSize(pageSize);
@@ -126,10 +137,6 @@
             }else {
                 this.getDispaly = "display:none";
             }
-        }
-
-        set getDisplay(data:string){
-            this.store.setGetDisplay(data);
         }
 
         get username():string{

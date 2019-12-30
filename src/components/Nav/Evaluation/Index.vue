@@ -52,7 +52,6 @@
         //     }, 500)
         // }
         ok() : any{
-            debugger;
             this.store.verification();
             this.addEvaluation = false;
         }

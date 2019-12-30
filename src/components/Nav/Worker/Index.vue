@@ -1,6 +1,7 @@
 <script lang="ts">
     import "@/assets/css/common.css";
     import WorkerStore from '../../../store/modules/WorkerStore';
+    import CommentsStore from '../../../store/modules/CommentsStore';
     import { Component, Vue, Prop, Model, Watch} from 'vue-property-decorator';
     import { getModule } from 'vuex-module-decorators';
     import { Message } from 'iview';
@@ -23,6 +24,7 @@
         @Model('isCollapsed', { type: Boolean }) private isCollapsed !: boolean;
         loading = true;
         private store: any;
+        private storeComm: any;
         public addWorker: boolean;
         public particulars: boolean;
         public onLeave: boolean;
@@ -38,6 +40,7 @@
         constructor() {
             super();
             this.store = getModule(WorkerStore)
+            this.storeComm = getModule(CommentsStore)
             this.addWorker = false;
             this.particulars = false;
             this.certificate = false;
@@ -50,6 +53,9 @@
             this.store.selectProject();
             this.store.findRole();
         }
+        getCommentSparticularsList():any{
+            return this.storeComm.commentSparticularsList;
+        }
         handleSuccessPhoto (res, file) {
             this.store.setPhoto(res.file);
         }
@@ -57,14 +63,21 @@
             let alert: any = Message;
             alert.warning(file.name + ' 文件格式错误！请上传jpg、jpeg、png格式文件！');
         }
+        handleSuccessExcel (res, file) {
+            if(res.status == 0){
+                this.store.search();
+            }
+        }
+        handleFormatErrorExcel (file) {
+            let alert: any = Message;
+            alert.warning(file.name + ' 文件格式错误！xls、xlsx格式文件！');
+        }
         handleSuccessIdCardfront (res, file) {
             this.store.setIdCardfront(res.file);
         }
-
         handleSuccessIdCardReverse (res, file) {
             this.store. setIdCardReverse(res.file);
         }
-
         handleSuccessCertificate (res, file) {
             this.store. setCertificate(res.file);
         }
@@ -91,20 +104,24 @@
             return date.getFullYear() + "-" + (date.getMonth()+1) + "-" + date.getDate();
         }
 
-        viewData(id) {
-            debugger
+        viewData(id,idNum) {
             this.particulars=!this.particulars;
             this.store.setInfoId(id);
+            this.store.setInfoIdNumber(idNum);
+
             this.store.searchInfo();
             this.store.searchInvolvedProject();
             this.store.selectCultivate();
             this.store.selectCheckWorkce();
             this.store.selectCheckWorkceMonth();
+            this.store.selectSalary();
+            this.store.selectComments();
+            this.storeComm.setPunishmentsId(id);
+            this.storeComm.searchCommentSparticulars();
         }
         checkLeave() {
             this.onLeave=!this.onLeave;
         }
-
         getMenus() : any {
             if(this.options) return this.options;
             this.options = [
@@ -191,7 +208,6 @@
             this.certificate = false;
             this.particulars = true;
         }
-
         onCheck(id: number,name:string,leave:number): void {
             var itemTrue = {};
             if(this.store.checkeds.findIndex(x => x.id == id) > -1) {
@@ -220,12 +236,10 @@
             }
             return this.disabled;
         }
-
         isChecked(id): boolean {
             if(this.store.checkeds.find(x => x.id == id)){
                 return true;
             }
-
             return false;
         }
         onPageSizeChange(pageSize){
@@ -411,13 +425,13 @@
             return this.store.grade;
         }
 
-        @Watch("particulars")
-        particularsWatch(x: boolean) {
-
-            if (x) return;
-
-            this.store.setPeopleInfo(null);
-        }
+        // @Watch("particulars")
+        // particularsWatch(x: boolean) {
+        //
+        //     if (x) return;
+        //
+        //     this.store.setPeopleInfo(null);
+        // }
     }
 </script>
 <style scoped src="@/styles/worker.css" />

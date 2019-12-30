@@ -1,0 +1,22 @@
+
+#home {
+    width: 100%;
+    display: list-item;
+    position: fixed;
+}
+#home .vux-cell-bd .vux-label {
+    font-size: 16px !important;
+}
+.space-btn {
+    padding: 5px 0;
+    margin: 10px;
+    text-align: center;
+    border: 1px red solid;
+}
+
+.space {
+    padding: 30px 0;
+    margin: 10px;
+    text-align: center;
+    border: 1px green solid;
+}
