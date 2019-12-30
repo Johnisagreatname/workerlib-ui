@@ -65,6 +65,8 @@
         }
         handleSuccessExcel (res, file) {
             if(res.status == 0){
+                let alert: any = Message;
+                alert.warning('成功！');
                 this.store.search();
             }
         }
@@ -163,7 +165,24 @@
             }, 500)
         }
         ok() : any{
-            debugger
+
+            if(!this.store.userName){
+                this.messageWarningFn('请输入姓名！');
+                return;
+            }
+            if(!this.store.card){
+                this.messageWarningFn('请输入身份证号！');
+                return;
+            }
+            if(!this.store.phone){
+                this.messageWarningFn('请输入手机号码！');
+                return;
+            }
+            if(!this.store.type){
+                this.messageWarningFn('请选择工种！');
+                return;
+            }
+
             this.store.insertArchives();
             this.addWorker = false;
         }

@@ -29,6 +29,7 @@
       Button(type="primary", ghost, icon="ios-log-out",@click="upload()") 导出
       Upload(action="/api/workerlib/salary/import",
       :on-success="handleSuccessExcel",:format="['xls','xlsx']",:on-format-error="handleFormatErrorExcel",
+      :show-upload-list="false",
       :style={'float':'left'})
          Button(icon="ios-cloud-upload-outline") 导入薪资
 

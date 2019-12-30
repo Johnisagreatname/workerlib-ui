@@ -741,7 +741,8 @@ export default class WorkerStore extends VuexModule {
             "workType":this.type,
             "id_card_front":this.idCardfront,
             "id_card_reverse":this.idCardReverse,
-            "certificate":this.certificate
+            "certificate":this.certificate,
+            "unit_id":"E1518A607E764390848F188390482597"
         }).then((data)=>{
 
             if(!data){

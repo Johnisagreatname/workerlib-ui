@@ -83,7 +83,6 @@ export default class WoekclassStore extends VuexModule {
     public async verification(){
         await request.post('/api/workerlib/dictionaries/exist ', await this.getVerification()).then((data)=>{
             this.sucess(data);
-
         }).catch((e)=>{
             console.log(e)
             let alert: any = Message;

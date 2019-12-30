@@ -106,7 +106,6 @@
             this.addProject = false;
         }
         okAdd() : any{
-            debugger
             let list = this.store.projectPeoples.filter(a => a.project_id ==this.store.projectId && a.leave == 1).map(b=>b.archives_id);
             let lList = this.store.projectPeoples.filter(a => a.project_id ==this.store.projectId && a.leave == 2);
             this.noProjectPeople = this.store.peopleId.filter(a=>list.indexOf(a.eafId)>-1);
@@ -138,7 +137,7 @@
                     this.store.setLeave(1);
                     this.store.update();
                 }
-
+                this.store.clearUpdateList();
                 this.addPeoples = false;
             }else {
                 setTimeout(() => {
@@ -151,17 +150,22 @@
             }
         }
         updatePeople() : any{
-            this.store.setUpdateList(this.store.checkeds.map(x => x.id));
+            for(let i = 0;i<this.store.checkeds.length;i++){
+                this.store.setUpdateList(this.store.checkeds[i].id);
+            }
             this.store.setLeave(2);
             this.store.update();
         }
         cancelAdd():any {
+            this.store.clearInsertList();
             this.addPeoples = false;
         }
         okView():any{
-            this.viewPeoples = false
+            this.store.clearUpdateList();
+            this.viewPeoples = false;
         }
         cancelView():any {
+            this.store.clearUpdateList();
             this.viewPeoples = false
         }
 
