@@ -270,7 +270,6 @@
             }
         }
         handleSelectAllCancel(selection){
-            debugger
             for(let i = 0;i < this.store.peoples.length;i++) {
                 let index =  this.checkAllGroup.findIndex(x => x.id == this.store.peoples[i].eafId);
                 this.$set(this.store.peoples[i], '_disabled', false);
