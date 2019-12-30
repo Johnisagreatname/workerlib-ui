@@ -128,10 +128,9 @@
             }
         }
 
-        set getdisplay(data:string){
+        set getDisplay(data:string){
             this.store.setGetDisplay(data);
         }
-
 
         get username():string{
             return this.store.userInfo.username;

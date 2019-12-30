@@ -48,6 +48,7 @@
             this.store.search();
             this.store.getProjectType();
             this.store.selectProject();
+            this.store.findRole();
         }
         handleSuccessPhoto (res, file) {
             this.store.setPhoto(res.file);
@@ -145,6 +146,7 @@
             }, 500)
         }
         ok() : any{
+            debugger
             this.store.insertArchives();
             this.addWorker = false;
         }
