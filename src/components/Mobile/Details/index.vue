@@ -1,11 +1,10 @@
-
 <script lang="ts">
     import {Component, Vue, Prop, Model} from 'vue-property-decorator';
     import {getModule} from 'vuex-module-decorators';
-    import {Tab, TabItem, XHeader,Cell, Flexbox, FlexboxItem,Swiper,SwiperItem,Badge,ViewBox} from 'vux'
+    import {Tab, TabItem, XHeader, Cell, Flexbox, FlexboxItem, Swiper, SwiperItem, Badge, ViewBox} from 'vux'
     import MobileStore from '../../../store/mobile/MobileStore';
     import WorkerStore from "../../../store/modules/WorkerStore";
-
+    import router from '../../../router/.invoke/router'
 
     @Component({
         components: {
@@ -26,44 +25,59 @@
         private wstore: any;
         public sex: string;
         public now: Date;
-        public year :any;
-        public date:any;
+        public year: any;
+        public date: any;
+        private userId: any
 
         constructor() {
             super();
+            this.userId = router.currentRoute.query.uuid;
             this.store = getModule(MobileStore)
             this.wstore = getModule(WorkerStore)
-
         }
+
         mounted() {
             this.store.selectPersonInfo();
             this.store.selectAttendances();
-
+            this.wstore.setInfoId(this.userId);
+            this.wstore.searchInvolvedProject();
+            this.wstore.selectCultivate();
+            this.wstore.selectCheckWorkceMonth();
+            this.wstore.selectCheckWorkce
         }
-        getProjectInfoList():any{
+
+        getCultivateList(): any {
+            debugger
+            return this.wstore.cultivateList;
+        }
+
+        getProjectInfoList(): any {
             return this.wstore.involvedProjectInfo;
         }
-        getDateFormat (d: number) : string {
+
+        getDateFormat(d: number): string {
             let date = new Date(d);
-            return date.getFullYear() + "-" + (date.getMonth()+1) + "-" + date.getDate();
+            return date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate();
         }
+
         //获取性别
         checkSex(idNumber): string {
-            if(!idNumber) return;
-            this.sex = idNumber.substring(16,17);
-            if(this.sex=="1"||this.sex=="3"||this.sex=="5"||this.sex=="7"||this.sex=="9"){
+            if (!idNumber) return;
+            this.sex = idNumber.substring(16, 17);
+            if (this.sex == "1" || this.sex == "3" || this.sex == "5" || this.sex == "7" || this.sex == "9") {
                 return "男";
-            }else {
+            } else {
                 return "女";
             }
         }
+
         //获取年龄
-        getAge(idNumber): number{
-            if(!idNumber) return;
+        getAge(idNumber): number {
+            if (!idNumber) return;
             this.now = new Date();
             this.year = this.now.getTime();
-            this.date = new Date(idNumber.substring(6,10)+","+idNumber.substring(10,12)+","+idNumber.substring(12,14)).getTime();
-            return Math.floor((this.year-this.date)/(1000*60*60*24*31*12));
+            this.date = new Date(idNumber.substring(6, 10) + "," + idNumber.substring(10, 12) + "," + idNumber.substring(12, 14)).getTime();
+            return Math.floor((this.year - this.date) / (1000 * 60 * 60 * 24 * 31 * 12));
         }
     }
 </script>

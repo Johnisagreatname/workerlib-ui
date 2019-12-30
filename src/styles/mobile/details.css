@@ -27,6 +27,29 @@ html, body {
     background-clip: padding-box;
     height: 20px;
 }
+.img-header {
+    margin-top: 10px;
+    margin-left: 20px;
+    margin-bottom: 10px;
+    border-radius: 50%;
+    background-clip: padding-box;
+    height: 60px;
+    width: 60px;
+}
+.img-rq {
+    margin-top: 10px;
+    margin-left: 30px;
+    margin-bottom: 10px;
+    background-clip: padding-box;
+    height: 60px;
+    width: 60px;
+}
+.img-vedio {
+    margin-left: 10px;
+    background-clip: padding-box;
+    height: 30px;
+    width: 30px;
+}
 .text-title {
     margin-top: 10px;
     text-align: center;
@@ -48,4 +71,9 @@ html, body {
     text-align: left;
     font-size: 12px;
     color: #2d8cf0;
+}
+.badge-main {
+    margin-left: 10px;
+    text-align: left;
+    font-size: 12px;
 }
