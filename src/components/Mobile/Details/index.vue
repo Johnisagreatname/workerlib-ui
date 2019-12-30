@@ -5,6 +5,7 @@
     import MobileStore from '../../../store/mobile/MobileStore';
     import WorkerStore from "../../../store/modules/WorkerStore";
     import router from '../../../router/.invoke/router'
+    import CommentsStore from "../../../store/modules/CommentsStore";
 
     @Component({
         components: {
@@ -23,17 +24,22 @@
     export default class Details extends Vue {
         private store: any;
         private wstore: any;
+        private storeComm: any;
         public sex: string;
         public now: Date;
         public year: any;
         public date: any;
         private userId: any
+        private token: any;
 
         constructor() {
             super();
-            this.userId = router.currentRoute.query.uuid;
+            this.userId = router.currentRoute.query.eafid;
+            this.token = router.currentRoute.query.token;
+            localStorage.setItem('token', this.token)
             this.store = getModule(MobileStore)
             this.wstore = getModule(WorkerStore)
+            this.storeComm = getModule(CommentsStore)
         }
 
         mounted() {
@@ -43,11 +49,18 @@
             this.wstore.searchInvolvedProject();
             this.wstore.selectCultivate();
             this.wstore.selectCheckWorkceMonth();
-            this.wstore.selectCheckWorkce
+            this.wstore.selectCheckWorkce();
+            this.wstore.selectSalary();
+            this.storeComm.searchCommentSparticulars();
+        }
+
+        getCommentSparticularsList(): any {
+        debugger
+            return this.storeComm.commentSparticularsList;
         }
 
         getCultivateList(): any {
-            debugger
+        debugger
             return this.wstore.cultivateList;
         }
 

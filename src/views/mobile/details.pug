@@ -11,7 +11,7 @@
                     flexbox-item
                         div(class="flex-demo2") 查看证件
             flexbox-item(span="100")
-                img(class="img-rq",:src="'http://113.105.121.93:1818'+this.store.personInfo.cwrPhoto")
+                img(class="img-rq",src="")
         cell(title='手机号码',
             :value = "this.store.personInfo.eafPhone",
             is-link =true)
@@ -120,14 +120,14 @@
         div
             div(class="text-title") 工资明细
             cell(title='总收入',
-                value = '￥10000',
+                :value = "this.wstore.salaryInfo.pay",
                 is-link =true)
                 img(slot="icon",
                     width="20",
                     style="display:block;margin-right:5px;",
                     src="")
             cell(title='总到账',
-                value = '￥20000',
+                :value = "this.wstore.salaryInfo.income",
                 is-link =true)
                 img(slot="icon",
                     width="20",
@@ -135,26 +135,14 @@
                     src="")
         div
             div(class="text-title") 员工评价
-            flexbox
-                flexbox-item
-                    div 深圳市白石龙项目
-                flexbox-item
-                    div(class="flex-demo") 不良记录
-            div 恶意讨薪  李媛 水泥工
-            div 处罚：永久不予录用
-            flexbox
-                flexbox-item
-                    div 深圳市白石龙项目
-                flexbox-item
-                    div(class="flex-demo") 不良记录
-            div 恶意讨薪  李媛 水泥工
-            div 处罚：永久不予录用
-            flexbox
-                flexbox-item
-                    div 深圳市白石龙项目
-                flexbox-item
-                    div(class="flex-demo") 不良记录
-            div 恶意讨薪  李媛 水泥工
-            div 处罚：永久不予录用
+            div(v-for="item in getCommentSparticularsList()")
+                flexbox
+                    flexbox-item
+                        div 深圳市白石龙项目
+                    flexbox-item
+                        div(class="flex-demo2") 不良记录
+                div 恶意讨薪  李媛 水泥工
+                div 处罚：永久不予录用
+
 
 

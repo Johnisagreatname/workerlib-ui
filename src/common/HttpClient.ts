@@ -51,6 +51,7 @@ function downLoad(data, name) {
 
 /* request拦截器 */
 service.interceptors.request.use((config: any) => {
+    config.headers.Authorization = localStorage.getItem('token') ? localStorage.getItem('token') : ''
     // neverCancel 配置项，允许多个请求
     // if (!config.neverCancel) {
     //     // 生成cancelToken
