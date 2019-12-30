@@ -36,89 +36,71 @@ export default class UnitStore extends VuexModule {
     public setGetProjectName(data:any) { 
         
     }
-
     @Mutation
     public setPageInfo(data: any) { 
         
     }
-
     @Mutation
     private selectStatus(data: number) {
         this.sStatus = data;
     }
-
     @Mutation
     public selectProjectName(data: string) {
         this.sProjectName = data;
     }
-
     @Mutation
     public selectUnitName(data: string) {
         this.sUnitName = data;
     }
-
     @Mutation
     public setPageSize(data: number) {
         this.pageSize = data;
     }
-
-
     @Mutation
     public setPageIndex(data: number) { 
         this.pageIndex = data;
     }
-
     @Mutation
     public setPageTotal(data: number) {
         this.conditionList = [];
         this.pageTotal = data;
     }
-
     @Mutation
     public setProject_name(data:string) { 
         this.project_name=data;
     }
-
     @Mutation
     public setPrincipal(data:string) { 
         this.principal = data;
     }
-
     @Mutation
     public setUnit_type(data:number) { 
         this.unit_type = data;
     }
-
     @Mutation
     public setPeople_number(data:string) { 
         this.people_number = data;
     }
-
     @Mutation
     public setEntrance_time(data:Date) { 
         this.entrance_time = data;
     }
-
     @Mutation
     public setUnit_name(data:string) { 
         this.unit_name = data;
     }
-
     @Mutation
     public setUnit_number(data:string) { 
         this.unit_number = data;
     }
-
     @Mutation
     public setProject_license(data:string) { 
         this.project_license = data;
     }
-
     @Mutation
     public setProject_id(data:number) {
         this.project_id = data;
     }
-
     @Mutation
     public setId(data:number) { 
         this.id = data;
@@ -294,7 +276,6 @@ export default class UnitStore extends VuexModule {
             ]
         };
     }
-
     @Action
     public async getProject() {
         await request.post('/api/workerlib/project', {
@@ -312,6 +293,9 @@ export default class UnitStore extends VuexModule {
                 {"field": "project_name"}
                 ]
         }).then((data)=>{
+            if(!data){
+                return;
+            }
             this.successProject(data);
         }).catch((e)=>{
             console.log(e)
@@ -331,10 +315,12 @@ export default class UnitStore extends VuexModule {
             alert.warning(e.message || e)
         });
     }
-
     @Action
     public async search() {
         await request.post('/api/workerlib/join',await this.getParams()).then((data)=>{
+            if(!data){
+                return;
+            }
             this.success(data);
             this.count();
         }).catch((e)=>{
@@ -355,12 +341,15 @@ export default class UnitStore extends VuexModule {
             alert.warning(e.message || e)
         });
     }
-
     @Action
     public async upload() {
         let alert: any = Message;
-        await request.post('/api/workerlib/export/join',await this.getUploadParams(),{responseType: 'blob', params: '项目工程档案'}).then((data)=>{
-            alert.warning('成功！');
+        await request.post('/api/workerlib/export/join',await this.getUploadParams(),
+            {responseType: 'blob', params: '项目工程档案'}).then((data)=>{
+                if(!data){
+                    return;
+                }
+                alert.warning('成功！');
         }).catch((e)=>{
             let alert: any = Message;
             if(!e) {
@@ -377,10 +366,32 @@ export default class UnitStore extends VuexModule {
             alert.warning(e.message || e)
         });
     }
-
+    @Action
+    public async synchronization() {
+        let alert: any = Message;
+        await request.post('/unit/SynUnit').then((data)=>{
+            if(!data){
+                return;
+            }
+            this.sucessSynchronization(data);
+        }).catch((e)=>{
+            let alert: any = Message;
+            if(!e) {
+                alert.warning('未知错误！');
+                return
+            }
+            if(e.response && e.response.data && e.response.data.message) {
+                alert.warning(e.response.data.message)
+                return
+            }
+            if(!e.message) {
+                return;
+            }
+            alert.warning(e.message || e)
+        });
+    }
     @Action
     public async insertUnit() {
-
         await request.put('/api/workerlib/unit', {
             "unit_id":null,
             "project_id":this.project_id,
@@ -393,6 +404,9 @@ export default class UnitStore extends VuexModule {
             "principal":this.principal,
             "status":this.status
         }).then((data)=>{
+            if(!data){
+                return;
+            }
             this.added(data)
         }).catch((e)=>{
             console.log(e)
@@ -415,7 +429,6 @@ export default class UnitStore extends VuexModule {
             alert.warning(e.message || e)
         });
     }
-
     @Action
     public async getUnitType(){
         await request.post('/api/workerlib/dictionaries', {
@@ -432,44 +445,51 @@ export default class UnitStore extends VuexModule {
             "keywords" : [],
             "selectList": []
         }).then((data)=>{
+            if(!data){
+                return;
+            }
             this.successType(data);
         }).catch((e)=>{
             MessageUtils.warning(e);
         });
     }
-
     @Action
     public async count() {
         await request.post('/api/workerlib/join/count', await this.getParams()).then((total)=>{
+            if(!total){
+                return;
+            }
             this.setPageTotal(total.data)
         }).catch((e)=>{
             MessageUtils.warning(e);
         });
     }
-
     @Action
     public added(data: any) {
-
         if(data.status == 0) {
             this.search();
         }
     }
-
+    @Action
+    private sucessSynchronization(data: any) {
+        if(data.status == 0){
+            this.search();
+            let alert: any = Message;
+            alert.warning('成功！');
+        }
+    }
     @Mutation
     public successType(data: any) {
         this.unitType = data.data;
     }
-
     @Mutation
     private setUplodId(data: any) {
         this.uplodId.push(data);
     }
-
     @Mutation
     private success(data: any) {
         this.unit = data.data;
     }
-
     @Mutation
     private successProject(data:any){
         this.projectNameList = data.data;

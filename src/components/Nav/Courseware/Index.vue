@@ -128,7 +128,6 @@
             this.addCourseware = false;
         }
         cancel():any {
-            debugger
             this.store.clearCourseWare();
             this.addCourseware = false;
         }
@@ -161,8 +160,6 @@
         }
 
         okEdit() : any{
-            debugger
-
             if(this.store.courseWareEdit.title == "" || this.store.courseWareEdit.title == null ){
                 this.messageWarningFn('请输入课件名称！');
                 return;
@@ -203,7 +200,6 @@
             return this.store.teacherList;
         }
         okAdd() : any{
-            debugger
             this.store.setPeoples(this.store.checkeds.length);
             this.store.setState("待学习");
             this.store.setCStatus(1);
@@ -220,7 +216,6 @@
             this.addCultivate = false;
         }
         okUpAdd() : any{
-            debugger
             this.store.setPeoples(this.store.checkeds.length);
             this.store.setState("待学习");
             this.store.setCStatus(2);
@@ -270,7 +265,6 @@
             }
         }
         handleSelectAllCancel(selection){
-            debugger
             for(let i = 0;i < this.store.peoples.length;i++) {
                 let index =  this.checkAllGroup.findIndex(x => x.id == this.store.peoples[i].eafId);
                 this.$set(this.store.peoples[i], '_disabled', false);
@@ -295,7 +289,6 @@
         }
 
         show(id: number,name:string,photo:string): void {
-            debugger
             let _that = this;
             var itemTrue = {};
             let index = this.store.checkeds.findIndex(x => x.id == id);
@@ -632,7 +625,6 @@
             return this.store.cultivate.trainingInstitution;
         }
         set trainingTeacher(data:string){
-            debugger
             this.store.setTrainingTeacher(data);
         }
         get trainingTeacher():string{

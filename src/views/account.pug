@@ -2,7 +2,7 @@
     .topOne
         .divOne
             span 用户名：
-                Input(clearable,style="width: 200px")
+                Input(clearable,style="width: 200px",v-model="name")
         .divOne
             span
         .divOne
@@ -29,7 +29,7 @@
                             Icon(type="ios-remove-circle-outline")
                             span(@click="popupDelUser(row.userId)") 删除用户
     .footer
-        Page(show-sizer,show-elevator,show-total,@on-page-size-change="onPageSizeChange",@on-change="onPageIndexChange")
+        Page(:total="getTotalRecords()",show-sizer,show-elevator,show-total,@on-page-size-change="onPageSizeChange",@on-change="onPageIndexChange")
 
     Modal(:value="addProject",title="新增人员",@on-ok="ok()",@on-cancel="cancel()",width='70%')
         .addBody

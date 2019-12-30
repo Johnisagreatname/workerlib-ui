@@ -69,7 +69,7 @@ export default class AccountStore extends VuexModule {
 
     @Action
     public async search() {
-        await request.post('/api/workerlib/user', {
+        let param = {
             "pageInfo" : {
                 "pageIndex": this.pageInfo.pageIndex,
                 "pageSize": this.pageInfo.pageSize
@@ -83,9 +83,19 @@ export default class AccountStore extends VuexModule {
 
             "keywords" : [],
             "selectList": []
-        }).then((data)=>{
+        }
+
+        if(this.userInfo.username && this.userInfo.username.trim()) {
+            param.conditionList.push({
+                "name": "username",
+                "value": this.userInfo.username,
+                "algorithm": "LIKE",
+            })
+        }
+
+        await request.post('/api/workerlib/user', param).then((data)=>{
             this.successUser(data);
-            //this.count();
+            this.count();
         }).catch((e)=>{
             console.log(e)
             let alert: any = Message;
@@ -374,7 +384,10 @@ export default class AccountStore extends VuexModule {
     public setPassword(data:any){
         this.userInfo.password = data;
     }
-
+    @Mutation
+    public setName(data:any){
+        this.userInfo.username = data;
+    }
     @Mutation
     public successUser(data: any) {
         this.userList = data.data;
