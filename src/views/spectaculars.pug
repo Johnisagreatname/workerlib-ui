@@ -93,6 +93,10 @@
                     #cultivate(:style={'height': '200px', 'width': '418px'})
         .bodyMiddle
             .bodyMiddleTop
+                video(controls="controls",autoplay,loop,width="800px",height="460px")
+                    source(:src="'https://vdept.bdstatic.com/51633933585563654a65427834714952/4e69694d6a714575/" +
+                    "6e5c75c6b19a46a58259511e68934231dae42e594dde16d70b410503908d399f14e934ba79e9365c5ca00528ff362e29.mp4?" +
+                    "auth_key=1577704872-0-0-e6f44c0594e6a0ca64e1b7657146cc97'")
             .bodyMiddleMiddle
                 .middleMiddleTop
                 .middleMiddleBelow
@@ -102,13 +106,13 @@
                             span(:style={
                                 'line-height': '40px',
                                 'font-size': '14px',
-                                'color':'#0068ff'
+                                'color':'#ffffff'
                             }) 工种总数(种)
                         .belowBelow
                             span(:style={
                                 'line-height': '100px',
                                 'font-size': '38px',
-                                'color': '#0068ff'
+                                'color': '#ffffff'
                             })  {{workTypeCount}}
                     .middleBelow
                         .belowTopOne
@@ -116,13 +120,13 @@
                             span(:style={
                                 'line-height': '40px',
                                 'font-size': '14px',
-                                'color': '#0068ff'
+                                'color': '#ffffff'
                             }) 自有队伍人数(人)
                         .belowBelow
                             span(:style={
                                 'line-height': '100px',
                                 'font-size': '38px',
-                                'color': '#0068ff'
+                                'color': '#ffffff'
                             })  {{this.store.projectCountBE.beOn}}
                     .middleBelow
                         .belowTopOne
@@ -130,13 +134,13 @@
                             span(:style={
                                 'line-height': '40px',
                                 'font-size': '14px',
-                                'color': '#0068ff'
+                                'color': '#ffffff'
                             }) 外部队伍人数(人)
                         .belowBelow
                             span(:style={
                                 'line-height': '100px',
                                 'font-size': '38px',
-                                'color': '#0068ff'
+                                'color': '#ffffff'
                             })  {{this.store.projectCountBE.dimission}}
             .bodyMiddleBelow
                 .middleLeft
@@ -146,25 +150,25 @@
                             span(:style={
                                 'line-height': '40px',
                                 'font-size': '14px',
-                                'color': '#0068ff'
+                                'color': '#ffffff'
                             }) 在建工程总数
                         .belowBelowTwo
                             span(:style={
                                 'line-height': '100px',
                                 'font-size': '38px',
-                                'color': '#0068ff'
+                                'color': '#ffffff'
                             })  {{this.store.projectCount.doing}}
                             span(:style={
                                 'line-height': '100px',
                                 'font-size': '14px',
-                                'color': '#0068ff'
+                                'color': '#ffffff'
                             })  个
 
                         .belowThree
                             span(:style={
                                 'line-height': '66px',
                                 'font-size': '14px',
-                                'color': '#0068ff'
+                                'color': '#ffffff'
                             }) 工程总数：{{this.store.projectCount.total}}
                             span(:style={
                                 'line-height': '66px',
@@ -179,29 +183,29 @@
                             span(:style={
                                 'line-height': '40px',
                                 'font-size': '14px',
-                                'color': '#0068ff'
+                                'color': '#ffffff'
                             }) 在场工人数
                         .belowBelowTwo
                             span(:style={
                                 'line-height': '100px',
                                 'font-size': '38px',
-                                'color': '#0068ff'
+                                'color': '#ffffff'
                             })  {{this.store.projectCountBE.theirOwn}}
                             span(:style={
                                 'line-height': '100px',
                                 'font-size': '14px',
-                                'color': '#0068ff'
+                                'color': '#ffffff'
                             })  个
                         .belowThree
                             span(:style={
                                 'line-height': '66px',
                                 'font-size': '14px',
-                                'color': '#0068ff'
+                                'color': '#ffffff'
                             }) 自有工人：{{this.store.projectCountBE.beOnTheirOwn}}
                             span(:style={
                                 'line-height': '66px',
                                 'font-size': '14px',
-                                'color': '#00e0ef',
+                                'color': '#ffffff',
                                 'margin-left': '20px'
                             }) 外部工人：{{this.store.projectCountBE.dimissionTheirOwn}}
                 .middleRight
@@ -211,30 +215,30 @@
                             span(:style={
                                 'line-height': '40px',
                                 'font-size': '14px',
-                                'color': '#0068ff'
+                                'color': '#ffffff'
                             }) 离场工人数
                         .belowBelowTwo
                             span(:style={
                                 'line-height': '100px',
                                 'font-size': '38px',
-                                'color': '#0068ff'
+                                'color': '#ffffff'
                             })  {{this.store.projectCountBE.external}}
                             span(:style={
                                 'line-height': '100px',
                                 'font-size': '14px',
-                                'color': '#0068ff'
+                                'color': '#ffffff'
                             })  个
 
                         .belowThree
                             span(:style={
                                 'line-height': '66px',
                                 'font-size': '14px',
-                                'color': '#0068ff'
+                                'color': '#ffffff'
                             }) 自有工人：{{this.store.projectCountBE.beOnExternal}}
                             span(:style={
                                 'line-height': '66px',
                                 'font-size': '14px',
-                                'color': '#00e0ef',
+                                'color': '#ffffff',
                                 'margin-left': '20px'
                             }) 外部工人：{{this.store.projectCountBE.dimissionExternal}}
         .bodyRight

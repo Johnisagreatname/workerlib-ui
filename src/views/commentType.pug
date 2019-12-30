@@ -56,9 +56,9 @@
             .divTwo
                 .name
                     span 类型值
-                    InputNumber(:style={'color': 'red'}) *
+                    span(:style={'color': 'red'}) *
                 .input
-                    Input(clearable,style="width: 345px",size=large,v-model="editValue")
+                    InputNumber(clearable,style="width: 345px",size=large,v-model="editValue")
     Modal(:value="deleteCommentType",title="删除类型",@on-ok="deleteOK()",@on-cancel="deleteCancel()",width='50%',:styles="{top: '20px'}",)
         .delBody
             .divTwo

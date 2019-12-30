@@ -1,6 +1,7 @@
 import { Module, VuexModule, Mutation, Action } from 'vuex-module-decorators';
 import store from "../index";
 import request from "../../common/HttpClient";
+// @ts-ignore
 import {Message} from "iview";
 import MessageUtils from "../../common/MessageUtils";
 

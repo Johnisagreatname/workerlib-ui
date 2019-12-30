@@ -327,7 +327,7 @@ export default class CommentTypeStore extends VuexModule {
             sortable: true
         },
         {
-            title: '工种',
+            title: '评价类型',
             key: 'name',
             sortable: true
         },

@@ -111,9 +111,9 @@
 .bodyMiddleTop{
     width: 800px;
     height: 460px;
-    background-image: url('~@/assets/css/images/banner.png');
-    background-repeat: no-repeat;
-    background-position: center;
+    /*background-image: url('~@/assets/css/images/banner.png');*/
+    /*background-repeat: no-repeat;*/
+    /*background-position: center;*/
     margin-top: 40px;
 }
 .bodyMiddleMiddle{

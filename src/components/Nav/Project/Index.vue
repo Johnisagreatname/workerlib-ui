@@ -106,6 +106,7 @@
             this.addProject = false;
         }
         okAdd() : any{
+            debugger
             let list = this.store.projectPeoples.filter(a => a.project_id ==this.store.projectId && a.leave == 1).map(b=>b.archives_id);
             let lList = this.store.projectPeoples.filter(a => a.project_id ==this.store.projectId && a.leave == 2);
             this.noProjectPeople = this.store.peopleId.filter(a=>list.indexOf(a.eafId)>-1);
@@ -155,9 +156,9 @@
             }
             this.store.setLeave(2);
             this.store.update();
+            this.viewPeoples = false;
         }
         cancelAdd():any {
-            this.store.clearInsertList();
             this.addPeoples = false;
         }
         okView():any{
@@ -168,11 +169,9 @@
             this.store.clearUpdateList();
             this.viewPeoples = false
         }
-
         okProjectPeople():any{
             this.viewProjectPeople = false
         }
-        
         cancelProjectPeople():any {
             this.viewProjectPeople = false
         }
@@ -184,7 +183,6 @@
 
                 this.addPeoples = true;
             }else {
-
                 this.store.setViewProjectId(this.store.projectId);
                 this.store.searchViewPeople();
                 this.viewPeoples = true;
@@ -258,10 +256,7 @@
             }
             return this.store.peoples;
         }
-        
-        
-        
-        (): any{
+        getViewPeoples(): any{
             for(let i = 0;i < this.store.viewPeople.length;i++) {
                 if(this.store.checkeds.filter(a => a.archives_id == this.store.viewPeople[i].archives_id ).length > 0){
                     this.$set(this.store.viewPeople[i], '_checked', true)
@@ -311,7 +306,7 @@
             item["eafName"] = row.eafName;
             item["project_id"] = row.project_id;
             item["id"] = row.id;
-           this.store.setChecked(item);
+            this.store.setChecked(item);
             console.log(this.store.checkeds)
         }
         handleSelectRowCancelProject(selection,row){
@@ -368,7 +363,7 @@
             this.store.searchPeople();
         }
         getMenus() : any {
-          return this.store.projectType;
+            return this.store.projectType;
         }
         getWorkTypeMenus() : any {
             return this.store.workType;
@@ -556,7 +551,7 @@
             }
             this.store.selectStatus(data);
         }
-}
+    }
 </script>
 <style scoped src="@/styles/project.css" />
 <template lang="pug" src="@/views/project.pug" />

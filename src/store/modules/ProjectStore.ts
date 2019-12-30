@@ -681,27 +681,27 @@ export default class ProjectStore extends VuexModule {
                 ])
             }
         },
-        {
-            title: '施工许可证',
-            key: 'builder_license',
-            sortable: true,
-            render: (h, params) => {
-                return h('div', [
-                    h('span', {
-                        style: {
-                            display: 'inline-block',
-                            width: '100%',
-                            overflow: 'hidden',
-                            textOverflow: 'ellipsis',
-                            whiteSpace: 'nowrap'
-                        },
-                        domProps: {
-                            title: params.row.builder_license
-                        }
-                    }, params.row.builder_license)
-                ])
-            }
-        },
+        // {
+        //     title: '施工许可证',
+        //     key: 'builder_license',
+        //     sortable: true,
+        //     render: (h, params) => {
+        //         return h('div', [
+        //             h('span', {
+        //                 style: {
+        //                     display: 'inline-block',
+        //                     width: '100%',
+        //                     overflow: 'hidden',
+        //                     textOverflow: 'ellipsis',
+        //                     whiteSpace: 'nowrap'
+        //                 },
+        //                 domProps: {
+        //                     title: params.row.builder_license
+        //                 }
+        //             }, params.row.builder_license)
+        //         ])
+        //     }
+        // },
         {
             title: '开工时间',
             key: 'start_time',
