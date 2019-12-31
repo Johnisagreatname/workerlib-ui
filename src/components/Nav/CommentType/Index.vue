@@ -20,7 +20,7 @@
             }
         }
     })
-    export default class Workclass extends Vue {
+    export default class CommentType extends Vue {
         rowClassName (row, index) : string {
             if(index == 0) {
                 return 'table-header'
