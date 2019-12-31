@@ -958,6 +958,10 @@ export default class ProjectStore extends VuexModule {
         this.updateList.push(data) ;
     }
     @Mutation
+    private clearUpdateList() {
+        this.updateList= new Array<any>() ;
+    }
+    @Mutation
     private sucessUpdate(data: any) {
         if(data.status == 0) {
             for (let i = 0; i < this.projectPeoples.length; i++) {
@@ -967,7 +971,7 @@ export default class ProjectStore extends VuexModule {
                 }
             }
             this.leave = null;
-            this.updateList = new Array<any>();
+            this.updateList= new Array<any>() ;
             let alert: any = Message;
             alert.warning('成功！');
         }
@@ -978,7 +982,7 @@ export default class ProjectStore extends VuexModule {
         for(let i = 0;i<this.insertList.length;i++){
             this.projectPeoples.push(this.insertList[i]);
         }
-        this.insertList = new Array<any>() ;
+            this.insertList=new Array<any>() ;
         let alert: any = Message;
         alert.warning('成功！');
         }
@@ -995,6 +999,10 @@ export default class ProjectStore extends VuexModule {
     @Mutation
     private setInsertList(data: any) {
         this.insertList.push(data) ;
+    }
+    @Mutation
+    private clearInsertList() {
+        this.insertList=new Array<any>() ;
     }
 
     @Mutation

@@ -34,6 +34,7 @@
 
         constructor() {
             super();
+            debugger
             this.userId = router.currentRoute.query.eafid;
             this.token = router.currentRoute.query.token;
             localStorage.setItem('token', this.token)
@@ -55,12 +56,10 @@
         }
 
         getCommentSparticularsList(): any {
-        debugger
             return this.storeComm.commentSparticularsList;
         }
 
         getCultivateList(): any {
-        debugger
             return this.wstore.cultivateList;
         }
 

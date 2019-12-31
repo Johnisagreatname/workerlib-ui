@@ -3,6 +3,7 @@ import store from "../index";
 import request from "../../common/HttpClient";
 import {Message} from "iview";
 import MessageUtils from "../../common/MessageUtils";
+import Role from "../../components/Nav/Role/Index.vue";
 
 @Module({
     namespaced: true,
@@ -65,6 +66,9 @@ export default class WorkerStore extends VuexModule {
     public onLeave:number;
     public conditionList:Array<any>;
 
+    public userId:String;
+    public roleName:any;
+
     constructor(e) {
         super(e)
         this.pageIndex=1;
@@ -118,6 +122,8 @@ export default class WorkerStore extends VuexModule {
         this.selectUserName="";
         this.selectType="";
         this.selectStatus=null;
+        this.userId='';
+        this.roleName = {};
     }
     @Action
     public getParams() : any {
@@ -735,11 +741,14 @@ export default class WorkerStore extends VuexModule {
             "workType":this.type,
             "id_card_front":this.idCardfront,
             "id_card_reverse":this.idCardReverse,
-            "certificate":this.certificate
+            "certificate":this.certificate,
+            "unit_id":"E1518A607E764390848F188390482597"
         }).then((data)=>{
+
             if(!data){
                 return;
             }
+          
             this.added(data)
         }).catch((e)=>{
             console.log(e)
@@ -761,6 +770,50 @@ export default class WorkerStore extends VuexModule {
             alert.warning(e.message || e)
         });
     }
+
+
+    @Action
+    public async findRole() {
+        debugger
+        await request.post('/api/workerlib/role', {
+            "conditionList": [{
+                "name": "roleName",
+                "value": "工人",
+                "algorithm": "EQ"
+
+            }],
+            "sortList": [],
+
+            "groupList" : [],
+
+            "keywords" : [],
+            "selectList": []
+        }).then((data)=>{
+            this.successRole(data);
+        }).catch((e)=>{
+            console.log(e)
+            let alert: any = Message;
+            if(!e) {
+                alert.warning('未知错误！')
+                return
+            }
+
+            if(e.response && e.response.data && e.response.data.message) {
+                alert.warning(e.response.data.message)
+                return
+            }
+
+            if(!e.message) {
+                return;
+            }
+
+            alert.warning(e.message || e)
+        });
+    }
+
+
+
+
     @Action
     public async selectCheckWorkceMonth() {
         await request.post('/api/workerlib/user_salary', {
@@ -840,8 +893,10 @@ export default class WorkerStore extends VuexModule {
     }
     @Action
     public added(data: any) {
+        debugger
         if(data.status == 0) {
             this.search();
+            this.insertUserGroupRole(data);
         }
     }
     @Action
@@ -862,6 +917,13 @@ export default class WorkerStore extends VuexModule {
 
         }
     }
+
+    @Mutation
+    public successRole(data:any){
+        debugger
+        this.roleName =  data.data;
+    }
+
     @Mutation
     private sucessCheckWorkceMonth(data: any) {
         this.checkWorkceMonth = data.data;
@@ -1051,6 +1113,10 @@ export default class WorkerStore extends VuexModule {
     public setInPageSize(data: number) {
         this.inPageSize = data;
     }
+
+    private insertUserGroupRole(data: any) {
+        
+    }
 }
 interface ProjectType {
     value?: string;
@@ -1080,3 +1146,4 @@ interface InvolvedProjectInfo {
     end_time?:Date;
     project_license?:string;
 }
+

@@ -67,6 +67,7 @@
                 { name: '设置', icon: 'md-settings', second: [
                         {secondName:'账号', path: '/nav/account', text: '账号设置'},
                         {secondName:'工种', path: '/nav/workclass', text: '工种设置'},
+                        {secondName:'评价', path: '/nav/commentType', text: '评价管理'},
                         {secondName:'题库', path: '/nav/options', text: '题库设置'},
                         {secondName:'课件', path: '/nav/course', text: '课件设置'},
                         {secondName:'处罚', path: '/nav/punishment', text: '处罚设置'},

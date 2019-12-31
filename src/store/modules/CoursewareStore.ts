@@ -225,7 +225,6 @@ export default class CoursewareStore extends VuexModule {
     }
     @Action
     public async searchInfo() {
-
         await request.post('/api/workerlib/courseware',{
             "pageInfo" : {
             },

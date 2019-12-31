@@ -59,6 +59,7 @@ export default class MobileStore extends VuexModule {
     @Action
     public getParamsInfo(): any {
         let item = {};
+        debugger
         this.userId = router.currentRoute.query.eafid;
         item["name"] = "archives_id";
         item["value"] = this.userId;
@@ -85,7 +86,6 @@ export default class MobileStore extends VuexModule {
         await request.post('/api/workerlib/alluser', await this.getParams()).then((data) => {
             this.success(data);
         }).catch((e) => {
-        debugger;
             let alert: any = Message;
             if (!e) {
                 alert.warning('未知错误！')
