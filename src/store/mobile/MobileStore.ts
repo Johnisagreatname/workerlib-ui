@@ -18,6 +18,7 @@ export default class MobileStore extends VuexModule {
     public conditionListp: Array<any>;
     public userId: string | (string | null)[];
     public personInfo: any;
+    public workType: any;
     public projectInfo: Array<any>;
     public attendances: any;
     public wages: any;
@@ -29,6 +30,7 @@ export default class MobileStore extends VuexModule {
         this.conditionListp = [];
         this.projectInfo = [];
         this.personInfo = null;
+        this.workType = null;
         this.attendances = null;
         this.wages = null;
         this.evaluates = null;
@@ -101,12 +103,35 @@ export default class MobileStore extends VuexModule {
             alert.warning(e.message || e)
         });
     }
-
+    @Action
+    public async selectWorkType() {
+        // @ts-ignore
+        await request.post('/api/workerlib/worktype', await this.getParams()).then((data) => {
+            this.successWorkType(data);
+        }).catch((e) => {
+            let alert: any = Message;
+            if (!e) {
+                alert.warning('未知错误！')
+                return
+            }
+            if (e.response && e.response.data && e.response.data.message) {
+                alert.warning(e.response.data.message)
+                return
+            }
+            if (!e.message) {
+                return;
+            }
+            alert.warning(e.message || e)
+        });
+    }
     @Mutation
     private success(data: any) {
         this.personInfo = data.data[0];
     }
-
+    @Mutation
+    private successWorkType(data: any) {
+        this.workType = data.data[0];
+    }
     @Action
     public async selectAttendances() {
         await request.post('/api/workerlib/archives', await this.getParamsInfo()).then((data) => {
