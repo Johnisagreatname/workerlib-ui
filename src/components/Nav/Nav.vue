@@ -32,6 +32,7 @@
         @Model('isCollapsed', { type: Boolean }) private isCollapsed !: boolean;
 
         private menus: Array<MenuInfo>;
+
         get title() : String {
             return this.store.title
         }
@@ -70,7 +71,7 @@
                         {secondName:'评定等级', path: '/nav/grade', text: '等级管理'},
                         {secondName:'评定级别', path: '/nav/rate', text: '级别管理'},
                         {secondName:'题库', path: '/nav/options', text: '题库设置'},
-                        {secondName:'课件类型', path: '/nav/course', text: '课件类型'},
+                        {secondName:'课件', path: '/nav/course', text: '课件设置'},
                         {secondName:'处罚', path: '/nav/punishment', text: '处罚设置'},
                         {secondName:'角色', path: '/nav/role', text: '角色设置'}
                     ] }

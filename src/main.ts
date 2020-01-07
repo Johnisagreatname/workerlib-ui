@@ -40,6 +40,7 @@ router.beforeEach((to, from ,next) => {
       }
     }
   }else{
+    debugger
     if(loginInfo){
       if(Object.keys(from.query).length === 0){
         next()
@@ -52,7 +53,11 @@ router.beforeEach((to, from ,next) => {
         }
       }
     }else{
-      if(to.path==="/login"){
+      debugger
+      if(to.path==="/mobile/details"){
+        next()
+      }
+      else if(to.path==="/login" ){
         next()
       }else{
         next({

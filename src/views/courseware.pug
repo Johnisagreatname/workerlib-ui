@@ -145,8 +145,8 @@
                                 Select(clearable,multiple,style="width:345px",v-model="typeWork",filterable,placeholder="选择分类",placement="top-start")
                                     Option(v-for="item in getType()", :value="item.name", :key="item.name") {{item.name}}
                 TabPane(label="资料上传",name="name2",icon="ios-cloud-upload-outline")
-                    Upload(multiple,type="drag",action="/api/workerlib/courseware/video/upload",
-                    :on-success="handleSuccessVideo",:format="['ogg','mp4','WebM']",:on-format-error="handleFormatError",
+                    Upload(multiple,type="drag",action="/api/workerlib/upload/courseware/video",
+                    :on-success="handleSuccessVideo",:format="['AVI','mov','rmvb','rm','FLV','mp4','3GP']",:on-format-error="handleFormatError",
                     :style={
                         'width': '90%',
                         'margin-top': '5%',
@@ -158,7 +158,7 @@
                             p 点击上传
                             p （请上传某种格式视频）
                 TabPane(label="课件详情",name="name3",icon="ios-folder-outline")
-                    Upload(multiple,type="drag",action="/api/workerlib/courseware/cover_picture/upload",
+                    Upload(multiple,type="drag",action="/api/workerlib/upload/courseware/cover_picture",
                     :on-success="handleSuccessPicture",:format="['jpg','jpeg','png']",:on-format-error="handleFormatPictrueError",
                     :style={
                         'width': '60%',
@@ -216,8 +216,8 @@
                                 Select(clearable,multiple,style="width:345px",v-model="typeWork",filterable,placeholder="选择分类",placement="top-start")
                                     Option(v-for="item in getType()", :value="item.name", :key="item.name") {{item.name}}
                 TabPane(label="资料上传",name="name2",icon="ios-cloud-upload-outline")
-                    Upload(multiple,type="drag",action="/api/workerlib/courseware/video/upload",
-                    :on-success="handleSuccessVideo",:format="['ogg','mp4','WebM']",:on-format-error="handleFormatError",
+                    Upload(multiple,type="drag",action="/api/workerlib/upload/courseware/video",
+                    :on-success="handleSuccessVideo",:format="['AVI','mov','rmvb','rm','FLV','mp4','3GP']",:on-format-error="handleFormatError",
                     :style={
                         'width': '90%',
                         'margin-top': '5%',
@@ -229,7 +229,7 @@
                             p 点击上传
                             p （请上传某种格式视频）
                 TabPane(label="课件详情",name="name3",icon="ios-folder-outline")
-                    Upload(multiple,type="drag",action="/api/workerlib/courseware/cover_picture/upload",
+                    Upload(multiple,type="drag",action="/api/workerlib/upload/courseware/cover_picture",
                     :on-success="handleSuccessPicture",:format="['jpg','jpeg','png']",:on-format-error="handleFormatPictrueError",
                     :style={
                         'width': '60%',
@@ -354,8 +354,8 @@
                         img(:src="'/api/workerlib/preview/courseware/cover_picture/'+editId",:style={
                             'width': '100%', 'height': '100%'
                         })
-                    Upload(multiple,type="drag",action="/api/workerlib/courseware/video/upload",
-                    :on-success="handleSuccessVideo",:format="['ogg','mp4','WebM']",:on-format-error="handleFormatError",
+                    Upload(multiple,type="drag",action="/api/workerlib/upload/courseware/video",
+                    :on-success="handleSuccessVideo",:format="['AVI','mov','rmvb','rm','FLV','mp4','3GP']",:on-format-error="handleFormatError",
                     :style={
                         'width': '140px',
                         'float': 'left',
@@ -370,7 +370,7 @@
                         img(:src="'/api/workerlib/preview/courseware/cover_picture/'+editId",:style={
                             'width': '100%', 'height': '100%'
                         })
-                    Upload(multiple,type="drag",action="/api/workerlib/courseware/cover_picture/upload",
+                    Upload(multiple,type="drag",action="/api/workerlib/upload/courseware/cover_picture",
                     :on-success="handleSuccessPicture",:format="['jpg','jpeg','png']",:on-format-error="handleFormatPictrueError",
                     :style={
                         'width': '140px',
@@ -432,8 +432,8 @@
                     Button(type="primary",ghost,style="margin-left: 10px",@click="addSelected()") 添加所选
                     Input(v-model="selectUserName",:style={'width': '100px', 'margin-left': '10px'},placeholder="名字",icon="ios-search-outline",@on-click="search")
 
-                    //Select(clearable,filterable,:style={'width': '100px', 'margin-left': '10px'},placeholder="状态",v-model="selectLeave")
-                    //    Option(v-for="item in getMenus()", :value="item.key",:key="item.key") {{item.value}}
+                    Select(clearable,filterable,:style={'width': '100px', 'margin-left': '10px'},placeholder="状态",v-model="selectLeave")
+                        Option(v-for="item in getMenus()", :value="item.key",:key="item.key") {{item.value}}
 
                     Table(border=false, ref="selection", :columns="getColumns()", :data="getData()",:row-class-name="rowClass", id="communal",
                     :style="{'margin-top': '10px'}",
@@ -461,6 +461,6 @@
                                 'width': '50px', 'height': '50px',
                                 'border-radius': '50%'
                             })
-                            span(class="image-remove",@click="show(item.id,item.name,item.photo)") +
+                            span(class="image-remove",@click="show(item.id,item.name)") +
                         .rname
                             span {{item.name}}

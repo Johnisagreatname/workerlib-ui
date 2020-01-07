@@ -37,7 +37,7 @@ export default class MobileStore extends VuexModule {
     @Action
     public getParams(): any {
         let item = {};
-        this.userId = router.currentRoute.query.uuid;
+        this.userId = router.currentRoute.query.eafid;
         item["name"] = "eafId";
         item["value"] = this.userId;
         item["algorithm"] = "EQ";
@@ -59,7 +59,8 @@ export default class MobileStore extends VuexModule {
     @Action
     public getParamsInfo(): any {
         let item = {};
-        this.userId = router.currentRoute.query.uuid;
+        debugger
+        this.userId = router.currentRoute.query.eafid;
         item["name"] = "archives_id";
         item["value"] = this.userId;
         item["algorithm"] = "EQ";
@@ -80,10 +81,11 @@ export default class MobileStore extends VuexModule {
     }
     @Action
     public async selectPersonInfo() {
+        // @ts-ignore
+
         await request.post('/api/workerlib/alluser', await this.getParams()).then((data) => {
             this.success(data);
         }).catch((e) => {
-        debugger;
             let alert: any = Message;
             if (!e) {
                 alert.warning('未知错误！')
@@ -130,4 +132,5 @@ export default class MobileStore extends VuexModule {
     private successProjectList(data: any) {
         this.projectInfo = data.data;
     }
+
 }

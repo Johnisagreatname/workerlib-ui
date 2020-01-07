@@ -51,7 +51,7 @@ export default class SpectacularsStore extends VuexModule {
 
     @Action
     public async searchWorkType() {
-        await request.post('/api/workerlib/worktype',
+        await request.post('/api/workerlib/archives',
             {
                 "pageInfo" : {
                     "pageIndex": 1,
@@ -59,7 +59,7 @@ export default class SpectacularsStore extends VuexModule {
                 },
 
                 "conditionList": [{
-                    "name": "workType",
+                    "name": "work_type",
                     "value": null,
                     "algorithm": "NOT"
                 }],
@@ -70,16 +70,16 @@ export default class SpectacularsStore extends VuexModule {
                 }],
 
                 "groupList" : [
-                    "workType"
+                    "work_type"
                 ],
 
                 "keywords" : [],
 
                 "selectList": [{
-                    "field": "workType",
+                    "field": "work_type",
                     "alias":"workType"
                 },{
-                    "field":"workType",
+                    "field":"work_type",
                     "function": "COUNT",
                     "alias":"total"
                 },{
@@ -112,7 +112,7 @@ export default class SpectacularsStore extends VuexModule {
     }
     @Action
     public async searchWorkTypeCount() {
-        await request.post('/api/workerlib/worktype',
+        await request.post('/api/workerlib/archives',
             {
                 "pageInfo" : {
                     "pageIndex": 1,
@@ -120,7 +120,7 @@ export default class SpectacularsStore extends VuexModule {
                 },
 
                 "conditionList": [{
-                    "name": "workType",
+                    "name": "work_type",
                     "value": null,
                     "algorithm": "NOT"
                 }],
@@ -131,16 +131,16 @@ export default class SpectacularsStore extends VuexModule {
                 }],
 
                 "groupList" : [
-                    "workType"
+                    "work_type"
                 ],
 
                 "keywords" : [],
 
                 "selectList": [{
-                    "field": "workType",
+                    "field": "work_type",
                     "alias":"workType"
                 },{
-                    "field":"workType",
+                    "field":"work_type",
                     "function": "COUNT",
                     "alias":"total"
                 }

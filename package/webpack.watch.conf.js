@@ -17,7 +17,7 @@ Object.keys(baseWebpackConfig.entry).forEach(function (name) {
 
 var webpackConfig = merge(baseWebpackConfig, {
   module: {
-    rules: utils.styleLoaders({ sourceMap: config.dev.devSourceMap })
+    rules: utils.styleLoaders({ sourceMap: config.dev.cssSourceMap })
   },
   // cheap-module-eval-source-map is faster for development
   devtool: '#source-map',

@@ -22,13 +22,13 @@ Object.keys(baseWebpackConfig.entry).forEach(function (name) {
 
 var webpackConfig = merge(baseWebpackConfig, {
     module: {
-        rules: utils.styleLoaders({ sourceMap: config.build.productionSourceMap })
+        rules: utils.styleLoaders({ sourceMap: config.build.cssSourceMap })
     },
     output: {
         path: config.build.assetsRoot
     },
     // cheap-module-eval-source-map is faster for development
-    devtool: config.build.productionSourceMap ? '#source-map' : false,
+    devtool: config.build.cssSourceMap ? '#source-map' : false,
     plugins: [
         new webpack.DefinePlugin({
             'process.env': config.build.env

@@ -15,7 +15,7 @@ export default class CultivateStore extends VuexModule {
     public studyType: Array<StudyType>;
     public cultivate: Array<Cultivate>;
     public cultivateArchives: Array<CultivateArchives>;
-
+    public checkAllGroup: Array<any>;
 
     public pageIndex: number;
     public pageSize: number;
@@ -28,25 +28,16 @@ export default class CultivateStore extends VuexModule {
     public checkedDelete:Array<any>;
     public conditionList:Array<any>;
     public cList:Array<any>;
-    public cultivateVideo: Array<any>;
-    public checkAllGroup: Array<any>;
-    public insertCultivateVideo: Array<any>;
 
     public infoId:number;
 
-    public okCultivate:string;
     public selectCourseName:string;
     public selectTrainingTeacher:string;
     public selectState:string;
     public selectStartTime:Date;
     public selectStatus:number;
+
     public selectUserName:string;
-    public isOk:string;
-
-    public viewId:number;
-
-    public insertFile:Array<any>;
-
     constructor(e){
         super(e);
         this.studyType = [];
@@ -55,10 +46,7 @@ export default class CultivateStore extends VuexModule {
         this.cultivateArchives = [];
         this.checkedDelete = [];
         this.conditionList = [];
-        this.cultivateVideo = [];
         this.cList = [];
-        this.insertFile = [];
-        this.insertCultivateVideo = [];
 
         this.pageIndex=1;
         this.pageSize= 20;
@@ -68,15 +56,12 @@ export default class CultivateStore extends VuexModule {
         this.inPageSize= 10;
         this.inPageTotal = 0;
         this.selectStatus = 1;
-        this.viewId = null;
 
         this.selectCourseName = "";
         this.selectTrainingTeacher = "";
         this.selectState = "";
         this.selectStartTime=null;
         this.selectUserName = "";
-        this.isOk = "已完成";
-        this.okCultivate = '是';
 
         this.infoId=null;
     }
@@ -281,89 +266,8 @@ export default class CultivateStore extends VuexModule {
         });
     }
     @Action
-    public async searchVideoInfo() {
-        debugger
-        await request.post('/api/workerlib/cultivate_video',{
-            "pageInfo" : {},
-
-            "conditionList": [
-                {
-                    "name":"cultivateId",
-                    "value":this.viewId,
-                    "algorithm":"EQ"
-                }
-            ],
-
-            "sortList": [],
-
-            "groupList" : [],
-
-            "keywords" : [],
-
-            "selectList": []
-        }).then((data)=>{
-            this.successVideoInfo(data);
-        }).catch((e)=>{
-            let alert: any = Message;
-            if(!e) {
-                alert.warning('未知错误！')
-                return
-            }
-            if(e.response && e.response.data && e.response.data.message) {
-                alert.warning(e.response.data.message)
-                return
-            }
-            if(!e.message) {
-                return;
-            }
-            alert.warning(e.message || e)
-        });
-    }
-    @Action
-    public async insertVideoInfo() {
-        await request.put('/api/workerlib/cultivate_video',this.insertCultivateVideo).then((data)=>{
-            this.successInsertVideoInfo(data);
-        }).catch((e)=>{
-            let alert: any = Message;
-            if(!e) {
-                alert.warning('未知错误！')
-                return
-            }
-            if(e.response && e.response.data && e.response.data.message) {
-                alert.warning(e.response.data.message)
-                return
-            }
-            if(!e.message) {
-                return;
-            }
-            alert.warning(e.message || e)
-        });
-    }
-    @Action
-    public async UpdateCultivate() {
-        debugger
-        await request.put('/api/workerlib/cultivate/'+this.viewId,{
-            "state": this.isOk
-        }).then((data)=>{
-            this.successUpdateCultivate(data);
-        }).catch((e)=>{
-            let alert: any = Message;
-            if(!e) {
-                alert.warning('未知错误！')
-                return
-            }
-            if(e.response && e.response.data && e.response.data.message) {
-                alert.warning(e.response.data.message)
-                return
-            }
-            if(!e.message) {
-                return;
-            }
-            alert.warning(e.message || e)
-        });
-    }
-    @Action
     public async delete() {
+
         await request.post('/api/workerlib/cultivate/delete',this.checkedDelete.map(x => x.id)).then((data)=>{
             this.successDelete(data);
         }).catch((e)=>{
@@ -382,6 +286,7 @@ export default class CultivateStore extends VuexModule {
             alert.warning(e.message || e)
         });
     }
+
     @Action
     public async count() {
         await request.post('/api/workerlib/join/count', await this.getParams()).then((total)=>{
@@ -398,15 +303,6 @@ export default class CultivateStore extends VuexModule {
             MessageUtils.warning(e);
         });
     }
-
-    @Action
-    public successInsertVideoInfo(data: any) {
-        debugger
-        if(data.status == 0){
-            this.UpdateCultivate();
-
-        }
-    }
     @Mutation
     public successType(data: any) {
         this.studyType = data.data;
@@ -418,20 +314,6 @@ export default class CultivateStore extends VuexModule {
     @Mutation
     public successInfo(data: any) {
         this.cultivateArchives = data.data;
-    }
-    @Mutation
-    public successVideoInfo(data: any) {
-        debugger
-        this.cultivateVideo = data.data;
-    }
-    @Mutation
-    public successUpdateCultivate(data: any) {
-        debugger
-        if(data.status == 0){
-            let alert: any = Message;
-            alert.warning("成功！");
-            this.insertCultivateVideo = new Array<any>();
-        }
     }
     @Mutation
     public successDelete(data: any) {
@@ -471,10 +353,7 @@ export default class CultivateStore extends VuexModule {
     public setSelectCourseName(data: string) {
         this.selectCourseName = data;
     }
-    @Mutation
-    public setIsOk(data: string) {
-        this.isOk = data;
-    }
+
     @Mutation
     public setSelectState(data: string) {
         this.selectState = data;
@@ -496,16 +375,8 @@ export default class CultivateStore extends VuexModule {
         this.selectUserName = data;
     }
     @Mutation
-    public setOkCultivate(data:string){
-        this.okCultivate = data;
-    }
-    @Mutation
     public setCheckedDelete(data:any){
         this.checkedDelete.push(data);
-    }
-    @Mutation
-    public setiIsertFile(data:any){
-        this.insertFile.push(data);
     }
     @Mutation
     public clearCheckedDelete(){
@@ -516,16 +387,8 @@ export default class CultivateStore extends VuexModule {
         this.selectStatus = data;
     }
     @Mutation
-    public setViewId(data: number) {
-        this.viewId = data;
-    }
-    @Mutation
     public setCheckAllGroup(data: any) {
         this.checkAllGroup.push(data) ;
-    }
-    @Mutation
-    public setInsertCultivateVideo(data: any) {
-        this.insertCultivateVideo.push(data) ;
     }
 
 
@@ -657,11 +520,6 @@ export default class CultivateStore extends VuexModule {
         {
             title: '发起人',
             key: 'username',
-            sortable: true
-        } ,
-        {
-            title: '操作',
-            slot: 'operation',
             sortable: true
         }
     ];

@@ -62,6 +62,7 @@
 .ivu-table-body table tbody tr:hover>td {
     background-color: #fdefc6 !important;
 }
+
 button i {
     font-size: 18px;
     font-weight: bold;
@@ -81,11 +82,3 @@ button i {
 #app .ivu-progress .ivu-progress-outer .ivu-progress-inner{
     background-color: transparent !important;
 }
-/*.ivu-rate-star-content:before, .ivu-rate-star:before{*/
-    /*color: #e90018 !important;*/
-    /*cursor: pointer !important;*/
-    /*content: "\F2BF" !important;*/
-    /*-webkit-transition: all .2s ease-in-out !important;*/
-    /*transition: all .2s ease-in-out !important;*/
-    /*display: block !important;*/
-/*}*/

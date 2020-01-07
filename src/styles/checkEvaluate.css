@@ -75,33 +75,6 @@
     margin-left: 20px;
     margin-right: 20px;
 }
-#app .input .ivu-input-wrapper textarea{
-    min-height:150px !important;
-}
-.cdivOne{
-    display: block;
-    height: 70px;
-    width: 390px;
-    float: left;
-    margin-left:60px;
-}
-.cdivOne span {
-    line-height: 70px;
-    font-size: 18px;
-}
-.name2{
-    width: 110px;
-    float: left;
-    text-align: right;
-}
-
-
-.input2{
-    float: left;
-    line-height: 65px;
-    margin-left: 20px;
-    height: 100%;
-}
 .footer{
     position: fixed;
     /* left: 0px; */
@@ -112,7 +85,9 @@
     z-index: 1;
     float: right;
 }
-
+#app .input .ivu-input-wrapper textarea{
+    min-height:150px !important;
+}
 .footer ul {
     text-align: center;
     width: 100%;
@@ -150,81 +125,4 @@
 
 #app .addBody .divTwo .input .ivu-input-wrapper .ivu-input {
     height: 50px !important;
-}
-.addBody1{
-    width: 100%;
-    height: 772px;
-}
-.top{
-    display: block;
-    width: 100%;
-    min-height: 70px;
-    float: right;
-    height: auto;
-}
-.ccdivOne{
-    display: block;
-    min-height: 70px;
-    width: 100%;
-    float: left;
-    margin-left:60px;
-}
-.top span {
-    font-size: 18px;
-}
-.left1{
-    width: 65%;
-    height: 610px;
-    border: 1px solid #b8b8b8;
-    margin-left: 2%;
-    float: left;
-    padding-top: 10px;
-}
-.left1 table{
-    width: 800px;
-    border-top: 1px solid #999;
-
-    border-left: 1px solid #999;
-
-    border-spacing: 0;
-    margin-left: auto;
-    margin-right: auto;
-}
-.left1 td{
-    text-align: center;
-}
-.left1 table th{
-    height: 50px;
-    background-color: #b3d4fc;
-    font-size: 14px;
-}
-.left1 tr th,.left1 tr td{
-    border-bottom: 1px solid #999;
-
-    border-right: 0px;
-}
-.right1{
-    width: 25%;
-    height: 610px;
-    border: 1px solid #b8b8b8;
-    margin-right: 2%;
-    float: right;
-}
-.rdiv{
-    display:  inline-block;
-    float: left;
-    width: 50px;
-    height: 70px;
-    margin-left: 10px;
-    text-align: center;
-    margin-top: 10px;
-    position: relative;
-}
-.rimg{
-    width: 50px;
-    height: 50px;
-}
-.rname{
-    width: 50px;
-    height: 20px;
 }

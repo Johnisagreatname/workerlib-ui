@@ -1,91 +1,100 @@
 #home
-    view-box
-        x-header 人员详情
-        flexbox
-            flexbox-item(span="100")
-                img(class="img-header",:src="'http://113.105.121.93:1818'+this.store.personInfo.cwrPhoto")
-            flexbox-item(span="150")
-                flexbox(orient="vertical")
-                    flexbox-item
-                        div(class="flex-demo") {{this.store.personInfo.eafName}} | {{checkSex(this.store.personInfo.cwrIdnum)}} | {{getAge(this.store.personInfo.cwrIdnum)}}岁
-                    flexbox-item
-                        div(class="flex-demo2") 查看证件
-            flexbox-item(span="100")
-                img(class="img-rq",:src="'http://113.105.121.93:1818'+this.store.personInfo.cwrPhoto")
-        cell(title='手机号码',
-            :value = "this.store.personInfo.eafPhone",
-            is-link =true)
-            img(slot="icon",
-                width="15",
-                style="display:block;margin-right:10px;",
-                src="~@/assets/css/images/phoneNumber.png")
-        cell(title='身份证号',
-            :value = "this.store.personInfo.cwrIdnum",
-            is-link =true)
-            img(slot="icon",
-                width="18",
-                style="display:block;margin-right:10px;",
-                src="~@/assets/css/images/idUnmber.png")
-        cell(title='工种',
-            :value = "this.store.personInfo.workType",
-            is-link =true)
-            img(slot="icon",
-                width="18",
-                style="display:block;margin-right:10px;",
-                src="~@/assets/css/images/workType.png")
-        cell(title='状态',
-            value = '在场',
-            is-link =true)
-            img(slot="icon",
-                width="18",
-                style="display:block;margin-right:10px;",
-                src="~@/assets/css/images/stauts.png")
-        cell(title='是否班组长',
-            value = '是',
-            is-link =true)
-            img(slot="icon",
-                width="15",
-                style="display:block;margin-right:10px;",
-                src="~@/assets/css/images/grade.png")
-        cell(title='评定等级',
-            value = 'SSSSS',
-            is-link =true)
-            img(slot="icon",
-                width="15",
-                style="display:block;margin-right:10px;",
-                src="~@/assets/css/images/grade.png")
-        swiper(auto height="250px",
-            dots-position="center")
-            swiper-item(v-for ="item in getProjectInfoList()")
-                div(class="text-title") 参与项目
-                flexbox
-                    flexbox-item(span="10")
-                        badge(class="badge-main")
-                    flexbox-item
-                        div(class="text-main") 项目名称
-                div(class="text-gray") {{item.project_name}}
-                flexbox
-                    flexbox-item(span="1")
-                        badge(class="badge-main")
-                    flexbox-item(span="100")
-                        div(class="text-main") 所在单位
-                    flexbox-item
-                        div(class="text-gray") {{item.unit_name}}
-                flexbox
-                    flexbox-item(span="1")
-                        badge(class="badge-main")
-                    flexbox-item
-                        div(class="text-main") 进场时间
-                    flexbox-item
-                        div(class="text-blue") {{getDateFormat(item.cwrUserIn)}}
-                    flexbox-item(span="1")
-                        badge
-                    flexbox-item
-                        div(class="text-main") 退场时间
-                    flexbox-item
-                        div(class="text-blue") {{getDateFormat(item.cwrUserOut)}}
-        div
+    view-box(ref="viewBox")
+        x-header(:left-options="{showBack: false}",style="background-color:#0E93FF;") 人员详情
+        div(class="div-bg",hidden=false)
+            flexbox
+                flexbox-item(span="100")
+                    img(class="img-header",:src="'http://113.105.121.93:1818'+this.store.personInfo.cwrPhoto")
+                flexbox-item(span="150")
+                    flexbox(orient="vertical")
+                        flexbox-item
+                            div(class="flex-demo") {{this.store.personInfo.eafName}} | {{checkSex(this.store.personInfo.cwrIdnum)}} | {{getAge(this.store.personInfo.cwrIdnum)}}岁
+                        flexbox-item
+                            div(class="flex-demo2") 查看证件
+                flexbox-item(span="100")
+                    img(class="img-rq",src="")
+            group
+                cell(title='手机号码',
+                    :value = "replacePhone(this.store.personInfo.eafPhone)",
+                    is-link =false,
+                    style="cell-value-color:#0E93FF;")
+                    img(slot="icon",
+                        width="15",
+                        style="display:block;margin-right:10px;",
+                        src="~@/assets/css/images/phoneNumber.png")
+                cell(title='身份证号',
+                    :value = "replaceID(this.store.personInfo.cwrIdnum)",
+                    is-link =false,
+                    style="@cell-value-color:#0E93FF")
+                    img(slot="icon",
+                        width="18",
+                        style="display:block;margin-right:10px;",
+                        src="~@/assets/css/images/idUnmber.png")
+                cell(title='工种',
+                    :value = "this.store.personInfo.workType",
+                    is-link =false)
+                    img(slot="icon",
+                        width="18",
+                        style="display:block;margin-right:10px;",
+                        src="~@/assets/css/images/workType.png")
+                cell(title='状态',
+                    value = '在场',
+                    is-link =false)
+                    img(slot="icon",
+                        width="18",
+                        style="display:block;margin-right:10px;",
+                        src="~@/assets/css/images/stauts.png")
+                cell(title='是否班组长',
+                    value = '是',
+                    is-link =false)
+                    img(slot="icon",
+                        width="15",
+                        style="display:block;margin-right:10px;",
+                        src="~@/assets/css/images/grade.png")
+                cell(title='评定等级',
+                    value = 'SSSSS',
+                    is-link =false)
+                    img(slot="icon",
+                        width="15",
+                        style="display:block;margin-right:10px;",
+                        src="~@/assets/css/images/grade.png")
+        div(class="div-bg",hidden=false)
+            div(class="text-title") 参与项目
+            divider
+            swiper(auto height="200px",
+                dots-position="center")
+                swiper-item(v-for ="item in getProjectInfoList()")
+                    flexbox
+                        flexbox-item(span="10")
+                            badge(class="badge-main")
+                        flexbox-item
+                            div(class="text-main") 项目名称
+                    div(class="text-gray-left") {{item.project_name}}
+                    divider
+                    flexbox
+                        flexbox-item(span="1")
+                            badge(class="badge-main")
+                        flexbox-item(span="100")
+                            div(class="text-main") 所在单位
+                        flexbox-item
+                            div(class="text-gray") {{item.unit_name}}
+                    divider
+                    flexbox
+                        flexbox-item(span="1")
+                            badge(class="badge-main")
+                        flexbox-item
+                            div(class="text-main") 进场时间
+                        flexbox-item
+                            div(class="text-blue") {{getDateFormat(item.cwrUserIn)}}
+                        flexbox-item(span="1")
+                            badge
+                        flexbox-item
+                            div(class="text-main") 退场时间
+                        flexbox-item
+                            div(class="text-blue") {{getDateFormat(item.cwrUserOut)}}
+        div(class="div-bg")
             div(class="text-title") 参与培训
+            divider
             flexbox(orient="horizontal",v-for="item in getCultivateList()")
                 flexbox-item(span="40")
                     img(class="img-vedio",src="~@/assets/css/images/vedio.png")
@@ -101,60 +110,51 @@
                                 div(class="text-main") {{item.archivesStatus}}
                             flexbox-item
                                 div(class="text-blue") 时间：{{item.startTime}}
-        div
+        div(class="div-bg")
             div(class="text-title") 出勤记录
-            cell(title='本月出勤天数',
-                :value = "this.wstore.checkWorkceMonth.total",
-                is-link =true)
-                img(slot="icon",
-                    width="20",
-                    style="display:block;margin-right:5px;",
-                    src="")
-            cell(title='总出勤天数',
-                :value = "this.wstore.checkWorkce",
-                is-link =true)
-                img(slot="icon",
-                    width="20",
-                    style="display:block;margin-right:5px;",
-                    src="")
-        div
+            group
+                cell(title='本月出勤天数',
+                    :value = "this.wstore.checkWorkceMonth.total",
+                    is-link =false)
+                    img(slot="icon",
+                        width="20",
+                        style="display:block;margin-right:5px;",
+                        src="")
+                cell(title='总出勤天数',
+                    :value = "this.wstore.checkWorkce",
+                    is-link =false)
+                    img(slot="icon",
+                        width="20",
+                        style="display:block;margin-right:5px;",
+                        src="")
+        div(class="div-bg")
             div(class="text-title") 工资明细
-            cell(title='总收入',
-                value = '￥10000',
-                is-link =true)
-                img(slot="icon",
-                    width="20",
-                    style="display:block;margin-right:5px;",
-                    src="")
-            cell(title='总到账',
-                value = '￥20000',
-                is-link =true)
-                img(slot="icon",
-                    width="20",
-                    style="display:block;margin-right:5px;",
-                    src="")
-        div
+            group
+                cell(title='总收入',
+                    :value = "this.wstore.salaryInfo.pay",
+                    is-link =false)
+                    img(slot="icon",
+                        width="20",
+                        style="display:block;margin-right:5px;",
+                        src="")
+                cell(title='总到账',
+                    :value = "this.wstore.salaryInfo.income",
+                    is-link =false)
+                    img(slot="icon",
+                        width="20",
+                        style="display:block;margin-right:5px;",
+                        src="")
+        div(class="div-bg")
             div(class="text-title") 员工评价
-            flexbox
-                flexbox-item
-                    div 深圳市白石龙项目
-                flexbox-item
-                    div(class="flex-demo") 不良记录
-            div 恶意讨薪  李媛 水泥工
-            div 处罚：永久不予录用
-            flexbox
-                flexbox-item
-                    div 深圳市白石龙项目
-                flexbox-item
-                    div(class="flex-demo") 不良记录
-            div 恶意讨薪  李媛 水泥工
-            div 处罚：永久不予录用
-            flexbox
-                flexbox-item
-                    div 深圳市白石龙项目
-                flexbox-item
-                    div(class="flex-demo") 不良记录
-            div 恶意讨薪  李媛 水泥工
-            div 处罚：永久不予录用
+            divider
+            div(v-for="item in getCommentSparticularsList()")
+                flexbox
+                    flexbox-item
+                        div 深圳市白石龙项目
+                    flexbox-item
+                        div(class="flex-demo2") 不良记录
+                div 恶意讨薪  李媛 水泥工
+                div 处罚：永久不予录用
+
 
 
