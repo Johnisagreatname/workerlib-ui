@@ -25,7 +25,7 @@ export default class WorkerStore extends VuexModule {
     public userName:string;
     public card:string;
     public phone:number;
-    public type:string;
+    public type:Array<any>;
     public project:string;
     public projectId:string;
     public unit:string;
@@ -60,10 +60,14 @@ export default class WorkerStore extends VuexModule {
     public unitList:Array<UnitList>;
 
     public check : Array<any>;
+    public insertList : Array<any>;
     public checkWorkceMonth : any;
     public checkWorkce : number;
     public onLeave:number;
     public conditionList:Array<any>;
+    public notIn:boolean;
+    public in:boolean;
+    public insertEafId:string;
 
     constructor(e) {
         super(e)
@@ -76,17 +80,20 @@ export default class WorkerStore extends VuexModule {
         this.inPageTotal = 0;
         this.check = [];
         this.onLeave = null;
-
+        this.insertEafId = null;
+        this.notIn= false;
+        this.in= false;
 
         this.peoples = [];
         this.projectType = [];
         this.conditionList = [];
         this.cultivateList = [];
+        this.insertList = [];
         this.salaryInfo = {};
         this.commentInfo = {};
         this.card = "";
         this.phone = null;
-        this.type = null;
+        this.type = [];
         this.userName = "";
         this.animal = "2";
         this.infoId=null;
@@ -146,7 +153,7 @@ export default class WorkerStore extends VuexModule {
             let item ={};
             item["name"]="workType";
             item["value"]=this.selectType;
-            item["algorithm"] = "EQ"
+            item["algorithm"] = "LIKE"
             this.conditionList.push(item);
         }
         if(this.selectStatus != undefined && this.selectStatus > -1
@@ -154,7 +161,7 @@ export default class WorkerStore extends VuexModule {
             let item ={};
             item["name"]="leave";
             item["value"]=this.selectStatus;
-            item["algorithm"] = "EQ"
+            item["algorithm"] = "LIKE"
             this.conditionList.push(item);
         }
         return {
@@ -195,10 +202,9 @@ export default class WorkerStore extends VuexModule {
     }
     @Action
     public getUploadParams() : any {
-
         return {
             "conditionList": [{
-                "name": "a.eafId",
+                "name": "eafId",
                 "value":  this.check,
                 "algorithm": "IN"
             }],
@@ -223,6 +229,16 @@ export default class WorkerStore extends VuexModule {
                     "JoinMode": "Left",
                 },
                 {
+                    "tablename": "projectworktype",
+                    "alias": "w",
+                    "joinMode": "Left",
+                    "onList": [{
+                        "name": "a.project_id",
+                        "value": "w.projectId",
+                        "algorithm": "EQ"
+                    }]
+                },
+                {
                     "tablename": "archives",
                     "alias": "v",
                     "JoinMode": "Left",
@@ -232,6 +248,7 @@ export default class WorkerStore extends VuexModule {
                         "algorithm": "EQ"
                     }]
                 },
+
                 {
                 "tablename": "project",
                 "alias": "p",
@@ -280,7 +297,7 @@ export default class WorkerStore extends VuexModule {
                 {"field": "a.end_time"},
                 {"field": "p.project_name"},
                 {"field": "u.unit_name"},
-                {"field": "v.work_type"},
+                {"field": "w.workType"},
                 {"field": "v.leave"}
 
             ]
@@ -366,6 +383,84 @@ export default class WorkerStore extends VuexModule {
             }
             this.success(data);
             this.count();
+        }).catch((e)=>{
+            let alert: any = Message;
+            if(!e) {
+                alert.warning('未知错误！')
+                return
+            }
+            if(e.response && e.response.data && e.response.data.message) {
+                alert.warning(e.response.data.message)
+                return
+            }
+            if(!e.message) {
+                return;
+            }
+            alert.warning(e.message || e)
+        });
+    }
+    @Action
+    public async searchIn() {
+        await request.post('/api/workerlib/project_allpeople_in',{
+            "pageInfo" : {
+                "pageIndex": this.pageIndex,
+                "pageSize": this.pageSize
+            },
+
+            "conditionList":[],
+
+            "sortList": [],
+
+            "groupList" : [],
+
+            "keywords" : [],
+
+            "selectList": []
+        }).then((data)=>{
+            if(!data) {
+                return;
+            }
+            this.success(data);
+            this.countpIn();
+        }).catch((e)=>{
+            let alert: any = Message;
+            if(!e) {
+                alert.warning('未知错误！')
+                return
+            }
+            if(e.response && e.response.data && e.response.data.message) {
+                alert.warning(e.response.data.message)
+                return
+            }
+            if(!e.message) {
+                return;
+            }
+            alert.warning(e.message || e)
+        });
+    }
+    @Action
+    public async searchNot() {
+        await request.post('/api/workerlib/project_allpeople_not',{
+            "pageInfo" : {
+                "pageIndex": this.pageIndex,
+                "pageSize": this.pageSize
+            },
+
+            "conditionList":[],
+
+            "sortList": [],
+
+            "groupList" : [],
+
+            "keywords" : [],
+
+            "selectList": []
+        }).then((data)=>{
+            if(!data) {
+                return;
+            }
+            this.success(data);
+            this.countNot();
         }).catch((e)=>{
             let alert: any = Message;
             if(!e) {
@@ -653,6 +748,58 @@ export default class WorkerStore extends VuexModule {
         });
     }
     @Action
+    public async countpIn() {
+        await request.post('/api/workerlib/project_allpeople_in/count',{
+            "pageInfo" : {
+                "pageIndex": this.pageIndex,
+                "pageSize": this.pageSize
+            },
+
+            "conditionList":[],
+
+            "sortList": [],
+
+            "groupList" : [],
+
+            "keywords" : [],
+
+            "selectList": []
+        }).then((total)=>{
+            if(!total){
+                return;
+            }
+            this.setPageTotal(total.data)
+        }).catch((e)=>{
+            MessageUtils.warning(e);
+        });
+    }
+    @Action
+    public async countNot() {
+        await request.post('/api/workerlib/project_allpeople_not/count',{
+            "pageInfo" : {
+                "pageIndex": this.pageIndex,
+                "pageSize": this.pageSize
+            },
+
+            "conditionList":[],
+
+            "sortList": [],
+
+            "groupList" : [],
+
+            "keywords" : [],
+
+            "selectList": []
+        }).then((total)=>{
+            if(!total){
+                return;
+            }
+            this.setPageTotal(total.data)
+        }).catch((e)=>{
+            MessageUtils.warning(e);
+        });
+    }
+    @Action
     public async countIn() {
         await request.post('/api/workerlib/join/count', await this.getInParams()).then((total)=>{
             if(!total){
@@ -727,21 +874,57 @@ export default class WorkerStore extends VuexModule {
     }
     @Action
     public async insertArchives() {
+        debugger
         await request.put('/api/workerlib/alluser', {
             "eafName":this.userName,
             "eafPhone":this.phone,
             "cwrIdnum":this.card,
             "cwrPhoto":this.photo,
-            "workType":this.type,
             "id_card_front":this.idCardfront,
             "id_card_reverse":this.idCardReverse,
-            "certificate":this.certificate,
             "unit_id":"E1518A607E764390848F188390482597"
         }).then((data)=>{
             if(!data){
                 return;
             }
             this.added(data)
+        }).catch((e)=>{
+            console.log(e)
+            let alert: any = Message;
+            if(!e) {
+                alert.warning('未知错误！');
+                return;
+            }
+
+            if(e.response && e.response.data && e.response.data.message) {
+                alert.warning(e.response.data.message)
+                return
+            }
+
+            if(!e.message) {
+                return;
+            }
+
+            alert.warning(e.message || e)
+        });
+    }
+    @Action
+    public async insertWorkType(id) {
+        debugger
+        if(this.type.length>0){
+            for(let i=0;i<this.type.length;i++){
+                let item = {};
+                item["eafId"] = id;
+                item["workType"] = this.type[i];
+                item["certificate"] = this.certificate;
+                this.insertList.push(item);
+            }
+        }
+        await request.put('/api/workerlib/worktytpe', this.insertList).then((data)=>{
+            if(!data){
+                return;
+            }
+            this.successInsertWorkType(data)
         }).catch((e)=>{
             console.log(e)
             let alert: any = Message;
@@ -842,6 +1025,16 @@ export default class WorkerStore extends VuexModule {
     @Action
     public added(data: any) {
         if(data.status == 0) {
+            this.insertWorkType(data.data);
+        }
+    }
+    @Action
+    public successInsertWorkType(data: any) {
+        if(data.status == 0) {
+            this.insertEafId = null;
+            this.insertList = new Array<any>();
+            let alert: any = Message;
+            alert.warning('成功！');
             this.search();
         }
     }
@@ -857,7 +1050,7 @@ export default class WorkerStore extends VuexModule {
     public successUpdate(data: any) {
         let alert: any = Message;
         if(data.status == 0) {
-            this.clear();
+            this.checkeds = new Array<any>();
             this.search();
             alert.warning("成功！");
 
@@ -912,7 +1105,7 @@ export default class WorkerStore extends VuexModule {
     }
     @Mutation
     private clear() {
-        this.checkeds.length = 0;
+        this.checkeds = new Array<any>();
     }
     @Mutation
     private successProjectList(data: any) {
@@ -1004,7 +1197,10 @@ export default class WorkerStore extends VuexModule {
     }
     @Mutation
     public setType(data:any) {
-        this.type = data.join();
+        this.type=[];
+        for(let i=0;i<data.length;i++){
+            this.type.push(data[i]);
+        }
     }
     @Mutation
     public setProject(data:string){
@@ -1024,12 +1220,22 @@ export default class WorkerStore extends VuexModule {
         this.unitId = data;
     }
     @Mutation
+    public setNotIn(data:boolean){
+        this.notIn = data;
+    }
+    @Mutation
+    public setIn(data:boolean){
+        this.in = data;
+    }
+    @Mutation
     public setAnimal(data:string){
         this.animal = data;
     }
     @Mutation
     public setPageTotal(data: number) {
-        this.conditionList = [];
+        this.notIn = false;
+        this.in = false;
+        this.conditionList = new Array<any>()
         this.pageTotal = data;
     }
     @Mutation

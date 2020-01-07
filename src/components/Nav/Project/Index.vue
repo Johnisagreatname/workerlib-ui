@@ -106,29 +106,31 @@
             this.addProject = false;
         }
         okAdd() : any{
-            debugger
             let list = this.store.projectPeoples.filter(a => a.project_id ==this.store.projectId && a.leave == 1).map(b=>b.archives_id);
             let lList = this.store.projectPeoples.filter(a => a.project_id ==this.store.projectId && a.leave == 2);
             this.noProjectPeople = this.store.peopleId.filter(a=>list.indexOf(a.eafId)>-1);
             if(!this.noProjectPeople.length) {
                 for(let i = 0;i<this.store.peopleId.length;i++){
                     let insert = {};
+                    let insertProjectWorkType = {};
                     let people = this.store.peopleId[i];
                     if(lList.filter(x => x.archives_id == people.eafId).length>0) {
                         this.store.setUpdateList(lList.filter(x => x.archives_id == people.eafId)[0].id);
                     }else {
                         if(this.selectWorkType.filter(x => x.eafId ==  people.eafId).length>0){
-                            insert["work_type"] = this.selectWorkType.filter(x => x.eafId ==  people.eafId)[0].work_type;
+                            insertProjectWorkType["workType"] = this.selectWorkType.filter(x => x.eafId ==  people.eafId)[0].work_type;
                         }else {
-                            insert["work_type"] = null;
+                            insertProjectWorkType["workType"] = null;
                         }
+                        insertProjectWorkType["projectId"] = this.store.projectId;
+                        insertProjectWorkType["eafId"] = people.eafId;
 
                         insert["project_id"] = this.store.projectId;
                         insert["archives_id"] = people.eafId;
-
                         insert["unit_id"] = people.unit_id;
                         insert["leave"] = 1;
                         this.store.setInsertList(insert);
+                        this.store.setInsertProjectWorkTypeList(insertProjectWorkType);
                     }
                 }
                 if(this.store.insertList.length>0){
@@ -139,6 +141,8 @@
                     this.store.update();
                 }
                 this.store.clearUpdateList();
+                this.store.clearInsertList();
+                this.store.clearChecked();
                 this.addPeoples = false;
             }else {
                 setTimeout(() => {
@@ -159,6 +163,9 @@
             this.viewPeoples = false;
         }
         cancelAdd():any {
+            this.store.clearUpdateList();
+            this.store.clearInsertList();
+            this.store.clearChecked();
             this.addPeoples = false;
         }
         okView():any{
@@ -214,7 +221,12 @@
 
         }
         handleSelectRowCancel(selection,row){
+            for(let i = 0;i < this.store.project.length;i++) {
+                if(this.store.uplodId.findIndex(x => x.project_id == row.project_id) > 0){
+                    this.$set(this.store.project[i], '_checked', false);
+                }
 
+            }
             let index =  this.store.uplodId.findIndex(x => x.project_id == row.project_id);
             this.store.uplodId.splice(index, 1);
         }
@@ -232,7 +244,7 @@
         }
         handleSelectAllCancel(selection){
             for(let i = 0;i < this.store.project.length;i++) {
-                if(this.store.uplodId.findIndex(x => x.project_id == this.store.project[i].project_id) > -1){
+                if(this.store.uplodId.findIndex(x => x.project_id == this.store.project[i].project_id) > 0){
                     let index =  this.store.uplodId.findIndex(x => x.project_id == this.store.project[i].project_id);
                     this.$set(this.store.project[i], '_checked', false);
                     this.store.uplodId.splice(index, 1);
@@ -248,14 +260,7 @@
             }
             return this.store.project;
         }
-        getPeopleData() : any{
-            for(let i = 0;i < this.store.peoples.length;i++) {
-                if(this.store.peopleId.filter(a => a.eafId == this.store.peoples[i].eafId ).length > 0){
-                    this.$set(this.store.peoples[i], '_checked', true)
-                }
-            }
-            return this.store.peoples;
-        }
+
         getViewPeoples(): any{
             for(let i = 0;i < this.store.viewPeople.length;i++) {
                 if(this.store.checkeds.filter(a => a.archives_id == this.store.viewPeople[i].archives_id ).length > 0){
@@ -264,18 +269,37 @@
             }
             return this.store.viewPeople;
         }
+        getPeopleData() : any{
+            // debugger
+            for(let i = 0;i < this.store.peoples.length;i++) {
+                if(this.store.peopleId.filter(a => a.eafId == this.store.peoples[i].eafId ).length > 0){
+                    this.$set(this.store.peoples[i], '_checked', true)
+                }
+            }
+            return this.store.peoples;
+        }
+
         handleSelectRowPeople(selection, row) {
+            debugger
             let item = {};
             item["eafId"] = row.eafId;
             item["eafName"] = row.eafName;
             this.store.setPeoplesId(item);
-        }
-        handleSelectRowCancelPeople(selection,row){
-            let index =  this.store.peopleId.findIndex(x => x.eafId == row.eafId);
-            this.store.peopleId.splice(index, 1);
             console.log(this.store.peopleId)
         }
+        handleSelectRowCancelPeople(selection,row){
+            debugger
+            for(let i = 0;i < this.store.peoples.length;i++) {
+                if(this.store.peoples.filter(a => a.eafId == row.eafId ).length > 0){
+                    this.$set(this.store.peoples[i], '_checked', false)
+                }
+            }
+            let index =  this.store.peopleId.findIndex(x => x.eafId == row.eafId);
+            this.store.peopleId.splice(index, 1);
+            console.log(this.store.peopleId);
+        }
         handleSelectAllPeople(selection) {
+            debugger
             for(let i= 0;i<selection.length;i++){
                 let item = {};
                 let row = selection[i];
@@ -289,6 +313,7 @@
             }
         }
         handleSelectAllCancelPeople(selection){
+            debugger
             for(let i = 0;i < this.store.peoples.length;i++) {
                 if(this.store.peopleId.findIndex(x => x.eafId == this.store.peoples[i].eafId) > -1){
                     let index =  this.store.peopleId.findIndex(x => x.eafId == this.store.peoples[i].eafId);
@@ -310,6 +335,11 @@
             console.log(this.store.checkeds)
         }
         handleSelectRowCancelProject(selection,row){
+            for(let i = 0;i < this.store.viewPeople.length;i++) {
+                if(this.store.checkeds.findIndex(x => x.id == row.id) > 0){
+                    this.$set(this.store.viewPeople[i], '_checked', false);
+                }
+            }
             let index =  this.store.checkeds.findIndex(x => x.id == row.id);
             this.store.checkeds.splice(index, 1);
             console.log(this.store.checkeds)
