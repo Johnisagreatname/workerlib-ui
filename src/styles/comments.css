@@ -17,7 +17,7 @@
 .divOne{
     display: block;
     height: 70px;
-    width: 360px;
+    width: 290px;
     float: left;
     margin-left:45px;
 }
@@ -242,14 +242,16 @@
 }
 .yu2{
     float: left;
-    width: 40%;
-    height: 82%;
-    border-left: 1px solid  #e1e1e1;
+    width: 500px;
+    height: 440px;
+    border-left: 1px solid #e1e1e1;
+    overflow-y: auto;
 }
 .x{
-    width: 100%;
+    display: inline-block;
+    height: 50px;
     margin-left: 20%;
-    margin-top: 5%;
+    width: 220px;
 }
 .x span{
     margin-left: 3%;

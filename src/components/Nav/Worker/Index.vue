@@ -31,6 +31,7 @@
         public certificate: boolean;
 
         public disabled:boolean;
+        public uploadData:boolean;
         public offLeave :boolean;
         public sex: string;
         public options!: any;
@@ -42,15 +43,30 @@
             this.store = getModule(WorkerStore)
             this.storeComm = getModule(CommentsStore)
             this.addWorker = false;
+            this.uploadData = false;
             this.particulars = false;
             this.certificate = false;
             this.onLeave = false;
             this.offLeave =false;
         }
         mounted() {
-            this.store.search();
-            this.store.getProjectType();
-            this.store.selectProject();
+            if(this.store.notIn){
+                if(this.store.notIn == true){
+                    this.store.searchNot();
+                    this.store.getProjectType();
+                    this.store.selectProject();
+                }
+            }else if(this.store.in){
+                if(this.store.in == true){
+                    this.store.searchIn();
+                    this.store.getProjectType();
+                    this.store.selectProject();
+                }
+            }else {
+                this.store.search();
+                this.store.getProjectType();
+                this.store.selectProject();
+            }
         }
         getCommentSparticularsList():any{
             return this.storeComm.commentSparticularsList;
@@ -151,6 +167,7 @@
             this.now = new Date();
             this.year = this.now.getTime();
             this.date = new Date(idNumber.substring(6,10)+","+idNumber.substring(10,12)+","+idNumber.substring(12,14)).getTime();
+            // return Math.floor((this.year)/(1000*60*60*24));
             return Math.floor((this.year-this.date)/(1000*60*60*24*31*12));
         }
         messageWarningFn (text) {
@@ -162,6 +179,12 @@
                     this.loading = true;
                 })
             }, 500)
+        }
+        okUpload():any{
+            this.uploadData = false;
+        }
+        cancelUpload():any{
+            this.uploadData = false;
         }
         ok() : any{
             if(!this.store.userName){
