@@ -132,4 +132,5 @@ export default class MobileStore extends VuexModule {
     private successProjectList(data: any) {
         this.projectInfo = data.data;
     }
+
 }
