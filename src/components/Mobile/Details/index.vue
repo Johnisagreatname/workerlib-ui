@@ -1,10 +1,11 @@
 <script lang="ts">
     import {Component, Vue, Prop, Model} from 'vue-property-decorator';
     import {getModule} from 'vuex-module-decorators';
-    import {Tab, TabItem, XHeader, Cell, Flexbox, FlexboxItem, Swiper, SwiperItem, Badge, ViewBox} from 'vux'
+    import {Tab, TabItem, XHeader, Cell, Flexbox, FlexboxItem, Swiper, SwiperItem, Badge, ViewBox, Group} from 'vux'
     import MobileStore from '../../../store/mobile/MobileStore';
     import WorkerStore from "../../../store/modules/WorkerStore";
     import router from '../../../router/.invoke/router'
+    import CommentsStore from "../../../store/modules/CommentsStore";
 
     @Component({
         components: {
@@ -17,33 +18,55 @@
             Tab,
             TabItem,
             Badge,
-            ViewBox
+            ViewBox,
+            Group
         }
     })
     export default class Details extends Vue {
         private store: any;
         private wstore: any;
+        private storeComm: any;
         public sex: string;
         public now: Date;
         public year: any;
         public date: any;
         private userId: any
+        private token: any;
 
         constructor() {
             super();
-            this.userId = router.currentRoute.query.uuid;
+        debugger
+            this.getBody();
+            this.userId = router.currentRoute.query.eafid;
+            this.token = router.currentRoute.query.token;
+            localStorage.setItem('token', this.token)
             this.store = getModule(MobileStore)
             this.wstore = getModule(WorkerStore)
+            this.storeComm = getModule(CommentsStore)
         }
 
         mounted() {
             this.store.selectPersonInfo();
+            this.store.selectWorkType();
             this.store.selectAttendances();
             this.wstore.setInfoId(this.userId);
+
             this.wstore.searchInvolvedProject();
             this.wstore.selectCultivate();
             this.wstore.selectCheckWorkceMonth();
-            this.wstore.selectCheckWorkce
+            this.wstore.selectCheckWorkce();
+            this.wstore.selectSalary();
+            this.storeComm.setPunishmentsId(this.userId);
+            this.storeComm.searchCommentSparticulars();
+        }
+
+        getBody(): any {
+        debugger
+            document.body.style.minWidth = window.screen.width + 'px'
+        }
+
+        getCommentSparticularsList(): any {
+            return this.storeComm.commentSparticularsList;
         }
 
         getCultivateList(): any {
@@ -69,7 +92,34 @@
                 return "女";
             }
         }
+        getWorkType(workType): string{
+            if (workType==null){
+                return "无"
+            }else {
+                return workType.workType;
+            }
+        }
+        getUrl(personInfo):string{
+            if (personInfo==null){
+                return ""
+            }else {
+                return "http://113.105.121.93:1818"+personInfo.cwrPhoto;
+            }
+        }
 
+        //身份证掩码
+        replaceID(idNumber): string {
+            if (!idNumber) return;
+            const b = idNumber.replace(/^(.{3})(?:\d+)(.{4})/, '$1***********$2');
+            return b;
+        }
+
+        //手机号掩码
+        replacePhone(idNumber): string {
+            if (!idNumber) return;
+            const b = idNumber.replace(/^(.{3})(?:\d+)(.{2})/, '$1******$2');
+            return b;
+        }
         //获取年龄
         getAge(idNumber): number {
             if (!idNumber) return;
