@@ -96,11 +96,18 @@
                 .cultivateEcharts
                     #cultivate(:style={'height': '200px', 'width': '418px'})
         .bodyMiddle
-            .bodyMiddleTop
-                video(controls="controls",autoplay,loop,width="800px",height="460px")
-                    source(:src="'https://vdept.bdstatic.com/667751356b514d364a366d7366797643/" +
-                    "4c34454e65495370/ff9fbe5e2e0430a371378a15c7ce7a7dabe243c409a132e7936a08c874cf10d7093a765c3a5ff70e71eac3395b150790.mp4?" +
-                    "auth_key=1577763390-0-0-4d1fac4b3561e7edee6cddb034faf2a1'")
+            .bodyMiddleTop(v-if="this.store.indexVideo && this.store.indexVideo.isOk ==1")
+                video(controls="controls",autoplay,muted ,loop,width="800px",height="460px")
+                    source(:src="'/api/workerlib/play/indexVideo/file/'+this.store.indexVideo.id")
+
+            .bodyMiddleTop(v-else)
+                Carousel(v-model="carouselPhoto", autoplay, :autoplay-speed=3000, dots="none", radius-dot, arrow="always")
+                    CarouselItem(v-for="item in getVideoList()")
+                        .demo-carouselPhoto
+                            img(:src="'/api/workerlib/preview/indexVideo/file/'+item.id" :style={
+                                'width': '100%',
+                                'height': '100%'
+                            })
             .bodyMiddleMiddle
                 .middleMiddleTop
                 .middleMiddleBelow

@@ -538,6 +538,12 @@
     margin-left: auto;
     margin-right: auto;
 }
+.demo-carouselPhoto{
+    width: 800px;
+    height: 460px;
+    margin-left: auto;
+    margin-right: auto;
+}
 .q5 table tr td{
     border-bottom: 1px solid #223453 !important;
 }

@@ -1,0 +1,53 @@
+.body{
+    display: inline-block;
+    min-height: 1080px;
+    height: auto;
+    width: 100%;
+    background-color: #ffffff;
+    color:#000000;
+}
+.videoPhoto{
+    width: 100%;
+    min-height: 250px;
+    height: auto;
+}
+.video{
+    width: 300px;
+    height: 200px;
+    float: left;
+    margin-left: 10px;
+    position: relative;
+    background-color: black;
+}
+.photo{
+    width: 150px;
+    height: 100px;
+    float: left;
+    margin-left: 10px;
+    position: relative;
+}
+.button{
+    display: inline-block;
+    min-height: 70px;
+    height: auto;
+    width: 100%;
+}
+.button Button {
+    margin-left: 20px;
+    margin-top: 20px;
+}
+.image-remove {
+    background-color: #0091fe;
+    color: #ececec;
+    font-size: 12px;
+    width: 15px;
+    height: 15px;
+    text-align: center;
+    border-radius: 100%;
+    transform: rotate(45deg);
+    cursor: pointer;
+    /* opacity: 0.5; */
+    top: -8px;
+    right: -6px;
+    position: absolute;
+}
