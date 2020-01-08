@@ -106,7 +106,7 @@
                     span(:style={'color': 'red'}) *
                 .input
                     Select(clearable,filterable,style="width:345px", v-model="status")
-                        Option(v-for="item in getMenus()", :value="item.value",:key="item.value") {{item.name}}
+                        Option(v-for="item in getMenus()", :value="item.value",:key="item.value") {{item.name}}setPeoplesId
     Modal(:value="addPeoples",title="添加人员",@on-ok="okAdd()",@on-cancel="cancelAdd()",width='50%',:loading = "loading")
         .addBody
             .topOne2
@@ -123,7 +123,7 @@
                 @on-select-all-cancel="handleSelectAllCancelPeople"
                 )
                     template(slot-scope="{row, index }",slot="workType")
-                        Select(clearable,filterable,multiple,@on-change="selectChange")
+                        Select(clearable,filterable,@on-change="selectChange")
                             Option(v-for="item in getUserWorkTypeMenus(row.workType)", :value="item.name+'_'+row.eafId",:key="item.name") {{item.name}}
 
 

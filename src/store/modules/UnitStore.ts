@@ -174,20 +174,6 @@ export default class UnitStore extends VuexModule {
     public getUploadParams() : any {
 
         return {
-            "joinTables": [{
-                "tablename": "unit",
-                "alias": "u",
-                "joinMode": "Left"
-            }, {
-                "tablename": "project",
-                "alias": "p",
-                "joinMode": "Left",
-                "onList": [{
-                    "name": "u.project_id",
-                    "value": "p.project_id",
-                    "algorithm": "EQ"
-                }]
-            }],
 
             "conditionList": [{
                 "name": "u.unit_id",
@@ -196,26 +182,16 @@ export default class UnitStore extends VuexModule {
             }],
             "keywords" : [],
             "selectList": [
-                {"field": "p.project_name","alias":"项目名称" },
-                {"field": "u.project_license" ,"alias":"施工单位许可证"},
                 {"field": "u.unit_number" ,"alias":"参建单位编号"},
                 {"field": "u.unit_name" ,"alias":"参建单位名称"},
-                {"field": "u.people_number" ,"alias":"当前人数"},
-                {"field": "u.principal","alias":"负责人" },
-                {"field": "u.entrance_time","alias":"入场日期" }
+                {"field": "b.worker_count" ,"alias":"当前人数"},
+                {"field": "u.principal","alias":"负责人" }
             ]
         };
     }
     @Action
     public getParams() : any {
 
-        if(this.sProjectName){
-            let item ={};
-            item["name"]="p.project_name";
-            item["value"]=this.sProjectName;
-            item["algorithm"] = "LIKE"
-            this.conditionList.push(item);
-        }
         if(this.sUnitName){
             let item ={};
             item["name"]="u.unit_name";
@@ -223,31 +199,7 @@ export default class UnitStore extends VuexModule {
             item["algorithm"] = "LIKE"
             this.conditionList.push(item);
         }
-        if(this.sStatus != undefined && this.sStatus > -1
-            && this.sStatus != null){
-            let item ={};
-            item["name"]="u.status";
-            item["value"]=this.sStatus;
-            item["algorithm"] = "EQ"
-            this.conditionList.push(item);
-        }
         return {
-            "joinTables": [{
-                "tablename": "unit",
-                "alias": "u",
-                "joinMode": "Left",
-
-            }, {
-                "tablename": "archives ",
-                "alias": "a",
-                "JoinMode": "Left",
-                "onList": [{
-                    "name": "a.unit_id",
-                    "value": "u.unit_id ",
-                    "algorithm": "EQ"
-                }]
-            }
-            ],
             "pageInfo" : {
                 "pageIndex": this.pageIndex,
                 "pageSize": this.pageSize
@@ -257,24 +209,10 @@ export default class UnitStore extends VuexModule {
 
             "sortList": [],
 
-            "groupList" : [
-                "a.unit_id"
-            ],
+            "groupList" : [],
 
             "keywords" : [],
-            "selectList": [
-                {"field": "u.unit_id" },
-                {"field": "unit_number" },
-                {"field": "unit_name" },
-                {"field": "principal" },
-                {"field": "entrance_time" },
-                {"field": "unit_type" },
-                {
-                    "field": "a.id" ,
-                    "alias":"worker_count",
-                    "function": "COUNT"
-                }
-            ]
+            "selectList": []
         };
     }
     @Action
@@ -318,7 +256,7 @@ export default class UnitStore extends VuexModule {
     }
     @Action
     public async search() {
-        await request.post('/api/workerlib/join',await this.getParams()).then((data)=>{
+        await request.post('/api/workerlib/unitview',await this.getParams()).then((data)=>{
             if(!data){
                 return;
             }
@@ -345,7 +283,7 @@ export default class UnitStore extends VuexModule {
     @Action
     public async upload() {
         let alert: any = Message;
-        await request.post('/api/workerlib/export/join',await this.getUploadParams(),
+        await request.post('/api/workerlib/userview/export',await this.getUploadParams(),
             {responseType: 'blob', params: '项目工程档案'}).then((data)=>{
                 if(!data){
                     return;
@@ -456,7 +394,7 @@ export default class UnitStore extends VuexModule {
     }
     @Action
     public async count() {
-        await request.post('/api/workerlib/join/count', await this.getParams()).then((total)=>{
+        await request.post('/api/workerlib/unitview/count', await this.getParams()).then((total)=>{
             if(!total){
                 return;
             }
@@ -546,19 +484,19 @@ export default class UnitStore extends VuexModule {
         },
         {
             title: '当前人数',
-            key: 'worker_count',
+            slot: 'worker_count',
             sortable: true
         },
-        {
-            title: '单位类型',
-            key: 'unit_type',
-            sortable: true
-        },
-        {
-            title: '入场日期',
-            key: 'entrance_time',
-            sortable: true
-        },
+        // {
+        //     title: '单位类型',
+        //     key: 'unit_type',
+        //     sortable: true
+        // },
+        // {
+        //     title: '入场日期',
+        //     key: 'entrance_time',
+        //     sortable: true
+        // },
         {
             title: '法人代表',
             key: 'principal',
