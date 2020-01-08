@@ -24,6 +24,7 @@ export default class ProjectStore extends VuexModule {
         this.searchPeopleConditionList = [];
         this.updateList = [];
         this.insertList = [];
+        this.insertProjectWorkTypeList = [];
         this.peoples = [];
         this.projectPeoples = [];
         this.projectInfo = {};
@@ -71,6 +72,7 @@ export default class ProjectStore extends VuexModule {
     public viewPeople:Array<any>;
     public updateList:Array<any>;
     public insertList:Array<any>;
+    public insertProjectWorkTypeList:Array<any>;
     public peopleId:Array<any>;
     public searchConditionList:Array<any>;
     public searchPeopleConditionList:Array<any>;
@@ -138,13 +140,15 @@ export default class ProjectStore extends VuexModule {
             item["algorithm"] = "LIKE"
             this.searchConditionList.push(item);
         }
-        if(this.projectInfo.selectStatus != undefined && this.projectInfo.selectStatus > -1
-            && this.projectInfo.selectStatus != null){
-            let item ={};
-            item["name"]="status";
-            item["value"]=this.projectInfo.selectStatus;
-            item["algorithm"] = "EQ"
-            this.searchConditionList.push(item);
+        if(this.projectInfo.selectStatus != undefined &&this.projectInfo.selectStatus != null) {
+            let status = this.projectInfo.selectStatus - 1
+            if (status > -1) {
+                let item = {};
+                item["name"] = "status";
+                item["value"] = status;
+                item["algorithm"] = "EQ"
+                this.searchConditionList.push(item);
+            }
         }
         return {
             "pageInfo" : {
@@ -185,13 +189,38 @@ export default class ProjectStore extends VuexModule {
     }
     @Action
     public async insert() {
-        let alert: any = Message;
+        debugger
         await request.put('/api/workerlib/archives',this.insertList
             ).then((data)=>{
                 if(!data){
                     return;
                 }
             this.sucessInsert(data);
+        }).catch((e)=>{
+            let alert: any = Message;
+            if(!e) {
+                alert.warning('未知错误！');
+                return
+            }
+            if(e.response && e.response.data && e.response.data.message) {
+                alert.warning(e.response.data.message)
+                return
+            }
+            if(!e.message) {
+                return;
+            }
+            alert.warning(e.message || e)
+        });
+    }
+    @Action
+    public async insertProjectWorkType() {
+        debugger
+        await request.put('/api/workerlib/projectworktype',this.insertProjectWorkTypeList
+            ).then((data)=>{
+                if(!data){
+                    return;
+                }
+            this.sucessInsertProjectWorkType(data);
         }).catch((e)=>{
             let alert: any = Message;
             if(!e) {
@@ -290,6 +319,10 @@ export default class ProjectStore extends VuexModule {
                 "conditionList": [{
                     "name": "project_id",
                     "value": this.viewProjectId,
+                    "algorithm": "EQ"
+                },{
+                    "name": "leave",
+                    "value": 1,
                     "algorithm": "EQ"
                 }],
 
@@ -499,7 +532,7 @@ export default class ProjectStore extends VuexModule {
     }
     @Action
     public async searchPeople() {
-        await request.post('/api/workerlib/alluser',await this.getPeopleParams()).then((data)=>{
+        await request.post('/api/workerlib/project_allpeople',await this.getPeopleParams()).then((data)=>{
             if(!data){
                 return;
             }
@@ -976,13 +1009,21 @@ export default class ProjectStore extends VuexModule {
             alert.warning('成功！');
         }
     }
-    @Mutation
+    @Action
     private sucessInsert(data: any) {
+        if(data.status == 0){
+            this.insertProjectWorkType();
+        }
+
+    }
+    @Mutation
+    private sucessInsertProjectWorkType(data: any) {
         if(data.status== 0){
         for(let i = 0;i<this.insertList.length;i++){
             this.projectPeoples.push(this.insertList[i]);
         }
             this.insertList=new Array<any>() ;
+            this.insertProjectWorkTypeList=new Array<any>() ;
         let alert: any = Message;
         alert.warning('成功！');
         }
@@ -1001,18 +1042,26 @@ export default class ProjectStore extends VuexModule {
         this.insertList.push(data) ;
     }
     @Mutation
+    private setInsertProjectWorkTypeList(data: any) {
+        this.insertProjectWorkTypeList.push(data) ;
+    }
+    @Mutation
     private clearInsertList() {
         this.insertList=new Array<any>() ;
     }
 
     @Mutation
     private selectStatus(data: number) {
-        this.projectInfo.selectStatus = data-1;
+        this.projectInfo.selectStatus = data;
     }
 
     @Mutation
     private setChecked(data: any) {
         this.checkeds.push(data);
+    }
+    @Mutation
+    private clearChecked() {
+        this.checkeds=new Array<any>();
     }
 }
 

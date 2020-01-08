@@ -31,6 +31,7 @@
 
         public addUnit: boolean;
         private store: any;
+        private workerStore: any;
 
         constructor() {
             super();
@@ -46,7 +47,6 @@
             }
             return '';
         }
-
         private options!: any;
         getMenus() : any {
             if(this.options) return this.options;
@@ -63,8 +63,14 @@
 
         }
         handleSelectRowCancel(selection,row){
+            for(let i = 0;i < this.store.unit.length;i++) {
+                if(this.store.unit.filter(a => a.unit_id == row.unit_id ).length > 0){
+                    this.$set(this.store.unit[i], '_checked', false)
+                }
+            }
             let index =  this.store.uplodId.findIndex(x => x.unit_id == row.unit_id);
             this.store.uplodId.splice(index, 1);
+            console.log(this.store.uplodId);
         }
         handleSelectAll(selection) {
             for(let i= 0;i<selection.length;i++){
@@ -79,11 +85,10 @@
             }
         }
         handleSelectAllCancel(selection){
-            for(let i= 0;i<selection.length;i++){
-                let item = {};
-                let row = selection[i];
-                let index =  this.store.uplodId.findIndex(x => x.unit_id == row.unit_id);
-                if(index > -1){
+            for(let i = 0;i < this.store.unit.length;i++) {
+                if(this.store.uplodId.findIndex(x => x.unit_id == this.store.unit[i].unit_id) > -1){
+                    let index =  this.store.uplodId.findIndex(x => x.unit_id == this.store.unit[i].unit_id);
+                    this.$set(this.store.unit[i], '_checked', false);
                     this.store.uplodId.splice(index, 1);
                 }
             }
