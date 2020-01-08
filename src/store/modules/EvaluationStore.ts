@@ -72,6 +72,9 @@ export default class EvaluationStore extends VuexModule {
     @Action
     public async verification(){
         await request.post('/api/workerlib/dictionaries/exist ', await this.getVerification()).then((data)=>{
+            if(!data){
+                return;
+            }
             this.sucess(data);
 
         }).catch((e)=>{
@@ -97,6 +100,9 @@ export default class EvaluationStore extends VuexModule {
     @Action
     public async search() {
         await request.post('/api/workerlib/dictionaries', await this.getParams()).then((data)=>{
+            if(!data){
+                return;
+            }
             this.success(data);
             this.count();
         }).catch((e)=>{
@@ -122,6 +128,9 @@ export default class EvaluationStore extends VuexModule {
     @Action
     public async deleteEvaluation(){
         await request.delete('/api/workerlib/dictionaries/'+this.evaluetionInfo.id).then((data)=>{
+            if(!data){
+                return;
+            }
             this.added(data)
         }).catch((e)=>{
             console.log(e)
@@ -145,6 +154,9 @@ export default class EvaluationStore extends VuexModule {
     @Action
     public async count() {
         await request.post('/api/workerlib/dictionaries/count', await this.getParams()).then((total)=>{
+            if(!total){
+                return;
+            }
             this.setPageTotal(total.data)
         }).catch((e)=>{
             MessageUtils.warning(e);
@@ -157,6 +169,9 @@ export default class EvaluationStore extends VuexModule {
                 "value":this.pageInfo.totalRecords+1,
                 "category":"评价类型",
             }).then((data)=>{
+            if(!data){
+                return;
+            }
             this.added(data)
         }).catch((e)=>{
             console.log(e)

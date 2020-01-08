@@ -120,21 +120,15 @@ export default class CommentsStore extends VuexModule {
     public async searchCommentSparticulars() {
         await request.post('/api/workerlib/commentsparticulars',{
             "pageInfo" : {},
-
             "conditionList": {
                 "name" : "archives_id ",
                 "value" : this.punishmentsId,
                 "algorithm" : "EQ"
             },
-
             "sortList": [],
-
             "groupList" : [],
-
             "keywords" : [],
-
             "selectList": []
-
         }).then((data)=>{
             if(!data){
                 return;
@@ -439,7 +433,6 @@ export default class CommentsStore extends VuexModule {
     }
     @Action
     public async upload() {
-        debugger
         await request.post('/api/workerlib/comments/export',{
             "conditionList": [{
                 "name": "eafId",

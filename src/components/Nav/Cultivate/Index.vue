@@ -99,7 +99,6 @@
             this.startTraining = true;
         }
         upOperation(name){
-            debugger
             if(name.split('_')[0] == 'add') {
                 this.store.setViewId(name.split('_')[1]);
                 this.uploadTraining = true;
@@ -110,7 +109,6 @@
             }
         }
         handleSuccessVideo (res, file) {
-            debugger
             let item = {};
             item["cultivateId"] = this.store.viewId;
             item["file"] = res.file;
@@ -127,7 +125,6 @@
             alert.warning(file.name + ' 文件格式错误！请上传jpg、jpeg、png格式文件！');
         }
         handleSuccessPicture (res, file) {
-            debugger
             let item = {};
             item["cultivateId"] = this.store.viewId;
             item["file"] = res.file;

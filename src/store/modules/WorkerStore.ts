@@ -69,11 +69,14 @@ export default class WorkerStore extends VuexModule {
     public in:boolean;
     public insertEafId:string;
 
+    public date :Date;
+
     constructor(e) {
         super(e)
         this.pageIndex=1;
         this.pageSize= 10;
         this.pageTotal = 0;
+        this.date = new Date();
 
         this.inPageIndex=1;
         this.inPageSize= 1;
@@ -182,7 +185,6 @@ export default class WorkerStore extends VuexModule {
 
             "selectList": []
         };
-        // params.conditionList[0].value = new Array();
     }
     @Action
     public getUpdateParams() : any {
@@ -250,24 +252,24 @@ export default class WorkerStore extends VuexModule {
                 },
 
                 {
-                "tablename": "project",
-                "alias": "p",
-                "JoinMode": "Left",
-                "onList": [{
-                    "name": "p.project_id",
-                    "value": "a.project_id",
-                    "algorithm": "EQ"
-                }]
-            }, {
-                "tablename": "unit",
-                "alias": "u",
-                "joinMode": "Left",
-                "onList": [{
-                    "name": "u.unit_id",
-                    "value": "a.unit_id",
-                    "algorithm": "EQ"
-                }]
-            }
+                    "tablename": "project",
+                    "alias": "p",
+                    "JoinMode": "Left",
+                    "onList": [{
+                        "name": "p.project_id",
+                        "value": "a.project_id",
+                        "algorithm": "EQ"
+                    }]
+                }, {
+                    "tablename": "unit",
+                    "alias": "u",
+                    "joinMode": "Left",
+                    "onList": [{
+                        "name": "u.unit_id",
+                        "value": "a.unit_id",
+                        "algorithm": "EQ"
+                    }]
+                }
             ],
             "pageInfo" : {
                 "pageIndex": this.inPageIndex,
@@ -855,6 +857,9 @@ export default class WorkerStore extends VuexModule {
             "selectList": []
 
         }).then((data)=>{
+            if(!data){
+                return;
+            }
             this.successUnitList(data);
         }).catch((e)=>{
             let alert: any = Message;
@@ -874,7 +879,6 @@ export default class WorkerStore extends VuexModule {
     }
     @Action
     public async insertArchives() {
-        debugger
         await request.put('/api/workerlib/alluser', {
             "eafName":this.userName,
             "eafPhone":this.phone,
@@ -910,7 +914,6 @@ export default class WorkerStore extends VuexModule {
     }
     @Action
     public async insertWorkType(id) {
-        debugger
         if(this.type.length>0){
             for(let i=0;i<this.type.length;i++){
                 let item = {};
@@ -1287,3 +1290,4 @@ interface InvolvedProjectInfo {
     end_time?:Date;
     project_license?:string;
 }
+

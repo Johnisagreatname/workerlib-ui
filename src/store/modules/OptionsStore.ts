@@ -104,6 +104,9 @@ export default class OptionsStore extends VuexModule {
     @Action
     public async count() {
         await request.post('/api/workerlib/subject/count', await this.getParams()).then((total)=>{
+            if(!total){
+                return;
+            }
             this.setPageTotal(total.data)
         }).catch((e)=>{
             MessageUtils.warning(e);
@@ -112,6 +115,9 @@ export default class OptionsStore extends VuexModule {
     @Action
     public async search() {
         await request.post('/api/workerlib/subject',await this.getParams()).then((data)=>{
+            if(!data){
+                return;
+            }
             this.success(data);
             this.count();
         }).catch((e)=>{
@@ -145,6 +151,9 @@ export default class OptionsStore extends VuexModule {
             "score":this.subjectInfo.score,
             "private_id":this.subjectInfo.private_id
         }).then((data)=>{
+            if(!data){
+                return;
+            }
             this.added(data)
         }).catch((e)=>{
             console.log(e)
@@ -173,6 +182,9 @@ export default class OptionsStore extends VuexModule {
             "subject_id":this.optionsInfo.subject_id,
             "value":this.optionsInfo.value,
         }).then((data)=>{
+            if(!data){
+                return;
+            }
             this.added(data)
         }).catch((e)=>{
             console.log(e)
@@ -197,6 +209,9 @@ export default class OptionsStore extends VuexModule {
     @Action
     public async selectOptions(){
         await request.post('/api/workerlib/options',await this.getId()).then((data)=>{
+            if(!data){
+                return;
+            }
             this.answer(data);
             // this.count();
         }).catch((e)=>{

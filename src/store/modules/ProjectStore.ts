@@ -189,7 +189,6 @@ export default class ProjectStore extends VuexModule {
     }
     @Action
     public async insert() {
-        debugger
         await request.put('/api/workerlib/archives',this.insertList
             ).then((data)=>{
                 if(!data){
@@ -214,7 +213,6 @@ export default class ProjectStore extends VuexModule {
     }
     @Action
     public async insertProjectWorkType() {
-        debugger
         await request.put('/api/workerlib/projectworktype',this.insertProjectWorkTypeList
             ).then((data)=>{
                 if(!data){

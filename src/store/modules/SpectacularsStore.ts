@@ -82,17 +82,15 @@ export default class SpectacularsStore extends VuexModule {
                     "field":"workType",
                     "function": "COUNT",
                     "alias":"total"
-                },{
-                    "field":"certificate",
-                    "function": "COUNT",
-                    "alias":"certificateTotal"
                 }
                 ]
             }
         ).then((data)=>{
-            if(data){
-                this.successWorkType(data);
+            if(!data){
+                return;
             }
+            this.successWorkType(data);
+
 
         }).catch((e)=>{
             let alert: any = Message;
@@ -147,9 +145,11 @@ export default class SpectacularsStore extends VuexModule {
                 ]
             }
         ).then((data)=>{
-            if(data){
-                this.successWorkTypeCount(data);
+            if(!data){
+                return;
             }
+            this.successWorkTypeCount(data);
+
 
         }).catch((e)=>{
             let alert: any = Message;
@@ -189,9 +189,11 @@ export default class SpectacularsStore extends VuexModule {
                 "selectList": []
             }
         ).then((data)=>{
-            if(data){
-                this.successSkill(data);
+            if(!data){
+                return;
             }
+            this.successSkill(data);
+
 
         }).catch((e)=>{
             let alert: any = Message;
@@ -224,6 +226,9 @@ export default class SpectacularsStore extends VuexModule {
 
             "selectList": []
         }).then((total)=>{
+            if(!total){
+                return;
+            }
             this.setPeopleTotal(total.data)
         }).catch((e)=>{
             MessageUtils.warning(e);
@@ -248,6 +253,9 @@ export default class SpectacularsStore extends VuexModule {
 
             "selectList": []
         }).then((total)=>{
+            if(!total){
+                return;
+            }
             this.setWorkTypeCount(total.data)
         }).catch((e)=>{
             MessageUtils.warning(e);
@@ -268,6 +276,9 @@ export default class SpectacularsStore extends VuexModule {
 
             "selectList": []
         }).then((total)=>{
+            if(!total){
+                return;
+            }
             this.setProjectCount(total.data[0])
         }).catch((e)=>{
             MessageUtils.warning(e);
@@ -288,6 +299,9 @@ export default class SpectacularsStore extends VuexModule {
 
             "selectList": []
         }).then((total)=>{
+            if(!total){
+                return;
+            }
             this.setProjectCountBE(total.data[0])
         }).catch((e)=>{
             MessageUtils.warning(e);
@@ -312,6 +326,9 @@ export default class SpectacularsStore extends VuexModule {
 
             "selectList": []
         }).then((total)=>{
+            if(!total){
+                return;
+            }
             this.setCultivateCount(total.data)
         }).catch((e)=>{
             MessageUtils.warning(e);
@@ -356,6 +373,9 @@ export default class SpectacularsStore extends VuexModule {
 
             "selectList": []
         }).then((total)=>{
+            if(!total){
+                return;
+            }
             this.setCultivateSucess(total.data)
         }).catch((e)=>{
             MessageUtils.warning(e);
@@ -379,6 +399,9 @@ export default class SpectacularsStore extends VuexModule {
 
             "selectList": []
         }).then((total)=>{
+            if(!total){
+                return;
+            }
             this.setAppraiseSucess(total.data)
         }).catch((e)=>{
             MessageUtils.warning(e);
@@ -552,7 +575,7 @@ export default class SpectacularsStore extends VuexModule {
 
     @Mutation
     public setPeopleTotal(total: any) {
-            this.peopleTotal= total;
+        this.peopleTotal= total;
 
     }
 

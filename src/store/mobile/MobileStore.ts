@@ -61,7 +61,6 @@ export default class MobileStore extends VuexModule {
     @Action
     public getParamsInfo(): any {
         let item = {};
-        debugger
         this.userId = router.currentRoute.query.eafid;
         item["name"] = "archives_id";
         item["value"] = this.userId;
