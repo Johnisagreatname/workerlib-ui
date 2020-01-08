@@ -59,6 +59,9 @@ export default class ContributiveStore extends VuexModule {
 
             "selectList": []
         }).then((data)=>{
+            if(!data){
+                return;
+            }
             this.success(data)
         }).catch((e)=>{
             console.log(e)

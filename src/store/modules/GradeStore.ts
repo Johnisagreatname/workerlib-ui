@@ -56,7 +56,6 @@ export default class GradeStore extends VuexModule {
     public commentTypeInfo:any;
     @Action
     public getParams() : any {
-        debugger
         if(this.selectName){
             let item = {};
             item["name"] = "name";

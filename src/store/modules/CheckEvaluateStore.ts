@@ -42,6 +42,7 @@ export default class CheckEvaluateStore extends VuexModule {
     public cultivateArchivesList:Array<any>;
     public checkAllGroup: Array<any>;
     public peoples: any;
+    public viewRateInfo: any;
     public insertTeamUserList:Array<any>;
     public viewList:Array<any>;
     //新增
@@ -55,6 +56,9 @@ export default class CheckEvaluateStore extends VuexModule {
     public pageInIndex: number;
     public pageInSize: number;
     public pageInTotal:number;
+    public pageViewRateIndex: number;
+    public pageViewRateSize: number;
+    public pageViewRateTotal:number;
     //新增团体评级
     public insertRatingname:string;
     public insertNorating:number;
@@ -64,6 +68,7 @@ export default class CheckEvaluateStore extends VuexModule {
 
     public selectViewName:string;
     public selectViewIdCard:string;
+    public viewRateId:string;
 
     constructor(e) {
         super(e);
@@ -93,6 +98,7 @@ export default class CheckEvaluateStore extends VuexModule {
         this.peopleConditionList = [];
         this.viewList = [];
         this.peoples = [];
+        this.viewRateInfo = [];
         this.commtenGrade = [];
         this.grades = [];
         this.grade = "";
@@ -109,6 +115,9 @@ export default class CheckEvaluateStore extends VuexModule {
         this.pageViewIndex=1;
         this.pageViewSize= 10;
         this.pageViewTotal = 0;
+        this.pageViewRateIndex=1;
+        this.pageViewRateSize= 10;
+        this.pageViewRateTotal = 0;
         this.insertRatingname=null;
         this.insertNorating=null;
         this.insertRate=null;
@@ -117,6 +126,7 @@ export default class CheckEvaluateStore extends VuexModule {
 
         this.selectViewName = null;
         this.selectViewIdCard = null;
+        this.viewRateId = null;
     }
     @Action
     public getParams() : any {
@@ -279,8 +289,67 @@ export default class CheckEvaluateStore extends VuexModule {
         };
     }
     @Action
+    public getViewRateParams() : any {
+        return {
+            "joinTables": [
+                {
+                    "tablename": "user_rate",
+                    "alias": "a",
+                    "joinMode": "Left"
+                }, {
+                    "tablename": "alluser",
+                    "alias": "b",
+                    "JoinMode": "Left",
+                    "onList": [{
+                        "name": "a.userId",
+                        "value": "b.eafId",
+                        "algorithm": "EQ"
+                    }]
+                }
+            ],
+            "pageInfo" : {
+                "pageIndex": this.pageViewRateIndex,
+                "pageSize": this.pageViewRateSize
+            },
+            "conditionList":[
+                {
+                    "name":"eafId",
+                    "value":this.viewRateId,
+                    "algorithm":"EQ"
+                }
+            ],
+
+            "sortList": [{
+                "name": "evaluateTime",
+                "desc": true
+            }],
+            "groupList" : [],
+
+            "keywords" : [],
+            "selectList": [{
+                "field": "a.userId",
+                "alias":"eafId"
+            },{
+                "field": "b.eafName",
+                "alias":"eafName"
+            },{
+                "field": "a.rateWorkType",
+                "alias":"rateWorkType"
+            },{
+                "field": "a.grade",
+                "alias":"grade"
+            },{
+                "field": "a.rank",
+                "alias":"rank"
+            },{
+                "field": "a.evaluateTime",
+                "alias":"evaluateTime"
+            }
+                ]
+        };
+    }
+    @Action
     public getViewParams() : any {
-        debugger
         if(this.selectViewName){
             let item ={};
             item["name"]="eafName";
@@ -368,7 +437,6 @@ export default class CheckEvaluateStore extends VuexModule {
     }
     @Action
     public async searchTeamUserInfo() {
-        debugger
         await request.post('/api/workerlib/teamrate',await this.getViewParams()).then((data)=>{
                 if(!data){
                     return;
@@ -517,7 +585,6 @@ export default class CheckEvaluateStore extends VuexModule {
             alert.warning(e.message || e)
         });
     }
-
     @Action
     public async insertTeamRate() {
         await request.put('/api/workerlib/team_rate', {
@@ -526,6 +593,9 @@ export default class CheckEvaluateStore extends VuexModule {
             "rate":this.insertRate,
             "remark":this.insertRemark,
         }).then((data)=>{
+            if(!data){
+                return;
+            }
             this.successInsertTeamRate(data)
         }).catch((e)=>{
             console.log(e)
@@ -558,6 +628,9 @@ export default class CheckEvaluateStore extends VuexModule {
             }
         }
         await request.put('/api/workerlib/team_user', this.insertTeamUserList).then((data)=>{
+            if(!data){
+                return;
+            }
             this.successInsertTeamUser(data);
             this.search();
         }).catch((e)=>{
@@ -583,6 +656,9 @@ export default class CheckEvaluateStore extends VuexModule {
     @Action
     public async searchPeople() {
         await request.post('/api/workerlib/people',await this.getPeopleParams()).then((data)=>{
+            if(!data){
+                return;
+            }
             this.successPeople(data);
             this.countPeople();
         }).catch((e)=>{
@@ -602,9 +678,47 @@ export default class CheckEvaluateStore extends VuexModule {
         });
     }
     @Action
+    public async searchViewRate() {
+        await request.post('/api/workerlib/join',await this.getViewRateParams()).then((data)=>{
+            if(!data){
+                return;
+            }
+            this.successViewRate(data);
+            this.countViewRate();
+        }).catch((e)=>{
+            let alert: any = Message;
+            if(!e) {
+                alert.warning('未知错误！')
+                return
+            }
+            if(e.response && e.response.data && e.response.data.message) {
+                alert.warning(e.response.data.message)
+                return
+            }
+            if(!e.message) {
+                return;
+            }
+            alert.warning(e.message || e)
+        });
+    }
+    @Action
     public async countPeople() {
         await request.post('/api/workerlib/people/count', await this.getPeopleParams()).then((total)=>{
+            if(!total){
+                return;
+            }
             this.setInPageTotal(total.data)
+        }).catch((e)=>{
+            MessageUtils.warning(e);
+        });
+    }
+    @Action
+    public async countViewRate() {
+        await request.post('/api/workerlib/join/count', await this.getViewRateParams()).then((total)=>{
+            if(!total){
+                return;
+            }
+            this.setPageViewRateTotal(total.data)
         }).catch((e)=>{
             MessageUtils.warning(e);
         });
@@ -743,12 +857,17 @@ export default class CheckEvaluateStore extends VuexModule {
     public successPeople(data: any) {
         this.peoples = data.data;
     }
+    @Mutation
+    public successViewRate(data: any) {
+        this.viewRateInfo = data.data;
+    }
 
     @Mutation
     public setInPageTotal(data: number) {
         this.peopleConditionList = [];
         this.pageInTotal = data;
     }
+
     @Mutation
     public setInPageSize(data: number) {
         this.pageInSize = data;
@@ -757,7 +876,19 @@ export default class CheckEvaluateStore extends VuexModule {
     public setInPageIndex(data: number) {
         this.pageInIndex = data;
     }
+    @Mutation
+    public setPageViewRateTotal(data: number) {
+        this.pageViewRateTotal = data;
+    }
 
+    @Mutation
+    public setPageViewRateSize(data: number) {
+        this.pageViewRateSize = data;
+    }
+    @Mutation
+    public setPageViewRateIndex(data: number) {
+        this.pageViewRateIndex = data;
+    }
     @Mutation
     public setSelectProjectName(data:string){
         this.selectProjectName = data;
@@ -793,6 +924,10 @@ export default class CheckEvaluateStore extends VuexModule {
     @Mutation
     public setSelectViewName(data:string){
         this.selectViewName = data;
+    }
+    @Mutation
+    public setViewRateId(data:string){
+        this.viewRateId = data;
     }
     @Mutation
     public setSelectViewIdCard(data:string){
@@ -980,6 +1115,47 @@ export default class CheckEvaluateStore extends VuexModule {
             slot: 'operation'
         }
     ];
+    public viewRateColumns = [
+        {
+            title: '姓名',
+            key: 'eafName',
+            sortable: true
+        },
+        {
+            title: '工种',
+            key: 'rateWorkType',
+            sortable: true
+        },
+        {
+            title: '等级',
+            key: 'grade',
+            sortable: true
+        },{
+            title: '级别',
+            key: 'rank',
+            sortable: true,
+        },{
+            title: '评级时间',
+            key: 'evaluateTime',
+            sortable: true,
+            render: (h, params) => {
+                return h('div', [
+                    h('span', {
+                        style: {
+                            display: 'inline-block',
+                            width: '100%',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            whiteSpace: 'nowrap'
+                        },
+                        domProps: {
+                            title: params.row.evaluateTime
+                        }
+                    }, params.row.evaluateTime)
+                ])
+            }
+        }
+    ];
     public teamColumns = [
         {
             title: '团队名称',
@@ -1130,9 +1306,7 @@ export default class CheckEvaluateStore extends VuexModule {
             slot: 'operation'
         }
     ];
-    // public peopleColumns = [
-    //
-    // ];
+
 
 }
 interface ProjectType {

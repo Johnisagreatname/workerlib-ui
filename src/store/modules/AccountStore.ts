@@ -94,6 +94,9 @@ export default class AccountStore extends VuexModule {
         }
 
         await request.post('/api/workerlib/user', param).then((data)=>{
+            if(!data){
+                return;
+            }
             this.successUser(data);
             this.count();
         }).catch((e)=>{
@@ -129,6 +132,9 @@ export default class AccountStore extends VuexModule {
             "keywords" : [],
             "selectList": []
         }).then((data)=>{
+            if(!data){
+                return;
+            }
             this.successRole(data);
         }).catch((e)=>{
             console.log(e)
@@ -178,6 +184,9 @@ export default class AccountStore extends VuexModule {
     @Action
     public async searchGroupId() {
         await request.post('/api/workerlib/group',await this.getGroupId()).then((data)=>{
+            if(!data){
+                return;
+            }
             this.successGroupId(data);
         }).catch((e)=>{
             let alert: any = Message;
@@ -202,6 +211,9 @@ export default class AccountStore extends VuexModule {
     @Action
     public async deleteUser(){
         await request.delete('/api/workerlib/user/'+this.uid).then((data)=>{
+            if(!data){
+                return;
+            }
             this.added(data)
         }).catch((e)=>{
             console.log(e)
@@ -240,6 +252,9 @@ export default class AccountStore extends VuexModule {
             "keywords" : [],
             "selectList": []
         }).then((total)=>{
+            if(!total){
+                return;
+            }
             this.setPageTotal(total.data)
         }).catch((e)=>{
             MessageUtils.warning(e);
@@ -262,6 +277,9 @@ export default class AccountStore extends VuexModule {
             "keywords" : [],
             "selectList": []
         }).then((data)=>{
+            if(!data){
+                return;
+            }
             this.successType(data);
         }).catch((e)=>{
             MessageUtils.warning(e);
@@ -275,6 +293,9 @@ export default class AccountStore extends VuexModule {
         await request.put('/api/workerlib/user/'+this.uid,{
             "password":this.userInfo.password,
         }).then((data)=>{
+            if(!data){
+                return;
+            }
             this.added(data)
         }).catch((e)=>{
             console.log(e)
@@ -302,7 +323,9 @@ export default class AccountStore extends VuexModule {
                 "username":this.userInfo.username,
                 "password":this.userInfo.password,
             }).then((data)=>{
-
+            if(!data){
+                return;
+            }
                 this.added(data)
         }).catch((e)=>{
             console.log(e)
@@ -333,6 +356,9 @@ export default class AccountStore extends VuexModule {
         }
         await request.put('/api/workerlib/usergrouprole',this.insertList
         ).then((data)=>{
+            if(!data){
+                return;
+            }
             this.addedt(data)
         }).catch((e)=>{
             console.log(e)

@@ -80,6 +80,9 @@ export default class WoekclassStore extends VuexModule {
     @Action
     public async verification(){
         await request.post('/api/workerlib/dictionaries/exist ', await this.getVerification()).then((data)=>{
+            if(!data){
+                return;
+            }
             this.sucess(data);
         }).catch((e)=>{
             console.log(e)
@@ -105,6 +108,9 @@ export default class WoekclassStore extends VuexModule {
     @Action
     public async verifications(){
         await request.post('/api/workerlib/dictionaries/exist ', await this.getVerification()).then((data)=>{
+            if(!data){
+                return;
+            }
             this.update(data);
         }).catch((e)=>{
             console.log(e)
@@ -130,6 +136,9 @@ export default class WoekclassStore extends VuexModule {
     @Action
     public async search() {
         await request.post('/api/workerlib/dictionaries', await this.getParams()).then((data)=>{
+            if(!data){
+                return;
+            }
             this.success(data);
             this.count();
         }).catch((e)=>{
@@ -155,6 +164,9 @@ export default class WoekclassStore extends VuexModule {
     @Action
     public async deleteWorkclass(){
         await request.delete('/api/workerlib/dictionaries/'+this.workclassInfo.id).then((data)=>{
+            if(!data){
+                return;
+            }
             this.added(data)
         }).catch((e)=>{
             console.log(e)
@@ -178,6 +190,9 @@ export default class WoekclassStore extends VuexModule {
     @Action
     public async count() {
         await request.post('/api/workerlib/dictionaries/count', await this.getParams()).then((total)=>{
+            if(!total){
+                return;
+            }
             this.setPageTotal(total.data)
         }).catch((e)=>{
             MessageUtils.warning(e);
@@ -188,6 +203,9 @@ export default class WoekclassStore extends VuexModule {
         await request.put('/api/workerlib/dictionaries/'+this.workclassInfo.id,{
             "name":this.workclassInfo.name,
         }).then((data)=>{
+            if(!data){
+                return;
+            }
             this.added(data)
         }).catch((e)=>{
             console.log(e)
@@ -213,6 +231,9 @@ export default class WoekclassStore extends VuexModule {
                 "value":this.pageInfo.totalRecords+3,
                 "category":"工种",
             }).then((data)=>{
+            if(!data){
+                return;
+            }
             this.added(data)
         }).catch((e)=>{
             console.log(e)

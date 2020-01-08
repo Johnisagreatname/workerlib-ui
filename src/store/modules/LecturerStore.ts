@@ -41,6 +41,9 @@ export default class LecturerStore extends VuexModule {
                 {"field":"curriculum"}
             ]
         }).then((data)=>{
+            if(!data){
+                return;
+            }
             this.success(data)
         }).catch((e)=>{
             let alert: any = Message;
@@ -64,6 +67,9 @@ export default class LecturerStore extends VuexModule {
             "type":this.lecturerInfo.type,
             "photo":this.lecturerInfo.photo
         }).then((data)=>{
+            if(!data){
+                return;
+            }
             this.added(data)
         }).catch((e)=>{
             console.log(e)

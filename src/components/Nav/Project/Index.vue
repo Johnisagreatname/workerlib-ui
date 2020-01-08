@@ -270,7 +270,6 @@
             return this.store.viewPeople;
         }
         getPeopleData() : any{
-            // debugger
             for(let i = 0;i < this.store.peoples.length;i++) {
                 if(this.store.peopleId.filter(a => a.eafId == this.store.peoples[i].eafId ).length > 0){
                     this.$set(this.store.peoples[i], '_checked', true)
@@ -280,7 +279,6 @@
         }
 
         handleSelectRowPeople(selection, row) {
-            debugger
             let item = {};
             item["eafId"] = row.eafId;
             item["eafName"] = row.eafName;
@@ -288,7 +286,6 @@
             console.log(this.store.peopleId)
         }
         handleSelectRowCancelPeople(selection,row){
-            debugger
             for(let i = 0;i < this.store.peoples.length;i++) {
                 if(this.store.peoples.filter(a => a.eafId == row.eafId ).length > 0){
                     this.$set(this.store.peoples[i], '_checked', false)
@@ -299,7 +296,6 @@
             console.log(this.store.peopleId);
         }
         handleSelectAllPeople(selection) {
-            debugger
             for(let i= 0;i<selection.length;i++){
                 let item = {};
                 let row = selection[i];
@@ -313,7 +309,6 @@
             }
         }
         handleSelectAllCancelPeople(selection){
-            debugger
             for(let i = 0;i < this.store.peoples.length;i++) {
                 if(this.store.peopleId.findIndex(x => x.eafId == this.store.peoples[i].eafId) > -1){
                     let index =  this.store.peopleId.findIndex(x => x.eafId == this.store.peoples[i].eafId);
@@ -345,7 +340,6 @@
             console.log(this.store.checkeds)
         }
         handleSelectAllProject(selection) {
-            debugger
             for(let i= 0;i<selection.length;i++){
                 let item = {};
                 let row = selection[i];
@@ -362,7 +356,6 @@
             console.log(this.store.checkeds)
         }
         handleSelectAllCancelProject(selection){
-            debugger
             for(let i = 0;i < this.store.viewPeople.length;i++) {
                 if(this.store.checkeds.findIndex(x => x.id == this.store.viewPeople[i].id) > -1){
                     let index =  this.store.checkeds.findIndex(x => x.id == this.store.viewPeople[i].id);

@@ -263,7 +263,15 @@
                 .gzmm
                     table(:style={'width': '100%'},border="0",cellpadding="0",cellspacing="0")
                         tr(:style={'height': '25px'},v-for="(item, index) in getWorkTypeCount()")
-                            td
+                            td(:title="item.workType",:style={
+                                'display': 'block',
+                                'width': '100px',
+                                'overflow': 'hidden',
+                                'textOverflow': 'ellipsis',
+                                'whiteSpace': 'nowrap',
+                                'cursor': 'pointer'
+
+                            })
                                 .tableCircle(:style="{backgroundColor: backgroundColor(index)}")
                                 span(:style={'cursor': 'pointer'},@click="workType(item.workType)") {{item.workType}}
                             td {{item.total}}人({{((item.total/peopleTotal)*100).toFixed(2)}}%)
@@ -276,7 +284,7 @@
                         span 技能工种评定统计
                 .hrBJ
                 .threeP
-                    #profession(:style={'height': '212px', 'width': '388px'})
+                    #profession(:style={'height': '212px', 'width': '388px'},@click="checkEvaluate()")
             .bodyRightBelow
                 .topTop
                     .topRightBL

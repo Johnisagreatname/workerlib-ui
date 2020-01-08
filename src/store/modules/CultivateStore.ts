@@ -97,6 +97,9 @@ export default class CultivateStore extends VuexModule {
             "keywords" : [],
             "selectList": []
         }).then((data)=>{
+            if(!data){
+                return;
+            }
             this.successType(data);
         }).catch((e)=>{
             MessageUtils.warning(e);
@@ -240,6 +243,9 @@ export default class CultivateStore extends VuexModule {
     @Action
     public async search() {
         await request.post('/api/workerlib/join',await this.getParams()).then((data)=>{
+            if(!data){
+                return;
+            }
             this.success(data);
             this.count();
         }).catch((e)=>{
@@ -262,6 +268,9 @@ export default class CultivateStore extends VuexModule {
     @Action
     public async searchInfo() {
         await request.post('/api/workerlib/join',await this.getInParams()).then((data)=>{
+            if(!data){
+                return;
+            }
             this.successInfo(data);
             this.countInfo();
         }).catch((e)=>{
@@ -282,7 +291,6 @@ export default class CultivateStore extends VuexModule {
     }
     @Action
     public async searchVideoInfo() {
-        debugger
         await request.post('/api/workerlib/cultivate_video',{
             "pageInfo" : {},
 
@@ -302,6 +310,9 @@ export default class CultivateStore extends VuexModule {
 
             "selectList": []
         }).then((data)=>{
+            if(!data){
+                return;
+            }
             this.successVideoInfo(data);
         }).catch((e)=>{
             let alert: any = Message;
@@ -322,6 +333,9 @@ export default class CultivateStore extends VuexModule {
     @Action
     public async insertVideoInfo() {
         await request.put('/api/workerlib/cultivate_video',this.insertCultivateVideo).then((data)=>{
+            if(!data){
+                return;
+            }
             this.successInsertVideoInfo(data);
         }).catch((e)=>{
             let alert: any = Message;
@@ -341,10 +355,12 @@ export default class CultivateStore extends VuexModule {
     }
     @Action
     public async UpdateCultivate() {
-        debugger
         await request.put('/api/workerlib/cultivate/'+this.viewId,{
             "state": this.isOk
         }).then((data)=>{
+            if(!data){
+                return;
+            }
             this.successUpdateCultivate(data);
         }).catch((e)=>{
             let alert: any = Message;
@@ -365,6 +381,9 @@ export default class CultivateStore extends VuexModule {
     @Action
     public async delete() {
         await request.post('/api/workerlib/cultivate/delete',this.checkedDelete.map(x => x.id)).then((data)=>{
+            if(!data){
+                return;
+            }
             this.successDelete(data);
         }).catch((e)=>{
             let alert: any = Message;
@@ -385,6 +404,9 @@ export default class CultivateStore extends VuexModule {
     @Action
     public async count() {
         await request.post('/api/workerlib/join/count', await this.getParams()).then((total)=>{
+            if(!total){
+                return;
+            }
             this.setPageTotal(total.data)
         }).catch((e)=>{
             MessageUtils.warning(e);
@@ -393,6 +415,9 @@ export default class CultivateStore extends VuexModule {
     @Action
     public async countInfo() {
         await request.post('/api/workerlib/join/count', await this.getInParams()).then((total)=>{
+            if(!total){
+                return;
+            }
             this.setInPageTotal(total.data)
         }).catch((e)=>{
             MessageUtils.warning(e);
@@ -401,7 +426,6 @@ export default class CultivateStore extends VuexModule {
 
     @Action
     public successInsertVideoInfo(data: any) {
-        debugger
         if(data.status == 0){
             this.UpdateCultivate();
 
@@ -421,12 +445,10 @@ export default class CultivateStore extends VuexModule {
     }
     @Mutation
     public successVideoInfo(data: any) {
-        debugger
         this.cultivateVideo = data.data;
     }
     @Mutation
     public successUpdateCultivate(data: any) {
-        debugger
         if(data.status == 0){
             let alert: any = Message;
             alert.warning("成功！");

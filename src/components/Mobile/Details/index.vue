@@ -47,7 +47,6 @@
         }
 
         getCultivateList(): any {
-            debugger
             return this.wstore.cultivateList;
         }
 

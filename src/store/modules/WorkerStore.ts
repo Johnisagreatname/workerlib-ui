@@ -857,6 +857,9 @@ export default class WorkerStore extends VuexModule {
             "selectList": []
 
         }).then((data)=>{
+            if(!data){
+                return;
+            }
             this.successUnitList(data);
         }).catch((e)=>{
             let alert: any = Message;
@@ -876,7 +879,6 @@ export default class WorkerStore extends VuexModule {
     }
     @Action
     public async insertArchives() {
-        debugger
         await request.put('/api/workerlib/alluser', {
             "eafName":this.userName,
             "eafPhone":this.phone,

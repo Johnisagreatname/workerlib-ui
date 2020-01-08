@@ -39,6 +39,7 @@
             this.store.search();
             this.store.getGrade();
             this.store.getCommtenGrade();
+            this.store.getCommtenRank();
             this.checkedArray = [];
             this.checkAllGroup = [];
             this.workType = [];
@@ -85,7 +86,9 @@
             this.store.searchPeople();
         }
         view(id){
-            this.viewTeamRate =!this.viewTeamRate;
+           this.store.setViewRateId(id);
+           this.store.searchViewRate();
+           this.viewTeamRate =!this.viewTeamRate;
 
         }
 
@@ -111,6 +114,15 @@
         }
         onPageIndexChange(pageIndex){
             this.store.setPageIndex(pageIndex);
+            this.store.search();
+        }
+        onPageSizeViewRateChange(pageSize){
+            this.store.setPageViewRateSize(pageSize);
+            this.store.setPageViewRateIndex(1);
+            this.onPageIndexViewRateChange(1);
+        }
+        onPageIndexViewRateChange(pageIndex){
+            this.store.setPageViewRateIndex(pageIndex);
             this.store.search();
         }
         handleCreate (type) {
@@ -176,6 +188,9 @@
         getCommtenGrade() : any {
             return this.store.commtenGrade;
         }
+        getCommtenRank() : any {
+            return this.store.commtenRank;
+        }
         getGrade() : any {
             return this.store.grades;
         }
@@ -200,7 +215,6 @@
         cancel():any {
             this.addRate = false;
         }
-
         getColumns() : any{
             return this.store.columns;
         }
@@ -227,9 +241,7 @@
             this.checkAllGroup = [];
             console.log(this.checkAllGroup);
         }
-
         change(id){
-            debugger
             this.store.setTeamId(id);
             this.store.searchTeamUserInfo();
             this.addViewTeamRate = !this.addViewTeamRate;
@@ -245,6 +257,12 @@
         }
         getViewData():any{
             return this.store.viewInfo;
+        }
+        getViewRateColumns():any{
+            return this.store.viewRateColumns;
+        }
+        getViewRateData():any{
+            return this.store.viewRateInfo;
         }
 
         get checkedUser():any{
@@ -469,9 +487,11 @@
             this.onPageIndexInChange(1);
         }
         onPageIndexInChange(pageIndex){
-            this.store.setPageViewIndex(pageIndex);
+            this.store.setInPageIndex(pageIndex);
             this.store.searchPeople();
         }
+
+
         onPageSizeViewChange(pageSize){
             this.store.setPageViewSize(pageSize);
             this.store.setPageViewIndex(1);
@@ -489,16 +509,22 @@
             return this.store.selectUserName;
         }
         set pageInTotal(data:number){
-            this.store.setPageToatl(data);
+            this.store.setInPageTotal(data);
         }
         get pageInTotal():number{
             return this.store.pageInTotal;
         }
         set pageViewTotal(data:number){
-            this.store.setPageViewTotal(data);
+            this.store.setPageViewRateTotal(data);
         }
         get pageViewTotal():number{
             return this.store.pageViewTotal;
+        }
+        set pageViewRateTotal(data:number){
+            this.store.setPageViewTotal(data);
+        }
+        get pageViewRateTotal():number{
+            return this.store.pageViewRateTotal;
         }
         set selectViewIdCard(data:string){
             this.store.setSelectViewIdCard(data);
