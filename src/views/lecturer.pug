@@ -52,38 +52,76 @@
                 span 共{{getLecturer().length}}条记录
 
     Modal(:value="addLecturer",title="新增人员",@on-ok="ok()",@on-cancel="cancel()",width='70%')
-        .addBody
-            .divTwo
-                .name
-                    span 姓名
-                    span(:style={'color': 'red'}) *
-                .input
-                    Input(clearable,style="width: 345px",size=large,v-model="userName")
-            .divTwo
-                .name
-                    span 课程
-                    span(:style={'color': 'red'}) *
-                .input
-                    Input(clearable,style="width: 345px",size=large,v-model="curriculum")
-            .divTwo
-                .name
-                    span 讲师类型
-                    span(:style={'color': 'red'}) *
-                .input
-                    Select(filterable,clearable,style="width:345px",v-model="type")
-                        Option(v-for="item in getType()", :value="item.key", :key="item.key") {{item.value}}
-            .divTwo
-                .name 上传照片
-                    span(:style={'color': 'red'}) *
-                .input
-                    Upload(multiple,type="drag",action="/api/workerlib/upload/lecturer/photo",
-                    :on-success="handleSuccessPhoto",:format="['jpg','jpeg','png']",:on-format-error="handleFormatError",
-                    :style={
-                        'width': '30%',
-                        'margin-top': '3%'
-                    })
-                        div(style="padding: 20px 0")
-                            Icon(type="ios-add" size="52" style="color: #3399ff")
-                            p 点击上传
+        Tabs( value="name1")
+            TabPane(label="基本信息" name="name1")
+                .addBody
+                    .divTwo
+                        .name
+                            span 姓名
+                            span(:style={'color': 'red'}) *
+                        .input
+                            Input(clearable,style="width: 345px",size=large,v-model="userName")
+                    .divTwo
+                        .name
+                            span 课程
+                            span(:style={'color': 'red'}) *
+                        .input
+                            Input(clearable,style="width: 345px",size=large,v-model="curriculum")
+                    .divTwo
+                        .name
+                            span 讲师类型
+                            span(:style={'color': 'red'}) *
+                        .input
+                            Select(filterable,clearable,style="width:345px",v-model="type")
+                                Option(v-for="item in getType()", :value="item.key", :key="item.key") {{item.value}}
+                    .divTwo
+                        .name 上传照片
+                            span(:style={'color': 'red'}) *
+                        .input
+                            Upload(multiple,type="drag",action="/api/workerlib/lecturer/photo/upload",
+                            :on-success="handleSuccessPhoto",:format="['jpg','jpeg','png']",:on-format-error="handleFormatError",
+                            :style={
+                                'width': '30%',
+                                'margin-top': '3%'
+                            })
+                                div(style="padding: 20px 0")
+                                    Icon(type="ios-add" size="52" style="color: #3399ff")
+                                    p 点击上传
+            TabPane( label="个人履历" name="name2")
+                .addBody
+                    .divTwo
+                        .name
+                            span 姓名
+                            span(:style={'color': 'red'}) *
+                        .input
+                            Input(clearable,style="width: 345px",size=large,v-model="userName")
+                    .divTwo
+                        .name
+                            span 课程
+                            span(:style={'color': 'red'}) *
+                        .input
+                            Input(clearable,style="width: 345px",size=large,v-model="curriculum")
+                    .divTwo
+                        .name
+                            span 讲师类型
+                            span(:style={'color': 'red'}) *
+                        .input
+                            Select(filterable,clearable,style="width:345px",v-model="type")
+                                Option(v-for="item in getType()", :value="item.key", :key="item.key") {{item.value}}
+                    .divTwo
+                        .name 上传照片
+                            span(:style={'color': 'red'}) *
+                        .input
+                            Upload(multiple,type="drag",action="/api/workerlib/lecturer/photo/upload",
+                            :on-success="handleSuccessPhoto",:format="['jpg','jpeg','png']",:on-format-error="handleFormatError",
+                            :style={
+                                'width': '30%',
+                                'margin-top': '3%'
+                            })
+                                div(style="padding: 20px 0")
+                                    Icon(type="ios-add" size="52" style="color: #3399ff")
+                                    p 点击上传
+
+
 
 

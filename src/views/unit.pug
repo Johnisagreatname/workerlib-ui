@@ -1,15 +1,15 @@
 .body
     .topOne
-        .divOne
-            span 项目名称：
-                Input( v-model="selectProjectName",clearable,style="width: 200px")
+        //.divOne
+        //    span 项目名称：
+        //        Input( v-model="selectProjectName",clearable,style="width: 200px")
         .divOne
             span 单位名称：
                 Input( v-model="selectUnitName",clearable,style="width: 200px")
-        .divOne
-            span 在场状态：
-                Select(v-model="selectStatus",clearable,filterable,style="width:200px")
-                    Option(v-for="item in getMenus()", :value="item.key",:key="item.key") {{item.value}}
+        //.divOne
+        //    span 在场状态：
+        //        Select(v-model="selectStatus",clearable,filterable,style="width:200px")
+        //            Option(v-for="item in getMenus()", :value="item.key",:key="item.key") {{item.value}}
         .search
             Button(@click="this.store.search") 搜索
     .hr
@@ -24,6 +24,8 @@
             Table(border,:columns="getColumns()", :data="getData()",
             @on-select="handleSelectRow",@on-select-all="handleSelectAll",
             @on-select-cancel="handleSelectRowCancel",@on-select-all-cancel="handleSelectAllCancel")
+                template(slot-scope="{row}",slot="worker_count")
+                    span(@click="qq(row.unit_name)") {{row.worker_count}}
 
 
     .footer
