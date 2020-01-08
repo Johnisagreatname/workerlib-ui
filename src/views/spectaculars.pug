@@ -36,14 +36,9 @@
                             Progress(:title='((item.certificateTotal/peopleTotal)*100 ? (item.certificateTotal/peopleTotal)*100 : 0)+"%,"+item.certificateTotal+"(人)"',
                             :percent="((item.certificateTotal/peopleTotal)*100 ? (item.certificateTotal/peopleTotal)*100 : 0)",
                             :stroke-width="15",:stroke-color="getColorTwo(index)",hide-info,:style={
-                                                            'cursor': 'pointer'})
+                                'cursor': 'pointer'})
                     .belowMiddle
-                        span(:title="item.workType",:style={
-                            'display': 'inline-block',
-                            'width': '100%',
-                            'overflow': 'hidden',
-                            'textOverflow': 'ellipsis',
-                            'whiteSpace': 'nowrap'}) {{item.workType}}
+                        span {{item.workType}}
                     .belowRight
                         template
                             Progress(:title='item.total+"(人)"',:percent="((item.total/peopleTotal)*100 ? (item.total/peopleTotal)*100 : 0 )",
@@ -268,7 +263,15 @@
                 .gzmm
                     table(:style={'width': '100%'},border="0",cellpadding="0",cellspacing="0")
                         tr(:style={'height': '25px'},v-for="(item, index) in getWorkTypeCount()")
-                            td
+                            td(:title="item.workType",:style={
+                                'display': 'block',
+                                'width': '100px',
+                                'overflow': 'hidden',
+                                'textOverflow': 'ellipsis',
+                                'whiteSpace': 'nowrap',
+                                'cursor': 'pointer'
+
+                            })
                                 .tableCircle(:style="{backgroundColor: backgroundColor(index)}")
                                 span(:style={'cursor': 'pointer'},@click="workType(item.workType)") {{item.workType}}
                             td {{item.total}}人({{((item.total/peopleTotal)*100).toFixed(2)}}%)
@@ -281,7 +284,7 @@
                         span 技能工种评定统计
                 .hrBJ
                 .threeP
-                    #profession(:style={'height': '212px', 'width': '388px'})
+                    #profession(:style={'height': '212px', 'width': '388px'},@click="checkEvaluate()")
             .bodyRightBelow
                 .topTop
                     .topRightBL
@@ -306,5 +309,6 @@
                             td(:style={'width': '25%'}) {{item.eafName}}
                             td(:style={'width': '25%'}) {{item.description}}
                             td(:style={'width': '25%'}) {{item.punishment}}
+
 
 

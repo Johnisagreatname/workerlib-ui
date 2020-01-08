@@ -188,6 +188,9 @@ export default class CoursewareStore extends VuexModule {
     @Action
     public async search() {
         await request.post('/api/workerlib/courseware',await this.getParams()).then((data)=>{
+            if(!data){
+                return;
+            }
             this.success(data);
             this.count();
         }).catch((e)=>{
@@ -210,6 +213,9 @@ export default class CoursewareStore extends VuexModule {
     @Action
     public async count() {
         await request.post('/api/workerlib/courseware/count', await this.getParams()).then((total)=>{
+            if(!total){
+                return;
+            }
             this.setPageTotal(total.data)
         }).catch((e)=>{
             MessageUtils.warning(e);
@@ -218,6 +224,9 @@ export default class CoursewareStore extends VuexModule {
     @Action
     public async countPeople() {
         await request.post('/api/workerlib/people/count', await this.getPeopleParams()).then((total)=>{
+            if(!total){
+                return;
+            }
             this.setInPageTotal(total.data)
         }).catch((e)=>{
             MessageUtils.warning(e);
@@ -245,6 +254,9 @@ export default class CoursewareStore extends VuexModule {
             "selectList": []
 
         }).then((data)=>{
+            if(!data){
+                return;
+            }
             this.successInfo(data);
         }).catch((e)=>{
             let alert: any = Message;
@@ -278,6 +290,9 @@ export default class CoursewareStore extends VuexModule {
             "keywords" : [],
             "selectList": []
         }).then((data)=>{
+            if(!data){
+                return;
+            }
             this.successType(data);
         }).catch((e)=>{
             MessageUtils.warning(e);
@@ -318,6 +333,9 @@ export default class CoursewareStore extends VuexModule {
             "particulars":this.courseWare.particulars,
             "status":this.courseWare.status
         }).then((data)=>{
+            if(!data){
+                return;
+            }
             this.successAdd(data)
         }).catch((e)=>{
             console.log(e)
@@ -350,6 +368,9 @@ export default class CoursewareStore extends VuexModule {
             "mark":this.cultivate.mark,
             "courseware_brief":this.cultivate.courseware_brief
         }).then((data)=>{
+            if(!data){
+                return;
+            }
             this.successAddCultivate(data)
         }).catch((e)=>{
             console.log(e)
@@ -386,6 +407,9 @@ export default class CoursewareStore extends VuexModule {
             "trainingTeacher":this.cultivate.trainingTeacher,
             "trainingAddress":this.cultivate.trainingAddress
         }).then((data)=>{
+            if(!data){
+                return;
+            }
             this.successUpAddCultivate(data)
         }).catch((e)=>{
             let alert: any = Message;
@@ -409,6 +433,9 @@ export default class CoursewareStore extends VuexModule {
     @Action
     public async insertCultivateArchives(){
         await request.put('/api/workerlib/cultivate_archives', this.cultivateArchivesList).then((data)=>{
+            if(!data){
+                return;
+            }
             this.successAddCultivateArchives(data);
         }).catch((e)=>{
             console.log(e)
@@ -433,6 +460,9 @@ export default class CoursewareStore extends VuexModule {
     @Action
     public async insertUpCultivateArchives(){
         await request.put('/api/workerlib/cultivate_archives', this.cultivateArchivesList).then((data)=>{
+            if(!data){
+                return;
+            }
             this.successAddCultivateArchives(data);
         }).catch((e)=>{
             console.log(e)
@@ -457,6 +487,9 @@ export default class CoursewareStore extends VuexModule {
     @Action
     public async updateCourseware() {
         await request.post('/api/workerlib/courseware/update',await this.getUpdateParams()).then((data)=>{
+            if(!data){
+                return;
+            }
             this.successUpdate(data);
         }).catch((e)=>{
             let alert: any = Message;
@@ -478,6 +511,9 @@ export default class CoursewareStore extends VuexModule {
     public async deleteCourseware() {
         await request.delete('/api/workerlib/courseware/'+this.id
         ).then((data)=>{
+            if(!data){
+                return;
+            }
             this.successDelete(data);
         }).catch((e)=>{
             let alert: any = Message;
@@ -498,6 +534,9 @@ export default class CoursewareStore extends VuexModule {
     @Action
     public async searchPeople() {
         await request.post('/api/workerlib/people',await this.getPeopleParams()).then((data)=>{
+            if(!data){
+                return;
+            }
             this.successPeople(data);
             this.countPeople();
         }).catch((e)=>{

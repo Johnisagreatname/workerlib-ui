@@ -22,17 +22,9 @@
    .hr
    .button
       Button(type="primary", ghost,@click="addWorker=!addWorker",icon="ios-add-circle-outline") 新增
-      //Button(type="primary", ghost, icon="ios-contact-outline",@click="checkLeave()",:disabled="isdisabledFn()")
-      //   span(v-if="offLeave == false") 退场
-      //   span(v-if="offLeave == true") 进场
       Button(type="primary", ghost, icon="ios-log-in") 同步工人
       Button(type="primary", ghost, icon="ios-log-out",@click="upload()") 导出
       Button(type="primary",ghost,icon="ios-cloud-upload-outline",@click="uploadData=!uploadData") 导入薪资
-      //Upload(action="/api/workerlib/salary/import",
-      //:on-success="handleSuccessExcel",:format="['xls','xlsx']",:on-format-error="handleFormatErrorExcel",
-      //:show-upload-list="false",
-      //:style={'float':'left'})
-
 
    div(v-for="(item, index) in getPeopleList()", :key="index",
    @click="onCheck(item.eafId,item.eafName,item.leave)",
@@ -175,7 +167,6 @@
                   .y6
                      p 手机号码
                      p 身份证号
-                     //p 是否班组长
                      p 评定等级
                   .y7
                      p(v-if="this.store.peopleInfo.eafPhone") {{this.store.peopleInfo.eafPhone}}
@@ -183,8 +174,6 @@
                      p(v-if="this.store.peopleInfo.cwrIdnum") {{this.store.peopleInfo.cwrIdnum}}
                      p(v-else) 无
 
-                     //p(v-if="this.store.peopleInfo.leader==1") 是
-                     //p(v-else) 否
                      p(v-if="this.store.peopleInfo.grade==null") 无
                      p(v-else) {{this.store.peopleInfo.grade}}
             .oneButtom
@@ -194,11 +183,11 @@
                   .text
                      p(:style={'font-weight':'bold'}) 项目名称
                      p(:style={
-                     display: 'inline-block',
-                     width: '100%',
-                     overflow: 'hidden',
-                     textOverflow: 'ellipsis',
-                     whiteSpace: 'nowrap'
+                         display: 'inline-block',
+                         width: '100%',
+                         overflow: 'hidden',
+                         textOverflow: 'ellipsis',
+                         whiteSpace: 'nowrap'
                      },:title ='invlo.project_name') {{invlo.project_name}}
                   .text
                      p(:style={'font-weight':'bold'}) 所在参建单位
@@ -317,25 +306,21 @@
                       'height': '25px'
                   },v-if="item.type == 1")
                   img(src="~@/assets/css/images/commentsTwo.png" :style={'width': '59px', 'height': '25px'},v-else)
-               //.middleHr
-            //Button(type="primary", ghost,@click="certificateOpen()")
 
-      //Modal(:value="certificat",title="人员详情",@on-ok="certificateOk()",@on-cancel="certificateCancel()",width='70%')
-      //   .minBody
-      //      span 1234567890
    Modal(title="是否将以下人员退场？",v-model="onLeave",:styles="{top: '20px'}",@on-ok="okLeave()",@on-cancel="cancelLeave()")
       .divL
          .divCheck(v-for="item in this.store.checkeds")
             p {{item.name}}
    Modal(:value="uploadData",title="上传资料",@on-ok="okUpload()",@on-cancel="cancelUpload()",width='70%',:loading="loading")
       .addBody
+
          .uploadTop
             a(href="/css/images/template.xls", target='_blank')
                Button(icon="ios-cloud-download-outline",:style={borderColor: '#2d8cf0', color: '#2d8cf0'}) 下载模板
          .uploadButtom
-               Upload(multiple,type="drag",action="/api/workerlib/salary/import",
-               :on-success="handleSuccessExcel",:format="['xls','xlsx']",:on-format-error="handleFormatErrorExcel",
-               :show-upload-list="false")
-                  div(:style={padding: '200px 0',height:'500px'})
-                     Icon(type="ios-add" size="52" style="color: #3399ff")
-                     p 点击上传
+            Upload(multiple,type="drag",action="/api/workerlib/salary/import",
+            :on-success="handleSuccessExcel",:format="['xls','xlsx']",:on-format-error="handleFormatErrorExcel",
+            :show-upload-list="false")
+               div(:style={padding: '200px 0',height:'500px'})
+                  Icon(type="ios-add" size="52" style="color: #3399ff")
+                  p 点击上传

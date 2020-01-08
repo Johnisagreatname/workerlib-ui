@@ -55,6 +55,9 @@
             this.workerStore.setNotIn(true);
             router.push({path: '/nav/worker'})
         }
+        checkEvaluate(){
+            router.push({path: '/nav/checkEvaluate'})
+        }
         //自有队伍人数(人)
         projectCountBeOn(){
             this.workerStore.setIn(true);

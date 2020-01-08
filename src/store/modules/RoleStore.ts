@@ -44,6 +44,9 @@ export default class RoleStore extends VuexModule {
     @Action
     public async search() {
         await request.post('/api/workerlib/role', await this.getParams()).then((data) => {
+            if(!data){
+                return;
+            }
             this.success(data);
             this.count();
         }).catch((e) => {
@@ -70,6 +73,9 @@ export default class RoleStore extends VuexModule {
     @Action
     public async deleteRole() {
         await request.delete('/api/workerlib/role/' + this.roleInfo.roleid).then((data) => {
+            if(!data){
+                return;
+            }
             this.added(data)
         }).catch((e) => {
             console.log(e)
@@ -94,6 +100,9 @@ export default class RoleStore extends VuexModule {
     @Action
     public async count() {
         await request.post('/api/workerlib/role/count', await this.getParams()).then((total) => {
+            if(!total){
+                return;
+            }
             this.setPageTotal(total.data)
         }).catch((e) => {
             MessageUtils.warning(e);
@@ -107,6 +116,9 @@ export default class RoleStore extends VuexModule {
             "roleId": this.roleInfo.roleName,
             "createBy": 1,
         }).then((data) => {
+            if(!data){
+                return;
+            }
             this.added(data)
         }).catch((e) => {
             console.log(e)
