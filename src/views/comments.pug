@@ -1,7 +1,7 @@
 .body
     .divOne
         span 姓名：
-            Input(clearable,style="width: 260px",v-model="selectName")
+            Input(clearable,style="width: 200px",v-model="selectName")
     .search
         Button(@click="this.store.search") 搜索
     .hr
@@ -72,7 +72,7 @@
                          span 添加图片
                      .d2
 
-                         Upload(multiple,type="drag",action="/api/workerlib/upload/appraise_photo/photo",
+                         Upload(multiple,type="drag",action="/api/workerlib/appraise_photo/photo/upload",
                          :on-success="handleSuccessPhoto",:format="['jpg','jpeg','png']",:on-format-error="handleFormatError",
                          :show-upload-list="false",
                          :style={'width': '30%'})
@@ -102,7 +102,7 @@
                         .m1
                             span 添加图片
                         .m2
-                            Upload(multiple,type="drag",action="/api/workerlib/upload/appraise_photo/photo",
+                            Upload(multiple,type="drag",action="/api/workerlib/appraise_photo/photo/upload",
                             :on-success="handleSuccessPhoto",:format="['jpg','jpeg','png']",:on-format-error="handleFormatError",
                             :show-upload-list="false",
                             :style={'width': '30%'})

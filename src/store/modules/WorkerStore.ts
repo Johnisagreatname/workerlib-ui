@@ -185,7 +185,6 @@ export default class WorkerStore extends VuexModule {
 
             "selectList": []
         };
-        // params.conditionList[0].value = new Array();
     }
     @Action
     public getUpdateParams() : any {
@@ -913,7 +912,6 @@ export default class WorkerStore extends VuexModule {
     }
     @Action
     public async insertWorkType(id) {
-        debugger
         if(this.type.length>0){
             for(let i=0;i<this.type.length;i++){
                 let item = {};
@@ -1290,3 +1288,4 @@ interface InvolvedProjectInfo {
     end_time?:Date;
     project_license?:string;
 }
+

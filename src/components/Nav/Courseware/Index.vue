@@ -80,8 +80,12 @@
                     this.$set(this.store.peoples[i], '_disabled', true)
                     this.$set(this.store.peoples[i], '_checked', true)
                 }
+                if(this.checkAllGroup.filter(a => a.id == this.store.peoples[i].eafId ).length > 0){
+                    this.$set(this.store.peoples[i], '_checked', true)
+                }
             }
             return this.store.peoples;
+
         }
 
         getCourseWareList():any{
@@ -243,16 +247,23 @@
         }
         // 单选
         handleSelectRow(selection, row) {
-
             var itemTrue = {};
             itemTrue['id'] = row.eafId;
             itemTrue['name'] = row.eafName;
             itemTrue['photo'] = row.cwrPhoto;
             this.checkAllGroup.push(itemTrue);
+            console.log(this.checkAllGroup);
         }
         handleSelectRowCancel(selection, row){
+            for(let i = 0;i < this.store.peoples.length;i++) {
+                if(this.store.peoples.filter(a => a.eafId == row.eafId ).length > 0){
+                    this.$set(this.store.peoples[i], '_checked', false)
+                }
+            }
             let index =  this.checkAllGroup.findIndex(x => x.id == row.eafId);
             this.checkAllGroup.splice(index, 1);
+            console.log(this.checkAllGroup);
+
         }
         //多选
         handleSelectAll(selection) {
@@ -264,14 +275,17 @@
                 itemTrue['photo'] = row.cwrPhoto;
                 this.checkAllGroup.push(itemTrue);
             }
+            console.log(this.checkAllGroup);
         }
         handleSelectAllCancel(selection){
             for(let i = 0;i < this.store.peoples.length;i++) {
-                let index =  this.checkAllGroup.findIndex(x => x.id == this.store.peoples[i].eafId);
-                this.$set(this.store.peoples[i], '_disabled', false);
-                this.$set(this.store.peoples[i], '_checked', false);
-                this.checkAllGroup.splice(index, 1);
+                if(this.checkAllGroup.findIndex(x => x.id == this.store.peoples[i].eafId) > -1){
+                    let index =  this.checkAllGroup.findIndex(x => x.id == this.store.peoples[i].eafId);
+                    this.$set(this.store.peoples[i], '_checked', false);
+                    this.checkAllGroup.splice(index, 1);
+                }
             }
+            console.log(this.checkAllGroup);
         }
 
         addSelected(){
@@ -290,27 +304,35 @@
         }
 
         show(id: number,name:string,photo:string): void {
-            let _that = this;
-            var itemTrue = {};
-            let index = this.store.checkeds.findIndex(x => x.id == id);
+            let index = this.store.checkeds.findIndex(x => x.id == id); //已有列表
             if(index > -1) {
+                this.store.checkeds.splice(index, 1);   //去除
+                var item = {};
+                item['id'] = id;
+                item['name'] = name;
+                item['photo'] = photo;
+                this.checkAllGroup.push(item);
                 let indexPeople = this.store.peoples.findIndex(x => x.eafId == id);
-                if(indexPeople > -1)  {
-                    console.log(this.store.peoples[indexPeople]._disabled);
+                if(indexPeople > -1)  {  //未选中列表
                     this.$set(this.store.peoples[indexPeople], '_disabled', false);
-                    console.log(this.store.peoples[indexPeople]._disabled);
+                    return;
                 }
-                this.store.checkeds.splice(index, 1);
-                return;
             }
+            if(this.checkAllGroup.findIndex(x => x.id == id) > -1){
+                this.checkAllGroup.splice(this.checkAllGroup.findIndex(x => x.id == id), 1);   //去除
+            }
+            var itemTrue = {};
             itemTrue['id'] = id;
             itemTrue['name'] = name;
             itemTrue['photo'] = photo;
             this.store.setChecked(itemTrue);
-            for (let i=0;i<this.store.checkeds.length;i++){
-                let row = this.store.checkeds[i];
-                let index = this.store.peoples.findIndex(x => x.eafId == row.id);
-                this.$set(this.store.peoples[index], '_disabled', true)
+            for(let i = 0;i < this.store.peoples.length;i++) {
+                if(this.store.peoples[i].eafId == id){
+                    this.$set(this.store.peoples[i], '_disabled', true)
+                    this.$set(this.store.peoples[i], '_checked', true)
+                }else {
+                    this.$set(this.store.peoples[i], '_checked', false)
+                }
             }
         }
         toggle(name){
@@ -367,7 +389,7 @@
         }
         handleFormatError (file) {
             let alert: any = Message;
-            alert.warning(file.name + ' 文件格式错误！请上传AVI、mov、rmvb、rm、FLV、mp4、3GP格式文件！');
+            alert.warning(file.name + ' 文件格式错误！请上传ogg、mp4、WebM格式文件！');
         }
         handleFormatPictrueError (file) {
             let alert: any = Message;

@@ -1,192 +1,305 @@
-.body
-    template
-        Tabs(value="团体评级",@on-click="toggle",:style={height:'1000px'})
-            TabPane(label="团体评级",name="团体评级",icon="ios-paper-outline")
-                .topOne
-                    .cdivOne
-                        .name2
-                            span 时间：
-                        .input2
-                            Row
-                                Col(span="12")
-                                    DatePicker(v-model="selectTime",type="date",placeholder="请选择",style="width: 240px")
-                    .search
-                        Button(@click="this.store.search") 搜索
-                .hr
-                .button
-                    Button(type="primary", ghost, icon="ios-people-outline",@click="viewData()") 创建团体评价
+.spectaculars
+    .fh(@click="goBack()") 管理平台
+    .header
+        .headerLeft
+            .headerLogo
+            .headerLogoFont
+                span 筑造宜居城市
+        .headerMiddle
+        .headerRight
+    .body
+        .bodyLeft
+            .bodyLeftTop
+                .topTop
+                    .topLeftLeft
+                    .topLeftMiddle
+                        span 职业证书统计
+                    .topLeftRight
+                        .rightTitle
+                            .circleGreen
+                            span(:style={
+                                'line-height': '50px',
+                                'font-size': '14px',
+                                'margin-left': '8px'
+                            }) 总人数
+                        .rightTitle
+                            .circleBlue
+                            span(:style={
+                                'line-height': '50px',
+                                'font-size': '14px',
+                                'margin-left': '8px'
+                            }) 持证人数
+                .hrBJ
+                .topButtom(v-for="(item,index) in getWorkType()")
+                    .belowLeft
+                        template
+                            Progress(:title='((item.certificateTotal/peopleTotal)*100 ? (item.certificateTotal/peopleTotal)*100 : 0)+"%,"+item.certificateTotal+"(人)"',
+                            :percent="((item.certificateTotal/peopleTotal)*100 ? (item.certificateTotal/peopleTotal)*100 : 0)",
+                            :stroke-width="15",:stroke-color="getColorTwo(index)",hide-info,:style={
+                                'cursor': 'pointer'})
+                    .belowMiddle
+                        span {{item.workType}}
+                    .belowRight
+                        template
+                            Progress(:title='item.total+"(人)"',:percent="((item.total/peopleTotal)*100 ? (item.total/peopleTotal)*100 : 0 )",
+                            :stroke-width="15",:stroke-color="getColor(index)",hide-info,:style="{cursor: 'pointer'}")
 
-                .bodyTwo
-                    //@on-select="onSelect", @on - select - cancel = "onSelectCancel", @on - select - all = "onSelectAll", @on - select - all - cancel = "onSelectAllCancel")
-                    Table(border, ref="selection", :columns="getTeamColumns()", :data="getData()", :style={width: '100%'})
-                        template(slot-scope="{row, index }",slot="operation")
-                            Dropdown(@on-click = "change")
-                                a(href="javascript:void(0)" :style={"font-size": "16px"})
-                                    span 详细操作
-                                    Icon(type="md-arrow-dropdown" )
-                                DropdownMenu(slot="list")
-                                    DropdownItem(:name="row.id")
-                                        Icon(type="ios-create-outline" )
-                                        span 人员评级
+            .bodyLeftMiddle
+                .middleTop
+                    .middleTopLeft
+                    .topLeftMiddle
+                        span 培训统计
+                    .topLeftRight
+                        .middleRightTitle
+                            span(:style={
+                                'line-height': '50px',
+                                'font-size': '14px'
+                            }) 人数
+                        .middleRightTitleTwo
+                            .middleRightRelative
+                                .div-a
+                                .div-b
 
-            TabPane(label="人员评级",name="人员评级",icon="ios-paper-outline")
-                .topOne
+                .hrBJ
+                .middleLeftMiddle
+                    .middleMiddleRight
+                        .qq
+                            img(src="~@/assets/css/images/rs.png" :style={'width': '13px', 'height': '7px'})
+                            span(:style={'margin-left':'5px'}) 人数
+                        .qq2
+                            Col( span="12")
+                                DatePicker(type="year",placeholder="请选择",:style="{width: '80px',color:'#000000'}",
+                                :start-date="new Date()",format="yyyy",v-model="saleDate",confirm,@on-ok="dateOK()")
+                .middleButtom
+                    #peoples(:style={'height': '160px', 'width': '445px'})
+            .bodyLeftBelow
+                .belowTop
+                    .belowTopLeft
+                    .belowTopMiddle
+                        span 课件培训统计
+                    .topLeftRight
+                        .middleRightTitle
+                            span(:style={
+                                'line-height': '50px',
+                                'font-size': '14px'
+                            }) 月份
+                        .middleRightTitleTwo
+                            .middleRightRelative
+                                .div-a
+                                .div-b
+                .hrBJ
+                .belowMiddleMiddle
+                    .qq3
+                        Col( span="12")
+                            DatePicker(type="month",placeholder="请选择",:style="{width: '100px',color:'#000000'}",
+                            :start-date="new Date()",format="yyyy-MM",v-model="saleMonthDate",confirm,@on-ok="dateMonthOK()")
+                .cultivateEcharts
+                    #cultivate(:style={'height': '200px', 'width': '418px'})
+        .bodyMiddle
+            .bodyMiddleTop
+                video(controls="controls",autoplay,loop,width="800px",height="460px")
+                    source(:src="'https://vdept.bdstatic.com/667751356b514d364a366d7366797643/" +
+                    "4c34454e65495370/ff9fbe5e2e0430a371378a15c7ce7a7dabe243c409a132e7936a08c874cf10d7093a765c3a5ff70e71eac3395b150790.mp4?" +
+                    "auth_key=1577763390-0-0-4d1fac4b3561e7edee6cddb034faf2a1'")
+            .bodyMiddleMiddle
+                .middleMiddleTop
+                .middleMiddleBelow
+                    .middleBelow
+                        .belowTopOne
+                            .topLeft
+                            span(:style={
+                                'line-height': '40px',
+                                'font-size': '14px',
+                                'color':'#ffffff'
+                            }) 工种总数(种)
+                        .belowBelow
+                            span(:style={
+                                'line-height': '100px',
+                                'font-size': '38px',
+                                'color': '#ffffff',
+                                'cursor': 'pointer'
+                            },@click="clickWorkType()")  {{workTypeCount}}
+                    .middleBelow
+                        .belowTopOne
+                            .topLeftWB
+                            span(:style={
+                                'line-height': '40px',
+                                'font-size': '14px',
+                                'color': '#ffffff'
+                            }) 自有队伍人数(人)
+                        .belowBelow
+                            span(:style={
+                                'line-height': '100px',
+                                'font-size': '38px',
+                                'color': '#ffffff',
+                                'cursor': 'pointer'
+                            },@click="projectCountBeOn()")  {{this.store.projectCountBE.beOn}}
+                    .middleBelow
+                        .belowTopOne
+                            .topLeftWB
+                            span(:style={
+                                'line-height': '40px',
+                                'font-size': '14px',
+                                'color': '#ffffff'
+                            }) 外部队伍人数(人)
+                        .belowBelow
+                            span(:style={
+                                'line-height': '100px',
+                                'font-size': '38px',
+                                'color': '#ffffff',
+                                'cursor': 'pointer'
+                            },@click="projectCountDimission()")  {{this.store.projectCountBE.dimission}}
+            .bodyMiddleBelow
+                .middleLeft
+                    .middleBelowT
+                        .belowTopOneT
+                            .topLeftZS
+                            span(:style={
+                                'line-height': '40px',
+                                'font-size': '14px',
+                                'color': '#ffffff'
+                            }) 在建工程总数
+                        .belowBelowTwo
+                            span(:style={
+                                'line-height': '100px',
+                                'font-size': '38px',
+                                'color': '#ffffff',
+                                'cursor': 'pointer'
+                            },@click="projectCountDoing()")  {{this.store.projectCount.doing}}
+                            span(:style={
+                                'line-height': '100px',
+                                'font-size': '14px',
+                                'color': '#ffffff'
+                            })  个
 
-                    .divOne
-                        span 姓名：
-                            Input(v-model="name",clearable,style="width: 260px")
-                    .divOne
-                        span 等级：
-                            Select(filterable,clearable,style="width:260px",v-model="selectRate")
-                                Option(v-for="item in getCommtenGrade()", :value="item.name", :key="item.name") {{item.name}}
-                    .divOne
-                        span 级别：
-                            Select(filterable,clearable,style="width:260px",v-model="selectRank")
-                                Option(v-for="item in getCommtenRank()", :value="item.name", :key="item.name") {{item.name}}
-                    .search
-                        Button(@click="this.store.search") 搜索
-                .hr
-                //.button
-                //    //Button(type="primary", ghost, icon="ios-add-circle-outline",@click="addRate=!addRate",v-if="checkedUser.length>0") 评定
-                //    //Button(type="primary", ghost, icon="ios-add-circle-outline",@click="addRate=!addRate",v-else,disabled) 评定
+                        .belowThree
+                            span(:style={
+                                'line-height': '66px',
+                                'font-size': '14px',
+                                'color': '#ffffff'
+                            }) 工程总数：{{this.store.projectCount.total}}
+                            span(:style={
+                                'line-height': '66px',
+                                'font-size': '14px',
+                                'color': '#00e0ef',
+                                'margin-left': '20px'
+                            }) 未开工：{{this.store.projectCount.notInService}}
+                .middleMiddle
+                    .middleBelowT
+                        .belowTopOneT
+                            .topLeftZZ
+                            span(:style={
+                                'line-height': '40px',
+                                'font-size': '14px',
+                                'color': '#ffffff'
+                            }) 在场工人数
+                        .belowBelowTwo
+                            span(:style={
+                                'line-height': '100px',
+                                'font-size': '38px',
+                                'color': '#ffffff',
+                                'cursor': 'pointer'
+                            },@click="projectCountTheirOwn()")  {{this.store.projectCountBE.theirOwn}}
+                            span(:style={
+                                'line-height': '100px',
+                                'font-size': '14px',
+                                'color': '#ffffff'
+                            })  个
+                        .belowThree
+                            span(:style={
+                                'line-height': '66px',
+                                'font-size': '14px',
+                                'color': '#ffffff'
+                            }) 自有工人：{{this.store.projectCountBE.beOnTheirOwn}}
+                            span(:style={
+                                'line-height': '66px',
+                                'font-size': '14px',
+                                'color': '#ffffff',
+                                'margin-left': '20px'
+                            }) 外部工人：{{this.store.projectCountBE.dimissionTheirOwn}}
+                .middleRight
+                    .middleBelowT
+                        .belowTopOneT
+                            .topLeftZZ
+                            span(:style={
+                                'line-height': '40px',
+                                'font-size': '14px',
+                                'color': '#ffffff'
+                            }) 离场工人数
+                        .belowBelowTwo
+                            span(:style={
+                                'line-height': '100px',
+                                'font-size': '38px',
+                                'color': '#ffffff',
+                                'cursor': 'pointer'
+                            },@click="projectCountExternal()")  {{this.store.projectCountBE.external}}
+                            span(:style={
+                                'line-height': '100px',
+                                'font-size': '14px',
+                                'color': '#ffffff'
+                            })  个
 
-                .bodyTwo2
-                    //@on-select="onSelect",@on-select-cancel="onSelectCancel",@on-select-all="onSelectAll",@on-select-all-cancel="onSelectAllCancel")
-                    Table(border, ref="selection", :columns="getColumns()", :data="getData()", :style={width: '100%'})
-                        template(slot-scope="{row, index }",slot="operation")
-                            Button(type="primary",size="large", style="margin-right: 5px",@click="addRateName(row.eafId,row.eafName,row.workType)") 评定
-                            //Button(type="primary",size="large",@click="view(row.eafId)") 查看
-        .footer
-            Page(:total="totalRecords",show-sizer,show-elevator,show-total,@on-page-size-change="onPageSizeChange",@on-change="onPageIndexChange",:page-size=20)
+                        .belowThree
+                            span(:style={
+                                'line-height': '66px',
+                                'font-size': '14px',
+                                'color': '#ffffff'
+                            }) 自有工人：{{this.store.projectCountBE.beOnExternal}}
+                            span(:style={
+                                'line-height': '66px',
+                                'font-size': '14px',
+                                'color': '#ffffff',
+                                'margin-left': '20px'
+                            }) 外部工人：{{this.store.projectCountBE.dimissionExternal}}
+        .bodyRight
+            .bodyRightTop
+                .topTop
+                    .topRightRight
+                    .topLeftMiddle
+                        span 工种人数统计
+                .hrBJ
+                .gzEcharts
+                    #gzEcharts(:style={'height': '230px', 'width': '230px'})
+                .gzmm
+                    table(:style={'width': '100%'},border="0",cellpadding="0",cellspacing="0")
+                        tr(:style={'height': '25px'},v-for="(item, index) in getWorkTypeCount()")
+                            td
+                                .tableCircle(:style="{backgroundColor: backgroundColor(index)}")
+                                span(:style={'cursor': 'pointer'},@click="workType(item.workType)") {{item.workType}}
+                            td {{item.total}}人({{((item.total/peopleTotal)*100).toFixed(2)}}%)
 
-    Modal(:value="addRate",title="技能评价",@on-ok="ok()",@on-cancel="cancel()",width='70%')
-        .addBody
-            .divTwo
-                .name
-                    span 评定人员
-                .input
-                    Input(clearable,:style="{width: '260px'}",size=large,:value="user",disabled)
-            .divTwo
-                .name
-                    span 评定工种
-                    span(:style={'color': 'red'}) *
-                .input
-                    Select(clearable,filterable,:style="{width: '260px'}",v-model="rateWorkType")
-                        Option(v-for="item in getWorkType()", :value="item.name",:key="item.name") {{item.name}}
-            .divTwo
-                .name
-                    span 评定级别
-                    span(:style={'color': 'red'}) *
-                .input
-                    Select(filterable,clearable,style="width:260px",v-model="grade")
-                        Option(v-for="item in getCommtenGrade()", :value="item.name", :key="item.name") {{item.name}}
-            .divTwo
-                .name
-                    span 评定等级
-                    span(:style={'color': 'red'}) *
-                .input
-                    Select(filterable,clearable,style="width:260px",v-model="rank")
-                        Option(v-for="item in getGrade()", :value="item.name", :key="item.name") {{item.name}}
-            .divTwo
-                .name
-                    span 评定时间
-                    span(:style={'color': 'red'}) *
-                .input
-                    Row
-                        Col(span="12")
-                            DatePicker(type="date",placeholder="请选择",style="width: 240px",v-model="evaluateTime")
-    Modal(:value="addTeamRate",title="创建团队评级",@on-ok="okTeamRate()",@on-cancel="cancelTeamRate()",width='70%')
-        .addBody1
-            .top
-                    .name2
-                        span(:style={'font-size': '18px'}) 团队名称
-                        span(:style={'color': 'red','font-size': '18px'}) *
-                    .input
-                        Input(clearable,:style={'width': '995px'},placeholder="请输入团队名称",v-model="insertRatingname")
-            .top
-                    .name2
-                        span(:style={'font-size': '18px'}) 备注
-                        span(:style={'color': 'red','font-size': '18px'}) *
-                    .input
-                        Input(type="textarea",clearable,:style={'width': '995px'},size=large,placeholder="请输入备注",v-model="insertRemark")
-            .top
-                .left1
-                    Button(type="primary",ghost,style="margin-left: 10px",@click="addSelected()") 添加所选
-                    Input(v-model="selectUserName",:style={
-                        'width': '100px',
-                        'margin-left': '10px'
-                    },placeholder="名字",icon="ios-search-outline",@on-click="search")
 
-                    //Select(clearable,filterable,:style={
-                    //    'width': '100px',
-                    //    'margin-left': '10px'
-                    //},placeholder="状态",v-model="selectLeave")
-                    //    Option(v-for="item in getMenus()", :value="item.key",:key="item.key") {{item.value}}
+            .bodyRightMiddle
+                .topTop
+                    .topRightJN
+                    .topLeftMiddle
+                        span 技能工种评定统计
+                .hrBJ
+                .threeP
+                    #profession(:style={'height': '212px', 'width': '388px'})
+            .bodyRightBelow
+                .topTop
+                    .topRightBL
+                    .topLeftMiddle
+                        span 不良记录统计
+                .hrBJ
+                .q4
+                    Carousel(v-model="carousel", autoplay, :autoplay-speed=3000, dots="none", radius-dot, arrow="always")
+                        CarouselItem(v-for="item in getAppraiseList()")
+                            .demo-carousel
+                                img(:src="'/api/workerlib/preview/appraise_statistics/photo/'+item.id" :style={'width': '100%', 'height': '100%'})
+                .q5
+                    table(:style={'width': '360px', 'text-align': 'center', 'margin-left':'auto',
+                        'margin-right': 'auto'},border="0",cellpadding="0",cellspacing="0")
+                        tr(:style={'height': '25px', 'background-color': '#002052', 'font-weight': 'bolder','color':'#0067fd'})
+                            td(:style={'width': '25%'}) 编号
+                            td(:style={'width': '25%'}) 姓名
+                            td(:style={'width': '25%'}) 行为
+                            td(:style={'width': '25%'}) 处罚
+                        tr(:style={'height': '25px'},v-for="(item,index) in getAppraiseList()")
+                            td(:style={'width': '25%'}) {{index+1}}
+                            td(:style={'width': '25%'}) {{item.eafName}}
+                            td(:style={'width': '25%'}) {{item.description}}
+                            td(:style={'width': '25%'}) {{item.punishment}}
 
-                    Table(border=false, ref="selection", :columns="getColumnsTeam()", :data="getDataTeam()",
-                    :style="{'margin-top': '10px'}",
-                    @on-select="handleSelectRow",@on-select-all="handleSelectAll",
-                    @on-select-cancel="handleSelectRowCancel",@on-select-all-cancel = "handleSelectAllCancel"
-                    )
-                        template(slot-scope="{ row }" ,slot="photo")
-                            img(:src="'http://113.105.121.93:1818/'+row.cwrPhoto",:style={
-                                'width': '50px', 'height': '50px',
-                                'border-radius': '50%'
-                            })
-                        template(slot-scope="{row}",slot="leave")
-                            span(v-if="row.leave==1") 在场
-                            span(v-if="row.leave==2") 离场
-                        template(slot-scope="{row}",slot="operation")
-                            Button(v-if="offChecked(row.eafId)",type="primary",style="margin-right: 5px",@click="show(row.eafId,row.eafName,row.cwrPhoto)") 加入培训
-                            Button(v-else,type="primary",ghost,style="margin-right: 5px") 加入培训
 
-                    Page(:total="pageInTotal",show-elevator,show-total,
-                    @on-page-size-change="onPageSizeInChange",@on-change="onPageIndexInChange",:style={
-                        'text-align': 'center',
-                        'margin-top': '10px'
-                    })
-                .right1
-                    .rdiv(v-for="item in this.store.checkeds")
-                        .rimg
-                            img(:src="'http://113.105.121.93:1818'+item.photo",:style={
-                                'width': '50px', 'height': '50px',
-                                'border-radius': '50%'
-                            })
-                            span(class="image-remove",@click="show(item.id,item.name,item.photo)") +
-                        .rname
-                            span {{item.name}}
-    Modal(:value="addViewTeamRate",title="人员评级",@on-ok="okViewTeamRate()",@on-cancel="cancelViewTeamRate()",width='70%')
-        .addBody1
-            .topOne
-                .divOne
-                    span 姓名：
-                        Input(v-model="selectViewName",clearable,style="width: 260px")
-                .divOne
-                    span 身份证：
-                        Input(v-model="selectViewIdCard",clearable,style="width: 260px")
-                .search
-                    Button(@click="this.store.searchTeamUserInfo") 搜索
-            .bodyTwo2
-                Table(border, ref="selection", :columns="getViewColumns()", :data="getViewData()", :style={width: '100%'})
-                    template(slot-scope="{ row }" ,slot="photo")
-                        img(:src="'http://113.105.121.93:1818/'+row.cwrPhoto",:style={
-                            'width': '50px', 'height': '50px',
-                            'border-radius': '50%'
-                        })
-                    template(slot-scope="{row, index }",slot="operation")
-                        Button(type="primary",size="small", icon="ios-add-circle-outline",@click="addRateName(row.eafId,row.eafName,row.workType)") 评定
-                Page(:total="pageViewTotal",show-elevator,show-total,
-                @on-page-size-change="onPageSizeViewChange",@on-change="onPageIndexViewChange",:style={
-                    'text-align': 'center',
-                    'margin-top': '10px'
-                })
-    Modal(:value="viewTeamRate",title="评定记录",@on-ok="okViewTeamRate()",@on-cancel="cancelViewTeamRate()",width='70%')
-        .addBody1
-            .bodyTwo2
-                Table(border, ref="selection", :columns="getViewColumns()", :data="getViewData()", :style={width: '100%'})
-
-                Page(:total="pageViewTotal",show-elevator,show-total,
-                @on-page-size-change="onPageSizeViewChange",@on-change="onPageIndexViewChange",:style={
-                    'text-align': 'center',
-                    'margin-top': '10px'
-                })

@@ -200,7 +200,7 @@
 }
 .addBody1{
     width: 100%;
-    height: 830px;
+    height: 772px;
 }
 .divTwo{
     line-height: 70px;
@@ -213,7 +213,7 @@
 .top{
     display: block;
     width: 100%;
-    min-height: 80px;
+    min-height: 70px;
     float: right;
     height: auto;
 }
