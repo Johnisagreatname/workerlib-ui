@@ -22,10 +22,12 @@ export default class SpectacularsStore extends VuexModule {
     public echartSkill : Array<any>;
     public echartCultivate : Array<any>;
     public echartCultivateCount : Array<any>;
+    public indexphoto : Array<any>;
     public peopleTotal: number;
     public workTypeCount: number;
     public projectCount: any;
     public projectCountBE: any;
+    public indexVideo: any;
     public saleDate: Date;
     public saleMonthDate: Date;
     public $echarts: any;
@@ -33,10 +35,12 @@ export default class SpectacularsStore extends VuexModule {
     constructor(e){
         super(e);
         this.workTypeList = [];
+        this.indexphoto = [];
         this.workTypeListCount = [];
         this.appraiseList = [];
         this.cultivateCount = [];
         this.peopleTotal = null;
+        this.indexVideo = {};
         this.workTypeCount = null;
         this.projectCount = {};
         this.projectCountBE = {};
@@ -407,7 +411,86 @@ export default class SpectacularsStore extends VuexModule {
             MessageUtils.warning(e);
         });
     }
-
+    @Action
+    public async searchVideoInfo() {
+        await request.post('/api/workerlib/indexVideo',{
+            "pageInfo" : {},
+            "conditionList": [
+                {
+                    "name":"type",
+                    "value":"video",
+                    "algorithm": "EQ"
+                }
+            ],
+            "sortList": [],
+            "groupList" : [],
+            "keywords" : [],
+            "selectList": []
+        }).then((data)=>{
+            if(!data){
+                return;
+            }
+            this.successIndexVideo(data);
+        }).catch((e)=>{
+            let alert: any = Message;
+            if(!e) {
+                alert.warning('未知错误！')
+                return
+            }
+            if(e.response && e.response.data && e.response.data.message) {
+                alert.warning(e.response.data.message)
+                return
+            }
+            if(!e.message) {
+                return;
+            }
+            alert.warning(e.message || e)
+        });
+    }
+    @Action
+    public async searchPhotoInfo() {
+        await request.post('/api/workerlib/indexVideo',{
+            "pageInfo" : {},
+            "conditionList": [
+                {
+                    "name":"type",
+                    "value":"photo",
+                    "algorithm": "EQ"
+                }
+            ],
+            "sortList": [],
+            "groupList" : [],
+            "keywords" : [],
+            "selectList": []
+        }).then((data)=>{
+            if(!data){
+                return;
+            }
+            this.successIndexPhoto(data);
+        }).catch((e)=>{
+            let alert: any = Message;
+            if(!e) {
+                alert.warning('未知错误！')
+                return
+            }
+            if(e.response && e.response.data && e.response.data.message) {
+                alert.warning(e.response.data.message)
+                return
+            }
+            if(!e.message) {
+                return;
+            }
+            alert.warning(e.message || e)
+        });
+    }
+    @Mutation
+    public successIndexVideo(data: any) {
+        this.indexVideo = data.data[0];
+    }
+    @Mutation
+    public successIndexPhoto(data: any) {
+        this.indexphoto = data.data;
+    }
     @Mutation
     private successWorkType(data: any) {
         this.workTypeList = data.data;

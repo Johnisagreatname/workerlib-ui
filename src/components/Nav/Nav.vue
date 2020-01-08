@@ -72,7 +72,8 @@
                         {secondName:'题库', path: '/nav/options', text: '题库设置'},
                         {secondName:'课件类型', path: '/nav/course', text: '课件类型'},
                         {secondName:'处罚', path: '/nav/punishment', text: '处罚设置'},
-                        {secondName:'角色', path: '/nav/role', text: '角色设置'}
+                        {secondName:'角色', path: '/nav/role', text: '角色设置'},
+                        {secondName:'首页设置', path: '/nav/indexVideo', text: '首页设置'}
                     ] }
             ];
             return this.menus;
