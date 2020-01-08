@@ -571,7 +571,6 @@ export default class CommentsStore extends VuexModule {
     }
     @Mutation
     public successAppraiseList(data: any) {
-        this.appraiseList = new Array<any>();
         for(let i= 0;i<data.data.length;i++){
             let item={};
             item["name"] = data.data[i].name;

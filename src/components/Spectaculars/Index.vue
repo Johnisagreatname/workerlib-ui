@@ -2,12 +2,9 @@
     import "@/assets/css/common.css";
     import Echart from 'echarts';
     import SpectacularsStore from '../../store/modules/SpectacularsStore';
-    import WorkerStore from '../../store/modules/WorkerStore';
-    import ProjectStore from '../../store/modules/ProjectStore';
     import { Component, Vue, Prop, Model} from 'vue-property-decorator';
     import { getModule } from 'vuex-module-decorators';
     Vue.prototype.$echarts = Echart;
-    import router from '../../router/.invoke/router'
     @Component({
         components:{
         },
@@ -46,53 +43,16 @@
             this.store.countCultivateCount();
             this.store.countAppraiseCount();
         }
-        //工种总数(种)
-        clickWorkType(){
-            router.push({path: '/nav/workclass'})
-        }
-        //外部队伍人数(人)
-        projectCountDimission(){
-            this.workerStore.setNotIn(true);
-            router.push({path: '/nav/worker'})
-        }
-        //自有队伍人数(人)
-        projectCountBeOn(){
-            this.workerStore.setIn(true);
-            router.push({path: '/nav/worker'})
-        }
-        //在建工程总数
-        projectCountDoing(){
-            this.projectStore.selectStatus(2);
-            // this.projectStore.search();
-            router.push({path: '/nav/project'})
-        }
-        projectCountTheirOwn(){
-            this.workerStore.setSelectStatus(1);
-            // this.workerStore.search();
-            router.push({path: '/nav/worker'})
-        }
-        projectCountExternal(){
-            this.workerStore.setSelectStatus(2);
-            // this.workerStore.search();
-            router.push({path: '/nav/worker'})
-        }
-        workType(name){
-            this.workerStore.setSelectType(name);
-            // this.workerStore.search();
-            router.push({path: '/nav/worker'})
-        }
+
+
         backgroundList = ['#41ccd3','#2498e3','#2268d4','#d6c76e','#d39255','#35c87a','#44ae2e','#7d5dcc']
         private store: any;
-        private workerStore: any;
-        private projectStore: any;
         public $echarts: any;
         public selectWorkType: Array<any>;
         carousel = 0
         constructor(e) {
             super(e);
             this.store = getModule(SpectacularsStore);
-            this.workerStore = getModule(WorkerStore);
-            this.projectStore = getModule(ProjectStore);
             this.selectWorkType = [];
 
         }

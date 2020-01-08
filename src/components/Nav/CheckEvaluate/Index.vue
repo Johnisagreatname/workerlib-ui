@@ -39,7 +39,6 @@
             this.store.search();
             this.store.getGrade();
             this.store.getCommtenGrade();
-            this.store.getCommtenRank();
             this.checkedArray = [];
             this.checkAllGroup = [];
             this.workType = [];
@@ -78,7 +77,7 @@
             this.addTeamRate = false;
         }
         cancelTeamRate():any{
-        this.addTeamRate = false;
+            this.addTeamRate = false;
         }
 
         viewData() {
@@ -176,9 +175,6 @@
 
         getCommtenGrade() : any {
             return this.store.commtenGrade;
-        }
-        getCommtenRank() : any {
-            return this.store.commtenRank;
         }
         getGrade() : any {
             return this.store.grades;
@@ -310,7 +306,7 @@
             this.store.setName(data);
         }
         get name():string{
-           return this.store.selectName;
+            return this.store.selectName;
         }
         set selectType(data:string){
             this.store.setType(data);

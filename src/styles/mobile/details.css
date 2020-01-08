@@ -1,34 +1,48 @@
 
+body {
+    min-width: auto !important;
+}
 #home {
     width: 100%;
     display: list-item;
-    position: fixed;
+    background-color: #e7e7e7;
+    position:static;
 }
+
 #home .vux-cell-bd .vux-label {
     font-size: 16px !important;
 }
-html, body {
-    height: 100%;
-    width: 100%;
-    overflow-x: hidden;
-}
+
+/*html, body {*/
+/*    height: 100%;*/
+/*    width: 100%;*/
+/*    overflow-x: hidden;*/
+/*}*/
+
 .flex-demo {
     margin-top: 15px;
     text-align: center;
     color: #1a1a1a;
     height: 20px;
+    font-size: 16px;
 }
+/*.weui-cell .weui-cell__ft {*/
+/*    color: #2d8cf0 !important;*/
+/*}*/
 .flex-demo2 {
-    margin-bottom: 10px;
+    margin-left: 20px;
+    margin-right: 30px;
+    padding: 2px;
     text-align: center;
     color: #fff;
+    font-size: 16px;
     background-color: #f78e0f;
     border-radius: 10px;
     background-clip: padding-box;
-    height: 20px;
 }
+
 .img-header {
-    margin-top: 10px;
+    margin-top: 20px;
     margin-left: 20px;
     margin-bottom: 10px;
     border-radius: 50%;
@@ -36,44 +50,78 @@ html, body {
     height: 60px;
     width: 60px;
 }
+
 .img-rq {
-    margin-top: 10px;
-    margin-left: 30px;
+    margin-top: 20px;
+    margin-left: 10px;
     margin-bottom: 10px;
     background-clip: padding-box;
     height: 60px;
     width: 60px;
 }
+
 .img-vedio {
     margin-left: 10px;
     background-clip: padding-box;
     height: 30px;
     width: 30px;
 }
+
 .text-title {
-    margin-top: 10px;
+    padding-top: 20px;
     text-align: center;
-    font-size: 16px;
+    font-size: 20px;
     font-weight: bold;
 }
+
 .text-main {
-     padding: 10px;
-     text-align: left;
-     font-size: 12px;
-     color: #1a1a1a;
- }
+    text-align: left;
+    font-size: 16px;
+    color: #1a1a1a;
+}
+
 .text-gray {
     text-align: left;
-    font-size: 12px;
-    color:#6f7882;
+    font-size: 14px;
+    color: #6f7882;
 }
+
+.text-gray-left {
+    margin-top: 5px;
+    margin-left: 20px;
+    text-align: left;
+    font-size: 14px;
+    color: #6f7882;
+}
+
 .text-blue {
     text-align: left;
-    font-size: 12px;
+    font-size: 14px;
     color: #2d8cf0;
 }
+
 .badge-main {
     margin-left: 10px;
     text-align: left;
-    font-size: 12px;
+    font-size: 14px;
+}
+
+.div-bg {
+    padding-bottom: 15px;
+    margin: 10px;
+    border-radius: 10px;
+    background-color: #ffffff;
+    min-height: 120px;
+}
+.ivu-divider-horizontal {
+    display: block;
+    height: 1px;
+    width: 100%;
+    min-width: 100%;
+    margin: 10px 0;
+    clear: both;
+}
+.weui-cell__ft {
+    text-align: right;
+    color: #2d8cf0;
 }

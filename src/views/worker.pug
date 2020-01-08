@@ -1,22 +1,22 @@
 .body
    .topOne
-      .divOne
-         span 项目名称：
-            Input(clearable,style="width: 200px",v-model="selectProjectName")
-      .divOne
-         span 参建单位：
-            Input(clearable,style="width: 200px",v-model="selectContractors")
+      //.divOne
+      //   span 项目名称：
+      //      Input(clearable,style="width: 260px",v-model="selectProjectName")
+      //.divOne
+      //   span 参建单位：
+      //      Input(clearable,style="width: 260px",v-model="selectContractors")
       .divOne
          span 姓名：
-            Input(clearable,style="width: 200px",v-model="selectUserName")
-      .divOne
-         span 工种：
-            Select(filterable,clearable,style="width:200px",v-model="selectType")
-               Option(v-for="item in getType()", :value="item.name", :key="item.name") {{item.name}}
-      .divOne
-         span 状态：
-            Select(filterable,clearable,style="width:200px",v-model="selectStatus")
-               Option(v-for="item in getMenus()", :value="item.key", :key="item.key") {{item.value}}
+            Input(clearable,style="width: 260px",v-model="selectUserName")
+      //.divOne
+      //   span 工种：
+      //      Select(filterable,clearable,style="width:260px",v-model="selectType")
+      //         Option(v-for="item in getType()", :value="item.name", :key="item.name") {{item.name}}
+      //.divOne
+      //   span 状态：
+      //      Select(filterable,clearable,style="width:260px",v-model="selectStatus")
+      //         Option(v-for="item in getMenus()", :value="item.key", :key="item.key") {{item.value}}
       .search
          Button(@click="this.store.search") 搜索
    .hr
@@ -27,12 +27,11 @@
       //   span(v-if="offLeave == true") 进场
       Button(type="primary", ghost, icon="ios-log-in") 同步工人
       Button(type="primary", ghost, icon="ios-log-out",@click="upload()") 导出
-      Button(type="primary",ghost,icon="ios-cloud-upload-outline",@click="uploadData=!uploadData") 导入薪资
-      //Upload(action="/api/workerlib/salary/import",
-      //:on-success="handleSuccessExcel",:format="['xls','xlsx']",:on-format-error="handleFormatErrorExcel",
-      //:show-upload-list="false",
-      //:style={'float':'left'})
-
+      Upload(action="/api/workerlib/salary/import",
+      :on-success="handleSuccessExcel",:format="['xls','xlsx']",:on-format-error="handleFormatErrorExcel",
+      :show-upload-list="false",
+      :style={'float':'left'})
+         Button(icon="ios-cloud-upload-outline") 导入薪资
 
    div(v-for="(item, index) in getPeopleList()", :key="index",
    @click="onCheck(item.eafId,item.eafName,item.leave)",
@@ -99,13 +98,39 @@
                .input
                   Select(clearable,filterable,multiple,style="width:345px",v-model="type")
                      Option(v-for="item in getType()", :value="item.name", :key="item.name") {{item.name}}
+            //.divTwo
+            //   .name
+            //      span 进场日期
+            //      span(:style={'color': 'red'}) *
+            //   .input
+            //      template
+            //         Row
+            //            Col(span="12")
+            //               DatePicker(v-model="startTime",type="date",placeholder="请选择",style="width: 345px")
+            //.divTwo
+            //   .name
+            //      span 退场日期
+            //   .input
+            //      template
+            //         Row
+            //            Col(span="12")
+            //               DatePicker(v-model="endTime",type="date",placeholder="请选择",style="width: 345px")
+
+            //.divTwo
+            //   .name
+            //      span 是否班组长
+            //      span(:style={'color': 'red'}) *
+            //   .input
+            //      RadioGroup(v-model="animal")
+            //         Radio(label="1") 是
+            //         Radio(label="2") 否
          .right
             h2(:style={'text-ag': '18px', 'text-align': 'center'}) 证件信息
             .box
                .boxLeft
                   span 上传头像：
                .boxRight
-                  Upload(multiple,type="drag",action="/api/workerlib/alluser/photo/upload",
+                  Upload(multiple,type="drag",action="/api/workerlib/upload/archives/photo",
                   :on-success="handleSuccessPhoto",:format="['jpg','jpeg','png']",:on-format-error="handleFormatError",:style={
                       'width': '30%',
                       'margin-top': '10%'
@@ -117,7 +142,7 @@
                .boxLeft
                   span 上传身份证：
                .boxRight
-                  Upload(multiple,type="drag",action="/api/workerlib/alluser/id_card_front/upload",
+                  Upload(multiple,type="drag",action="/api/workerlib/upload/archives/id_card_front",
                   :on-success="handleSuccessIdCardfront",:format="['jpg','jpeg','png']",:on-format-error="handleFormatError",:style={
                       'width': '179px',
                       'height': '120px',
@@ -128,7 +153,7 @@
                      .divY
                         Icon(size="52" style="color: #3399ff")
                         p(:style={'color': '#ffffff','margin-top': '43px'}) 上传身份证正面
-                  Upload(multiple,type="drag",action="/api/workerlib/alluser/id_card_reverse/upload",
+                  Upload(multiple,type="drag",action="/api/workerlib/upload/archives/id_card_reverse",
                   :on-success="handleSuccessIdCardReverse",:format="['jpg','jpeg','png']",:on-format-error="handleFormatError",:style={
                       'width': '179px',
                       'height': '120px',
@@ -143,7 +168,7 @@
                .boxLeft
                   span 上传证书：
                .boxRight
-                  Upload(multiple,type="drag",action="/api/workerlib/worktype/certificate/upload",
+                  Upload(multiple,type="drag",action="/api/workerlib/upload/archives/certificate",
                   :on-success="handleSuccessCertificate",:format="['jpg','jpeg','png']",:on-format-error="handleFormatError",:style={
                       'width': '40%',
                       'margin-top': '10%'
@@ -205,7 +230,7 @@
                      p {{invlo.unit_name}}
                   .text
                      p(:style={'font-weight':'bold'}) 工种:
-                        span(v-if="invlo.workType") {{invlo.workType}}
+                        span(v-if="invlo.work_Type") {{invlo.work_Type}}
                         span(v-else) 无
                   .text
                      p(:style={'font-weight':'bold'}) 状态：
@@ -327,15 +352,3 @@
       .divL
          .divCheck(v-for="item in this.store.checkeds")
             p {{item.name}}
-   Modal(:value="uploadData",title="上传资料",@on-ok="okUpload()",@on-cancel="cancelUpload()",width='70%',:loading="loading")
-      .addBody
-         .uploadTop
-            a(href="/css/images/template.xls", target='_blank')
-               Button(icon="ios-cloud-download-outline",:style={borderColor: '#2d8cf0', color: '#2d8cf0'}) 下载模板
-         .uploadButtom
-               Upload(multiple,type="drag",action="/api/workerlib/salary/import",
-               :on-success="handleSuccessExcel",:format="['xls','xlsx']",:on-format-error="handleFormatErrorExcel",
-               :show-upload-list="false")
-                  div(:style={padding: '200px 0',height:'500px'})
-                     Icon(type="ios-add" size="52" style="color: #3399ff")
-                     p 点击上传

@@ -3,7 +3,7 @@
     import CultivateStore from '../../../store/modules/CultivateStore';
     import { Component, Vue, Prop, Model} from 'vue-property-decorator';
     import { getModule } from 'vuex-module-decorators';
-    import { Message } from 'iview';
+
     @Component({
         components:{
         },
@@ -35,16 +35,12 @@
         loading = true;
         private store: any;
         public startTraining:boolean;
-        public uploadTraining:boolean;
-        public viewTraining:boolean;
         public onDelete:boolean;
         public checkAllGroup :Array<any>;
         constructor() {
             super();
             this.store = getModule(CultivateStore);
             this.startTraining = false;
-            this.uploadTraining = false;
-            this.viewTraining = false;
             this.onDelete = false;
             this.checkAllGroup = [];
         }
@@ -58,12 +54,6 @@
             let date = new Date(d);
             return date.getFullYear() + "-" + (date.getMonth()+1) + "-" + date.getDate();
         }
-        getVideo():any{
-            return this.store.cultivateVideo.filter(a =>a.url == 'video');
-        }
-        getPhoto():any{
-            return this.store.cultivateVideo.filter(a =>a.url == 'photo');
-        }
         getStudy() : any {
             return this.store.studyType;
         }
@@ -76,16 +66,13 @@
         getData() : any{
             return this.store.cultivate;
         }
+
         getColumnsInfo() : any{
             return this.store.getColumnsInfo;
         }
         getDataInfo() : any{
             return this.store.cultivateArchives;
         }
-        deleteCultivate(){
-            this.onDelete = true;
-        }
-
         okStart() : any{
 
             this.startTraining = false;
@@ -98,43 +85,6 @@
             this.store.searchInfo();
             this.startTraining = true;
         }
-        upOperation(name){
-            debugger
-            if(name.split('_')[0] == 'add') {
-                this.store.setViewId(name.split('_')[1]);
-                this.uploadTraining = true;
-            }else {
-                this.store.setViewId(name.split('_')[1]);
-                this.store.searchVideoInfo();
-                this.viewTraining = true;
-            }
-        }
-        handleSuccessVideo (res, file) {
-            debugger
-            let item = {};
-            item["cultivateId"] = this.store.viewId;
-            item["file"] = res.file;
-            item["url"] = "video"
-            this.store.setInsertCultivateVideo(item);
-            console.log(this.store.insertCultivateVideo);
-        }
-        handleFormatError (file) {
-            let alert: any = Message;
-            alert.warning(file.name + ' 文件格式错误！ogg、mp4、WebM格式文件！');
-        }
-        handleFormatPictrueError (file) {
-            let alert: any = Message;
-            alert.warning(file.name + ' 文件格式错误！请上传jpg、jpeg、png格式文件！');
-        }
-        handleSuccessPicture (res, file) {
-            debugger
-            let item = {};
-            item["cultivateId"] = this.store.viewId;
-            item["file"] = res.file;
-            item["url"] = "photo"
-            this.store.setInsertCultivateVideo(item);
-            console.log(this.store.insertCultivateVideo);
-        }
         toggle(name){
             if(name=="线上培训"){
                 this.store.setSelectStatus(1);
@@ -146,7 +96,9 @@
                 this.store.clearCheckedDelete();
             }
         }
-
+        deleteCultivate(){
+            this.onDelete = true;
+        }
         handleSelectRow(selection, row) {
             var itemTrue = {};
             itemTrue['id'] = row.id;
@@ -167,6 +119,7 @@
                 this.store.setCheckedDelete(itemTrue)
             }
         }
+
         handleSelectAllCancel(selection){
             for(let i= 0;i<this.store.cultivate.length;i++){
                 let item = {};
@@ -186,22 +139,6 @@
         cancelDelete():any {
             this.onDelete = false;
         }
-
-
-        okUpload() : any{
-            this.store.insertVideoInfo();
-            this.uploadTraining = false;
-        }
-        cancelUpload():any {
-            this.uploadTraining = false;
-        }
-        okView() : any{
-            this.viewTraining = false;
-        }
-        cancelView():any {
-            this.viewTraining = false;
-        }
-
         onPageSizeChange(pageSize){
             this.store.setPageSize(pageSize);
             this.store.setPageIndex(1);
@@ -211,6 +148,7 @@
             this.store.setPageIndex(pageIndex);
             this.store.search();
         }
+
         onInPageSizeChange(pageSize){
             this.store.setInPageIndex(pageSize);
             this.store.setInPageIndex(1);
@@ -273,19 +211,6 @@
         }
         get selectTrainingTeacher():string{
             return this.store.selectTrainingTeacher;
-        }
-        set okCultivate(data:string){
-            if(data) {
-                if (data == "是") {
-                    this.store.setIsOk("已完成");
-                }else {
-                    this.store.setIsOk("待学习");
-                }
-            }
-            this.store.setOkCultivate(data);
-        }
-        get okCultivate():string{
-            return this.store.okCultivate;
         }
     }
 </script>

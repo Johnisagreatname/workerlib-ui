@@ -138,7 +138,7 @@ export default class CoursewareStore extends VuexModule {
             let item ={};
             item["name"]="leave";
             item["value"]=this.selectLeave;
-            item["algorithm"] = "LIKE";
+            item["algorithm"] = "EQ";
             this.peopleConditionList.push(item);
         }
         return {
