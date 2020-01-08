@@ -18,6 +18,9 @@ export default class CheckEvaluateStore extends VuexModule {
     public pageIndex:number;
     public pageSize:number;
     public pageTotal:number;
+    public pageViewIndex:number;
+    public pageViewSize:number;
+    public pageViewTotal:number;
 
     public selectConstructionUit:string;
     public selectProjectName:string;
@@ -26,9 +29,12 @@ export default class CheckEvaluateStore extends VuexModule {
     public selectStatus:number;
     public selectTime:Date;
     public selectRate:string;
+    public selectRank:string;
     public peopleConditionList:Array<any>;
     public commtenGrade:Array<any>;
+    public commtenRank:Array<any>;
     public grades:Array<any>;
+    public viewInfo:Array<any>;
     public rateInfo:Rate;
     public checkedArray: Array<any>;
     public insertUser: Array<any>;
@@ -37,8 +43,10 @@ export default class CheckEvaluateStore extends VuexModule {
     public checkAllGroup: Array<any>;
     public peoples: any;
     public insertTeamUserList:Array<any>;
+    public viewList:Array<any>;
     //新增
     public grade:string;
+    public rateWorkType:string;
     public rank:string;
     public evaluateTime:Date;
     public selectUserName:string;
@@ -52,12 +60,17 @@ export default class CheckEvaluateStore extends VuexModule {
     public insertNorating:number;
     public insertRate:number;
     public insertRemark:string;
+    public teamId:number;
 
+    public selectViewName:string;
+    public selectViewIdCard:string;
 
     constructor(e) {
         super(e);
         this.projectType=[];
+        this.viewInfo=[];
         this.checkeds=[];
+        this.commtenRank=[];
         this.cultivateArchivesList=[];
         this.insertTeamUserList=[];
         this.checkAllGroup=[];
@@ -73,13 +86,17 @@ export default class CheckEvaluateStore extends VuexModule {
         this.selectName="";
         this.selectType="";
         this.selectTime = null;
+        this.selectRank = null;
+
         this.selectStatus=null;
         this.selectRate="";
         this.peopleConditionList = [];
+        this.viewList = [];
         this.peoples = [];
         this.commtenGrade = [];
         this.grades = [];
         this.grade = "";
+        this.rateWorkType = "";
         this.rank = "";
         this.evaluateTime = null;
         this.rateInfo={};
@@ -89,10 +106,17 @@ export default class CheckEvaluateStore extends VuexModule {
         this.pageInIndex=1;
         this.pageInSize= 8;
         this.pageInTotal = 0;
+        this.pageViewIndex=1;
+        this.pageViewSize= 10;
+        this.pageViewTotal = 0;
         this.insertRatingname=null;
         this.insertNorating=null;
         this.insertRate=null;
         this.insertRemark=null;
+        this.teamId=null;
+
+        this.selectViewName = null;
+        this.selectViewIdCard = null;
     }
     @Action
     public getParams() : any {
@@ -107,7 +131,7 @@ export default class CheckEvaluateStore extends VuexModule {
             return {
                 "joinTables": [
                     {
-                        "tablename": "team_rate",
+                        "tablename": "team",
                         "alias": "a",
                         "joinMode": "Left"
                     }, {
@@ -137,6 +161,24 @@ export default class CheckEvaluateStore extends VuexModule {
                 "selectList": [{
                     "field": "a.createOn",
                     "alias":"time"
+                },{
+                    "field": "a.ratingname",
+                    "alias":"ratingname"
+                },{
+                    "field": "a.id",
+                    "alias":"id"
+                },{
+                    "field": "a.remark",
+                    "alias":"remark"
+                },{
+                    "field": "a.norating",
+                    "alias":"norating"
+                },{
+                    "field": "a.rate",
+                    "alias":"rate"
+                },{
+                    "field": "u.username",
+                    "alias":"username"
                 }
                 ]
             }
@@ -152,6 +194,13 @@ export default class CheckEvaluateStore extends VuexModule {
                 let item ={};
                 item["name"]="u.grade";
                 item["value"]=this.selectRate;
+                item["algorithm"] = "EQ";
+                this.peopleConditionList.push(item);
+            }
+            if(this.selectRank){
+                let item ={};
+                item["name"]="u.rank";
+                item["value"]=this.selectRank;
                 item["algorithm"] = "EQ";
                 this.peopleConditionList.push(item);
             }
@@ -230,6 +279,44 @@ export default class CheckEvaluateStore extends VuexModule {
         };
     }
     @Action
+    public getViewParams() : any {
+        debugger
+        if(this.selectViewName){
+            let item ={};
+            item["name"]="eafName";
+            item["value"]=this.selectViewName;
+            item["algorithm"] = "LIKE";
+            this.viewList.push(item);
+        }
+        if(this.selectViewIdCard){
+            let item ={};
+            item["name"]="cwrIdnum";
+            item["value"]=this.selectViewIdCard;
+            item["algorithm"] = "EQ";
+            this.viewList.push(item);
+        }
+            let item = {};
+            item["name"]="teamId";
+            item["value"]=this.teamId;
+            item["algorithm"]="EQ";
+        this.viewList.push(item);
+        return {
+            "pageInfo": {
+                "pageIndex": this.pageViewIndex,
+                "pageSize": this.pageViewSize
+            },
+            "conditionList": this.viewList,
+
+            "sortList": [ ],
+
+            "groupList" : [],
+
+            "keywords" : [],
+
+            "selectList": []
+        };
+    }
+    @Action
     public async getProjectType(){
         await request.post('/api/workerlib/dictionaries', {
             "pageInfo" : {},
@@ -280,6 +367,33 @@ export default class CheckEvaluateStore extends VuexModule {
 
     }
     @Action
+    public async searchTeamUserInfo() {
+        debugger
+        await request.post('/api/workerlib/teamrate',await this.getViewParams()).then((data)=>{
+                if(!data){
+                    return;
+                }
+                this.successViewInfo(data);
+                this.countViewInfo();
+            }
+        ).catch((e)=>{
+            let alert: any = Message;
+            if(!e) {
+                alert.warning('未知错误！')
+                return
+            }
+            if(e.response && e.response.data && e.response.data.message) {
+                alert.warning(e.response.data.message)
+                return
+            }
+            if(!e.message) {
+                return;
+            }
+            alert.warning(e.message || e)
+        });
+
+    }
+    @Action
     public async count() {
         await request.post('/api/workerlib/join/count', await this.getParams()).then((data)=>{
             if(!data){
@@ -291,12 +405,47 @@ export default class CheckEvaluateStore extends VuexModule {
         });
     }
     @Action
-    public async getCommtenGrade(){
+    public async countViewInfo() {
+        await request.post('/api/workerlib/teamrate/count',await this.getViewParams()).then((data)=>{
+            if(!data){
+                return;
+            }
+            this.setPageViewTotal(data.data)
+        }).catch((e)=>{
+            MessageUtils.warning(e);
+        });
+    }
+    @Action
+    public async getCommtenRank(){
         await request.post('/api/workerlib/dictionaries', {
             "pageInfo" : {},
             "conditionList": [{
                 "name": "category",
                 "value": "评定级别",
+                "algorithm": "EQ"
+            }],
+            "sortList": [],
+
+            "groupList" : [],
+
+            "keywords" : [],
+            "selectList": []
+        }).then((data)=>{
+            if(!data){
+                return;
+            }
+            this.successCommtenRank(data);
+        }).catch((e)=>{
+            MessageUtils.warning(e);
+        });
+    }
+    @Action
+    public async getCommtenGrade(){
+        await request.post('/api/workerlib/dictionaries', {
+            "pageInfo" : {},
+            "conditionList": [{
+                "name": "category",
+                "value": "评定等级",
                 "algorithm": "EQ"
             }],
             "sortList": [],
@@ -404,12 +553,13 @@ export default class CheckEvaluateStore extends VuexModule {
             for (let i = 0;i<this.cultivateArchivesList.length;i++) {
                 let item = {};
                 item["teamId"]=id;
-                item["userId"]=this.cultivateArchivesList[i];
+                item["eafId"]=this.cultivateArchivesList[i];
                 this.insertTeamUserList.push(item);
             }
         }
-        await request.put('/api/workerlib/cultivate_archives', this.cultivateArchivesList).then((data)=>{
+        await request.put('/api/workerlib/team_user', this.insertTeamUserList).then((data)=>{
             this.successInsertTeamUser(data);
+            this.search();
         }).catch((e)=>{
             console.log(e)
             let alert: any = Message;
@@ -472,7 +622,7 @@ export default class CheckEvaluateStore extends VuexModule {
             this.checkAllGroup = new Array<any>();
             this.insertTeamUserList = new Array<any>()
             let alert: any = Message;
-            alert.warning("新建课程成功！");
+            alert.warning("创建团体评价成功！");
         }
     }
     @Mutation
@@ -489,6 +639,19 @@ export default class CheckEvaluateStore extends VuexModule {
         this.pageSize = data;
     }
     @Mutation
+    public setPageViewTotal(data: number) {
+        this.viewList = new Array<any>();
+        this.pageViewTotal = data;
+    }
+    @Mutation
+    public setPageViewIndex(data: number) {
+        this.pageViewIndex = data;
+    }
+    @Mutation
+    public setPageViewSize(data: number) {
+        this.pageViewSize = data;
+    }
+    @Mutation
     public success(data: any) {
         this.rate = data.data;
     }
@@ -503,6 +666,10 @@ export default class CheckEvaluateStore extends VuexModule {
     @Mutation
     public setGrade(data:string){
         this.grade = data;
+    }
+    @Mutation
+    public setRateWorkType(data:string){
+        this.rateWorkType = data;
     }
     @Mutation
     public setConstructionUit(data: string) {
@@ -541,8 +708,16 @@ export default class CheckEvaluateStore extends VuexModule {
         this.commtenGrade = data.data;
     }
     @Mutation
+    public successCommtenRank(data: any) {
+        this.commtenRank = data.data;
+    }
+    @Mutation
     public successGrade(data: any) {
         this.grades = data.data;
+    }
+    @Mutation
+    public successViewInfo(data: any) {
+        this.viewInfo = data.data;
     }
     @Mutation
     public setCheckedUser(data: any) {
@@ -595,28 +770,51 @@ export default class CheckEvaluateStore extends VuexModule {
     public setSelectLeave(data:number){
         this.selectLeave = data;
     }
-    // "norating":this.insertNorating,
-    // "rate":this.insertRate,
-    // "remark":this.insertRemark,
-    // @Mutation
-    // public setInsertRatingname(data:string){
-    //     this.insertRatingname = data;
-    // }
-    // @Mutation
-    // public setSelectUserName(data:string){
-    //     this.selectUserName = data;
-    // }
-    // @Mutation
-    // public setSelectLeave(data:number){
-    //     this.selectLeave = data;
-    // }
-
+    @Mutation
+    public setInsertRatingname(data:string){
+        this.insertRatingname = data;
+    }
+    @Mutation
+    public setInsertNorating(data:number){
+        this.insertNorating = data;
+    }
+    @Mutation
+    public setInsertRate(data:number){
+        this.insertRate = data;
+    }
+    @Mutation
+    public setTeamId(data:number){
+        this.teamId = data;
+    }
+    @Mutation
+    public setInsertRemark(data:string){
+        this.insertRemark = data;
+    }
+    @Mutation
+    public setSelectViewName(data:string){
+        this.selectViewName = data;
+    }
+    @Mutation
+    public setSelectViewIdCard(data:string){
+        this.selectViewIdCard = data;
+    }
+    @Mutation
+    public setSelectRank(data:string){
+        this.selectRank = data;
+    }
+    @Mutation
+    private setChecked(data: any) {
+        this.checkeds.push(data);
+    }
+    @Mutation
+    private setCheckAllGroup(data: any) {
+        this.checkAllGroup.push(data);
+    }
+    @Mutation
+    public setCultivateArchivesList(data:any){
+        this.cultivateArchivesList.push(data);
+    }
     public columns = [
-        {
-            type: 'selection',
-            width: 60,
-            align: 'center'
-        },
         {
             title: '姓名',
             key: 'eafName',
@@ -624,7 +822,7 @@ export default class CheckEvaluateStore extends VuexModule {
         },
         {
             title: '工种',
-            key: 'workType',
+            key: 'rateWorkType',
             sortable: true,
             render: (h, params) => {
                 return h('div', [
@@ -637,9 +835,9 @@ export default class CheckEvaluateStore extends VuexModule {
                             whiteSpace: 'nowrap'
                         },
                         domProps: {
-                            title: params.row.workType
+                            title: params.row.rateWorkType
                         }
-                    }, params.row.workType)
+                    }, params.row.rateWorkType)
                 ])
             }
         },{
@@ -654,7 +852,7 @@ export default class CheckEvaluateStore extends VuexModule {
         },
         {
             title: '评定时间',
-            key: 'evaluateTime',
+            key: 'modifyBy',
             sortable: true,
             render: (h, params) => {
                 return h('div', [
@@ -673,19 +871,116 @@ export default class CheckEvaluateStore extends VuexModule {
                 ])
             }
         }
-        // ,
-        // {
-        //     title: '操作',
-        //     slot: 'operation',
-        //     sortable: true
-        // }
+        ,
+        {
+            title: '操作',
+            slot: 'operation',
+            sortable: true
+        }
+    ];
+    public viewColumns = [
+        {
+            title: '头像',
+            slot: 'photo',
+        },
+        {
+            title: '姓名',
+            key: 'eafName',
+            sortable: true
+        },
+        {
+            title: '身份证',
+            key: 'cwrIdnum',
+            sortable: true,
+            render: (h, params) => {
+                return h('div', [
+                    h('span', {
+                        style: {
+                            display: 'inline-block',
+                            width: '100%',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            whiteSpace: 'nowrap'
+                        },
+                        domProps: {
+                            title: params.row.cwrIdnum
+                        }
+                    }, params.row.cwrIdnum)
+                ])
+            }
+        },
+        {
+            title: '所属项目',
+            key: 'project_name',
+            sortable: true,
+            render: (h, params) => {
+                return h('div', [
+                    h('span', {
+                        style: {
+                            display: 'inline-block',
+                            width: '100%',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            whiteSpace: 'nowrap'
+                        },
+                        domProps: {
+                            title: params.row.project_name
+                        }
+                    }, params.row.project_name)
+                ])
+            }
+        },
+        {
+            title: '参见单位',
+            key: 'unit_name',
+            sortable: true,
+            render: (h, params) => {
+                return h('div', [
+                    h('span', {
+                        style: {
+                            display: 'inline-block',
+                            width: '100%',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            whiteSpace: 'nowrap'
+                        },
+                        domProps: {
+                            title: params.row.unit_name
+                        }
+                    }, params.row.unit_name)
+                ])
+            }
+        },{
+            title: '评级',
+            key: 'grade',
+            sortable: true,
+        },{
+            title: '评级时间',
+            key: 'evaluateTime',
+            sortable: true,
+            render: (h, params) => {
+                return h('div', [
+                    h('span', {
+                        style: {
+                            display: 'inline-block',
+                            width: '100%',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            whiteSpace: 'nowrap'
+                        },
+                        domProps: {
+                            title: params.row.evaluateTime
+                        }
+                    }, params.row.evaluateTime)
+                ])
+            }
+        },
+        {
+            title: '操作',
+            slot: 'operation'
+        }
     ];
     public teamColumns = [
-        {
-            type: 'selection',
-            width: 60,
-            align: 'center'
-        },
         {
             title: '团队名称',
             key: 'ratingname',
@@ -719,7 +1014,7 @@ export default class CheckEvaluateStore extends VuexModule {
             sortable: true
         },
         {
-            title: '评定时间',
+            title: '创建时间',
             key: 'time',
             sortable: true,
             render: (h, params) => {
@@ -835,6 +1130,9 @@ export default class CheckEvaluateStore extends VuexModule {
             slot: 'operation'
         }
     ];
+    // public peopleColumns = [
+    //
+    // ];
 
 }
 interface ProjectType {

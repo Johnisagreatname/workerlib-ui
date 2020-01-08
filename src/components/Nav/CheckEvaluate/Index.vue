@@ -26,16 +26,23 @@
         private options!: any;
         public addRate: boolean;
         public addTeamRate: boolean;
+        public viewTeamRate: boolean;
+        public addViewTeamRate: boolean;
         public checkedArray: Array<any>;
         public checkAllGroup :Array<any>;
+        public userName:string;
+        public addId:string;
+        public workType:Array<any>;
         mounted() {
             this.store.setSelectStatus(1);
             this.store.getProjectType();
             this.store.search();
             this.store.getGrade();
             this.store.getCommtenGrade();
+            this.store.getCommtenRank();
             this.checkedArray = [];
             this.checkAllGroup = [];
+            this.workType = [];
         }
         private store: any;
         constructor() {
@@ -43,6 +50,10 @@
             this.store = getModule(CheckEvaluateStore)
             this.addRate = false;
             this.addTeamRate = false;
+            this.addViewTeamRate = false;
+            this.viewTeamRate = false;
+            this.userName = null;
+            this.addId = null;
         }
         toggle(name){
             if(name=="团体评级"){
@@ -53,25 +64,46 @@
                 this.store.search();
             }
         }
+        getWorkType():any{
+            return this.workType;
+        }
         okTeamRate():any{
-            this.store.setPeoples(this.store.checkeds.length);
-            this.store.setState("待学习");
-            this.store.setCStatus(1);
+            this.store.setInsertNorating(this.store.checkeds.length);
+            this.store.setInsertRate(0);
             for(let i = 0; i< this.store.checkeds.length;i++){
                 this.store.setCultivateArchivesList(this.store.checkeds[i].id);
             }
-            this.store.insertCultivate();
+            this.store.insertTeamRate();
 
             this.addTeamRate = false;
         }
         cancelTeamRate():any{
         this.addTeamRate = false;
         }
+
         viewData() {
             this.addTeamRate=!this.addTeamRate;
             this.store.searchPeople();
         }
+        view(id){
+            this.viewTeamRate =!this.viewTeamRate;
 
+        }
+
+        addRateName(id,name,workType){
+            this.addId = id;
+            this.userName = name;
+            if(workType) {
+                this.workType = new Array<any>();
+                let list = workType.split(",");
+                for (let i = 0;i<list.length;i++){
+                    let item = {};
+                    item["name"] = list[i];
+                    this.workType.push(item);
+                }
+            }
+            this.addRate =!this.addRate;
+        }
 
         onPageSizeChange(pageSize){
             this.store.setPageSize(pageSize);
@@ -145,34 +177,37 @@
         getCommtenGrade() : any {
             return this.store.commtenGrade;
         }
+        getCommtenRank() : any {
+            return this.store.commtenRank;
+        }
         getGrade() : any {
             return this.store.grades;
         }
         ok() : any{
-            for(let i = 0;i<this.store.checkedUser.length;i++){
-                let row = this.store.checkedUser[i];
-                let item = {};
-                item["userId"] = row.eafId;
-                item["grade"] = this.store.grade;
-                item["rank"] = this.store.rank;
-                item["evaluateTime"]=
-                    this.store.evaluateTime.getFullYear()+"-"+
-                    (Number(this.store.evaluateTime.getMonth())+1)+"-"+
-                    this.store.evaluateTime.getDay();
-                this.store.setInsertUser(item)
-            }
+            let item = {};
+            item["userId"] = this.addId;
+            item["grade"] = this.store.grade;
+            item["rank"] = this.store.rank;
+            item["evaluateTime"]=
+                this.store.evaluateTime.getFullYear()+"-"+
+                (Number(this.store.evaluateTime.getMonth())+1)+"-"+
+                this.store.evaluateTime.getDay();
+            item["rateWorkType"] = this.store.rateWorkType;
+            this.store.setInsertUser(item)
+
             this.store.insertArchives();
             this.store.clearInsertUser();
             this.store.clearCheckedUser();
             this.addRate = false;
+            this.addViewTeamRate=false;
         }
         cancel():any {
             this.addRate = false;
         }
+
         getColumns() : any{
             return this.store.columns;
         }
-
         getData() : any{
             return this.store.rate;
         }
@@ -182,7 +217,6 @@
         getType(){
             return this.store.projectType;
         }
-
         addSelected(){
             for (let i=0;i<this.checkAllGroup.length;i++){
                 var itemTrue = {};
@@ -198,24 +232,30 @@
             console.log(this.checkAllGroup);
         }
 
-
-
-        change(name){
-            if(name.split('_')[0] == 'edit') {
-                // this.store.setEditId(name.split('_')[1]);
-                // this.store.searchInfo();
-                // this.updateCommentType = true;
-            }else {
-                // this.store.setDeleteId(name.split('_')[1]);
-                // this.deleteCommentType = true;
-            }
+        change(id){
+            debugger
+            this.store.setTeamId(id);
+            this.store.searchTeamUserInfo();
+            this.addViewTeamRate = !this.addViewTeamRate;
+        }
+        okViewTeamRate():any{
+            this.addViewTeamRate=false;
+        }
+        cancelViewTeamRate():any{
+            this.addViewTeamRate=false;
+        }
+        getViewColumns():any{
+            return this.store.viewColumns;
+        }
+        getViewData():any{
+            return this.store.viewInfo;
         }
 
         get checkedUser():any{
             return this.store.checkedUser;
         }
         get user(){
-            return this.store.checkedUser.map(x => x.eafName);
+            return this.userName;
         }
         get rank():string{
             return this.store.rank;
@@ -223,17 +263,30 @@
         set rank(data:string){
             this.store.setRank(data)
         }
+        get selectRank():string{
+            return this.store.selectRank;
+        }
+        set selectRank(data:string){
+            this.store.setSelectRank(data)
+        }
         get evaluateTime():Date{
             return this.store.evaluateTime;
         }
         set evaluateTime(data:Date){
             this.store.setEvaluateTime(data)
         }
+
         get grade():string{
             return this.store.grade;
         }
         set grade(data:string){
             this.store.setGrade(data);
+        }
+        get rateWorkType():string{
+            return this.store.rateWorkType;
+        }
+        set rateWorkType(data:string){
+            this.store.setRateWorkType(data);
         }
         set totalRecords(data:number){
             this.store.setPageTotal(data);
@@ -283,6 +336,31 @@
         get selectTime():Date{
             return this.store.selectTime;
         }
+        set insertRatingname(data:string){
+            this.store.setInsertRatingname(data);
+        }
+        get insertRatingname():string{
+            return this.store.insertRatingname;
+        }
+        set insertNorating(data:number){
+            this.store.setInsertNorating(data);
+        }
+        get insertNorating():number{
+            return this.store.insertNorating;
+        }
+        set insertRate(data:number){
+            this.store.setInsertRate(data);
+        }
+        get insertRate():number{
+            return this.store.insertRate;
+        }
+
+        set insertRemark(data:string){
+            this.store.setInsertRemark(data);
+        }
+        get insertRemark():string{
+            return this.store.insertRemark;
+        }
 
 
         //coursewareStore
@@ -297,6 +375,7 @@
             for(let i=0;i<this.store.peoples.length;i++) {
                 if(this.store.checkeds.filter(a => a.id == this.store.peoples[i].eafId).length > 0){
                     this.$set(this.store.peoples[i], '_disabled', true)
+                    this.$set(this.store.peoples[i], '_checked', true)
                 }
                 if(this.checkAllGroup.filter(a => a.id == this.store.peoples[i].eafId ).length > 0){
                     this.$set(this.store.peoples[i], '_checked', true)
@@ -338,10 +417,11 @@
             this.store.setChecked(itemTrue);
             for(let i = 0;i < this.store.peoples.length;i++) {
                 if(this.store.peoples[i].eafId == id){
-                    this.$set(this.store.peoples[i], '_disabled', true)
                     this.$set(this.store.peoples[i], '_checked', true)
+                    this.$set(this.store.peoples[i], '_disabled', true)
                 }else {
                     this.$set(this.store.peoples[i], '_checked', false)
+                    this.$set(this.store.peoples[i], '_disabled', false)
                 }
             }
         }
@@ -393,8 +473,17 @@
             this.onPageIndexInChange(1);
         }
         onPageIndexInChange(pageIndex){
-            this.store.setInPageIndex(pageIndex);
+            this.store.setPageViewIndex(pageIndex);
             this.store.searchPeople();
+        }
+        onPageSizeViewChange(pageSize){
+            this.store.setPageViewSize(pageSize);
+            this.store.setPageViewIndex(1);
+            this.onPageIndexViewChange(1);
+        }
+        onPageIndexViewChange(pageIndex){
+            this.store.setViewPageIndex(pageIndex);
+            this.store.searchTeamUserInfo();
         }
 
         set selectUserName(data:string){
@@ -408,6 +497,24 @@
         }
         get pageInTotal():number{
             return this.store.pageInTotal;
+        }
+        set pageViewTotal(data:number){
+            this.store.setPageViewTotal(data);
+        }
+        get pageViewTotal():number{
+            return this.store.pageViewTotal;
+        }
+        set selectViewIdCard(data:string){
+            this.store.setSelectViewIdCard(data);
+        }
+        get selectViewIdCard():string{
+            return this.store.selectViewIdCard;
+        }
+        set selectViewName(data:string){
+            this.store.setSelectViewName(data);
+        }
+        get selectViewName():string{
+            return this.store.selectViewName;
         }
 
     }

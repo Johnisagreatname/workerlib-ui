@@ -78,6 +78,7 @@
             for(let i=0;i<this.store.peoples.length;i++) {
                 if(this.store.checkeds.filter(a => a.id == this.store.peoples[i].eafId).length > 0){
                     this.$set(this.store.peoples[i], '_disabled', true)
+                    this.$set(this.store.peoples[i], '_checked', true)
                 }
                 if(this.checkAllGroup.filter(a => a.id == this.store.peoples[i].eafId ).length > 0){
                     this.$set(this.store.peoples[i], '_checked', true)

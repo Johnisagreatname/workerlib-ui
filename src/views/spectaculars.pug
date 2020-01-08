@@ -39,8 +39,8 @@
                                                             'cursor': 'pointer'})
                     .belowMiddle
                         span(:title="item.workType",:style={
-                            'display': 'inline-block',
-                            'width': '100%',
+                            'display': 'block',
+                            'width': '80px',
                             'overflow': 'hidden',
                             'textOverflow': 'ellipsis',
                             'whiteSpace': 'nowrap'}) {{item.workType}}
@@ -270,7 +270,15 @@
                         tr(:style={'height': '25px'},v-for="(item, index) in getWorkTypeCount()")
                             td
                                 .tableCircle(:style="{backgroundColor: backgroundColor(index)}")
-                                span(:style={'cursor': 'pointer'},@click="workType(item.workType)") {{item.workType}}
+                                span(:title="item.workType",:style={
+                                    'display': 'block',
+                                    'width': '100px',
+                                    'overflow': 'hidden',
+                                    'textOverflow': 'ellipsis',
+                                    'whiteSpace': 'nowrap',
+                                    'cursor': 'pointer'
+
+                                },@click="workType(item.workType)") {{item.workType}}
                             td {{item.total}}人({{((item.total/peopleTotal)*100).toFixed(2)}}%)
 
 
