@@ -140,7 +140,7 @@
         .addBody2
             .videoPhoto
                 .video(v-for="item in getVideo()")
-                    video(controls="controls",autoplay,loop,width="100px",height="80px", type="video/mp4")
+                    video(controls="controls",autoplay,loop,width="150px",height="100px", type="video/mp4")
                         source(:src="'/api/workerlib/play/cultivate_video/file/'+item.id")
             .videoPhoto
                 .photo(v-for="item in getPhoto()")

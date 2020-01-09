@@ -2,6 +2,7 @@
     import "@/assets/css/common.css";
     import Echart from 'echarts';
     import SpectacularsStore from '../../store/modules/SpectacularsStore';
+    import IndexVideoStore from '../../store/modules/IndexVideoStore';
     import WorkerStore from '../../store/modules/WorkerStore';
     import ProjectStore from '../../store/modules/ProjectStore';
     import { Component, Vue, Prop, Model} from 'vue-property-decorator';
@@ -45,6 +46,11 @@
             this.store.countCultivate();
             this.store.countCultivateCount();
             this.store.countAppraiseCount();
+            this.store.searchVideoInfo();
+            this.store.searchPhotoInfo();
+        }
+        getVideoList():any{
+            return this.store.indexphoto;
         }
         //工种总数(种)
         clickWorkType(){
@@ -87,17 +93,20 @@
         backgroundList = ['#41ccd3','#2498e3','#2268d4','#d6c76e','#d39255','#35c87a','#44ae2e','#7d5dcc']
         private store: any;
         private workerStore: any;
+        private indexVideoStore: any;
         private projectStore: any;
         public $echarts: any;
         public selectWorkType: Array<any>;
-        carousel = 0
+
+        carousel = 0;
+        carouselPhoto = 0;
         constructor(e) {
             super(e);
             this.store = getModule(SpectacularsStore);
+            this.indexVideoStore = getModule(IndexVideoStore);
             this.workerStore = getModule(WorkerStore);
             this.projectStore = getModule(ProjectStore);
             this.selectWorkType = [];
-
         }
         getColor(index){
             if(index%2!=0){

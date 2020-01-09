@@ -170,7 +170,7 @@ export default class CheckEvaluateStore extends VuexModule {
 
                 "selectList": [{
                     "field": "a.createOn",
-                    "alias":"time"
+                    "alias":"createOn"
                 },{
                     "field": "a.ratingname",
                     "alias":"ratingname"
@@ -1191,7 +1191,7 @@ export default class CheckEvaluateStore extends VuexModule {
         },
         {
             title: '创建时间',
-            key: 'time',
+            key: 'createOn',
             sortable: true,
             render: (h, params) => {
                 return h('div', [
