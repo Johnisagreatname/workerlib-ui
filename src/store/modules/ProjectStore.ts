@@ -295,21 +295,8 @@ export default class ProjectStore extends VuexModule {
     }
     @Action
     public async searchViewPeople() {
-        await request.post('/api/workerlib/join',{
-                "joinTables": [{
-                    "tablename": "archives",
-                    "alias": "a",
-                    "joinMode": "Left"
-                }, {
-                    "tablename": "alluser",
-                    "alias": "u",
-                    "joinMode": "Left",
-                    "onList": [{
-                        "name": "a.archives_id",
-                        "value": "u.eafId",
-                        "algorithm": "EQ"
-                    }]
-                }],
+        await request.post('/api/workerlib/project_user',{
+
                 "pageInfo" : {
                     "pageIndex": this.pageProjectIndex,
                     "pageSize": this.pageProjectSize
@@ -352,21 +339,8 @@ export default class ProjectStore extends VuexModule {
     }
     @Action
     public async projectCount() {
-        await request.post('/api/workerlib/join/count',{
-                "joinTables": [{
-                    "tablename": "archives",
-                    "alias": "a",
-                    "joinMode": "Left"
-                }, {
-                    "tablename": "alluser",
-                    "alias": "u",
-                    "joinMode": "Left",
-                    "onList": [{
-                        "name": "a.archives_id",
-                        "value": "u.eafId",
-                        "algorithm": "EQ"
-                    }]
-                }],
+        await request.post('/api/workerlib/project_user/count',{
+
                 "pageInfo" : {
                     "pageIndex": this.pageProjectIndex,
                     "pageSize": this.pageProjectSize
@@ -862,7 +836,24 @@ export default class ProjectStore extends VuexModule {
         },
         {
             title: '工种',
-            key: 'workType'
+            key: 'workType',
+            sortable: true,
+            render: (h, params) => {
+                return h('div', [
+                    h('span', {
+                        style: {
+                            display: 'inline-block',
+                            width: '100%',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            whiteSpace: 'nowrap'
+                        },
+                        domProps: {
+                            title: params.row.workType
+                        }
+                    }, params.row.workType)
+                ])
+            }
         },
         {
             title: '身份证',

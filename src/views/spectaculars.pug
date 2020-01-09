@@ -281,7 +281,8 @@
                             })
                                 .tableCircle(:style="{backgroundColor: backgroundColor(index)}")
                                 span(:style={'cursor': 'pointer'},@click="workType(item.workType)") {{item.workType}}
-                            td {{item.total}}人({{((item.total/peopleTotal)*100).toFixed(2)}}%)
+                            td {{item.total}}({{((item.total/peopleTotal)*100).toFixed(2)}}%)
+
 
 
             .bodyRightMiddle

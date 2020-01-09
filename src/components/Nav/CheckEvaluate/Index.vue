@@ -56,7 +56,7 @@
             this.addId = null;
         }
         toggle(name){
-            if(name=="团体评级"){
+            if(name=="评定记录"){
                 this.store.setSelectStatus(1);
                 this.store.search();
             }else {
@@ -73,9 +73,10 @@
             for(let i = 0; i< this.store.checkeds.length;i++){
                 this.store.setCultivateArchivesList(this.store.checkeds[i].id);
             }
-            this.store.insertTeamRate();
+            this.store.insertTeamRate(this.change);
 
             this.addTeamRate = false;
+
         }
         cancelTeamRate():any{
             this.addTeamRate = false;
