@@ -12,7 +12,7 @@
                         flexbox-item
                             div(class="flex-demo2") 查看证件
                 flexbox-item(span="100")
-                    img(class="img-rq",src="~@/assets/css/images/er.png")
+                    img(class="img-rq",:src="getCodeUrl(this.store.personInfo)")
             group
                 cell(title='手机号码',
                     :value = "replacePhone(this.store.personInfo.eafPhone)",
