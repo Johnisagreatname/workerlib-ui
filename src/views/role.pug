@@ -1,17 +1,5 @@
 .body
-    .topOne
-        .divOne
-            span 角色名称：
-                Input(clearable,style="width: 200px")
-        .divOne
-            span
-        .divOne
-            span
-        .divOne
-            span
-        .divOne
-            Button(@click="") 搜索
-    .hr
+
     .button
         Button(type="primary", ghost, icon="ios-add-circle-outline",@click="addRole=!addRole") 新增角色
     .bodyTwo
@@ -26,7 +14,7 @@
                             Icon(type="ios-remove-circle-outline")
                             span(@click="popupDelRole(row.roleId)") 刪除角色
     .footer
-        Page(show-sizer,show-elevator,show-total,@on-page-size-change="onPageSizeChange",@on-change="onPageIndexChange")
+        Page(:total="getTotalRecords()",show-sizer,show-elevator,show-total,@on-page-size-change="onPageSizeChange",@on-change="onPageIndexChange")
 
     Modal(:value="addRole",title="新增角色",@on-ok="ok()",@on-cancel="cancel()",width='70%')
         .addBody
