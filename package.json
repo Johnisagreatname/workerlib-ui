@@ -101,8 +101,8 @@
     "forge": "./config/forge.config.js"
   },
   "proxyServer": {
-    "port": 8080,
-    "host": "127.0.0.1"
+    "port": 6666,
+    "host": "39.108.103.150"
   },
   "engines": {
     "node": ">= 4.0.0",

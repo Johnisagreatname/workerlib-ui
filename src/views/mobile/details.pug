@@ -38,21 +38,21 @@
                         style="display:block;margin-right:10px;",
                         src="~@/assets/css/images/workType.png")
                 cell(title='状态',
-                    value = '在场',
+                    :value = "getLeave()",
                     is-link =false)
                     img(slot="icon",
                         width="18",
                         style="display:block;margin-right:10px;",
                         src="~@/assets/css/images/stauts.png")
-                cell(title='是否班组长',
-                    value = '否',
-                    is-link =false)
-                    img(slot="icon",
-                        width="15",
-                        style="display:block;margin-right:10px;",
-                        src="~@/assets/css/images/grade.png")
+                //cell(title='是否班组长',
+                //    value = '否',
+                //    is-link =false)
+                //    img(slot="icon",
+                //        width="15",
+                //        style="display:block;margin-right:10px;",
+                //        src="~@/assets/css/images/grade.png")
                 cell(title='评定等级',
-                    value = 'SSS',
+                    :value = "getRate(this.store.rateInfo)",
                     is-link =false)
                     img(slot="icon",
                         width="15",
@@ -62,7 +62,7 @@
             div(class="text-title") 参与项目
             divider
             swiper(auto height="200px",
-                dots-position="center",hidden="getProjectInfoList()!=null")
+                dots-position="center",hidden="getProjectInfoList()==null")
                 swiper-item(v-for ="item in getProjectInfoList()")
                     flexbox
                         flexbox-item(span="10")
@@ -150,11 +150,14 @@
             div(v-for="item in getCommentSparticularsList()")
                 flexbox
                     flexbox-item
-                        div 深圳市白石龙项目
+                        div {{item.project_name}}
                     flexbox-item
-                        div(class="flex-demo2") 不良记录
-                div 恶意讨薪  李媛 水泥工
-                div 处罚：永久不予录用
+                        div(class="flex-demo2") 综合评价
+                div(v-if="item.type == 1") {{item.description}}  {{item.username}}
+                div(v-else) {{item.punishment}}
+                div(v-if="item.type == 1") 处罚：{{item.punishment}}
+                div(v-else) {{item.description}}
+
 
 
 
