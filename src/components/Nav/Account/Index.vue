@@ -140,6 +140,9 @@
         }
 
 
+        get getDisplay():string{
+            return this.store.getDisplay;
+        }
 		set getDisplay(data:string){
             this.store.setGetDisplay(data);
         }
