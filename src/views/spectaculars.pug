@@ -41,7 +41,7 @@
                         span {{item.workType}}
                     .belowRight
                         template
-                            Progress(:title='item.total+"(人)"',:percent="((item.total/peopleTotal)*100 ? (item.total/peopleTotal)*100 : 0 )",
+                            Progress(:title='item.total+"(人)"+peopleTotal',:percent="((item.total/peopleTotal)*100 ? (item.total/peopleTotal)*100 : 0 )",
                             :stroke-width="15",:stroke-color="getColor(index)",hide-info,:style="{cursor: 'pointer'}")
 
             .bodyLeftMiddle
@@ -279,7 +279,7 @@
                                 'cursor': 'pointer'
 
                             })
-                                .tableCircle(:style="{backgroundColor: backgroundColor(index)}")
+                                .tableCircle(:style="{backgroundColor:item.color}")
                                 span(:style={'cursor': 'pointer'},@click="workType(item.workType)") {{item.workType}}
                             td {{item.total}}({{((item.total/peopleTotal)*100).toFixed(2)}}%)
 

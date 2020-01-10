@@ -151,8 +151,8 @@
     margin-top: 3%;
 }
 .photos{
-    width: 62px;
-    height: 62px;
+    width: 80px;
+    height: 80px;
     float: right;
 
 }
@@ -163,7 +163,7 @@
     background-color: #c5e8ff;
     border-radius: 50%;
     margin-top: 5px;
-    margin-left: 32px;
+    margin-left: 54px;
 }
 .pButtom{
     width: 100%;

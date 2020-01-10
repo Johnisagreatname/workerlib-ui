@@ -4,19 +4,28 @@
             span 工种名称：
                 Input(clearable,style="width: 200px" ,v-model="selectName")
         .divOne
-            span
+            span 是否加入统计：
+                Select(v-model="selectIsCount" style="width:200px",clearable)
+                    Option(v-for="item in isOK()" :value="item.value" :key="item.value") {{ item.name }}
         .divOne
-            span
-        .divOne
-            span
-        .divOne
+            span 是否显示：
+                Select(v-model="selectIsShow" style="width:200px",clearable)
+                    Option(v-for="item in isOK()" :value="item.value" :key="item.value") {{ item.name }}
+        .search
             Button(@click="this.store.search") 搜索
     .hr
     .button
         Button(type="primary", ghost, icon="ios-add-circle-outline",@click="addCommentType=!addCommentType") 添加工种
     .bodyTwo
         Table(:row-class-name="rowClassName", border, ref="selection", :columns="getColumns()", :data="getData()")
-            template(slot-scope="{row, index }",slot="operation")
+            template(slot-scope="{row, index }",slot="isCount")
+                span(v-if="row.isCount == 1") 是
+                span(v-else) 否
+            template(slot-scope="{row, index }",slot="isShow")
+                span(v-if="row.isShow == 1") 是
+                span(v-else) 否
+            template(slot-scope="{row, index }",slot="color")
+                .tableCircle(:style="{backgroundColor:row.color}")
             template(slot-scope="{row, index }",slot="operation")
                 Dropdown(@on-click = "change")
                     a(href="javascript:void(0)" :style={"font-size": "16px"})
@@ -32,7 +41,7 @@
     .footer
         Page(:total="pageCount",show-sizer,show-elevator,show-total,@on-page-size-change="onPageSizeChange",@on-change="onPageIndexChange")
 
-    Modal(:value="addCommentType",title="添加等级",@on-ok="ok()",@on-cancel="cancel()",width='50%',:loading = "loading")
+    Modal(:value="addCommentType",title="添加工种",@on-ok="ok()",@on-cancel="cancel()",width='50%',:loading = "loading")
         .addBody
             .divTwo
                 .name
@@ -46,6 +55,36 @@
                     span(:style={'color': 'red'}) *
                 .input
                     InputNumber(:min=1,clearable,style="width: 345px",size=large,v-model="addValue")
+            .divTwo
+                .name
+                    span 是否加入统计
+                    span(:style={'color': 'red'}) *
+                .input
+                    RadioGroup(v-model="addIsCount")
+                        Radio(:label='1')
+                            span 是
+                        Radio(:label='2')
+                            span 否
+            .divTwo
+                .name
+                    span 是否显示
+                    span(:style={'color': 'red'}) *
+                .input
+                    RadioGroup(v-model="addIsShow")
+                        Radio(:label='1')
+                            span 是
+                        Radio(:label='2')
+                            span 否
+            .divTwo
+                .name
+                    span 显示颜色
+                    span(:style={'color': 'red'}) *
+                .input
+                    Row
+                        Col(span="12")
+                            ColorPicker(v-model="addColor")
+
+
     Modal(:value="updateCommentType",title="编辑工种",@on-ok="updateOk()",@on-cancel="updateCancel()",width='50%',:loading = "loading")
         .addBody
             .divTwo
@@ -53,13 +92,41 @@
                     span 工种名称
                     span(:style={'color': 'red'}) *
                 .input
-                    Input(:min=1,clearable,style="width: 345px",size=large,v-model="editName")
+                    Input(clearable,style="width: 345px",size=large,v-model="editName",disabled)
             .divTwo
                 .name
                     span 工种值
                     span(:style={'color': 'red'}) *
                 .input
-                    InputNumber(clearable,style="width: 345px",size=large,v-model="editValue")
+                    InputNumber(:min=1,clearable,style="width: 345px",size=large,v-model="editValue",disabled)
+            .divTwo
+                .name
+                    span 是否加入统计
+                    span(:style={'color': 'red'}) *
+                .input
+                    RadioGroup(v-model="editIsCount")
+                        Radio(:label='1')
+                            span 是
+                        Radio(:label='2')
+                            span 否
+            .divTwo
+                .name
+                    span 是否显示
+                    span(:style={'color': 'red'}) *
+                .input
+                    RadioGroup(v-model="editIsShow")
+                        Radio(:label='1')
+                            span 是
+                        Radio(:label='2')
+                            span 否
+            .divTwo
+                .name
+                    span 显示颜色
+                    span(:style={'color': 'red'}) *
+                .input
+                    Row
+                        Col(span="12")
+                            ColorPicker(v-model="editColor")
     Modal(:value="deleteCommentType",title="删除工种",@on-ok="deleteOK()",@on-cancel="deleteCancel()",width='50%',:styles="{top: '20px'}",)
         .delBody
             .divTwo

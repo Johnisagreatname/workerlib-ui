@@ -123,9 +123,9 @@
                 @on-select-all-cancel="handleSelectAllCancelPeople"
                 )
                     template(slot-scope="{row, index }",slot="workType")
-                        Select(clearable,filterable,@on-change="selectChange")
+                        Select(clearable,filterable,@on-change="selectChange",v-if="row.workType!=null")
                             Option(v-for="item in getUserWorkTypeMenus(row.workType)", :value="item.name+'_'+row.eafId",:key="item.name") {{item.name}}
-
+                        Select(clearable,filterable,v-else,disabled,value="无")
 
 
                 Page(:total="pageInTotal",show-elevator,show-total,

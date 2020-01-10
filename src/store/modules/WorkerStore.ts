@@ -224,60 +224,13 @@ export default class WorkerStore extends VuexModule {
     @Action
     public getInParams() : any {
         return {
-            "joinTables": [
-                {
-                    "tablename": "involvedproject",
-                    "alias": "a",
-                    "JoinMode": "Left",
-                },
-                {
-                    "tablename": "projectworktype",
-                    "alias": "w",
-                    "joinMode": "Left",
-                    "onList": [{
-                        "name": "a.project_id",
-                        "value": "w.projectId",
-                        "algorithm": "EQ"
-                    }]
-                },
-                {
-                    "tablename": "archives",
-                    "alias": "v",
-                    "JoinMode": "Left",
-                    "onList": [{
-                        "name": "v.project_id",
-                        "value": "a.project_id",
-                        "algorithm": "EQ"
-                    }]
-                },
-
-                {
-                    "tablename": "project",
-                    "alias": "p",
-                    "JoinMode": "Left",
-                    "onList": [{
-                        "name": "p.project_id",
-                        "value": "a.project_id",
-                        "algorithm": "EQ"
-                    }]
-                }, {
-                    "tablename": "unit",
-                    "alias": "u",
-                    "joinMode": "Left",
-                    "onList": [{
-                        "name": "u.unit_id",
-                        "value": "a.unit_id",
-                        "algorithm": "EQ"
-                    }]
-                }
-            ],
             "pageInfo" : {
                 "pageIndex": this.inPageIndex,
                 "pageSize": this.inPageSize
             },
 
             "conditionList": [{
-                "name": "a.archives_id",
+                "name": "archives_id",
                 "value": this.infoId,
                 "algorithm": "EQ"
             }
@@ -290,19 +243,7 @@ export default class WorkerStore extends VuexModule {
 
             "keywords" : [],
 
-            "selectList": [
-                {"field": "a.id"},
-                {"field": "a.project_id"},
-                {"field": "a.archives_id"},
-                {"field": "a.unit_id"},
-                {"field": "a.start_time"},
-                {"field": "a.end_time"},
-                {"field": "p.project_name"},
-                {"field": "u.unit_name"},
-                {"field": "w.workType"},
-                {"field": "v.leave"}
-
-            ]
+            "selectList": []
 
         }
     }
@@ -481,7 +422,7 @@ export default class WorkerStore extends VuexModule {
     }
     @Action
     public async searchInfo() {
-        await request.post('/api/workerlib/alluser',{
+        await request.post('/api/workerlib/people_rate',{
             "pageInfo" : {},
 
             "conditionList": [{
@@ -605,7 +546,7 @@ export default class WorkerStore extends VuexModule {
     }
     @Action
     public async searchInvolvedProject() {
-        await request.post('/api/workerlib/join',await this.getInParams()).then((data)=>{
+        await request.post('/api/workerlib/project_alluser',await this.getInParams()).then((data)=>{
             if(!data){
                 return;
             }
@@ -803,7 +744,7 @@ export default class WorkerStore extends VuexModule {
     }
     @Action
     public async countIn() {
-        await request.post('/api/workerlib/join/count', await this.getInParams()).then((total)=>{
+        await request.post('/api/workerlib/project_alluser/count', await this.getInParams()).then((total)=>{
             if(!total){
                 return;
             }

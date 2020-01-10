@@ -31,6 +31,7 @@
         public deleteCommentType: boolean;
         public addCommentType: boolean;
         private store: any;
+        public okList:Array<any>;
         loading = true;
 
         constructor() {
@@ -38,6 +39,15 @@
             this.updateCommentType = false;
             this.deleteCommentType = false;
             this.addCommentType = false;
+            this.okList =[
+                {
+                    "name":"是",
+                    "value":1
+                },{
+                    "name":"否",
+                    "value":2
+                }
+            ];
             this.store = getModule(WorkclassStore);
         }
         messageWarningFn (text) {
@@ -80,14 +90,14 @@
             this.addCommentType = false;
         }
         updateOk() : any{
-            if(this.store.commentList.filter(x => x.name == this.store.editName).length>0){
-                this.messageWarningFn("工种名称已存在！");
-                return;
-            }
-            if(this.store.commentList.filter(x => x.value == this.store.editValue).length>0){
-                this.messageWarningFn("工种值已存在！");
-                return;
-            }
+            // if(this.store.commentList.filter(x => x.name == this.store.editName).length>0){
+            //     this.messageWarningFn("工种名称已存在！");
+            //     return;
+            // }
+            // if(this.store.commentList.filter(x => x.value == this.store.editValue).length>0){
+            //     this.messageWarningFn("工种值已存在！");
+            //     return;
+            // }
             this.store.updateCommentType();
             this.updateCommentType = false;
         }
@@ -101,7 +111,6 @@
         deleteCancel() : any{
             this.deleteCommentType = false;
         }
-
 
         onPageSizeChange(pageSize){
             this.store.setPageSize(pageSize);
@@ -118,6 +127,9 @@
         }
         getData() : any{
             return this.store.commentTypeList;
+        }
+        isOK():any{
+            return this.okList;
         }
         get pageCount():number{
             return this.store.pageCount;
@@ -143,6 +155,18 @@
         set selectName(data: string) {
             this.store.setSelectName(data);
         }
+        get selectIsCount(): number {
+            return this.store.selectIsCount;
+        }
+        set selectIsCount(data: number) {
+            this.store.setSelectIsCount(data);
+        }
+        get selectIsShow(): number {
+            return this.store.selectIsShow;
+        }
+        set selectIsShow(data: number) {
+            this.store.setSelectIsShow(data);
+        }
         get addName(): string {
             return this.store.addName;
         }
@@ -154,6 +178,18 @@
         }
         set addValue(data: number) {
             this.store.setAddValue(data);
+        }
+        get addIsCount(): number {
+            return this.store.addIsCount;
+        }
+        set addIsCount(data: number) {
+            this.store.setAddIsCount(data);
+        }
+        get addIsShow(): number {
+            return this.store.addIsShow;
+        }
+        set addIsShow(data: number) {
+            this.store.setAddIsShow(data);
         }
         get editName(): string {
             return this.store.editName;
@@ -167,8 +203,31 @@
         set editValue(data: number) {
             this.store.setEditValue(data);
         }
-
+        get editIsCount(): number {
+            return this.store.editIsCount;
+        }
+        set editIsCount(data: number) {
+            this.store.setEditIsCount(data);
+        }
+        get editIsShow(): number {
+            return this.store.editIsShow;
+        }
+        set editIsShow(data: number) {
+            this.store.setEditIsShow(data);
+        }
+        set addColor(data:string){
+            this.store.setAddColor(data);
+        }
+        get addColor():string{
+            return this.store.addColor;
+        }
+        set editColor(data:string){
+            this.store.setEditColor(data);
+        }
+        get editColor():string{
+            return this.store.editColor;
+        }
     }
 </script>
-<style scoped src="@/styles/grade.css" />
+<style scoped src="@/styles/workclass.css" />
 <template lang="pug" src="@/views/workclass.pug" />

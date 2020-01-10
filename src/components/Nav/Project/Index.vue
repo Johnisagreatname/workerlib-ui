@@ -127,7 +127,7 @@
 
                         insert["project_id"] = this.store.projectId;
                         insert["archives_id"] = people.eafId;
-                        insert["unit_id"] = people.unit_id;
+                        insert["unit_id"] = people.unit_id == null? null : people.unit_id;
                         insert["leave"] = 1;
                         this.store.setInsertList(insert);
                         this.store.setInsertProjectWorkTypeList(insertProjectWorkType);
@@ -282,6 +282,7 @@
             let item = {};
             item["eafId"] = row.eafId;
             item["eafName"] = row.eafName;
+            item["unit_id"] = row.unit_id;
             this.store.setPeoplesId(item);
             console.log(this.store.peopleId)
         }
@@ -305,6 +306,7 @@
                 }
                 item["eafId"] = row.eafId;
                 item["eafName"] = row.eafName;
+                item["unit_id"] = row.unit_id;
                 this.store.setPeoplesId(item);
             }
         }
@@ -369,15 +371,12 @@
 
 
         selectChange(list) {
+            debugger
             if (list) {
                 let item = {};
                 let work = [];
-                this.selectWorkType = new Array<any>();
-                for(let i=0;i<list.length;i++){
-                    let name = list[i];
-                    work.push(name.split('_')[0]);
-                }
-                item["eafId"] = list[0].split('_')[1];
+                work.push(list.split('_')[0]);
+                item["eafId"] = list.split('_')[1];
                 item["work_type"] = work.join(",");
                 this.selectWorkType.push(item);
             }

@@ -513,10 +513,11 @@
 }
 .gzmm{
     width: 210px;
-    height: 220px;
+    height: 200px;
     float: left;
     margin-left: 40px;
     margin-top: 10px;
+    overflow-y: auto;
 }
 .tableCircle{
     display: block;

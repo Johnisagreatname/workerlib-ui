@@ -38,6 +38,7 @@
         mounted() {
             this.store.searchWorkType();
             this.store.searchWorkTypeCount();
+            this.store.searchWorkTypeCountTwo();
             this.store.count();
             this.store.skill();
             this.store.countProject();

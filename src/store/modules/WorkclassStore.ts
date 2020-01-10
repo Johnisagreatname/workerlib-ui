@@ -19,13 +19,21 @@ export default class WorkclassStore extends VuexModule {
         this.pageCount=0;
 
         this.selectName = null;
+        this.selectIsCount = null;
+        this.selectIsShow = null;
 
         this.addName = null;
         this.addValue = null;
+        this.addIsCount = 2;
+        this.addIsShow = 2;
+        this.addColor = "#41ccd3";
 
         this.editId=null;
         this.editName = null;
         this.editValue = null;
+        this.editIsCount = null;
+        this.editIsShow = null;
+        this.editColor = "#41ccd3";
 
         this.deleteId = null;
 
@@ -44,11 +52,19 @@ export default class WorkclassStore extends VuexModule {
     public editId:number;
     public editName:string;
     public editValue:number;
+    public editIsCount:number;
+    public editIsShow:number;
+    public editColor:string;
 
     public selectName:string;
+    public selectIsCount:number;
+    public selectIsShow:number;
 
     public addName:string;
     public addValue:number;
+    public addIsCount:number;
+    public addIsShow:number;
+    public addColor:string;
 
     public conditionList:Array<any>;
     public commentTypeList:Array<any>;
@@ -60,6 +76,20 @@ export default class WorkclassStore extends VuexModule {
             let item = {};
             item["name"] = "name";
             item["value"] = this.selectName;
+            item["algorithm"] = "LIKE";
+            this.conditionList.push(item);
+        }
+        if(this.selectIsShow){
+            let item = {};
+            item["name"] = "isShow";
+            item["value"] = this.selectIsShow;
+            item["algorithm"] = "EQ";
+            this.conditionList.push(item);
+        }
+        if(this.selectIsCount){
+            let item = {};
+            item["name"] = "isCount";
+            item["value"] = this.selectIsCount;
             item["algorithm"] = "EQ";
             this.conditionList.push(item);
         }
@@ -198,6 +228,9 @@ export default class WorkclassStore extends VuexModule {
         await request.put('/api/workerlib/dictionaries',{
             "name":this.addName,
             "value":this.addValue,
+            "isCount":this.addIsCount,
+            "isShow":this.addIsShow,
+            "color":this.addColor,
             "category": "工种"
         }).then((data)=>{
             if(!data){
@@ -225,8 +258,9 @@ export default class WorkclassStore extends VuexModule {
     @Action
     public async updateCommentType(){
         await request.put('/api/workerlib/dictionaries/'+this.editId,{
-            "name":this.editName,
-            "value":this.editValue
+            "isCount":this.editIsCount,
+            "isShow":this.editIsShow,
+            "color":this.editColor
         }).then((data)=>{
             if(!data){
                 return;
@@ -315,6 +349,9 @@ export default class WorkclassStore extends VuexModule {
         this.commentTypeInfo = data.data;
         this.editName = this.commentTypeInfo[0].name;
         this.editValue = this.commentTypeInfo[0].value;
+        this.editIsCount = this.commentTypeInfo[0].isCount;
+        this.editIsShow = this.commentTypeInfo[0].isShow;
+        this.editColor = this.commentTypeInfo[0].color;
     }
 
 
@@ -336,7 +373,11 @@ export default class WorkclassStore extends VuexModule {
         },{
             title:'是否显示',
             slot:'isShow'
+        },{
+            title:'显示颜色',
+            slot:'color'
         },
+
         {
             title: '详细操作',
             slot: 'operation',
@@ -363,6 +404,22 @@ export default class WorkclassStore extends VuexModule {
     private  setEditValue(data:number){
         this.editValue = data;
     }
+
+    @Mutation
+    private  setEditColor(data:string){
+        this.editColor = data;
+    }
+
+    @Mutation
+    private  setEditIsCount(data:number){
+        this.editIsCount = data;
+    }
+
+    @Mutation
+    private  setEditIsShow(data:number){
+        this.editIsShow = data;
+    }
+
     @Mutation
     private setAddName(data: string) {
         this.addName = data;
@@ -371,6 +428,21 @@ export default class WorkclassStore extends VuexModule {
     @Mutation
     private  setAddValue(data:number){
         this.addValue = data;
+    }
+
+    @Mutation
+    private  setAddColor(data:string){
+        this.addColor = data;
+    }
+
+    @Mutation
+    private  setAddIsCount(data:number){
+        this.addIsCount = data;
+    }
+
+    @Mutation
+    private  setAddIsShow(data:number){
+        this.addIsShow = data;
     }
     @Mutation
     private setPageIndex(data: number) {
@@ -388,5 +460,13 @@ export default class WorkclassStore extends VuexModule {
     @Mutation
     private setSelectName(data: string) {
         this.selectName = data;
+    }
+    @Mutation
+    private setSelectIsCount(data: number) {
+        this.selectIsCount = data;
+    }
+    @Mutation
+    private setSelectIsShow(data: number) {
+        this.selectIsShow = data;
     }
 }
