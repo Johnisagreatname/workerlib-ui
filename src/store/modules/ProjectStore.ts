@@ -715,12 +715,12 @@ export default class ProjectStore extends VuexModule {
             key: 'start_time',
             sortable: true
         },
-        {
-            title: '合同竣工时间',
-            key: 'end_time',
-            sortable: true,
-            width: 180
-        },
+        // {
+        //     title: '合同竣工时间',
+        //     key: 'end_time',
+        //     sortable: true,
+        //     width: 180
+        // },
         {
             title: '建设单位',
             key: 'construction',
@@ -857,6 +857,16 @@ export default class ProjectStore extends VuexModule {
                     }, params.row.workType)
                 ])
             }
+        },
+        {
+            title: '进场时间',
+            key: 'start_time',
+            sortable: true
+        },
+        {
+            title: '参建单位',
+            key: 'construction',
+            sortable: true
         },
         {
             title: '身份证',

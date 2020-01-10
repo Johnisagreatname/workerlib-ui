@@ -587,7 +587,6 @@ export default class CheckEvaluateStore extends VuexModule {
     }
     @Action
     public async insertTeamRate(fn) {
-        debugger
         await request.put('/api/workerlib/team_rate', {
             "ratingname":this.insertRatingname,
             "norating":this.insertNorating,
@@ -634,7 +633,6 @@ export default class CheckEvaluateStore extends VuexModule {
             if(!data){
                 return;
             }
-            debugger
             this.successInsertTeamUser(data);
             this.search();
             parms.fn(parms.id);

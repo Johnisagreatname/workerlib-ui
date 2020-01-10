@@ -16,8 +16,10 @@ import router from '../../router/.invoke/router'
 export default class MobileStore extends VuexModule {
     public conditionList: Array<any>;
     public conditionListp: Array<any>;
+    public conditionListr: Array<any>;
     public userId: string | (string | null)[];
     public personInfo: any;
+    public rateInfo: any;
     public workType: any;
     public projectInfo: Array<any>;
     public attendances: any;
@@ -28,8 +30,10 @@ export default class MobileStore extends VuexModule {
         super(e);
         this.conditionList = [];
         this.conditionListp = [];
+        this.conditionListr = [];
         this.projectInfo = [];
         this.personInfo = null;
+        this.rateInfo = null;
         this.workType = null;
         this.attendances = null;
         this.wages = null;
@@ -80,6 +84,53 @@ export default class MobileStore extends VuexModule {
             "selectList": []
         };
     }
+
+    @Action
+    public getParamsRate(): any {
+        let item = {};
+        this.userId = router.currentRoute.query.eafid;
+        item["name"] = "userId";
+        item["value"] = this.userId;
+        item["algorithm"] = "EQ";
+        this.conditionListr.push(item);
+        return {
+            "pageInfo": {},
+
+            "conditionList": this.conditionListr,
+
+            "sortList": [],
+
+            "groupList": [],
+
+            "keywords": [],
+
+            "selectList": []
+        };
+    }
+
+    @Action
+    public async selectRateInfo() {
+        // @ts-ignore
+
+        await request.post('/api/workerlib/alluser_rate', await this.getParamsRate()).then((data) => {
+            this.successRate(data);
+        }).catch((e) => {
+            let alert: any = Message;
+            if (!e) {
+                alert.warning('未知错误！')
+                return
+            }
+            if (e.response && e.response.data && e.response.data.message) {
+                alert.warning(e.response.data.message)
+                return
+            }
+            if (!e.message) {
+                return;
+            }
+            alert.warning(e.message || e)
+        });
+    }
+
     @Action
     public async selectPersonInfo() {
         // @ts-ignore
@@ -123,6 +174,12 @@ export default class MobileStore extends VuexModule {
             alert.warning(e.message || e)
         });
     }
+
+    @Mutation
+    private successRate(data: any) {
+        this.rateInfo = data.data[0];
+    }
+
     @Mutation
     private success(data: any) {
         this.personInfo = data.data[0];

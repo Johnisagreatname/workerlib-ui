@@ -94,6 +94,16 @@
             return this.store.lecturerInfo.type;
         }
 
+        set personalreesume(data:string){
+            this.store.setPersonalreesume(data);
+        }
+        get personalreesume():string{
+            return this.store.lecturerInfo.personalreesume;
+        }
+
+
+
+
 
     }
 </script>

@@ -122,10 +122,9 @@
                 @on-select-all="handleSelectAllPeople",
                 @on-select-all-cancel="handleSelectAllCancelPeople"
                 )
-                    template(slot-scope="{row, index }",slot="workType")
-                        Select(clearable,filterable,@on-change="selectChange",v-if="row.workType!=null")
-                            Option(v-for="item in getUserWorkTypeMenus(row.workType)", :value="item.name+'_'+row.eafId",:key="item.name") {{item.name}}
-                        Select(clearable,filterable,v-else,disabled,value="无")
+                template(slot-scope="{row, index }",slot="workType")
+                    Select(clearable,filterable,@on-change="selectChange",:value="getUserWorkTypeMenuItem(row.workType, row.eafId)",v-if="row.workType!=null")                            Option(v-for="item in getUserWorkTypeMenus(row.workType)", :value="item.name+'_'+row.eafId",:key="item.name") {{item.name}}
+                    Select(clearable,filterable,v-else,disabled,value="无")
 
 
                 Page(:total="pageInTotal",show-elevator,show-total,
@@ -147,6 +146,7 @@
                 'text-align': 'center',
                 'margin-top': '10px'
             })
+        div(slot="footer")
     Modal(title="以下人员已在当前项目，请取消选中!",:value="viewProjectPeople",:styles="{top: '20px'}",@on-ok="okProjectPeople()",@on-cancel="cancelProjectPeople()",:loading = "loading")
         .divL
             .divCheck(v-for="item in this.noProjectPeople")
