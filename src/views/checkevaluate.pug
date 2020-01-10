@@ -94,18 +94,17 @@
                     Row
                         Col(span="12")
                             DatePicker(type="date",placeholder="请选择",style="width: 240px",v-model="evaluateTime")
-    Modal(:value="addTeamRate",title="添加评定记录",@on-ok="okTeamRate()",@on-cancel="cancelTeamRate()",width='70%')
+    Modal(:value="addTeamRate",title="添加评定记录",@on-ok="okTeamRate()",@on-cancel="cancelTeamRate()",width='70%',:loading = "loading")
         .addBody1
             .top
-                .name2
+                .name3
                     span(:style={'font-size': '18px'}) 评定记录名称
                     span(:style={'color': 'red','font-size': '18px'}) *
                 .input
                     Input(clearable,:style={'width': '995px'},placeholder="请输入评定记录名称",v-model="insertRatingname")
             .top
-                .name2
+                .name3
                     span(:style={'font-size': '18px'}) 备注
-                    span(:style={'color': 'red','font-size': '18px'}) *
                 .input
                     Input(type="textarea",clearable,:style={'width': '995px'},size=large,placeholder="请输入备注",v-model="insertRemark")
             .top
