@@ -327,6 +327,7 @@ export default class AccountStore extends VuexModule {
             if(!data){
                 return;
             }
+            debugger
                 this.added(data)
         }).catch((e)=>{
             console.log(e)

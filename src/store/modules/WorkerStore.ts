@@ -190,14 +190,14 @@ export default class WorkerStore extends VuexModule {
         }
         if(this.selectAge1){;
             let item ={};
-            item["name"]="age";
+            item["name"]="year";
             item["value"]=this.year - this.selectAge1;
             item["algorithm"] = "GTEQ"
             this.conditionList.push(item);
         }
         if(this.selectAge2){
             let item ={};
-            item["name"]="age";
+            item["name"]="year";
             item["value"]=this.year - this.selectAge2;
             item["algorithm"] = "LTEQ"
             this.conditionList.push(item);
@@ -1132,13 +1132,12 @@ export default class WorkerStore extends VuexModule {
 	@Mutation
      public addUserGroupRole(data: any){
         if(data.status == 0) {
-            this.search();
+            this.search();this.search();
         }
      }
     @Action
     public added(data: any) {
         if(data.status == 0) {
-            debugger
             this.insertWorkType(data.data);
 			this.insertUserGroupRole(data.data);
         }

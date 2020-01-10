@@ -278,6 +278,16 @@
             return this.store.peoples;
         }
 
+        getUserWorkTypeMenuItem(workType, eafId) {
+
+            let list = this.getUserWorkTypeMenus(workType);
+            if(list.length == 1) {
+                return list[0].name+'_'+eafId;
+            }
+
+            return ''
+        }
+
         handleSelectRowPeople(selection, row) {
             let item = {};
             item["eafId"] = row.eafId;
