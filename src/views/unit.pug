@@ -25,7 +25,7 @@
             @on-select="handleSelectRow",@on-select-all="handleSelectAll",
             @on-select-cancel="handleSelectRowCancel",@on-select-all-cancel="handleSelectAllCancel")
                 template(slot-scope="{row}",slot="worker_count")
-                    span(@click="qq(row.unit_name)") {{row.worker_count}}
+                    span(@click = "userCount(row.unit_name)") {{row.worker_count}}
 
 
     .footer

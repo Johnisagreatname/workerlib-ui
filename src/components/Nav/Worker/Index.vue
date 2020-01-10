@@ -35,6 +35,7 @@
         public offLeave :boolean;
         public sex: string;
         public options!: any;
+        public optionsSex!: any;
         public now: Date;
         public year :any;
         public date:any;
@@ -50,6 +51,7 @@
             this.offLeave =false;
         }
         mounted() {
+        	this.store.findRole();
             if(this.store.notIn){
                 if(this.store.notIn == true){
                     this.store.searchNot();
@@ -148,6 +150,15 @@
             ];
             return this.options;
         }
+        getSex() : any {
+            if(this.optionsSex) return this.optionsSex;
+            this.optionsSex = [
+                {value: '男', key: 1 },
+                {value: '女', key: 2 }
+
+            ];
+            return this.optionsSex;
+        }
         getType(){
             return this.store.projectType
         }
@@ -203,6 +214,7 @@
                 this.messageWarningFn('请选择工种！');
                 return;
             }
+            debugger
             this.store.insertArchives();
             this.addWorker = false;
         }
@@ -428,7 +440,25 @@
         }
         get selectStatus():number{
             return this.store.selectStatus;
+		}
+        set selectSex(data:number){
+            this.store.setSelectSex(data);
         }
+        get selectSex():number{
+            return this.store.selectSex;
+        }
+        set selectAge1(data:any){
+            this.store.setSelectAge1(data);
+        }
+        get selectAge1():any{
+            return this.store.selectAge1;
+        }
+        set selectAge2(data:any){
+            this.store.setSelectAge2(data);
+        }
+        get selectAge2():any{
+            return this.store.selectAge2;
+       }
         set photo(data:string){
             this.store.setPhoto(data);
         }

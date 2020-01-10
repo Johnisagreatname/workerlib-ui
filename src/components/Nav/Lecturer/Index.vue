@@ -60,6 +60,7 @@
         }
 
         ok() : any{
+            debugger
             this.store.insertLecturer();
             this.addLecturer = false;
         }
@@ -93,6 +94,17 @@
         get type():number{
             return this.store.lecturerInfo.type;
         }
+
+        set personalreesume(data:string){
+            debugger
+            this.store.setPersonalreesume(data);
+        }
+        get personalreesume():string{
+            return this.store.lecturerInfo.personalreesume;
+        }
+
+
+
 
 
     }

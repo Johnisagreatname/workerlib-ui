@@ -295,21 +295,8 @@ export default class ProjectStore extends VuexModule {
     }
     @Action
     public async searchViewPeople() {
-        await request.post('/api/workerlib/join',{
-                "joinTables": [{
-                    "tablename": "archives",
-                    "alias": "a",
-                    "joinMode": "Left"
-                }, {
-                    "tablename": "alluser",
-                    "alias": "u",
-                    "joinMode": "Left",
-                    "onList": [{
-                        "name": "a.archives_id",
-                        "value": "u.eafId",
-                        "algorithm": "EQ"
-                    }]
-                }],
+        await request.post('/api/workerlib/project_user',{
+
                 "pageInfo" : {
                     "pageIndex": this.pageProjectIndex,
                     "pageSize": this.pageProjectSize
@@ -352,7 +339,7 @@ export default class ProjectStore extends VuexModule {
     }
     @Action
     public async projectCount() {
-        await request.post('/api/workerlib/join/count',{
+        await request.post('/api/workerlib/project_user/count',{
                 "joinTables": [{
                     "tablename": "archives",
                     "alias": "a",
@@ -712,38 +699,38 @@ export default class ProjectStore extends VuexModule {
                 ])
             }
         },
-        // {
-        //     title: '施工许可证',
-        //     key: 'builder_license',
-        //     sortable: true,
-        //     render: (h, params) => {
-        //         return h('div', [
-        //             h('span', {
-        //                 style: {
-        //                     display: 'inline-block',
-        //                     width: '100%',
-        //                     overflow: 'hidden',
-        //                     textOverflow: 'ellipsis',
-        //                     whiteSpace: 'nowrap'
-        //                 },
-        //                 domProps: {
-        //                     title: params.row.builder_license
-        //                 }
-        //             }, params.row.builder_license)
-        //         ])
-        //     }
-        // },
+        {
+            title: '施工许可证',
+            key: 'builder_license',
+            sortable: true,
+            render: (h, params) => {
+                return h('div', [
+                    h('span', {
+                        style: {
+                            display: 'inline-block',
+                            width: '100%',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            whiteSpace: 'nowrap'
+                        },
+                        domProps: {
+                            title: params.row.builder_license
+                        }
+                    }, params.row.builder_license)
+                ])
+            }
+        },
         {
             title: '开工时间',
             key: 'start_time',
             sortable: true
         },
-        {
-            title: '合同竣工时间',
-            key: 'end_time',
-            sortable: true,
-            width: 180
-        },
+        // {
+        //     title: '合同竣工时间',
+        //     key: 'end_time',
+        //     sortable: true,
+        //     width: 180
+        // },
         {
             title: '建设单位',
             key: 'construction',
@@ -863,6 +850,16 @@ export default class ProjectStore extends VuexModule {
         {
             title: '工种',
             key: 'workType'
+        },
+        {
+            title: '进场时间',
+            key: 'start_time',
+            sortable: true
+        },
+        {
+            title: '参建单位',
+            key: 'construction',
+            sortable: true
         },
         {
             title: '身份证',
