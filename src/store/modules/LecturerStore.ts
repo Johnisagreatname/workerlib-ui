@@ -61,11 +61,13 @@ export default class LecturerStore extends VuexModule {
     }
     @Action
     public async insertLecturer() {
+        debugger
         await request.put('/api/workerlib/lecturer', {
             "name":this.lecturerInfo.name,
             "curriculum":this.lecturerInfo.curriculum,
             "type":this.lecturerInfo.type,
-            "photo":this.lecturerInfo.photo
+            "photo":this.lecturerInfo.photo,
+			"personalreesume":this.lecturerInfo.personalreesume
         }).then((data)=>{
             if(!data){
                 return;
@@ -124,6 +126,11 @@ export default class LecturerStore extends VuexModule {
     public setPhoto(data:string){
         this.lecturerInfo.photo=data;
     }
+	@Mutation
+    public setPersonalreesume(data:string){
+        debugger
+        this.lecturerInfo.personalreesume=data;
+    }
 }
 
 interface LecturerInfo {
@@ -132,4 +139,5 @@ interface LecturerInfo {
     photo?: string;
     curriculum?:string;
     id?: number;
+	personalreesume?:string;
 }

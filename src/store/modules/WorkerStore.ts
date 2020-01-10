@@ -41,6 +41,10 @@ export default class WorkerStore extends VuexModule {
     public archivesId:number;
 
 
+	public year:any;
+    public selectSex:number;
+    public selectAge1:number;
+    public selectAge2:number;
     public selectProjectName:string;
     public selectContractors:string;
     public selectUserName:string;
@@ -71,6 +75,8 @@ export default class WorkerStore extends VuexModule {
 
     public date :Date;
 
+	public userId:String;
+    public roleName:Roles;
     constructor(e) {
         super(e)
         this.pageIndex=1;
@@ -123,14 +129,22 @@ export default class WorkerStore extends VuexModule {
         this.checkWorkce=null;
         this.projectList=[];
         this.unitList = [];
+
+		this.year = new Date().getFullYear();
+        this.selectSex = null;
+        this.selectAge1 = null;
+        this.selectAge2 = null;
         this.selectProjectName="";
         this.selectContractors="";
         this.selectUserName="";
         this.selectType="";
         this.selectStatus=null;
+		this.userId='';
+        this.roleName = {};
     }
     @Action
     public getParams() : any {
+        debugger
         if(this.selectProjectName){
             let item ={};
             item["name"]="project_name";
@@ -165,6 +179,27 @@ export default class WorkerStore extends VuexModule {
             item["name"]="leave";
             item["value"]=this.selectStatus;
             item["algorithm"] = "LIKE"
+            this.conditionList.push(item);
+        }
+		if(this.selectSex){
+            let item ={};
+            item["name"]="sex";
+            item["value"]=this.selectSex;
+            item["algorithm"] = "LIKE"
+            this.conditionList.push(item);
+        }
+        if(this.selectAge1){;
+            let item ={};
+            item["name"]="age";
+            item["value"]=this.year - this.selectAge1;
+            item["algorithm"] = "GTEQ"
+            this.conditionList.push(item);
+        }
+        if(this.selectAge2){
+            let item ={};
+            item["name"]="age";
+            item["value"]=this.year - this.selectAge2;
+            item["algorithm"] = "LTEQ"
             this.conditionList.push(item);
         }
         return {
@@ -379,6 +414,7 @@ export default class WorkerStore extends VuexModule {
     }
     @Action
     public async search() {
+        debugger
         await request.post('/api/workerlib/people',await this.getParams()).then((data)=>{
             if(!data) {
                 return;
@@ -948,6 +984,74 @@ export default class WorkerStore extends VuexModule {
             alert.warning(e.message || e)
         });
     }
+	@Action
+    public async insertUserGroupRole(id) {
+        debugger
+        await request.put('/api/workerlib/usergrouprole', {
+            "userGroupRoleId":null,
+            "userId":id,
+            "roleId":this.roleName[0].roleId
+        }).then((data)=>{
+            this.addUserGroupRole(data);
+        }).catch((e)=>{
+            console.log(e)
+            let alert: any = Message;
+            if(!e) {
+                alert.warning('未知错误！');
+                return;
+            }
+
+            if(e.response && e.response.data && e.response.data.message) {
+                alert.warning(e.response.data.message)
+                return
+            }
+
+            if(!e.message) {
+                return;
+            }
+
+            alert.warning(e.message || e)
+        });
+    }
+
+
+    @Action
+    public async findRole() {
+        await request.post('/api/workerlib/role', {
+            "conditionList": [{
+                "name": "roleName",
+                "value": "工人",
+                "algorithm": "EQ"
+
+            }],
+            "sortList": [],
+
+            "groupList" : [],
+
+            "keywords" : [],
+            "selectList": []
+        }).then((data)=>{
+            this.successRole(data);
+        }).catch((e)=>{
+            console.log(e)
+            let alert: any = Message;
+            if(!e) {
+                alert.warning('未知错误！')
+                return
+            }
+
+            if(e.response && e.response.data && e.response.data.message) {
+                alert.warning(e.response.data.message)
+                return
+            }
+
+            if(!e.message) {
+                return;
+            }
+
+            alert.warning(e.message || e)
+        });
+    }
     @Action
     public async selectCheckWorkceMonth() {
         await request.post('/api/workerlib/user_salary', {
@@ -1025,10 +1129,18 @@ export default class WorkerStore extends VuexModule {
             alert.warning(e.message || e)
         });
     }
+	@Mutation
+     public addUserGroupRole(data: any){
+        if(data.status == 0) {
+            this.search();
+        }
+     }
     @Action
     public added(data: any) {
         if(data.status == 0) {
+            debugger
             this.insertWorkType(data.data);
+			this.insertUserGroupRole(data.data);
         }
     }
     @Action
@@ -1058,6 +1170,10 @@ export default class WorkerStore extends VuexModule {
             alert.warning("成功！");
 
         }
+    }
+	@Mutation
+    public successRole(data:any){
+        this.roleName =  data.data;
     }
     @Mutation
     private sucessCheckWorkceMonth(data: any) {
@@ -1168,6 +1284,7 @@ export default class WorkerStore extends VuexModule {
     }
     @Mutation
     public setSelectContractors(data:string){
+        debugger
         this.selectContractors = data;
     }
     @Mutation
@@ -1181,6 +1298,19 @@ export default class WorkerStore extends VuexModule {
     @Mutation
     public setSelectStatus(data:number){
         this.selectStatus = data;
+    }
+    
+	@Mutation
+    public setSelectSex(data:number){
+        this.selectSex = data;
+    }
+    @Mutation
+    public setSelectAge1(data:any){
+        this.selectAge1 = data;
+    }
+    @Mutation
+    public setSelectAge2(data:any){
+        this.selectAge2 = data;
     }
     @Mutation
     public successType(data: any) {
@@ -1291,3 +1421,26 @@ interface InvolvedProjectInfo {
     project_license?:string;
 }
 
+interface UserGroupRole {
+    userGroupRoleId?:string;
+    userId?:number;
+    groupId?:string;
+    roleId?:string;
+    userPath?:string;
+    modifyBy?:number;
+    modifyTime?:number;
+    createOn?:Date;
+    createBy?:number;
+}
+
+
+interface Roles {
+    roleId?:string;
+    roleName?:string;
+    description?:string;
+    userPath?:string;
+    modifyTime?:Date;
+    modifyBy?:number;
+    createOn?:Date;
+    createBy?:number;
+}
