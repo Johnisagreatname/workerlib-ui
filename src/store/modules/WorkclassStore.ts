@@ -331,6 +331,13 @@ export default class WorkclassStore extends VuexModule {
             sortable: true
         },
         {
+            title:'是否加入统计',
+            slot:'isCount'
+        },{
+            title:'是否显示',
+            slot:'isShow'
+        },
+        {
             title: '详细操作',
             slot: 'operation',
             sortable: true

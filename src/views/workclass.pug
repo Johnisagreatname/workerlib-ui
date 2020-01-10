@@ -17,6 +17,7 @@
     .bodyTwo
         Table(:row-class-name="rowClassName", border, ref="selection", :columns="getColumns()", :data="getData()")
             template(slot-scope="{row, index }",slot="operation")
+            template(slot-scope="{row, index }",slot="operation")
                 Dropdown(@on-click = "change")
                     a(href="javascript:void(0)" :style={"font-size": "16px"})
                         span 详细操作

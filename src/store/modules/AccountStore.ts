@@ -237,7 +237,7 @@ export default class AccountStore extends VuexModule {
 
     @Action
     public async count() {
-        let param = {
+        await request.post('/api/workerlib/user/count', {
             "pageInfo" : {
                 "pageIndex": this.pageInfo.pageIndex,
                 "pageSize": this.pageInfo.pageSize
@@ -251,16 +251,7 @@ export default class AccountStore extends VuexModule {
 
             "keywords" : [],
             "selectList": []
-        }
-
-        if(this.userInfo.username && this.userInfo.username.trim()) {
-            param.conditionList.push({
-                "name": "username",
-                "value": this.userInfo.username,
-                "algorithm": "LIKE",
-            })
-        }
-        await request.post('/api/workerlib/user/count', param).then((total)=>{
+        }).then((total)=>{
             if(!total){
                 return;
             }
@@ -440,7 +431,7 @@ export default class AccountStore extends VuexModule {
         }
     }
 
-    @Mutation
+    @Action
     public addedt(data: any) {
         if(data.status == 0) {
             this.search();

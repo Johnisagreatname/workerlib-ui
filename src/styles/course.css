@@ -106,9 +106,12 @@
 }
 .divTwo{
     line-height: 70px;
-    width: 100%;
+    width: 80%;
     height: 65px;
-    text-align: center;
+    margin-left: 20%;
+    float: left;
+
+
 }
 .name{
     width: 22%;
