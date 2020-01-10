@@ -47,15 +47,16 @@
 
         mounted() {
             this.store.selectPersonInfo();
+            this.store.selectRateInfo();
             this.store.selectWorkType();
-            this.store.selectAttendances();
+            // this.store.selectAttendances();
             this.wstore.setInfoId(this.userId);
-
             this.wstore.searchInvolvedProject();
             this.wstore.selectCultivate();
             this.wstore.selectCheckWorkceMonth();
             this.wstore.selectCheckWorkce();
             this.wstore.selectSalary();
+            // this.wstore.selectComments();
             this.storeComm.setPunishmentsId(this.userId);
             this.storeComm.searchCommentSparticulars();
         }
@@ -92,18 +93,48 @@
                 return "女";
             }
         }
-        getWorkType(workType): string{
-            if (workType==null){
+
+        getLeave(): string {
+            if (this.wstore.involvedProjectInfo == null) {
+                return "离场"
+            } else {
+                if (this.wstore.involvedProjectInfo.leave == 1) {
+                    return "在场"
+                } else {
+                    return "离场"
+                }
+            }
+        }
+
+        getRate(rate): string {
+            if (rate == null) {
                 return "无"
-            }else {
+            } else {
+                return rate.grade + rate.rank;
+            }
+        }
+
+        getWorkType(workType): string {
+            if (workType == null) {
+                return "无"
+            } else {
                 return workType.workType;
             }
         }
-        getUrl(personInfo):string{
-            if (personInfo==null){
+
+        getCodeUrl(personInfo): string {
+            if (personInfo == null) {
                 return ""
-            }else {
-                return "http://113.105.121.93:1818"+personInfo.cwrPhoto;
+            } else {
+                return "http://39.108.103.150:6666/api/workerlib/download/people/code/" + personInfo.id;
+            }
+        }
+
+        getUrl(personInfo): string {
+            if (personInfo == null) {
+                return ""
+            } else {
+                return "http://113.105.121.93:1818" + personInfo.cwrPhoto;
             }
         }
 
@@ -120,6 +151,7 @@
             const b = idNumber.replace(/^(.{3})(?:\d+)(.{2})/, '$1******$2');
             return b;
         }
+
         //获取年龄
         getAge(idNumber): number {
             if (!idNumber) return;
