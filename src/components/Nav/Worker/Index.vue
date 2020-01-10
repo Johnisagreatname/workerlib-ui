@@ -70,6 +70,20 @@
                 this.store.selectProject();
             }
         }
+        search(){
+            this.store.notIn = false;
+            this.store.in = false;
+            this.store.search();
+        }
+        get isSpinShow():boolean{
+            return this.store.isSpinShow;
+        }
+        get getNotIn():string{
+            return this.store.notIn;
+        }
+        get getIn():string{
+            return this.store.in;
+        }
         getCommentSparticularsList():any{
             return this.storeComm.commentSparticularsList;
         }

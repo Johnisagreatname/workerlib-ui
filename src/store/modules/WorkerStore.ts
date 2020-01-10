@@ -71,6 +71,7 @@ export default class WorkerStore extends VuexModule {
     public conditionList:Array<any>;
     public notIn:boolean;
     public in:boolean;
+    public isSpinShow:boolean;
     public insertEafId:string;
 
     public date :Date;
@@ -141,6 +142,7 @@ export default class WorkerStore extends VuexModule {
         this.selectStatus=null;
 		this.userId='';
         this.roleName = {};
+        this.isSpinShow = true;
     }
     @Action
     public getParams() : any {
@@ -1302,8 +1304,6 @@ export default class WorkerStore extends VuexModule {
     }
     @Mutation
     public setPageTotal(data: number) {
-        this.notIn = false;
-        this.in = false;
         this.conditionList = new Array<any>()
         this.pageTotal = data;
     }
