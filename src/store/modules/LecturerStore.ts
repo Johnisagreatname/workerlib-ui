@@ -61,7 +61,6 @@ export default class LecturerStore extends VuexModule {
     }
     @Action
     public async insertLecturer() {
-        debugger
         await request.put('/api/workerlib/lecturer', {
             "name":this.lecturerInfo.name,
             "curriculum":this.lecturerInfo.curriculum,
@@ -128,7 +127,6 @@ export default class LecturerStore extends VuexModule {
     }
 	@Mutation
     public setPersonalreesume(data:string){
-        debugger
         this.lecturerInfo.personalreesume=data;
     }
 }

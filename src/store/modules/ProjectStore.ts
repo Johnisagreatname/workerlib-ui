@@ -189,6 +189,7 @@ export default class ProjectStore extends VuexModule {
     }
     @Action
     public async insert() {
+        debugger
         await request.put('/api/workerlib/archives',this.insertList
             ).then((data)=>{
                 if(!data){
@@ -213,6 +214,7 @@ export default class ProjectStore extends VuexModule {
     }
     @Action
     public async insertProjectWorkType() {
+        debugger
         await request.put('/api/workerlib/projectworktype',this.insertProjectWorkTypeList
             ).then((data)=>{
                 if(!data){
@@ -261,6 +263,7 @@ export default class ProjectStore extends VuexModule {
     }
     @Action
     public async update() {
+        debugger
         await request.post('/api/workerlib/archives/update',{
             "data":{
                 "leave": this.leave
@@ -340,20 +343,7 @@ export default class ProjectStore extends VuexModule {
     @Action
     public async projectCount() {
         await request.post('/api/workerlib/project_user/count',{
-                "joinTables": [{
-                    "tablename": "archives",
-                    "alias": "a",
-                    "joinMode": "Left"
-                }, {
-                    "tablename": "alluser",
-                    "alias": "u",
-                    "joinMode": "Left",
-                    "onList": [{
-                        "name": "a.archives_id",
-                        "value": "u.eafId",
-                        "algorithm": "EQ"
-                    }]
-                }],
+
                 "pageInfo" : {
                     "pageIndex": this.pageProjectIndex,
                     "pageSize": this.pageProjectSize
@@ -849,7 +839,24 @@ export default class ProjectStore extends VuexModule {
         },
         {
             title: '工种',
-            key: 'workType'
+            key: 'workType',
+            sortable: true,
+            render: (h, params) => {
+                return h('div', [
+                    h('span', {
+                        style: {
+                            display: 'inline-block',
+                            width: '100%',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            whiteSpace: 'nowrap'
+                        },
+                        domProps: {
+                            title: params.row.workType
+                        }
+                    }, params.row.workType)
+                ])
+            }
         },
         {
             title: '进场时间',

@@ -32,7 +32,7 @@
                             DropdownItem(:name="'add_'+row.project_id")
                                 Icon(type="ios-book-outline")
                                 span 添加人员
-                            DropdownItem(:name="'view_'+row.project_id",)
+                            DropdownItem(:name="'view_'+row.project_id")
                                 Icon(type="ios-create-outline")
                                 span 查看人员
     .footer
@@ -122,10 +122,9 @@
                 @on-select-all="handleSelectAllPeople",
                 @on-select-all-cancel="handleSelectAllCancelPeople"
                 )
-                    template(slot-scope="{row, index }",slot="workType")
-                        Select(clearable,filterable,@on-change="selectChange",:value="getUserWorkTypeMenuItem(row.workType, row.eafId)")
-                            Option(v-for="item in getUserWorkTypeMenus(row.workType)", :value="item.name+'_'+row.eafId",:key="item.name") {{item.name}}
-
+                template(slot-scope="{row, index }",slot="workType")
+                    Select(clearable,filterable,@on-change="selectChange",:value="getUserWorkTypeMenuItem(row.workType, row.eafId)",v-if="row.workType!=null")                            Option(v-for="item in getUserWorkTypeMenus(row.workType)", :value="item.name+'_'+row.eafId",:key="item.name") {{item.name}}
+                    Select(clearable,filterable,v-else,disabled,value="无")
 
 
                 Page(:total="pageInTotal",show-elevator,show-total,

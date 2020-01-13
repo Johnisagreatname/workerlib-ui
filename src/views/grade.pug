@@ -52,13 +52,13 @@
                     span 等级名称
                     span(:style={'color': 'red'}) *
                 .input
-                    Input(:min=1,clearable,style="width: 345px",size=large,v-model="editName")
+                    Input(clearable,style="width: 345px",size=large,v-model="editName")
             .divTwo
                 .name
                     span 等级值
                     span(:style={'color': 'red'}) *
                 .input
-                    InputNumber(clearable,style="width: 345px",size=large,v-model="editValue")
+                    InputNumber(:min=1,clearable,style="width: 345px",size=large,v-model="editValue")
     Modal(:value="deleteCommentType",title="删除等级",@on-ok="deleteOK()",@on-cancel="deleteCancel()",width='50%',:styles="{top: '20px'}",)
         .delBody
             .divTwo

@@ -3,87 +3,133 @@ import store from "../index";
 import request from "../../common/HttpClient";
 import MessageUtils from "../../common/MessageUtils";
 import {Message} from "iview";
+
 @Module({
     namespaced: true,
     stateFactory: true,
     dynamic: true,
-    name: "WoekclassStore",
+    name: "WorkclassStore",
     store,
 })
-export default class WoekclassStore extends VuexModule {
+export default class WorkclassStore extends VuexModule {
     constructor(e) {
         super(e);
-        this.pageInfo = {
-            pageIndex: 1,
-            pageSize: 10
-        };
-        this.workclass = [];
-        this.workclassInfo = {};
-    }
-    public workclass: Array<WorkclassInfo>;
-    public pageInfo: PageInfo;
-    public workclassInfo: WorkclassInfo;
+        this.pageIndex=1;
+        this.pageSize=10;
+        this.pageCount=0;
 
+        this.selectName = null;
+        this.selectIsCount = null;
+        this.selectIsShow = null;
+
+        this.addName = null;
+        this.addValue = null;
+        this.addIsCount = 2;
+        this.addIsShow = 2;
+        this.addColor = "#41ccd3";
+
+        this.editId=null;
+        this.editName = null;
+        this.editValue = null;
+        this.editIsCount = null;
+        this.editIsShow = null;
+        this.editColor = "#41ccd3";
+
+        this.deleteId = null;
+
+        this.commentTypeList = [];
+        this.commentList = [];
+        this.conditionList = [];
+        this.commentTypeInfo = {};
+    }
+    public pageIndex:number;
+    public pageSize:number;
+    public pageCount:number;
+
+
+    public deleteId:number;
+
+    public editId:number;
+    public editName:string;
+    public editValue:number;
+    public editIsCount:number;
+    public editIsShow:number;
+    public editColor:string;
+
+    public selectName:string;
+    public selectIsCount:number;
+    public selectIsShow:number;
+
+    public addName:string;
+    public addValue:number;
+    public addIsCount:number;
+    public addIsShow:number;
+    public addColor:string;
+
+    public conditionList:Array<any>;
+    public commentTypeList:Array<any>;
+    public commentList:Array<any>;
+    public commentTypeInfo:any;
     @Action
     public getParams() : any {
-        let param =  {
+        if(this.selectName){
+            let item = {};
+            item["name"] = "name";
+            item["value"] = this.selectName;
+            item["algorithm"] = "LIKE";
+            this.conditionList.push(item);
+        }
+        if(this.selectIsShow){
+            let item = {};
+            item["name"] = "isShow";
+            item["value"] = this.selectIsShow;
+            item["algorithm"] = "EQ";
+            this.conditionList.push(item);
+        }
+        if(this.selectIsCount){
+            let item = {};
+            item["name"] = "isCount";
+            item["value"] = this.selectIsCount;
+            item["algorithm"] = "EQ";
+            this.conditionList.push(item);
+        }
+        let item = {};
+        item["name"] = "category";
+        item["value"] = "工种";
+        item["algorithm"] = "EQ";
+        this.conditionList.push(item);
+        return {
             "pageInfo" : {
-                "pageIndex": this.pageInfo.pageIndex,
-                "pageSize": this.pageInfo.pageSize
+                "pageIndex": this.pageIndex,
+                "pageSize": this.pageSize
             },
-            "conditionList": [{
+            "conditionList": this.conditionList,
+            "sortList": [],
+            "groupList" : [],
+            "keywords" : [],
+            "selectList": []
+        };
+    }
+    @Action
+    public async searchList() {
+        await request.post('/api/workerlib/dictionaries', {
+            "pageInfo" : {},
+            "conditionList": [
+                {
                     "name": "category",
                     "value": "工种",
                     "algorithm": "EQ",
-                }],
+                }
+            ],
             "sortList": [],
             "groupList" : [],
             "keywords" : [],
             "selectList": []
-        }
-
-        if(this.workclassInfo.name && this.workclassInfo.name.trim()) {
-            param.conditionList.push({
-                "name": "name",
-                "value": this.workclassInfo.name,
-                "algorithm": "LIKE",
-            })
-        }
-
-        return param;
-    }
-
-    @Action
-    public getVerification() : any {
-        return {
-            "pageInfo" : {
-                "pageIndex": this.pageInfo.pageIndex,
-                "pageSize": this.pageInfo.pageSize
-            },
-            "conditionList": [{ //查询条件
-                "name": "name",   //字段名
-                "value": this.workclassInfo.name,   //值
-                "algorithm": "EQ",   //条件: EQ(2, "="), GT(3, ">"), LT(4, "<"), GTEQ(5, ">="), LTEQ(6, "<="), NOT(7, "<>"), NOTEQ(8, "!="), LIKE(9), START(10), END(11), IN(12)
-            },
-            {
-                "name":"category",
-                "value":"工种",
-                "algorithm": "EQ",
-            }],
-            "sortList": [],
-            "groupList" : [],
-            "keywords" : [],
-            "selectList": []
-        };
-    }
-
-    @Action
-    public async verification(){
-        await request.post('/api/workerlib/dictionaries/exist ', await this.getVerification()).then((data)=>{
+        }).then((data)=>{
             if(!data){
                 return;
             }
-            this.sucess(data);
+            this.successList(data);
         }).catch((e)=>{
             console.log(e)
             let alert: any = Message;
@@ -91,12 +137,10 @@ export default class WoekclassStore extends VuexModule {
                 alert.warning('未知错误！')
                 return
             }
-
             if(e.response && e.response.data && e.response.data.message) {
                 alert.warning(e.response.data.message)
                 return
             }
-
             if(!e.message) {
                 return;
             }
@@ -104,35 +148,6 @@ export default class WoekclassStore extends VuexModule {
             alert.warning(e.message || e)
         });
     }
-
-    @Action
-    public async verifications(){
-        await request.post('/api/workerlib/dictionaries/exist ', await this.getVerification()).then((data)=>{
-            if(!data){
-                return;
-            }
-            this.update(data);
-        }).catch((e)=>{
-            console.log(e)
-            let alert: any = Message;
-            if(!e) {
-                alert.warning('未知错误！')
-                return
-            }
-
-            if(e.response && e.response.data && e.response.data.message) {
-                alert.warning(e.response.data.message)
-                return
-            }
-
-            if(!e.message) {
-                return;
-            }
-
-            alert.warning(e.message || e)
-        });
-    }
-
     @Action
     public async search() {
         await request.post('/api/workerlib/dictionaries', await this.getParams()).then((data)=>{
@@ -148,38 +163,10 @@ export default class WoekclassStore extends VuexModule {
                 alert.warning('未知错误！')
                 return
             }
-
             if(e.response && e.response.data && e.response.data.message) {
                 alert.warning(e.response.data.message)
                 return
             }
-
-            if(!e.message) {
-                return;
-            }
-
-            alert.warning(e.message || e)
-        });
-    }
-    @Action
-    public async deleteWorkclass(){
-        await request.delete('/api/workerlib/dictionaries/'+this.workclassInfo.id).then((data)=>{
-            if(!data){
-                return;
-            }
-            this.added(data)
-        }).catch((e)=>{
-            console.log(e)
-            let alert: any = Message;
-            if(!e) {
-                alert.warning('未知错误！');
-                return;
-            }
-            if(e.response && e.response.data && e.response.data.message) {
-                alert.warning(e.response.data.message);
-                return
-            }
-
             if(!e.message) {
                 return;
             }
@@ -193,26 +180,37 @@ export default class WoekclassStore extends VuexModule {
             if(!total){
                 return;
             }
-            this.setPageTotal(total.data)
+            this.setPageCount(total.data)
         }).catch((e)=>{
             MessageUtils.warning(e);
         });
     }
     @Action
-    public async updateWorkclass() {
-        await request.put('/api/workerlib/dictionaries/'+this.workclassInfo.id,{
-            "name":this.workclassInfo.name,
+    public async searchInfo() {
+        await request.post('/api/workerlib/dictionaries',{
+            "pageInfo" : {},
+            "conditionList": [
+                {
+                    "name": "id",
+                    "value": this.editId ,
+                    "algorithm": "EQ"
+                }
+            ],
+            "sortList": [],
+            "groupList" : [],
+            "keywords" : [],
+            "selectList": []
         }).then((data)=>{
             if(!data){
                 return;
             }
-            this.added(data)
+            this.successInfo(data);
         }).catch((e)=>{
             console.log(e)
             let alert: any = Message;
             if(!e) {
-                alert.warning('未知错误！');
-                return;
+                alert.warning('未知错误！')
+                return
             }
             if(e.response && e.response.data && e.response.data.message) {
                 alert.warning(e.response.data.message)
@@ -221,26 +219,30 @@ export default class WoekclassStore extends VuexModule {
             if(!e.message) {
                 return;
             }
+
             alert.warning(e.message || e)
         });
     }
     @Action
-    public async insertWorkclass() {
-        await request.put('/api/workerlib/dictionaries', {
-                "name":this.workclassInfo.name,
-                "value":this.pageInfo.totalRecords+3,
-                "category":"工种",
-            }).then((data)=>{
+    public async addCommentType(){
+        await request.put('/api/workerlib/dictionaries',{
+            "name":this.addName,
+            "value":this.addValue,
+            "isCount":this.addIsCount,
+            "isShow":this.addIsShow,
+            "color":this.addColor,
+            "category": "工种"
+        }).then((data)=>{
             if(!data){
                 return;
             }
-            this.added(data)
+            this.successAdd(data);
         }).catch((e)=>{
             console.log(e)
             let alert: any = Message;
             if(!e) {
-                alert.warning('未知错误！');
-                return;
+                alert.warning('未知错误！')
+                return
             }
             if(e.response && e.response.data && e.response.data.message) {
                 alert.warning(e.response.data.message)
@@ -249,75 +251,112 @@ export default class WoekclassStore extends VuexModule {
             if(!e.message) {
                 return;
             }
+
             alert.warning(e.message || e)
         });
     }
-    @Mutation
-    public setId(data:any){
-        this.workclassInfo.id = data;
+    @Action
+    public async updateCommentType(){
+        await request.put('/api/workerlib/dictionaries/'+this.editId,{
+            "isCount":this.editIsCount,
+            "isShow":this.editIsShow,
+            "color":this.editColor
+        }).then((data)=>{
+            if(!data){
+                return;
+            }
+            this.successUpdate(data);
+        }).catch((e)=>{
+            console.log(e)
+            let alert: any = Message;
+            if(!e) {
+                alert.warning('未知错误！')
+                return
+            }
+            if(e.response && e.response.data && e.response.data.message) {
+                alert.warning(e.response.data.message)
+                return
+            }
+            if(!e.message) {
+                return;
+            }
+
+            alert.warning(e.message || e)
+        });
     }
-    @Mutation
-    public setName(data:any){
-        this.workclassInfo.name = data;
+    @Action
+    public async deleteCommentType(){
+        await request.delete('/api/workerlib/dictionaries/'+this.deleteId).then((data)=>{
+            if(!data){
+                return;
+            }
+            this.successDelete(data);
+        }).catch((e)=>{
+            console.log(e)
+            let alert: any = Message;
+            if(!e) {
+                alert.warning('未知错误！')
+                return
+            }
+            if(e.response && e.response.data && e.response.data.message) {
+                alert.warning(e.response.data.message)
+                return
+            }
+            if(!e.message) {
+                return;
+            }
+
+            alert.warning(e.message || e)
+        });
     }
-    @Mutation
-    public setValue(data:any){
-        this.workclassInfo.value = data;
+    @Action
+    public async successAdd(data:any){
+        if(data.status == 0){
+            this.search();
+            this.searchList();
+            let alert: any = Message;
+            alert.warning('成功！');
+        }
     }
-    @Mutation
-    public setDescription(data:any){
-        this.workclassInfo.description = data;
+    @Action
+    public async successUpdate(data:any){
+        if(data.status == 0){
+            this.search();
+            this.searchList();
+            let alert: any = Message;
+            alert.warning('成功！');
+        }
     }
-    @Mutation
-    public setCategory(data:any){
-        this.workclassInfo.category = data;
+    @Action
+    public async successDelete(data:any){
+        if(data.status == 0){
+            this.search();
+            this.searchList();
+            let alert: any = Message;
+            alert.warning('成功！');
+        }
     }
     @Mutation
     public success(data: any) {
-        this.workclass = data.data;
+        this.commentTypeList = data.data;
     }
-    @Action
-     public added(data: any) {
-        if(data.status == 0) {
-            this.search();
-        }
+    @Mutation
+    public successList(data: any) {
+        this.commentList = data.data;
     }
-    @Action
-    public sucess(data: any) {
-        if(data.data == false) {
-            this.insertWorkclass();
-        }else {
-            let alert: any = Message;
-            alert.warning("工种名已存在，请更换用户名！");
-            return ;
-        }
-    }
-    @Action
-    public update(data: any) {
-        if(data.data == false) {
-            this.updateWorkclass();
-        }else {
-            let alert: any = Message;
-            alert.warning("工种名已存在，请更换用户名！");
-            return ;
-        }
+    @Mutation
+    public successInfo(data:any){
+        this.commentTypeInfo = data.data;
+        this.editName = this.commentTypeInfo[0].name;
+        this.editValue = this.commentTypeInfo[0].value;
+        this.editIsCount = this.commentTypeInfo[0].isCount;
+        this.editIsShow = this.commentTypeInfo[0].isShow;
+        this.editColor = this.commentTypeInfo[0].color;
     }
 
-    @Mutation
-    public setPageTotal(total: any) {
-        this.pageInfo = {
-            pageIndex: this.pageInfo.pageIndex,
-            pageSize:  this.pageInfo.pageSize,
-            pageCount: this.pageInfo.pageCount,
-            totalRecords: total
-        };
-    }
+
+
     public columns = [
-        {
-            type: 'selection',
-            width: 60,
-            align: 'center'
-        },
         {
             title: '序号',
             key: 'value',
@@ -329,30 +368,105 @@ export default class WoekclassStore extends VuexModule {
             sortable: true
         },
         {
+            title:'是否加入统计',
+            slot:'isCount'
+        },{
+            title:'是否显示',
+            slot:'isShow'
+        },{
+            title:'显示颜色',
+            slot:'color'
+        },
+
+        {
             title: '详细操作',
             slot: 'operation',
             sortable: true
         }
     ];
+
     @Mutation
-    private pageIndex(data: number) {
-        this.pageInfo.pageIndex = data;
+    private  setDeleteId(data:number){
+        this.deleteId = data;
+    }
+
+    @Mutation
+    private  setEditId(data:number){
+        this.editId = data;
+    }
+
+    @Mutation
+    private setEditName(data: string) {
+        this.editName = data;
+    }
+
+    @Mutation
+    private  setEditValue(data:number){
+        this.editValue = data;
+    }
+
+    @Mutation
+    private  setEditColor(data:string){
+        this.editColor = data;
+    }
+
+    @Mutation
+    private  setEditIsCount(data:number){
+        this.editIsCount = data;
+    }
+
+    @Mutation
+    private  setEditIsShow(data:number){
+        this.editIsShow = data;
+    }
+
+    @Mutation
+    private setAddName(data: string) {
+        this.addName = data;
+    }
+
+    @Mutation
+    private  setAddValue(data:number){
+        this.addValue = data;
+    }
+
+    @Mutation
+    private  setAddColor(data:string){
+        this.addColor = data;
+    }
+
+    @Mutation
+    private  setAddIsCount(data:number){
+        this.addIsCount = data;
+    }
+
+    @Mutation
+    private  setAddIsShow(data:number){
+        this.addIsShow = data;
     }
     @Mutation
-    private pageSize(data: number) {
-        this.pageInfo.pageSize = data;
+    private setPageIndex(data: number) {
+        this.pageIndex = data;
     }
-}
-interface PageInfo {
-    pageIndex?: number;
-    pageSize?: number;
-    pageCount?:number;
-    totalRecords?:number;
-}
-interface WorkclassInfo {
-    id?: number;
-    name?: string;
-    value?: number;
-    description?: string;
-    category?: string;
+    @Mutation
+    private setPageSize(data: number) {
+        this.pageSize = data;
+    }
+    @Mutation
+    private setPageCount(data: number) {
+        this.pageCount = data;
+        this.conditionList = new Array<any>();
+    }
+    @Mutation
+    private setSelectName(data: string) {
+        this.selectName = data;
+    }
+    @Mutation
+    private setSelectIsCount(data: number) {
+        this.selectIsCount = data;
+    }
+    @Mutation
+    private setSelectIsShow(data: number) {
+        this.selectIsShow = data;
+    }
 }

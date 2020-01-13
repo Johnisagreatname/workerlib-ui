@@ -81,7 +81,9 @@
         getData() : any{
             return this.store.role;
         }
-
+        getTotalRecords() {
+            return this.store.pageInfo.totalRecords;
+        }
         get roleid():string{
             return this.store.roleInfo.roleid;
         }

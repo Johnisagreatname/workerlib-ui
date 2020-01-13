@@ -1,7 +1,7 @@
 .body
     template
-        Tabs(value="团体评级",@on-click="toggle",:style={height:'1000px'})
-            TabPane(label="团体评级",name="团体评级",icon="ios-paper-outline")
+        Tabs(value="评定记录",@on-click="toggle",:style={height:'1000px'})
+            TabPane(label="评定记录",name="评定记录",icon="ios-paper-outline")
                 .topOne
                     .cdivOne
                         .name2
@@ -14,7 +14,7 @@
                         Button(@click="this.store.search") 搜索
                 .hr
                 .button
-                    Button(type="primary", ghost, icon="ios-people-outline",@click="viewData()") 创建团体评价
+                    Button(type="primary", ghost, icon="ios-people-outline",@click="viewData()") 创建评定记录
 
                 .bodyTwo
                     Table(border, ref="selection", :columns="getTeamColumns()", :data="getData()", :style={width: '100%'})
@@ -94,18 +94,17 @@
                     Row
                         Col(span="12")
                             DatePicker(type="date",placeholder="请选择",style="width: 240px",v-model="evaluateTime")
-    Modal(:value="addTeamRate",title="创建团队评级",@on-ok="okTeamRate()",@on-cancel="cancelTeamRate()",width='70%')
+    Modal(:value="addTeamRate",title="添加评定记录",@on-ok="okTeamRate()",@on-cancel="cancelTeamRate()",width='70%',:loading = "loading")
         .addBody1
             .top
-                .name2
-                    span(:style={'font-size': '18px'}) 团队名称
+                .name3
+                    span(:style={'font-size': '18px'}) 评定记录名称
                     span(:style={'color': 'red','font-size': '18px'}) *
                 .input
-                    Input(clearable,:style={'width': '995px'},placeholder="请输入团队名称",v-model="insertRatingname")
+                    Input(clearable,:style={'width': '995px'},placeholder="请输入评定记录名称",v-model="insertRatingname")
             .top
-                .name2
+                .name3
                     span(:style={'font-size': '18px'}) 备注
-                    span(:style={'color': 'red','font-size': '18px'}) *
                 .input
                     Input(type="textarea",clearable,:style={'width': '995px'},size=large,placeholder="请输入备注",v-model="insertRemark")
             .top

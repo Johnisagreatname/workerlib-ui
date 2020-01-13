@@ -586,7 +586,7 @@ export default class CheckEvaluateStore extends VuexModule {
         });
     }
     @Action
-    public async insertTeamRate() {
+    public async insertTeamRate(fn) {
         await request.put('/api/workerlib/team_rate', {
             "ratingname":this.insertRatingname,
             "norating":this.insertNorating,
@@ -596,6 +596,7 @@ export default class CheckEvaluateStore extends VuexModule {
             if(!data){
                 return;
             }
+            data['fn'] = fn;
             this.successInsertTeamRate(data)
         }).catch((e)=>{
             console.log(e)
@@ -618,11 +619,12 @@ export default class CheckEvaluateStore extends VuexModule {
         });
     }
     @Action
-    public async insertTeamUser(id){
+    public async insertTeamUser(parms){
+
         if(this.cultivateArchivesList){
             for (let i = 0;i<this.cultivateArchivesList.length;i++) {
                 let item = {};
-                item["teamId"]=id;
+                item["teamId"]=parms.id;
                 item["eafId"]=this.cultivateArchivesList[i];
                 this.insertTeamUserList.push(item);
             }
@@ -633,6 +635,7 @@ export default class CheckEvaluateStore extends VuexModule {
             }
             this.successInsertTeamUser(data);
             this.search();
+            parms.fn(parms.id);
         }).catch((e)=>{
             console.log(e)
             let alert: any = Message;
@@ -726,7 +729,7 @@ export default class CheckEvaluateStore extends VuexModule {
     @Action
     public async successInsertTeamRate(data:any) {
        if(data.status == 0){
-           this.insertTeamUser(data.data);
+           this.insertTeamUser({id:data.data, fn:data.fn});
        }
     }
     @Mutation
@@ -1158,7 +1161,7 @@ export default class CheckEvaluateStore extends VuexModule {
     ];
     public teamColumns = [
         {
-            title: '团队名称',
+            title: '评定记录名称',
             key: 'ratingname',
             sortable: true,
             render: (h, params) => {

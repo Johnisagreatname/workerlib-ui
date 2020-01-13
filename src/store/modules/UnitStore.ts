@@ -194,7 +194,7 @@ export default class UnitStore extends VuexModule {
 
         if(this.sUnitName){
             let item ={};
-            item["name"]="u.unit_name";
+            item["name"]="unit_name";
             item["value"]=this.sUnitName;
             item["algorithm"] = "LIKE"
             this.conditionList.push(item);

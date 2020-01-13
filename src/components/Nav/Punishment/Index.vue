@@ -3,7 +3,7 @@
     import PunishmentStore from '../../../store/modules/PunishmentStore';
     import { Component, Vue, Prop, Model} from 'vue-property-decorator';
     import { getModule } from 'vuex-module-decorators';
-    // import {Message} from "iview";
+    import {Message} from "iview";
     @Component({
         components:{
         },
@@ -21,131 +21,153 @@
         }
     })
     export default class Punishment extends Vue {
-        public addPunishment: boolean;
-        public delPunishment: boolean;
-        private store: any;
-        private options!: Array<any>;
-
-        constructor() {
-            super();
-            this.addPunishment = false;
-            this.delPunishment = false;
-            this.store = getModule(PunishmentStore);
-        }
-
-        mounted() {
-            this.store.search();
-        }
-        public search() {
-            this.store.search();
-        }
-
-        // messageWarningFn (text) {
-        //     let alert: any = Message;
-        //     alert.warning(text);
-        //     setTimeout(() => {
-        //         this.loading = false;
-        //         this.$nextTick(() => {
-        //             this.loading = true;
-        //         })
-        //     }, 500)
-        // }
-        ok() : any{
-            this.store.verification();
-            this.addPunishment = false;
-        }
-        popupDelPunishment(id) : any{
-            // this.store.deleteWorkclass(id);
-            this.store.punishmentInfo.id = id
-            this.delPunishment = !this.delPunishment
-        }
-        deletes() :any{
-            this.store.deletePunishment();
-            this.delPunishment = false;
-        }
-        cancel():any {
-            this.addPunishment = false;
-            this.delPunishment = false;
-        }
-
-        onPageSizeChange(pageSize){
-
-            this.store.pageSize(pageSize);
-            this.store.pageIndex(1);
-            this.onPageIndexChange(1);
-        }
-
-        onPageIndexChange(pageIndex){
-
-            console.log(pageIndex)
-
-            this.store.pageIndex(pageIndex);
-            this.store.search();
-        }
-
         rowClassName (row, index) : string {
             if(index == 0) {
                 return 'table-header'
             }
             return '';
         }
+        public updateCommentType: boolean;
+        public deleteCommentType: boolean;
+        public addCommentType: boolean;
+        private store: any;
+        loading = true;
+
+        constructor() {
+            super();
+            this.updateCommentType = false;
+            this.deleteCommentType = false;
+            this.addCommentType = false;
+            this.store = getModule(PunishmentStore);
+        }
+        messageWarningFn (text) {
+            let alert: any = Message;
+            alert.warning(text);
+            setTimeout(() => {
+                this.loading = false;
+                this.$nextTick(() => {
+                    this.loading = true;
+                })
+            }, 1000)
+        }
+        mounted() {
+            this.store.search();
+            this.store.searchList();
+        }
+        change(name){
+            if(name.split('_')[0] == 'edit') {
+                this.store.setEditId(name.split('_')[1]);
+                this.store.searchInfo();
+                this.updateCommentType = true;
+            }else {
+                this.store.setDeleteId(name.split('_')[1]);
+                this.deleteCommentType = true;
+            }
+        }
+        ok() : any{
+            if(this.store.commentList.filter(x => x.name == this.store.addName).length>0){
+                this.messageWarningFn("处罚类型名称已存在！");
+                return;
+            }
+            if(this.store.commentList.filter(x => x.value == this.store.addValue).length>0){
+                this.messageWarningFn("处罚类型值已存在！");
+                return;
+            }
+            this.store.addCommentType();
+            this.addCommentType = false;
+        }
+        cancel() : any{
+            this.addCommentType = false;
+        }
+        updateOk() : any{
+            if(this.store.commentList.filter(x => x.name == this.store.editName).length>0){
+                this.messageWarningFn("处罚类型名称已存在！");
+                return;
+            }
+            if(this.store.commentList.filter(x => x.value == this.store.editValue).length>0){
+                this.messageWarningFn("处罚类型值已存在！");
+                return;
+            }
+            this.store.updateCommentType();
+            this.updateCommentType = false;
+        }
+        updateCancel() : any{
+            this.updateCommentType = false;
+        }
+        deleteOK() : any{
+            this.store.deleteCommentType();
+            this.deleteCommentType = false;
+        }
+        deleteCancel() : any{
+            this.deleteCommentType = false;
+        }
+
+
+        onPageSizeChange(pageSize){
+            this.store.setPageSize(pageSize);
+            this.store.setPageIndex(1);
+            this.onPageIndexChange(1);
+        }
+        onPageIndexChange(pageIndex){
+            this.store.setPageIndex(pageIndex);
+            this.store.search();
+        }
+
         getColumns() : any{
             return this.store.columns;
         }
         getData() : any{
-            return this.store.punishment;
+            return this.store.commentTypeList;
         }
-
-        get totalRecords():number{
-            return this.store.pageInfo.totalRecords;
+        get pageCount():number{
+            return this.store.pageCount;
         }
-
-        set totalRecords(data:number){
-            this.store.setPageTotal(data);
+        set pageCount(data:number){
+            this.store.setPageCount(data);
         }
-
         get pageIndex():number{
-            return this.store.pageInfo.pageIndex;
+            return this.store.pageIndex;
         }
         set pageIndex(data:number){
-            this.store.pageIndex(data);
+            this.store.setPageIndex(data);
         }
         get pageSize():number{
-            return this.store.pageInfo.pageSize;
+            return this.store.pageSize;
         }
         set pageSize(data:number){
-            this.store.pageSize(data);
+            this.store.setPageSize(data);
         }
-        get id(): number{
-            return this.store.punishmentInfo.id;
+        get selectName(): string {
+            return this.store.selectName;
         }
-        set id(data:number){
-            this.store.setId(data);
+        set selectName(data: string) {
+            this.store.setSelectName(data);
         }
-        get name(): string {
-            return this.store.punishmentInfo.name;
+        get addName(): string {
+            return this.store.addName;
         }
-        set name(data: string) {
-            this.store.setName(data);
+        set addName(data: string) {
+            this.store.setAddName(data);
         }
-        get value():string{
-            return this.store.punishmentInfo.value;
+        get addValue(): number {
+            return this.store.addValue;
         }
-        set value(data:string){
-            this.store.setValue(data);
+        set addValue(data: number) {
+            this.store.setAddValue(data);
         }
-        get description():string{
-            return this.store.punishmentInfo.description;
+        get editName(): string {
+            return this.store.editName;
         }
-        set description(data:string){
-            this.store.setDescription(data);
+        set editName(data: string) {
+            this.store.setEditName(data);
         }
-        get category():string{
-            return this.store.punishmentInfo.category;
+        get editValue(): number {
+            return this.store.editValue;
         }
-        set category(data:string){
-            this.store.setCategory(data);
+        set editValue(data: number) {
+            this.store.setEditValue(data);
         }
+
     }
 </script>
 <style scoped src="@/styles/punishment.css" />

@@ -138,7 +138,6 @@
         }
         
 		userCount(unit_id) {
-            debugger
             this.workerStore.setSelectContractors(unit_id);
             router.push({path:'/nav/worker'});
         }

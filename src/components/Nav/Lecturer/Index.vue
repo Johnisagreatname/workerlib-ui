@@ -60,7 +60,6 @@
         }
 
         ok() : any{
-            debugger
             this.store.insertLecturer();
             this.addLecturer = false;
         }
@@ -96,7 +95,6 @@
         }
 
         set personalreesume(data:string){
-            debugger
             this.store.setPersonalreesume(data);
         }
         get personalreesume():string{

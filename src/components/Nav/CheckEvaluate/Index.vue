@@ -4,7 +4,7 @@
     import CoursewareStore from '../../../store/modules/CoursewareStore';
     import { Component, Vue, Prop, Model} from 'vue-property-decorator';
     import { getModule } from 'vuex-module-decorators';
-
+    import { Message } from 'iview';
     @Component({
         components:{
         },
@@ -55,8 +55,19 @@
             this.userName = null;
             this.addId = null;
         }
+        loading = true;
+        messageWarningFn (text) {
+            let alert: any = Message;
+            alert.warning(text);
+            setTimeout(() => {
+                this.loading = false;
+                this.$nextTick(() => {
+                    this.loading = true;
+                })
+            }, 1000)
+        }
         toggle(name){
-            if(name=="团体评级"){
+            if(name=="评定记录"){
                 this.store.setSelectStatus(1);
                 this.store.search();
             }else {
@@ -68,14 +79,23 @@
             return this.workType;
         }
         okTeamRate():any{
+            if(!this.store.insertRatingname){
+                this.messageWarningFn('请输入评定记录名称！');
+                return;
+            }if(this.store.rate.filter(a =>a.ratingname == this.store.insertRatingname).length>0){
+                this.messageWarningFn('评定记录名称已存在！');
+                return;
+            }
+            debugger
             this.store.setInsertNorating(this.store.checkeds.length);
             this.store.setInsertRate(0);
             for(let i = 0; i< this.store.checkeds.length;i++){
                 this.store.setCultivateArchivesList(this.store.checkeds[i].id);
             }
-            this.store.insertTeamRate();
+            this.store.insertTeamRate(this.change);
 
             this.addTeamRate = false;
+
         }
         cancelTeamRate():any{
             this.addTeamRate = false;
