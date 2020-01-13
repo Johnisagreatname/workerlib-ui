@@ -217,7 +217,7 @@ export default class CheckEvaluateStore extends VuexModule {
             return {
                 "joinTables": [
                     {
-                        "tablename": "alluser",
+                        "tablename": "people",
                         "alias": "a",
                         "joinMode": "Left"
                     }, {
@@ -513,7 +513,7 @@ export default class CheckEvaluateStore extends VuexModule {
             "pageInfo" : {},
             "conditionList": [{
                 "name": "category",
-                "value": "评定等级",
+                "value": "评定级别",
                 "algorithm": "EQ"
             }],
             "sortList": [],

@@ -343,9 +343,10 @@ p span{
     background-image: url('~@/assets/css/images/checked.png');
     background-repeat:no-repeat;
     margin-top: 5px;
-    margin-left: 32px;
+    margin-left: 54px;
     height: 16px;
     width: 16px;
+
 
 }
 .oneButtom{
