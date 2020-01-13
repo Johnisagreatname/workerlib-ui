@@ -32,6 +32,7 @@
 
         public disabled:boolean;
         public uploadData:boolean;
+        public onUp:boolean;
         public offLeave :boolean;
         public sex: string;
         public options!: any;
@@ -45,6 +46,7 @@
             this.storeComm = getModule(CommentsStore)
             this.addWorker = false;
             this.uploadData = false;
+            this.onUp = false;
             this.particulars = false;
             this.certificate = false;
             this.onLeave = false;
@@ -72,6 +74,12 @@
         }
         search(){
             this.store.search();
+        }
+        changeIn(){
+            this.store.setNotIn(false);
+        }
+        changeNot(){
+            this.store.setIn(false);
         }
 
         get getNotIn():boolean{
@@ -214,6 +222,15 @@
         cancelUpload():any{
             this.uploadData = false;
         }
+        okUp():any{
+            this.store.setCheck(this.store.checkeds.filter(x => x.id).map(x => x.id));
+            this.store.upload();
+            this.store.successUpload();
+            this.onUp = false;
+        }
+        cancelUp():any{
+            this.onUp = false;
+        }
         ok() : any{
             if(!this.store.userName){
                 this.messageWarningFn('请输入姓名！');
@@ -253,9 +270,7 @@
             this.onLeave = false;
         }
         upload():any{
-            this.store.setCheck(this.store.checkeds.filter(x => x.id).map(x => x.id));
-            this.store.upload();
-            this.store.successUpload();
+            this.onUp = true;
         }
         particularsOk() : any{
             this.particulars = false;
