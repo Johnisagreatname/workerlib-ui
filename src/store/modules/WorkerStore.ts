@@ -71,7 +71,7 @@ export default class WorkerStore extends VuexModule {
     public conditionList:Array<any>;
     public notIn:boolean;
     public in:boolean;
-    public isSpinShow:boolean;
+
     public insertEafId:string;
 
     public date :Date;
@@ -142,7 +142,6 @@ export default class WorkerStore extends VuexModule {
         this.selectStatus=null;
 		this.userId='';
         this.roleName = {};
-        this.isSpinShow = true;
     }
     @Action
     public getParams() : any {
@@ -308,8 +307,14 @@ export default class WorkerStore extends VuexModule {
     }
     @Action
     public async upload() {
-        let alert: any = Message;
-        await request.post('/api/workerlib/people/export',await this.getUploadParams(),{responseType: 'blob', params: '人员档案'}).then((data)=>{
+        let url = '/api/workerlib/people/export';
+        if(this.in==true){
+            url='/api/workerlib/project_allpeople_in/export';
+        }
+        if(this.notIn==true){
+            url='/api/workerlib/project_allpeople_not/export';
+        }
+        await request.post(url,await this.getUploadParams(),{responseType: 'blob', params: '人员档案'}).then((data)=>{
             if(!data){
                 return;
             }
@@ -356,7 +361,14 @@ export default class WorkerStore extends VuexModule {
     }
     @Action
     public async search() {
-        await request.post('/api/workerlib/people',await this.getParams()).then((data)=>{
+        let url = '/api/workerlib/people';
+        if(this.in==true){
+            url='/api/workerlib/project_allpeople_in';
+        }
+        if(this.notIn==true){
+            url='/api/workerlib/project_allpeople_not';
+        }
+        await request.post(url,await this.getParams()).then((data)=>{
             if(!data) {
                 return;
             }
@@ -1128,7 +1140,7 @@ export default class WorkerStore extends VuexModule {
     }
     @Mutation
     private successUpload() {
-        this.check = [];
+        this.check = new Array<any>();
     }
     @Mutation
     private setOnLeave(data: number) {

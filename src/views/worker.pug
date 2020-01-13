@@ -1,8 +1,4 @@
 .body
-   //Spin(fix,v-show="isSpinShow")
-   //   Icon(type="load-c",size="30",class="demo-spin-icon-load")
-   //   div Loading...
-
    .topOne
       .divOne
          span 项目名称：
@@ -33,9 +29,12 @@
          span 年龄阶段：
             InputNumber( v-model="selectAge1",style="width:99px,padding-left:-20px")
       .divOne2
-            Checkbox(v-model="getIn",disabled) 自有队伍
+
+            Checkbox(v-model="getIn",v-if="this.store.notIn==false") 自有队伍
+            Checkbox(v-model="getIn",disabled,v-else) 自有队伍
       .divOne2
-            Checkbox(v-model="getNotIn",disabled) 外部队伍
+            Checkbox(v-model="getNotIn",v-if="this.store.in==false") 外部队伍
+            Checkbox(v-model="getNotIn",disabled,v-else) 外部队伍
 
       .search
          Button(@click="search()") 搜索

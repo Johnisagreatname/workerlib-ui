@@ -71,18 +71,21 @@
             }
         }
         search(){
-            this.store.notIn = false;
-            this.store.in = false;
             this.store.search();
         }
-        get isSpinShow():boolean{
-            return this.store.isSpinShow;
-        }
-        get getNotIn():string{
+
+        get getNotIn():boolean{
             return this.store.notIn;
         }
-        get getIn():string{
+        set getNotIn(data:boolean){
+            this.store.setNotIn(data);
+        }
+
+        get getIn():boolean{
             return this.store.in;
+        }
+        set getIn(data:boolean){
+            this.store.setIn(data);
         }
         getCommentSparticularsList():any{
             return this.storeComm.commentSparticularsList;
