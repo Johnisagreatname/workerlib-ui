@@ -1,8 +1,4 @@
 .body
-   //Spin(fix,v-show="isSpinShow")
-   //   Icon(type="load-c",size="30",class="demo-spin-icon-load")
-   //   div Loading...
-
    .topOne
       .divOne
          span 项目名称：
@@ -33,9 +29,11 @@
          span 年龄阶段：
             InputNumber( v-model="selectAge1",style="width:99px,padding-left:-20px")
       .divOne2
-            Checkbox(v-model="getIn",disabled) 自有队伍
+            Checkbox(v-model="getIn",@on-change="changeIn()") 自有队伍
+            //Checkbox(v-model="getIn",disabled,v-else) 自有队伍
       .divOne2
-            Checkbox(v-model="getNotIn",disabled) 外部队伍
+            Checkbox(v-model="getNotIn",@on-change="changeNot()") 外部队伍
+            //Checkbox(v-model="getNotIn",disabled,v-else) 外部队伍
 
       .search
          Button(@click="search()") 搜索
@@ -332,6 +330,9 @@
       .divL
          .divCheck(v-for="item in this.store.checkeds")
             p {{item.name}}
+   Modal(title="导出",v-model="onUp",:styles="{top: '20px'}",@on-ok="okUp()",@on-cancel="cancelUp()")
+      .divL2
+         span 是否导出?
    Modal(:value="uploadData",title="上传资料",@on-ok="okUpload()",@on-cancel="cancelUpload()",width='70%',:loading="loading")
       .addBody
 

@@ -70,5 +70,9 @@
                     .circle
                     span {{title}}
                 router-view
+                //Col(class="demo-spin-col",span="8")
+                Spin(fix, v-show="loading")
+                    Icon(type="ios-loading",size=18,class="demo-spin-icon-load")
+                    div Loading
 
 

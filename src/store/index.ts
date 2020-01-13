@@ -20,4 +20,13 @@ import Vuex from 'vuex';
 
 Vue.use(Vuex);
 
-export default new Vuex.Store({});
+export default new Vuex.Store({
+    state: {
+        loading: false
+    },
+    mutations: {
+        changeLoading(state, boolean) {
+            state.loading = boolean;
+        }
+    }
+});

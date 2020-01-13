@@ -32,6 +32,7 @@
 
         public disabled:boolean;
         public uploadData:boolean;
+        public onUp:boolean;
         public offLeave :boolean;
         public sex: string;
         public options!: any;
@@ -45,6 +46,7 @@
             this.storeComm = getModule(CommentsStore)
             this.addWorker = false;
             this.uploadData = false;
+            this.onUp = false;
             this.particulars = false;
             this.certificate = false;
             this.onLeave = false;
@@ -71,18 +73,27 @@
             }
         }
         search(){
-            this.store.notIn = false;
-            this.store.in = false;
             this.store.search();
         }
-        get isSpinShow():boolean{
-            return this.store.isSpinShow;
+        changeIn(){
+            this.store.setNotIn(false);
         }
-        get getNotIn():string{
+        changeNot(){
+            this.store.setIn(false);
+        }
+
+        get getNotIn():boolean{
             return this.store.notIn;
         }
-        get getIn():string{
+        set getNotIn(data:boolean){
+            this.store.setNotIn(data);
+        }
+
+        get getIn():boolean{
             return this.store.in;
+        }
+        set getIn(data:boolean){
+            this.store.setIn(data);
         }
         getCommentSparticularsList():any{
             return this.storeComm.commentSparticularsList;
@@ -211,6 +222,15 @@
         cancelUpload():any{
             this.uploadData = false;
         }
+        okUp():any{
+            this.store.setCheck(this.store.checkeds.filter(x => x.id).map(x => x.id));
+            this.store.upload();
+            this.store.successUpload();
+            this.onUp = false;
+        }
+        cancelUp():any{
+            this.onUp = false;
+        }
         ok() : any{
             if(!this.store.userName){
                 this.messageWarningFn('请输入姓名！');
@@ -250,9 +270,7 @@
             this.onLeave = false;
         }
         upload():any{
-            this.store.setCheck(this.store.checkeds.filter(x => x.id).map(x => x.id));
-            this.store.upload();
-            this.store.successUpload();
+            this.onUp = true;
         }
         particularsOk() : any{
             this.particulars = false;

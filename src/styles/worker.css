@@ -279,18 +279,7 @@ p span{
     background-color: #c5e8ff;
     border-radius: 50%;
 }
-.demo-spin-icon-load{
-    animation: ani-demo-spin 1s linear infinite;
-}
-@keyframes ani-demo-spin {
-    from { transform: rotate(0deg);}
-    50% { transform: rotate(180deg);}
-    to { transform: rotate(360deg);}
-}
-/* 假如内容过长，一屏放不下，滚动条下拉覆盖不全 */
-.ivu-spin-fix {
-    position: fixed;
-}
+
 .addBody{
     width: 100%;
     height: 560px;
@@ -533,6 +522,11 @@ margin-right: 5px;
 .divL{
 width: 100%;
 height: 200px;
+overflow-y: auto;
+}
+.divL2{
+width: 100%;
+height: 22px;
 overflow-y: auto;
 }
 #app .ivu-checkbox-wrapper{
