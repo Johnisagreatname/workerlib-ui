@@ -124,7 +124,7 @@
             if (personInfo == null) {
                 return ""
             } else {
-                return "http://39.108.103.150:6666/api/workerlib/download/people/code/" + personInfo.id;
+                return "/api/workerlib/download/people/code/" + personInfo.id;
             }
         }
 
