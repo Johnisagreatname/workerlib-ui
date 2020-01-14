@@ -4,7 +4,7 @@
     import CoursewareStore from '../../../store/modules/CoursewareStore';
     import { Component, Vue, Prop, Model} from 'vue-property-decorator';
     import { getModule } from 'vuex-module-decorators';
-
+    import { Message } from 'iview';
     @Component({
         components:{
         },
@@ -55,8 +55,19 @@
             this.userName = null;
             this.addId = null;
         }
+        loading = true;
+        messageWarningFn (text) {
+            let alert: any = Message;
+            alert.warning(text);
+            setTimeout(() => {
+                this.loading = false;
+                this.$nextTick(() => {
+                    this.loading = true;
+                })
+            }, 1000)
+        }
         toggle(name){
-            if(name=="团体评级"){
+            if(name=="评定记录"){
                 this.store.setSelectStatus(1);
                 this.store.search();
             }else {
@@ -68,14 +79,22 @@
             return this.workType;
         }
         okTeamRate():any{
+            if(!this.store.insertRatingname){
+                this.messageWarningFn('请输入评定记录名称！');
+                return;
+            }if(this.store.rate.filter(a =>a.ratingname == this.store.insertRatingname).length>0){
+                this.messageWarningFn('评定记录名称已存在！');
+                return;
+            }
             this.store.setInsertNorating(this.store.checkeds.length);
             this.store.setInsertRate(0);
             for(let i = 0; i< this.store.checkeds.length;i++){
                 this.store.setCultivateArchivesList(this.store.checkeds[i].id);
             }
-            this.store.insertTeamRate();
+            this.store.insertTeamRate(this.change);
 
             this.addTeamRate = false;
+
         }
         cancelTeamRate():any{
             this.addTeamRate = false;
@@ -145,7 +164,6 @@
             itemTrue['eafId'] = row.eafId;
             itemTrue['eafName'] = row.eafName;
             this.store.setCheckedUser(itemTrue);
-            console.log(this.store.checkedUser)
         }
         onSelectCancel(selection,row){
             for(let i = 0;i < this.store.rate.length;i++) {
@@ -155,7 +173,6 @@
             }
             let index =  this.store.checkedUser.findIndex(x => x.eafId == row.eafId);
             this.store.checkedUser.splice(index, 1);
-            console.log(this.store.checkedUser)
         }
         onSelectAll(selection) {
             for(let i= 0;i<selection.length;i++){
@@ -169,7 +186,6 @@
                 itemTrue['eafName'] = row.eafName;
                 this.store.setCheckedUser(itemTrue)
             }
-            console.log(this.store.checkedUser)
 
 
         }
@@ -182,7 +198,6 @@
                 }
 
             }
-            console.log(this.store.checkedUser)
         }
 
         getCommtenGrade() : any {
@@ -194,6 +209,7 @@
         getGrade() : any {
             return this.store.grades;
         }
+
         ok() : any{
             let item = {};
             item["userId"] = this.addId;
@@ -239,7 +255,6 @@
                 this.$set(this.store.peoples[index], '_disabled', true)
             }
             this.checkAllGroup = [];
-            console.log(this.checkAllGroup);
         }
         change(id){
             this.store.setTeamId(id);
@@ -446,7 +461,6 @@
             itemTrue['name'] = row.eafName;
             itemTrue['photo'] = row.cwrPhoto;
             this.checkAllGroup.push(itemTrue);
-            console.log(this.checkAllGroup);
         }
         handleSelectRowCancel(selection, row){
             for(let i = 0;i < this.store.peoples.length;i++) {
@@ -456,7 +470,6 @@
             }
             let index =  this.checkAllGroup.findIndex(x => x.id == row.eafId);
             this.checkAllGroup.splice(index, 1);
-            console.log(this.checkAllGroup);
 
         }
         //多选
@@ -469,7 +482,6 @@
                 itemTrue['photo'] = row.cwrPhoto;
                 this.checkAllGroup.push(itemTrue);
             }
-            console.log(this.checkAllGroup);
         }
         handleSelectAllCancel(selection){
             for(let i = 0;i < this.store.peoples.length;i++) {
@@ -479,7 +491,6 @@
                     this.checkAllGroup.splice(index, 1);
                 }
             }
-            console.log(this.checkAllGroup);
         }
         onPageSizeInChange(pageSize){
             this.store.setInPageSize(pageSize);

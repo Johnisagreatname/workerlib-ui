@@ -41,6 +41,10 @@ export default class WorkerStore extends VuexModule {
     public archivesId:number;
 
 
+	public year:any;
+    public selectSex:number;
+    public selectAge1:number;
+    public selectAge2:number;
     public selectProjectName:string;
     public selectContractors:string;
     public selectUserName:string;
@@ -67,10 +71,13 @@ export default class WorkerStore extends VuexModule {
     public conditionList:Array<any>;
     public notIn:boolean;
     public in:boolean;
+
     public insertEafId:string;
 
     public date :Date;
 
+	public userId:String;
+    public roleName:Roles;
     constructor(e) {
         super(e)
         this.pageIndex=1;
@@ -123,11 +130,18 @@ export default class WorkerStore extends VuexModule {
         this.checkWorkce=null;
         this.projectList=[];
         this.unitList = [];
+
+		this.year = new Date().getFullYear();
+        this.selectSex = null;
+        this.selectAge1 = null;
+        this.selectAge2 = null;
         this.selectProjectName="";
         this.selectContractors="";
         this.selectUserName="";
         this.selectType="";
         this.selectStatus=null;
+		this.userId='';
+        this.roleName = {};
     }
     @Action
     public getParams() : any {
@@ -165,6 +179,27 @@ export default class WorkerStore extends VuexModule {
             item["name"]="leave";
             item["value"]=this.selectStatus;
             item["algorithm"] = "LIKE"
+            this.conditionList.push(item);
+        }
+		if(this.selectSex){
+            let item ={};
+            item["name"]="sex";
+            item["value"]=this.selectSex;
+            item["algorithm"] = "LIKE"
+            this.conditionList.push(item);
+        }
+        if(this.selectAge1){;
+            let item ={};
+            item["name"]="year";
+            item["value"]=this.year - this.selectAge1;
+            item["algorithm"] = "GTEQ"
+            this.conditionList.push(item);
+        }
+        if(this.selectAge2){
+            let item ={};
+            item["name"]="year";
+            item["value"]=this.year - this.selectAge2;
+            item["algorithm"] = "LTEQ"
             this.conditionList.push(item);
         }
         return {
@@ -224,60 +259,13 @@ export default class WorkerStore extends VuexModule {
     @Action
     public getInParams() : any {
         return {
-            "joinTables": [
-                {
-                    "tablename": "involvedproject",
-                    "alias": "a",
-                    "JoinMode": "Left",
-                },
-                {
-                    "tablename": "projectworktype",
-                    "alias": "w",
-                    "joinMode": "Left",
-                    "onList": [{
-                        "name": "a.project_id",
-                        "value": "w.projectId",
-                        "algorithm": "EQ"
-                    }]
-                },
-                {
-                    "tablename": "archives",
-                    "alias": "v",
-                    "JoinMode": "Left",
-                    "onList": [{
-                        "name": "v.project_id",
-                        "value": "a.project_id",
-                        "algorithm": "EQ"
-                    }]
-                },
-
-                {
-                    "tablename": "project",
-                    "alias": "p",
-                    "JoinMode": "Left",
-                    "onList": [{
-                        "name": "p.project_id",
-                        "value": "a.project_id",
-                        "algorithm": "EQ"
-                    }]
-                }, {
-                    "tablename": "unit",
-                    "alias": "u",
-                    "joinMode": "Left",
-                    "onList": [{
-                        "name": "u.unit_id",
-                        "value": "a.unit_id",
-                        "algorithm": "EQ"
-                    }]
-                }
-            ],
             "pageInfo" : {
                 "pageIndex": this.inPageIndex,
                 "pageSize": this.inPageSize
             },
 
             "conditionList": [{
-                "name": "a.archives_id",
+                "name": "archives_id",
                 "value": this.infoId,
                 "algorithm": "EQ"
             }
@@ -290,19 +278,7 @@ export default class WorkerStore extends VuexModule {
 
             "keywords" : [],
 
-            "selectList": [
-                {"field": "a.id"},
-                {"field": "a.project_id"},
-                {"field": "a.archives_id"},
-                {"field": "a.unit_id"},
-                {"field": "a.start_time"},
-                {"field": "a.end_time"},
-                {"field": "p.project_name"},
-                {"field": "u.unit_name"},
-                {"field": "w.workType"},
-                {"field": "v.leave"}
-
-            ]
+            "selectList": []
 
         }
     }
@@ -331,8 +307,14 @@ export default class WorkerStore extends VuexModule {
     }
     @Action
     public async upload() {
-        let alert: any = Message;
-        await request.post('/api/workerlib/people/export',await this.getUploadParams(),{responseType: 'blob', params: '人员档案'}).then((data)=>{
+        let url = '/api/workerlib/people/export';
+        if(this.in==true){
+            url='/api/workerlib/project_allpeople_in/export';
+        }
+        if(this.notIn==true){
+            url='/api/workerlib/project_allpeople_not/export';
+        }
+        await request.post(url,await this.getUploadParams(),{responseType: 'blob', params: '人员档案'}).then((data)=>{
             if(!data){
                 return;
             }
@@ -379,7 +361,14 @@ export default class WorkerStore extends VuexModule {
     }
     @Action
     public async search() {
-        await request.post('/api/workerlib/people',await this.getParams()).then((data)=>{
+        let url = '/api/workerlib/people';
+        if(this.in==true){
+            url='/api/workerlib/project_allpeople_in';
+        }
+        if(this.notIn==true){
+            url='/api/workerlib/project_allpeople_not';
+        }
+        await request.post(url,await this.getParams()).then((data)=>{
             if(!data) {
                 return;
             }
@@ -481,7 +470,7 @@ export default class WorkerStore extends VuexModule {
     }
     @Action
     public async searchInfo() {
-        await request.post('/api/workerlib/alluser',{
+        await request.post('/api/workerlib/people_rate',{
             "pageInfo" : {},
 
             "conditionList": [{
@@ -605,7 +594,7 @@ export default class WorkerStore extends VuexModule {
     }
     @Action
     public async searchInvolvedProject() {
-        await request.post('/api/workerlib/join',await this.getInParams()).then((data)=>{
+        await request.post('/api/workerlib/project_alluser',await this.getInParams()).then((data)=>{
             if(!data){
                 return;
             }
@@ -803,7 +792,7 @@ export default class WorkerStore extends VuexModule {
     }
     @Action
     public async countIn() {
-        await request.post('/api/workerlib/join/count', await this.getInParams()).then((total)=>{
+        await request.post('/api/workerlib/project_alluser/count', await this.getInParams()).then((total)=>{
             if(!total){
                 return;
             }
@@ -948,6 +937,76 @@ export default class WorkerStore extends VuexModule {
             alert.warning(e.message || e)
         });
     }
+	@Action
+    public async insertUserGroupRole(id) {
+        await request.put('/api/workerlib/usergrouprole', {
+            "userGroupRoleId":null,
+            "userId":id,
+            "roleId":this.roleName[0].roleId
+        }).then((data)=>{
+            this.addUserGroupRole(data);
+        }).catch((e)=>{
+            console.log(e)
+            let alert: any = Message;
+            if(!e) {
+                alert.warning('未知错误！');
+                return;
+            }
+
+            if(e.response && e.response.data && e.response.data.message) {
+                alert.warning(e.response.data.message)
+                return
+            }
+
+            if(!e.message) {
+                return;
+            }
+
+            alert.warning(e.message || e)
+        });
+    }
+
+
+    @Action
+    public async findRole() {
+        await request.post('/api/workerlib/role', {
+            "conditionList": [{
+                "name": "roleName",
+                "value": "工人",
+                "algorithm": "EQ"
+
+            }],
+            "sortList": [],
+
+            "groupList" : [],
+
+            "keywords" : [],
+            "selectList": []
+        }).then((data)=>{
+            if(!data){
+                return;
+            }
+            this.successRole(data);
+        }).catch((e)=>{
+            console.log(e)
+            let alert: any = Message;
+            if(!e) {
+                alert.warning('未知错误！')
+                return
+            }
+
+            if(e.response && e.response.data && e.response.data.message) {
+                alert.warning(e.response.data.message)
+                return
+            }
+
+            if(!e.message) {
+                return;
+            }
+
+            alert.warning(e.message || e)
+        });
+    }
     @Action
     public async selectCheckWorkceMonth() {
         await request.post('/api/workerlib/user_salary', {
@@ -1025,10 +1084,17 @@ export default class WorkerStore extends VuexModule {
             alert.warning(e.message || e)
         });
     }
+	@Mutation
+     public addUserGroupRole(data: any){
+        if(data.status == 0) {
+            this.search();this.search();
+        }
+     }
     @Action
     public added(data: any) {
         if(data.status == 0) {
             this.insertWorkType(data.data);
+			this.insertUserGroupRole(data.data);
         }
     }
     @Action
@@ -1059,6 +1125,10 @@ export default class WorkerStore extends VuexModule {
 
         }
     }
+	@Mutation
+    public successRole(data:any){
+        this.roleName =  data.data;
+    }
     @Mutation
     private sucessCheckWorkceMonth(data: any) {
         this.checkWorkceMonth = data.data;
@@ -1073,7 +1143,7 @@ export default class WorkerStore extends VuexModule {
     }
     @Mutation
     private successUpload() {
-        this.check = [];
+        this.check = new Array<any>();
     }
     @Mutation
     private setOnLeave(data: number) {
@@ -1182,6 +1252,19 @@ export default class WorkerStore extends VuexModule {
     public setSelectStatus(data:number){
         this.selectStatus = data;
     }
+    
+	@Mutation
+    public setSelectSex(data:number){
+        this.selectSex = data;
+    }
+    @Mutation
+    public setSelectAge1(data:any){
+        this.selectAge1 = data;
+    }
+    @Mutation
+    public setSelectAge2(data:any){
+        this.selectAge2 = data;
+    }
     @Mutation
     public successType(data: any) {
         this.projectType = data.data;
@@ -1236,8 +1319,6 @@ export default class WorkerStore extends VuexModule {
     }
     @Mutation
     public setPageTotal(data: number) {
-        this.notIn = false;
-        this.in = false;
         this.conditionList = new Array<any>()
         this.pageTotal = data;
     }
@@ -1291,3 +1372,26 @@ interface InvolvedProjectInfo {
     project_license?:string;
 }
 
+interface UserGroupRole {
+    userGroupRoleId?:string;
+    userId?:number;
+    groupId?:string;
+    roleId?:string;
+    userPath?:string;
+    modifyBy?:number;
+    modifyTime?:number;
+    createOn?:Date;
+    createBy?:number;
+}
+
+
+interface Roles {
+    roleId?:string;
+    roleName?:string;
+    description?:string;
+    userPath?:string;
+    modifyTime?:Date;
+    modifyBy?:number;
+    createOn?:Date;
+    createBy?:number;
+}

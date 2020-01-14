@@ -10,6 +10,12 @@
          span 姓名：
             Input(clearable,style="width: 200px",v-model="selectUserName")
       .divOne
+         .name
+            span 性别:
+         .input(style="margin-top: 18px")
+            Select(filterable,v-model="selectSex",clearable,style="width: 200px")
+               Option(v-for="item in getSex()", :value="item.key", :key="item.key") {{item.value}}
+      .divOne
          span 工种：
             Select(filterable,clearable,style="width:200px",v-model="selectType")
                Option(v-for="item in getType()", :value="item.name", :key="item.name") {{item.name}}
@@ -17,8 +23,20 @@
          span 状态：
             Select(filterable,clearable,style="width:200px",v-model="selectStatus")
                Option(v-for="item in getMenus()", :value="item.key", :key="item.key") {{item.value}}
+      .divOne
+         span &nbsp;-&nbsp;
+            InputNumber( v-model="selectAge2",style="width:99px")
+         span 年龄阶段：
+            InputNumber( v-model="selectAge1",style="width:99px,padding-left:-20px")
+      .divOne2
+            Checkbox(v-model="getIn",@on-change="changeIn()") 自有队伍
+            //Checkbox(v-model="getIn",disabled,v-else) 自有队伍
+      .divOne2
+            Checkbox(v-model="getNotIn",@on-change="changeNot()") 外部队伍
+            //Checkbox(v-model="getNotIn",disabled,v-else) 外部队伍
+
       .search
-         Button(@click="this.store.search") 搜索
+         Button(@click="search()") 搜索
    .hr
    .button
       Button(type="primary", ghost,@click="addWorker=!addWorker",icon="ios-add-circle-outline") 新增
@@ -49,7 +67,8 @@
          Button(type="primary", ghost,@click="viewData(item.eafId,item.cwrIdnum)")
       .photos
          div(:class="isChecked(item.eafId) ? 'pop' : 'pTop'")
-         img.pButtom
+         .pButtom
+            img(:src="'/api/workerlib/download/people/code/'+item.id", :style={'width': '100%', 'height': '100%'})
       .y2
          p 手机号码
          p 身份证号
@@ -174,8 +193,8 @@
                      p(v-if="this.store.peopleInfo.cwrIdnum") {{this.store.peopleInfo.cwrIdnum}}
                      p(v-else) 无
 
-                     p(v-if="this.store.peopleInfo.grade==null") 无
-                     p(v-else) {{this.store.peopleInfo.grade}}
+                     p(v-if="this.store.peopleInfo.rateWorkType==null") 无
+                     p(v-else) {{this.store.peopleInfo.rateWorkType}}
             .oneButtom
                .buttonTop
                   h2 参与项目
@@ -202,12 +221,12 @@
                         span(v-else) 离场
                   .text
                      p(:style={'font-weight':'bold'}) 进场时间：
-                        span(:style={'color':'#0E93FF'},v-if="invlo.cwrUserIn == null")
+                        span(:style={'color':'#0E93FF'},v-if="invlo.cwrUserIn == null") 无
                         span(:style={'color':'#0E93FF'},v-else) {{getDateFormat(invlo.cwrUserIn)}}
                   .text
                      p(:style={'font-weight':'bold'}) 退场时间：
-                        span(:style={'color':'#0E93FF'},v-if="invlo.cwrUserOut == null")
-                        span(:style={'color':'#0E93FF'},v-if="invlo.cwrUserOut == null") {{getDateFormat(invlo.cwrUserOut)}}
+                        span(:style={'color':'#0E93FF'},v-if="invlo.cwrUserOut == null")  无
+                        span(:style={'color':'#0E93FF'},v-else) {{getDateFormat(invlo.cwrUserOut)}}
                Page(:total="inPageTotal",show-total,@on-page-size-change="onInPageSizeChange",@on-change="onInPageIndexChange",:page-size=1)
          .boxTwo
             .twoTop
@@ -311,6 +330,9 @@
       .divL
          .divCheck(v-for="item in this.store.checkeds")
             p {{item.name}}
+   Modal(title="导出",v-model="onUp",:styles="{top: '20px'}",@on-ok="okUp()",@on-cancel="cancelUp()")
+      .divL2
+         span 是否导出?
    Modal(:value="uploadData",title="上传资料",@on-ok="okUpload()",@on-cancel="cancelUpload()",width='70%',:loading="loading")
       .addBody
 

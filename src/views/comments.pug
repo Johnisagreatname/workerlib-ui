@@ -47,7 +47,7 @@
                          Select(clearable,filterable,style="width:380px",v-model="insertProject",v-if="this.store.projectList.length>0")
                              Option(v-for="item in getProjectList()", :value="item.project_name", :key="item.project_name") {{item.project_name}}
                          Select(clearable,filterable,style="width:380px",v-model="insertProject",disabled,v-else)
-                             Option(v-for="item in getProjectList()", :value="item.project_name", :key="item.project_name") {{item.project_name}}
+                             //Option(v-for="item in getProjectList()", :value="item.project_name", :key="item.project_name") {{item.project_name}}
                  .div
                      .d1
                          span 不良记录评价

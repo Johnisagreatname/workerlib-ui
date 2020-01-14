@@ -187,11 +187,6 @@ export default class RoleStore extends VuexModule {
 
     public columns = [
         {
-            type: 'selection',
-            width: 60,
-            align: 'center'
-        },
-        {
             title: '角色名',
             key: 'roleName',
             sortable: true

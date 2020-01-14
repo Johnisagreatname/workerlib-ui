@@ -48,8 +48,8 @@
                         span 设置
                     MenuItem(name="/nav/account")
                         span 帐号
-                    MenuItem(name="/nav/role")
-                        span 角色
+                    //MenuItem(name="/nav/role")
+                    //    span 角色
                     MenuItem(name="/nav/workclass")
                         span 工种
                     MenuItem(name="/nav/commentType")
@@ -70,5 +70,9 @@
                     .circle
                     span {{title}}
                 router-view
+                //Col(class="demo-spin-col",span="8")
+                Spin(fix, v-show="loading")
+                    Icon(type="ios-loading",size=18,class="demo-spin-icon-load")
+                    div Loading
 
 

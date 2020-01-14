@@ -1,10 +1,15 @@
 <script lang="ts">
     import "@/assets/css/common.css";
     import NavStore from '../../store/modules/NavStore';
-    import { Component, Vue, Prop, Model} from 'vue-property-decorator';
+    import {Component, Vue, Prop, Model, Watch} from 'vue-property-decorator';
     import { getModule } from 'vuex-module-decorators';
 
     @Component({
+        data() {
+            return {
+                loading: false
+            }
+        },
         components:{
         },
         directives: { // 自定义指令
@@ -18,6 +23,15 @@
                     'menu-item',
                     this.isCollapsed ? 'collapsed-menu' : ''
                 ]
+            },
+
+            getLoading() {
+                return this.$store.state.loading
+            }
+        },
+        watch: {
+            getLoading: function(news) {
+                this.loading = news
             }
         }
     })
@@ -27,8 +41,8 @@
         constructor() {
             super();
             this.store = getModule(NavStore)
-        }
 
+        }
         @Model('isCollapsed', { type: Boolean }) private isCollapsed !: boolean;
 
         private menus: Array<MenuInfo>;

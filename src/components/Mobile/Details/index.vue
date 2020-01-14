@@ -35,7 +35,6 @@
 
         constructor() {
             super();
-        debugger
             this.getBody();
             this.userId = router.currentRoute.query.eafid;
             this.token = router.currentRoute.query.token;
@@ -62,7 +61,6 @@
         }
 
         getBody(): any {
-        debugger
             document.body.style.minWidth = window.screen.width + 'px'
         }
 

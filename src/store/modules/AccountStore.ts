@@ -431,7 +431,7 @@ export default class AccountStore extends VuexModule {
         }
     }
 
-    @Mutation
+    @Action
     public addedt(data: any) {
         if(data.status == 0) {
             this.search();
@@ -461,11 +461,6 @@ export default class AccountStore extends VuexModule {
 
 
     public columns = [
-        {
-            type: 'selection',
-            width: 60,
-            align: 'center'
-        },
         {
             title: '用户名',
             key: 'username',

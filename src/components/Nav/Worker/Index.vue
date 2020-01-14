@@ -32,9 +32,11 @@
 
         public disabled:boolean;
         public uploadData:boolean;
+        public onUp:boolean;
         public offLeave :boolean;
         public sex: string;
         public options!: any;
+        public optionsSex!: any;
         public now: Date;
         public year :any;
         public date:any;
@@ -44,12 +46,14 @@
             this.storeComm = getModule(CommentsStore)
             this.addWorker = false;
             this.uploadData = false;
+            this.onUp = false;
             this.particulars = false;
             this.certificate = false;
             this.onLeave = false;
             this.offLeave =false;
         }
         mounted() {
+        	this.store.findRole();
             if(this.store.notIn){
                 if(this.store.notIn == true){
                     this.store.searchNot();
@@ -67,6 +71,29 @@
                 this.store.getProjectType();
                 this.store.selectProject();
             }
+        }
+        search(){
+            this.store.search();
+        }
+        changeIn(){
+            this.store.setNotIn(false);
+        }
+        changeNot(){
+            this.store.setIn(false);
+        }
+
+        get getNotIn():boolean{
+            return this.store.notIn;
+        }
+        set getNotIn(data:boolean){
+            this.store.setNotIn(data);
+        }
+
+        get getIn():boolean{
+            return this.store.in;
+        }
+        set getIn(data:boolean){
+            this.store.setIn(data);
         }
         getCommentSparticularsList():any{
             return this.storeComm.commentSparticularsList;
@@ -148,6 +175,15 @@
             ];
             return this.options;
         }
+        getSex() : any {
+            if(this.optionsSex) return this.optionsSex;
+            this.optionsSex = [
+                {value: '男', key: 1 },
+                {value: '女', key: 2 }
+
+            ];
+            return this.optionsSex;
+        }
         getType(){
             return this.store.projectType
         }
@@ -185,6 +221,15 @@
         }
         cancelUpload():any{
             this.uploadData = false;
+        }
+        okUp():any{
+            this.store.setCheck(this.store.checkeds.filter(x => x.id).map(x => x.id));
+            this.store.upload();
+            this.store.successUpload();
+            this.onUp = false;
+        }
+        cancelUp():any{
+            this.onUp = false;
         }
         ok() : any{
             if(!this.store.userName){
@@ -225,9 +270,7 @@
             this.onLeave = false;
         }
         upload():any{
-            this.store.setCheck(this.store.checkeds.filter(x => x.id).map(x => x.id));
-            this.store.upload();
-            this.store.successUpload();
+            this.onUp = true;
         }
         particularsOk() : any{
             this.particulars = false;
@@ -428,7 +471,25 @@
         }
         get selectStatus():number{
             return this.store.selectStatus;
+		}
+        set selectSex(data:number){
+            this.store.setSelectSex(data);
         }
+        get selectSex():number{
+            return this.store.selectSex;
+        }
+        set selectAge1(data:any){
+            this.store.setSelectAge1(data);
+        }
+        get selectAge1():any{
+            return this.store.selectAge1;
+        }
+        set selectAge2(data:any){
+            this.store.setSelectAge2(data);
+        }
+        get selectAge2():any{
+            return this.store.selectAge2;
+       }
         set photo(data:string){
             this.store.setPhoto(data);
         }

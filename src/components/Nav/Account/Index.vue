@@ -25,7 +25,7 @@
         private store: any;
         private options!: Array<any>;
         private uid:string;
-        private getDispaly:string;
+        public getDispaly:string;
         private updUser:boolean;
         public delUser: boolean;
 
@@ -35,7 +35,7 @@
             this.store = getModule(AccountStore);
             this.updUser=false;
             this.delUser = false;
-            this.getDispaly = 'none';
+            this.getDispaly = 'display:none';
         }
         rowClassName (row, index) : string {
             if(index == 0) {
@@ -109,8 +109,6 @@
 
         onPageIndexChange(pageIndex){
 
-            console.log(pageIndex)
-
             this.store.pageIndex(pageIndex);
             this.store.search();
         }
@@ -140,6 +138,12 @@
         }
 
 
+        get getDisplay():string{
+            return this.store.getDisplay;
+        }
+		set getDisplay(data:string){
+            this.store.setGetDisplay(data);
+        }
         get username():string{
             return this.store.userInfo.username;
         }

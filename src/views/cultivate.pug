@@ -75,7 +75,7 @@
 
     .footer
         Page(:total="pageTotal",show-sizer,show-elevator,show-total,@on-page-size-change="onPageSizeChange",@on-change="onPageIndexChange",:page-size=20)
-    Modal(:value="startTraining",title="开始培训",@on-ok="okStart()",@on-cancel="cancelStart()",width='75%',:loading="loading")
+    Modal(:value="startTraining",title="培训详情",@on-ok="okStart()",@on-cancel="cancelStart()",width='75%',:loading="loading")
         .addBody1
             Input(v-model="selectUserName",:style={
                 'width': '150px',

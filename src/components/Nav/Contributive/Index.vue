@@ -40,8 +40,7 @@
         }
 
         mounted() {
-            this.store.search()
-            console.log('mounted')
+            this.store.search();
         }
 
         private options!: any;

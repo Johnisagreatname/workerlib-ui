@@ -3,7 +3,7 @@
         Button(type="primary", ghost, icon="ios-book-outline",@click="addVideos()") 上传
     .videoPhoto
         .video(v-for="item in getVideo()")
-            video(controls="controls",autoplay,loop,width="300px",height="200px", type="video/mp4")
+            video(controls="controls",width="300px",height="200px", type="video/mp4")
                 source(:src="'/api/workerlib/play/indexVideo/file/'+item.id")
             span(class="image-remove",@click="onDelete(item.id)") +
     .videoPhoto

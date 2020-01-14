@@ -41,7 +41,7 @@
                         span {{item.workType}}
                     .belowRight
                         template
-                            Progress(:title='item.total+"(人)"',:percent="((item.total/peopleTotal)*100 ? (item.total/peopleTotal)*100 : 0 )",
+                            Progress(:title='item.total+"(人)"+peopleTotal',:percent="((item.total/peopleTotal)*100 ? (item.total/peopleTotal)*100 : 0 )",
                             :stroke-width="15",:stroke-color="getColor(index)",hide-info,:style="{cursor: 'pointer'}")
 
             .bodyLeftMiddle
@@ -279,9 +279,10 @@
                                 'cursor': 'pointer'
 
                             })
-                                .tableCircle(:style="{backgroundColor: backgroundColor(index)}")
+                                .tableCircle(:style="{backgroundColor:item.color}")
                                 span(:style={'cursor': 'pointer'},@click="workType(item.workType)") {{item.workType}}
-                            td {{item.total}}人({{((item.total/peopleTotal)*100).toFixed(2)}}%)
+                            td {{item.total}}({{((item.total/peopleTotal)*100).toFixed(2)}}%)
+
 
 
             .bodyRightMiddle
@@ -302,7 +303,7 @@
                     Carousel(v-model="carousel", autoplay, :autoplay-speed=3000, dots="none", radius-dot, arrow="always")
                         CarouselItem(v-for="item in getAppraiseList()")
                             .demo-carousel
-                                img(:src="'/api/workerlib/preview/appraise_statistics/photo/'+item.id" :style={'width': '100%', 'height': '100%'})
+                                img(:src="'/api/workerlib/preview/appraise_photo/photo/'+item.id" :style={'width': '100%', 'height': '100%'})
                 .q5
                     table(:style={'width': '360px', 'text-align': 'center', 'margin-left':'auto',
                         'margin-right': 'auto'},border="0",cellpadding="0",cellspacing="0")

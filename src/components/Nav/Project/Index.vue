@@ -127,7 +127,7 @@
 
                         insert["project_id"] = this.store.projectId;
                         insert["archives_id"] = people.eafId;
-                        insert["unit_id"] = people.unit_id;
+                        insert["unit_id"] = people.unit_id == null? null : people.unit_id;
                         insert["leave"] = 1;
                         this.store.setInsertList(insert);
                         this.store.setInsertProjectWorkTypeList(insertProjectWorkType);
@@ -278,12 +278,22 @@
             return this.store.peoples;
         }
 
+        getUserWorkTypeMenuItem(workType, eafId) {
+
+            let list = this.getUserWorkTypeMenus(workType);
+            if(list.length == 1) {
+                return list[0].name+'_'+eafId;
+            }
+
+            return ''
+        }
+
         handleSelectRowPeople(selection, row) {
             let item = {};
             item["eafId"] = row.eafId;
             item["eafName"] = row.eafName;
+            item["unit_id"] = row.unit_id;
             this.store.setPeoplesId(item);
-            console.log(this.store.peopleId)
         }
         handleSelectRowCancelPeople(selection,row){
             for(let i = 0;i < this.store.peoples.length;i++) {
@@ -293,7 +303,6 @@
             }
             let index =  this.store.peopleId.findIndex(x => x.eafId == row.eafId);
             this.store.peopleId.splice(index, 1);
-            console.log(this.store.peopleId);
         }
         handleSelectAllPeople(selection) {
             for(let i= 0;i<selection.length;i++){
@@ -305,6 +314,7 @@
                 }
                 item["eafId"] = row.eafId;
                 item["eafName"] = row.eafName;
+                item["unit_id"] = row.unit_id;
                 this.store.setPeoplesId(item);
             }
         }
@@ -317,7 +327,6 @@
                 }
 
             }
-            console.log(this.store.peopleId)
         }
 
         handleSelectRowProject(selection, row) {
@@ -327,7 +336,6 @@
             item["project_id"] = row.project_id;
             item["id"] = row.id;
             this.store.setChecked(item);
-            console.log(this.store.checkeds)
         }
         handleSelectRowCancelProject(selection,row){
             for(let i = 0;i < this.store.viewPeople.length;i++) {
@@ -337,7 +345,6 @@
             }
             let index =  this.store.checkeds.findIndex(x => x.id == row.id);
             this.store.checkeds.splice(index, 1);
-            console.log(this.store.checkeds)
         }
         handleSelectAllProject(selection) {
             for(let i= 0;i<selection.length;i++){
@@ -353,7 +360,6 @@
                 item["project_id"] = row.project_id;
                 this.store.setChecked(item);
             }
-            console.log(this.store.checkeds)
         }
         handleSelectAllCancelProject(selection){
             for(let i = 0;i < this.store.viewPeople.length;i++) {
@@ -364,7 +370,6 @@
                 }
 
             }
-            console.log(this.store.checkeds)
         }
 
 
@@ -372,12 +377,8 @@
             if (list) {
                 let item = {};
                 let work = [];
-                this.selectWorkType = new Array<any>();
-                for(let i=0;i<list.length;i++){
-                    let name = list[i];
-                    work.push(name.split('_')[0]);
-                }
-                item["eafId"] = list[0].split('_')[1];
+                work.push(list.split('_')[0]);
+                item["eafId"] = list.split('_')[1];
                 item["work_type"] = work.join(",");
                 this.selectWorkType.push(item);
             }

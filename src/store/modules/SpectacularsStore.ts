@@ -114,45 +114,70 @@ export default class SpectacularsStore extends VuexModule {
     }
     @Action
     public async searchWorkTypeCount() {
-        await request.post('/api/workerlib/worktype',
+        await request.post('/api/workerlib/isShow',
             {
-                "pageInfo" : {
-                    "pageIndex": 1,
-                    "pageSize": 8
-                },
+                "pageInfo" : {},
 
-                "conditionList": [{
-                    "name": "workType",
-                    "value": null,
-                    "algorithm": "NOT"
-                }],
+                "conditionList": [],
 
                 "sortList": [{
                     "name": "total",
                     "desc": true
                 }],
 
-                "groupList" : [
-                    "workType"
-                ],
+                "groupList" : [],
 
                 "keywords" : [],
 
-                "selectList": [{
-                    "field": "workType",
-                    "alias":"workType"
-                },{
-                    "field":"workType",
-                    "function": "COUNT",
-                    "alias":"total"
-                }
-                ]
+                "selectList": []
             }
         ).then((data)=>{
             if(!data){
                 return;
             }
             this.successWorkTypeCount(data);
+
+
+        }).catch((e)=>{
+            let alert: any = Message;
+            if(!e) {
+                alert.warning('未知错误！')
+                return
+            }
+            if(e.response && e.response.data && e.response.data.message) {
+                alert.warning(e.response.data.message)
+                return
+            }
+            if(!e.message) {
+                return;
+            }
+            alert.warning(e.message || e)
+        });
+    }
+    @Action
+    public async searchWorkTypeCountTwo() {
+        await request.post('/api/workerlib/isCount',
+            {
+                "pageInfo" : {},
+
+                "conditionList": [],
+
+                "sortList": [{
+                    "name": "total",
+                    "desc": true
+                }],
+
+                "groupList" : [],
+
+                "keywords" : [],
+
+                "selectList": []
+            }
+        ).then((data)=>{
+            if(!data){
+                return;
+            }
+            this.successWorkTypeCountTwo(data);
 
 
         }).catch((e)=>{
@@ -217,7 +242,7 @@ export default class SpectacularsStore extends VuexModule {
     }
     @Action
     public async count() {
-        await request.post('/api/workerlib/alluser/count', {
+        await request.post('/api/workerlib/workType/count', {
             "pageInfo" : {},
 
             "conditionList": [],
@@ -602,15 +627,16 @@ export default class SpectacularsStore extends VuexModule {
         {color:"#44ae2e"},
         {color:"#7d5dcc"}
     ];
-
     @Mutation
-    private successWorkTypeCount(data: any) {
+    private  successWorkTypeCountTwo(data:any){
         this.echartOptions = new Array<any>();
         for(let i = 0; i< data.data.length;i++) {
             let item = {};
+            let color = {};
+            color["color"]=data.data[i].color;
             item["value"] = data.data[i].total;
             item["name"] = data.data[i].workType;
-            item["itemStyle"] = this.itemStyles[i];
+            item["itemStyle"] = color;
             this.echartOptions.push(item);
         }
 
@@ -619,7 +645,7 @@ export default class SpectacularsStore extends VuexModule {
         let gz = {
             tooltip : {
                 trigger: 'item',
-                formatter: "{a} <br/>{b} : {c} ({d}%)"
+                formatter: "{a} <br/>{b} : {c}"
             },
             series : [
                 {
@@ -653,6 +679,9 @@ export default class SpectacularsStore extends VuexModule {
         }
         chartsgzEcharts.setOption(gz);
 
+    }
+    @Mutation
+    private successWorkTypeCount(data: any) {
         this.workTypeListCount = data.data;
     }
 

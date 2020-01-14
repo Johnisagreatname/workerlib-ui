@@ -1,57 +1,60 @@
 .body
     .topOne
         .divOne
-            span 课程类型：
-                Input(clearable,style="width: 200px" ,v-model="name")
-        .divOne
-            span
-        .divOne
-            span
-        .divOne
-            span
-        .divOne
-            Button(@click="search") 搜索
+            span 课程类型名称：
+                Input(clearable,style="width: 200px" ,v-model="selectName")
+        .search
+            Button(@click="this.store.search") 搜索
     .hr
     .button
-        Button(type="primary", ghost, icon="ios-add-circle-outline",@click="addCourse=!addCourse") 新增课程
+        Button(type="primary", ghost, icon="ios-add-circle-outline",@click="addCommentType=!addCommentType") 添加课程类型
     .bodyTwo
         Table(:row-class-name="rowClassName", border, ref="selection", :columns="getColumns()", :data="getData()")
             template(slot-scope="{row, index }",slot="operation")
-                Dropdown(trigger="click")
+                Dropdown(@on-click = "change")
                     a(href="javascript:void(0)" :style={"font-size": "16px"})
                         span 详细操作
                         Icon(type="md-arrow-dropdown" )
                     DropdownMenu(slot="list")
-                        DropdownItem
-                            Icon(type="ios-remove-circle-outline")
-                            span(@click="popupUpdWorkclass(row.id)") 修改课程类型
-                        DropdownItem
-                            Icon(type="ios-remove-circle-outline")
-                            span(@click="popupDelWorkclass(row.id)") 刪除课程类型
+                        DropdownItem(:name="'edit_'+row.id")
+                            Icon(type="ios-create-outline" )
+                            span 编辑
+                        DropdownItem(:name="'del_'+row.id")
+                            Icon(type="ios-trash-outline" )
+                            span 删除
     .footer
-        Page(:total="totalRecords",show-sizer,show-elevator,show-total,@on-page-size-change="onPageSizeChange",@on-change="onPageIndexChange")
+        Page(:total="pageCount",show-sizer,show-elevator,show-total,@on-page-size-change="onPageSizeChange",@on-change="onPageIndexChange")
 
-    Modal(:value="addCourse",title="新增课程",@on-ok="ok()",@on-cancel="cancel()",width='50%')
+    Modal(:value="addCommentType",title="添加课程类型",@on-ok="ok()",@on-cancel="cancel()",width='50%',:loading = "loading")
         .addBody
             .divTwo
                 .name
-                    span 课程类型
+                    span 课程类型名称
                     span(:style={'color': 'red'}) *
                 .input
-                    Input(clearable,style="width: 345px",size=large,v-model="name")
-    Modal(:value="updCourse",title="修改课程类型",@on-ok="yes()",@on-cancel="cancel()",width='50%')
-        .addBody
+                    Input(clearable,style="width: 345px",size=large,v-model="addName")
             .divTwo
                 .name
-                    span 课程类型
+                    span 课程类型值
                     span(:style={'color': 'red'}) *
                 .input
-                    Input(clearable,style="width: 345px",size=large,v-model="name")
-    Modal(:value="delCourse",title="删除课程",@on-ok="deletes()",@on-cancel="cancel()",width='50%')
+                    InputNumber(:min=1,clearable,style="width: 345px",size=large,v-model="addValue")
+    Modal(:value="updateCommentType",title="编辑课程类型",@on-ok="updateOk()",@on-cancel="updateCancel()",width='50%',:loading = "loading")
         .addBody
             .divTwo
                 .name
-                    span 是否删除该课程类型
-                    span(:style={'color': 'red'})
+                    span 课程类型名称
+                    span(:style={'color': 'red'}) *
                 .input
-                    //Input(clearable,style="width: 345px",size=large,v-model="name")
+                    Input(clearable,style="width: 345px",size=large,v-model="editName")
+            .divTwo
+                .name
+                    span 课程类型值
+                    span(:style={'color': 'red'}) *
+                .input
+                    InputNumber(:min=1,clearable,style="width: 345px",size=large,v-model="editValue")
+    Modal(:value="deleteCommentType",title="删除课程类型",@on-ok="deleteOK()",@on-cancel="deleteCancel()",width='50%',:styles="{top: '20px'}",)
+        .delBody
+            .divTwo
+                span 确定要删除该课程类型？
+

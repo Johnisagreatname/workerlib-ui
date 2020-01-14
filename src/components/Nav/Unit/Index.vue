@@ -1,8 +1,10 @@
 <script lang="ts">
     import "@/assets/css/common.css";
     import UnitStore from '../../../store/modules/UnitStore';
+	import WorkerStore from '../../../store/modules/WorkerStore';
     import { Component, Vue, Prop, Model} from 'vue-property-decorator';
     import { getModule } from 'vuex-module-decorators';
+	import router from '../../../router/.invoke/router';
 
     @Component({
         components:{
@@ -36,7 +38,8 @@
         constructor() {
             super();
             this.addUnit = false;
-            this.store = getModule(UnitStore)
+            this.store = getModule(UnitStore);
+			this.workerStore = getModule(WorkerStore);
         }
 
         @Model('isCollapsed', { type: Boolean }) private isCollapsed !: boolean;
@@ -70,7 +73,6 @@
             }
             let index =  this.store.uplodId.findIndex(x => x.unit_id == row.unit_id);
             this.store.uplodId.splice(index, 1);
-            console.log(this.store.uplodId);
         }
         handleSelectAll(selection) {
             for(let i= 0;i<selection.length;i++){
@@ -132,6 +134,11 @@
 
         public search() {
             this.store.search();
+        }
+        
+		userCount(unit_id) {
+            this.workerStore.setSelectContractors(unit_id);
+            router.push({path:'/nav/worker'});
         }
 
         set project_name(data:string){

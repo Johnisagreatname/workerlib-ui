@@ -75,7 +75,6 @@
             item["file"] = res.file;
             item["type"] = "photo"
             this.store.setInsertPhoto(item);
-            console.log(this.store.insertCultivateVideo);
         }
         handleUpload(file){
             if(this.store.indexVideo.filter(a =>a.type == 'video').length>0){
