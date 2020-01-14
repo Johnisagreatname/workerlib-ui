@@ -737,7 +737,8 @@ export default class CheckEvaluateStore extends VuexModule {
         if(data.status == 0) {
             this.checkeds = new Array<any>();
             this.checkAllGroup = new Array<any>();
-            this.insertTeamUserList = new Array<any>()
+            this.insertTeamUserList = new Array<any>();
+            this.cultivateArchivesList = new Array<any>();
             let alert: any = Message;
             alert.warning("创建团体评价成功！");
         }

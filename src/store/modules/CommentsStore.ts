@@ -579,6 +579,7 @@ export default class CommentsStore extends VuexModule {
     }
     @Mutation
     public clearInsertDataList() {
+        this.insertPhotoList = new Array<any>();
         this.insertProject = null;
         this.insertDescription = null;
         this.insertAppraiseTime = null;
