@@ -45,12 +45,8 @@
                     .search
                         Button(@click="this.store.search") 搜索
                 .hr
-                //.button
-                //    //Button(type="primary", ghost, icon="ios-add-circle-outline",@click="addRate=!addRate",v-if="checkedUser.length>0") 评定
-                //    //Button(type="primary", ghost, icon="ios-add-circle-outline",@click="addRate=!addRate",v-else,disabled) 评定
 
                 .bodyTwo2
-                    //@on-select="onSelect",@on-select-cancel="onSelectCancel",@on-select-all="onSelectAll",@on-select-all-cancel="onSelectAllCancel")
                     Table(border, ref="selection", :columns="getColumns()", :data="getData()", :style={width: '100%'})
                         template(slot-scope="{row, index }",slot="operation")
                             Button(type="primary",size="large", style="margin-right: 5px",@click="addRateName(row.eafId,row.eafName,row.workType)") 评定
@@ -74,18 +70,19 @@
                         Option(v-for="item in getWorkType()", :value="item.name",:key="item.name") {{item.name}}
             .divTwo
                 .name
-                    span 评定级别
-                    span(:style={'color': 'red'}) *
-                .input
-                    Select(filterable,clearable,style="width:260px",v-model="grade")
-                        Option(v-for="item in getCommtenGrade()", :value="item.name", :key="item.name") {{item.name}}
-            .divTwo
-                .name
                     span 评定等级
                     span(:style={'color': 'red'}) *
                 .input
                     Select(filterable,clearable,style="width:260px",v-model="rank")
                         Option(v-for="item in getGrade()", :value="item.name", :key="item.name") {{item.name}}
+            .divTwo
+                .name
+                    span 评定级别
+                    span(:style={'color': 'red'}) *
+                .input
+                    Select(filterable,clearable,style="width:260px",v-model="grade")
+                        Option(v-for="item in getCommtenGrade()", :value="item.name", :key="item.name") {{item.name}}
+
             .divTwo
                 .name
                     span 评定时间
@@ -114,12 +111,6 @@
                         'width': '100px',
                         'margin-left': '10px'
                     },placeholder="名字",icon="ios-search-outline",@on-click="search")
-
-                    //Select(clearable,filterable,:style={
-                    //    'width': '100px',
-                    //    'margin-left': '10px'
-                    //},placeholder="状态",v-model="selectLeave")
-                    //    Option(v-for="item in getMenus()", :value="item.key",:key="item.key") {{item.value}}
 
                     Table(border=false, ref="selection", :columns="getColumnsTeam()", :data="getDataTeam()",
                     :style="{'margin-top': '10px'}",

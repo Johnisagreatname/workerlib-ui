@@ -86,7 +86,6 @@
                 this.messageWarningFn('评定记录名称已存在！');
                 return;
             }
-            debugger
             this.store.setInsertNorating(this.store.checkeds.length);
             this.store.setInsertRate(0);
             for(let i = 0; i< this.store.checkeds.length;i++){
@@ -165,7 +164,6 @@
             itemTrue['eafId'] = row.eafId;
             itemTrue['eafName'] = row.eafName;
             this.store.setCheckedUser(itemTrue);
-            console.log(this.store.checkedUser)
         }
         onSelectCancel(selection,row){
             for(let i = 0;i < this.store.rate.length;i++) {
@@ -175,7 +173,6 @@
             }
             let index =  this.store.checkedUser.findIndex(x => x.eafId == row.eafId);
             this.store.checkedUser.splice(index, 1);
-            console.log(this.store.checkedUser)
         }
         onSelectAll(selection) {
             for(let i= 0;i<selection.length;i++){
@@ -189,7 +186,6 @@
                 itemTrue['eafName'] = row.eafName;
                 this.store.setCheckedUser(itemTrue)
             }
-            console.log(this.store.checkedUser)
 
 
         }
@@ -202,7 +198,6 @@
                 }
 
             }
-            console.log(this.store.checkedUser)
         }
 
         getCommtenGrade() : any {
@@ -214,6 +209,7 @@
         getGrade() : any {
             return this.store.grades;
         }
+
         ok() : any{
             let item = {};
             item["userId"] = this.addId;
@@ -259,7 +255,6 @@
                 this.$set(this.store.peoples[index], '_disabled', true)
             }
             this.checkAllGroup = [];
-            console.log(this.checkAllGroup);
         }
         change(id){
             this.store.setTeamId(id);
@@ -466,7 +461,6 @@
             itemTrue['name'] = row.eafName;
             itemTrue['photo'] = row.cwrPhoto;
             this.checkAllGroup.push(itemTrue);
-            console.log(this.checkAllGroup);
         }
         handleSelectRowCancel(selection, row){
             for(let i = 0;i < this.store.peoples.length;i++) {
@@ -476,7 +470,6 @@
             }
             let index =  this.checkAllGroup.findIndex(x => x.id == row.eafId);
             this.checkAllGroup.splice(index, 1);
-            console.log(this.checkAllGroup);
 
         }
         //多选
@@ -489,7 +482,6 @@
                 itemTrue['photo'] = row.cwrPhoto;
                 this.checkAllGroup.push(itemTrue);
             }
-            console.log(this.checkAllGroup);
         }
         handleSelectAllCancel(selection){
             for(let i = 0;i < this.store.peoples.length;i++) {
@@ -499,7 +491,6 @@
                     this.checkAllGroup.splice(index, 1);
                 }
             }
-            console.log(this.checkAllGroup);
         }
         onPageSizeInChange(pageSize){
             this.store.setInPageSize(pageSize);

@@ -252,7 +252,6 @@
             itemTrue['name'] = row.eafName;
             itemTrue['photo'] = row.cwrPhoto;
             this.checkAllGroup.push(itemTrue);
-            console.log(this.checkAllGroup);
         }
         handleSelectRowCancel(selection, row){
             for(let i = 0;i < this.store.peoples.length;i++) {
@@ -262,7 +261,6 @@
             }
             let index =  this.checkAllGroup.findIndex(x => x.id == row.eafId);
             this.checkAllGroup.splice(index, 1);
-            console.log(this.checkAllGroup);
 
         }
         //多选
@@ -275,7 +273,6 @@
                 itemTrue['photo'] = row.cwrPhoto;
                 this.checkAllGroup.push(itemTrue);
             }
-            console.log(this.checkAllGroup);
         }
         handleSelectAllCancel(selection){
             for(let i = 0;i < this.store.peoples.length;i++) {
@@ -285,7 +282,6 @@
                     this.checkAllGroup.splice(index, 1);
                 }
             }
-            console.log(this.checkAllGroup);
         }
 
         addSelected(){
@@ -300,7 +296,6 @@
                 this.$set(this.store.peoples[index], '_disabled', true)
             }
             this.checkAllGroup = [];
-            console.log(this.checkAllGroup);
         }
 
         show(id: number,name:string,photo:string): void {
@@ -396,7 +391,6 @@
             alert.warning(file.name + ' 文件格式错误！请上传jpg、jpeg、png格式文件！');
         }
         handleSuccessPicture (res, file) {
-            console.log(res.file)
             this.store.setCoverPicture(res.file);
         }
         onPageSizeChange(pageSize){

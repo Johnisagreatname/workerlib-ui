@@ -78,8 +78,6 @@
 
         onPageIndexChange(pageIndex){
 
-            console.log(pageIndex)
-
             this.store.pageIndex(pageIndex);
             this.store.search();
         }

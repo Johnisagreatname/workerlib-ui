@@ -73,7 +73,6 @@
             }
             let index =  this.store.uplodId.findIndex(x => x.unit_id == row.unit_id);
             this.store.uplodId.splice(index, 1);
-            console.log(this.store.uplodId);
         }
         handleSelectAll(selection) {
             for(let i= 0;i<selection.length;i++){

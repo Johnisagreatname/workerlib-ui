@@ -8,9 +8,8 @@
                     .lecturer
                         .divY
                             .img
-                                img(src="/api/workerlib/lecturer/'+item.id" :style={
-                                    'width': '100%',
-                                    'height': '100%'
+                                img(:src="'/api/workerlib/preview/lecturer/photo/'+item.id",:style={
+                                    'width': '100%', 'height': '100%'
                                 })
                         .divY
                             p(:style={'font-weight': 'bold', 'font-size': '18px'}) {{item.name}}
@@ -33,10 +32,9 @@
                     .lecturer
                         .divY
                             .img
-                                img(src="/api/workerlib/lecturer/'+item.id" :style={
-                                    'width': '100%',
-                                    'height': '100%'
-                                })
+
+                                img(:src="'/api/workerlib/preview/lecturer/photo/'+item.id",:style={
+                                    'width': '100%','height': '100%' })
                         .divY
                             p(:style={'font-weight': 'bold', 'font-size': '18px'}) {{item.name}}
                             p 课程：{{item.curriculum}}

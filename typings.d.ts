@@ -24,3 +24,14 @@ declare module 'vue/types/vue' {
         $vux: any,
     }
 }
+declare module "*!text" {
+    const content: string;
+    export default content;
+}
+// Some do it the other way around.
+declare module "json!*" {
+    const value: any;
+    export default value;
+}
+declare module "*.json"
+declare module "*.png"
