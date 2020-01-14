@@ -294,7 +294,6 @@
             item["eafName"] = row.eafName;
             item["unit_id"] = row.unit_id;
             this.store.setPeoplesId(item);
-            console.log(this.store.peopleId)
         }
         handleSelectRowCancelPeople(selection,row){
             for(let i = 0;i < this.store.peoples.length;i++) {
@@ -304,7 +303,6 @@
             }
             let index =  this.store.peopleId.findIndex(x => x.eafId == row.eafId);
             this.store.peopleId.splice(index, 1);
-            console.log(this.store.peopleId);
         }
         handleSelectAllPeople(selection) {
             for(let i= 0;i<selection.length;i++){
@@ -329,7 +327,6 @@
                 }
 
             }
-            console.log(this.store.peopleId)
         }
 
         handleSelectRowProject(selection, row) {
@@ -339,7 +336,6 @@
             item["project_id"] = row.project_id;
             item["id"] = row.id;
             this.store.setChecked(item);
-            console.log(this.store.checkeds)
         }
         handleSelectRowCancelProject(selection,row){
             for(let i = 0;i < this.store.viewPeople.length;i++) {
@@ -349,7 +345,6 @@
             }
             let index =  this.store.checkeds.findIndex(x => x.id == row.id);
             this.store.checkeds.splice(index, 1);
-            console.log(this.store.checkeds)
         }
         handleSelectAllProject(selection) {
             for(let i= 0;i<selection.length;i++){
@@ -365,7 +360,6 @@
                 item["project_id"] = row.project_id;
                 this.store.setChecked(item);
             }
-            console.log(this.store.checkeds)
         }
         handleSelectAllCancelProject(selection){
             for(let i = 0;i < this.store.viewPeople.length;i++) {
@@ -376,7 +370,6 @@
                 }
 
             }
-            console.log(this.store.checkeds)
         }
 
 

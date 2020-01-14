@@ -983,6 +983,9 @@ export default class WorkerStore extends VuexModule {
             "keywords" : [],
             "selectList": []
         }).then((data)=>{
+            if(!data){
+                return;
+            }
             this.successRole(data);
         }).catch((e)=>{
             console.log(e)

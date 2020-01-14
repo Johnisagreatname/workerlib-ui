@@ -6,9 +6,12 @@ import axios from 'axios';
 import router from '../router/.invoke/router'
 import store from "../store";
 
+import loadingurls from '../config/loadurls.json'
+
 /* 防止重复提交，利用axios的cancelToken */
 let pending: any[] = []; // 声明一个数组用于存储每个ajax请求的取消函数和ajax标识
 let name: string;
+let loadingUrlList: Array<any> = loadingurls;
 const CancelToken: any = axios.CancelToken;
 
 
@@ -64,9 +67,10 @@ service.interceptors.request.use((config: any) => {
     //   if (store.getters.sessionId) {
     //     config.headers['X-SessionId'] = getSessionId(); // 让每个请求携带token--['X-Token']为自定义key
     //   }
-    name = config.params ? config.params : '';
-
-    store.commit('changeLoading', true);
+    name = config.params ? config.params : ''
+    if (loadingUrlList.includes(config.url.split("?")[0])) {
+        store.commit('changeLoading', true);
+    }
     return config;
 }, (error: any) => {
     Promise.reject(error);

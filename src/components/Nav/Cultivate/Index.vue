@@ -114,7 +114,6 @@
             item["file"] = res.file;
             item["url"] = "video"
             this.store.setInsertCultivateVideo(item);
-            console.log(this.store.insertCultivateVideo);
         }
         handleFormatError (file) {
             let alert: any = Message;
@@ -130,7 +129,6 @@
             item["file"] = res.file;
             item["url"] = "photo"
             this.store.setInsertCultivateVideo(item);
-            console.log(this.store.insertCultivateVideo);
         }
         toggle(name){
             if(name=="线上培训"){
@@ -173,7 +171,6 @@
                     this.store.checkedDelete.splice(index, 1);
                 }
             }
-            console.log(this.store.checkedDelete)
         }
 
         okDelete() : any{
