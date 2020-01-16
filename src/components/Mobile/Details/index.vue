@@ -152,6 +152,7 @@
 
         //获取年龄
         getAge(idNumber): number {
+            debugger
             if (!idNumber) return;
             this.now = new Date();
             this.year = this.now.getTime();

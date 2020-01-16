@@ -62,7 +62,7 @@
             div(class="text-title") 参与项目
             divider
             swiper(auto height="200px",
-                dots-position="center",hidden="getProjectInfoList()==null")
+                dots-position="center",:hidden="getProjectInfoList().length==0")
                 swiper-item(v-for ="item in getProjectInfoList()")
                     flexbox
                         flexbox-item(span="10")
