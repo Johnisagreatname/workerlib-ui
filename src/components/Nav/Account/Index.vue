@@ -77,6 +77,7 @@
             this.delUser =! this.delUser;
         }
         deletes() : any{
+            debugger
             this.store.deleteUser();
         }
         popupUpdUser(userId){

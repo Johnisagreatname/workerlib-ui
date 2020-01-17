@@ -60,6 +60,7 @@
                         span(:style={'color': 'red'}) *
                     .input
                         Select(filterable,v-model="modegroup",multiple,clearable,style="width:345px")
+                            Option(:value="0", :key="0")  全部
                             Option(v-for="item in getGroup()", :value="item.groupId", :key="item.groupId") {{item.groupName}}
             //.divTwo
             //    .name
