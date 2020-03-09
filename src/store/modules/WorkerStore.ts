@@ -686,6 +686,14 @@ export default class WorkerStore extends VuexModule {
             "selectList": [
                 {
                     "field":"course_name"
+                },{
+                    "field":"a.id",
+                    "alias":"id"
+                },
+                {
+                    "field":"cultivate_id"
+                }, {
+                    "field":"c.courseware_brief"
                 },
                 {
                     "field":"status"

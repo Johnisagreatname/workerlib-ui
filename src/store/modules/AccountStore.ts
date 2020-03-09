@@ -210,12 +210,10 @@ export default class AccountStore extends VuexModule {
 
     @Action
     public async deleteUser(){
-        debugger
         await request.delete('/api/workerlib/user/'+this.uid).then((data)=>{
             if(!data){
                 return;
             }
-            debugger
             this.added(data)
         }).catch((e)=>{
             console.log(e)
@@ -321,7 +319,6 @@ export default class AccountStore extends VuexModule {
 
     @Action
     public async insertUser() {
-        debugger
         await request.put('/api/workerlib/user', {
                 "username":this.userInfo.username,
                 "password":this.userInfo.password,
@@ -329,7 +326,6 @@ export default class AccountStore extends VuexModule {
             if(!data){
                 return;
             }
-            debugger
                 this.added(data)
         }).catch((e)=>{
             console.log(e)
@@ -355,7 +351,6 @@ export default class AccountStore extends VuexModule {
 
     @Action
     public async insertUserGroupRole(id) {
-        debugger
         for(let i in this.insertList) {
             this.insertList[i]['userId'] = id;
         }
@@ -364,7 +359,6 @@ export default class AccountStore extends VuexModule {
             if(!data){
                 return;
             }
-            debugger
             this.addedt(data)
         }).catch((e)=>{
             console.log(e)
@@ -443,7 +437,6 @@ export default class AccountStore extends VuexModule {
     @Action
      public added(data: any) {
         if(data.status == 0) {
-            debugger
             this.insertUserGroupRole(data.data);
         }
     }

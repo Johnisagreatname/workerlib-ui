@@ -98,6 +98,7 @@
         private projectStore: any;
         public $echarts: any;
         public selectWorkType: Array<any>;
+        public roleName:any;
 
         carousel = 0;
         carouselPhoto = 0;
@@ -108,6 +109,8 @@
             this.workerStore = getModule(WorkerStore);
             this.projectStore = getModule(ProjectStore);
             this.selectWorkType = [];
+            this.roleName = JSON.parse(sessionStorage.getItem('loginInfo')).data.userGroupRoleModels[0].role.roleName;
+
         }
         getColor(index){
             if(index%2!=0){
@@ -124,7 +127,12 @@
             }
         }
         goBack(){
-            this['$router'].push("/nav/worker");
+            if(this.roleName == '讲师'){
+                this['$router'].push("/nav/lecturer");
+            }else{
+                this['$router'].push("/nav/worker");
+            }
+
         }
         getWorkType(){
             return this.store.workTypeList;
