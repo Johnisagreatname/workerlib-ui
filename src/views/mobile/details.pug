@@ -8,7 +8,7 @@
                 flexbox-item(span="150")
                     flexbox(orient="vertical")
                         flexbox-item
-                            div(class="flex-demo") {{this.store.personInfo.eafName}} | {{checkSex(this.store.personInfo.cwrIdnum)}} | {{getAge(this.store.personInfo.cwrIdnum)}}岁
+                            div(class="flex-demo") {{this.store.personInfo.eafName}} | {{checkSex(this.store.personInfo.cwrIdnum)}} | {{getYear(this.store.personInfo.cwrIdnum)}}岁
                         flexbox-item
                             div(class="flex-demo2") 查看证件
                 flexbox-item(span="100")
@@ -97,12 +97,12 @@
             divider
             flexbox(orient="horizontal",v-for="item in getCultivateList()")
                 flexbox-item(span="40")
-                    img(class="img-vedio",src="~@/assets/css/images/vedio.png")
+                    img(class="img-vedio",src="~@/assets/css/images/vedio.png",@click="goBack(item.cultivate_id,item.id)")
                 flexbox-item
                     flexbox(orient="horizontal")
                         flexbox(orient="vertical")
                             flexbox-item
-                                div(class="text-main") 两制安全教育
+                                div(class="text-main") {{item.courseware_brief}}
                             flexbox-item
                                 div(class="text-blue") 学习时长：{{item.training_time}}小时
                         flexbox(orient="vertical")
@@ -110,23 +110,23 @@
                                 div(class="text-main") {{item.archivesStatus}}
                             flexbox-item
                                 div(class="text-blue") 时间：{{item.startTime}}
-        div(class="div-bg")
-            div(class="text-title") 出勤记录
-            group
-                cell(title='本月出勤天数',
-                    :value = "this.wstore.checkWorkceMonth.total",
-                    is-link =false)
-                    img(slot="icon",
-                        width="20",
-                        style="display:block;margin-right:5px;",
-                        src="")
-                cell(title='总出勤天数',
-                    :value = "this.wstore.checkWorkce",
-                    is-link =false)
-                    img(slot="icon",
-                        width="20",
-                        style="display:block;margin-right:5px;",
-                        src="")
+        //div(class="div-bg")
+        //    div(class="text-title") 出勤记录
+        //    group
+        //        cell(title='本月出勤天数',
+        //            :value = "this.wstore.checkWorkceMonth.total",
+        //            is-link =false)
+        //            img(slot="icon",
+        //                width="20",
+        //                style="display:block;margin-right:5px;",
+        //                src="")
+        //        cell(title='总出勤天数',
+        //            :value = "this.wstore.checkWorkce",
+        //            is-link =false)
+        //            img(slot="icon",
+        //                width="20",
+        //                style="display:block;margin-right:5px;",
+        //                src="")
         div(class="div-bg")
             div(class="text-title") 工资明细
             group
@@ -150,13 +150,19 @@
             div(v-for="item in getCommentSparticularsList()")
                 flexbox
                     flexbox-item
-                        div {{item.project_name}}
+                        div(:title="item.project_name",:style= {
+                            'display': 'inline-block',
+                            'width': '100%',
+                            'overflow': 'hidden',
+                            'textOverflow': 'ellipsis',
+                            'whiteSpace': 'nowrap'
+                            }) {{item.project_name}}
                     flexbox-item
                         div(class="flex-demo2") 综合评价
-                div(v-if="item.type == 1") {{item.description}}  {{item.username}}
-                div(v-else) {{item.punishment}}
-                div(v-if="item.type == 1") 处罚：{{item.punishment}}
-                div(v-else) {{item.description}}
+                div(v-if="item.type == 1",:style={'color':'red'}) {{item.description}}  {{item.username}}
+                div(v-else,:style={'color':'red'}) {{item.punishment}}
+                div(v-if="item.type == 1",:style={'color':'red'}) 处罚：{{item.punishment}}
+                div(v-else,:style={'color':'red'}) {{item.description}}
 
 
 

@@ -38,9 +38,11 @@
     export default class Nav extends Vue {
 
         private store: any;
+        public roleName:any;
         constructor() {
             super();
             this.store = getModule(NavStore)
+            this.roleName = JSON.parse(sessionStorage.getItem('loginInfo')).data.userGroupRoleModels[0].role.roleName;
 
         }
         @Model('isCollapsed', { type: Boolean }) private isCollapsed !: boolean;
@@ -53,7 +55,6 @@
         set title(data: String) {
             this.store.setTitle(data)
         }
-
         getMenus() : any {
             if(this.menus) return this.menus;
             this.menus = [

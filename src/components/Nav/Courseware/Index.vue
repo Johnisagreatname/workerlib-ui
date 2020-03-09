@@ -29,7 +29,9 @@
         }
 
         single = true;
+        singleUser = false;
         loading = true;
+
         public indeterminate: boolean;
         public checkAll: boolean;
         public addCourseware: boolean;
@@ -69,6 +71,10 @@
         }
 
         search(){
+            this.store.searchPeople();
+        }
+        checkAllGroupChange(){
+            this.store.setSelectUnitId("E1518A607E764390848F188390482597");
             this.store.searchPeople();
         }
         getColumns() : any{
@@ -205,14 +211,24 @@
             return this.store.teacherList;
         }
         okAdd() : any{
-            this.store.setPeoples(this.store.checkeds.length);
+
             this.store.setState("待学习");
             this.store.setCStatus(1);
-            for(let i = 0; i< this.store.checkeds.length;i++){
-                var itemTrue = {};
-                itemTrue['archives_id'] = this.store.checkeds[i].id;
-                itemTrue['cultivate_id'] = this.store.cultivate.course_id;
-                this.store.setCultivateArchivesList(itemTrue);
+            if(this.singleUser==true){
+                this.store.setPeoples(this.store.peoples.length);
+                for(let i = 0; i< this.store.peoples.length;i++){
+                    var itemTrue = {};
+                    itemTrue['archives_id'] = this.store.peoples[i].eafId;
+                    // itemTrue['cultivate_id'] = this.store.cultivate.course_id;
+                    this.store.setCultivateArchivesList(itemTrue);
+                }
+            }else {
+                this.store.setPeoples(this.store.checkeds.length);
+                for(let i = 0; i< this.store.checkeds.length;i++){
+                    var itemTrue = {};
+                    itemTrue['archives_id'] = this.store.checkeds[i].id;
+                    this.store.setCultivateArchivesList(itemTrue);
+                }
             }
             this.store.insertCultivate();
             this.addCultivate = false;
@@ -353,7 +369,7 @@
             return this.store.projectType.filter(x => x.category === "工种");
         }
         getCType(){
-            return this.store.projectType.filter(x => x.category === "课程");
+            return this.store.projectType.filter(x => x.category === "课程类型");
         }
         change(name){
             this.id= name.split('_')[1];
@@ -368,7 +384,7 @@
         viewData(id,title) {
             this.addCultivate=!this.addCultivate;
             this.store.setCourseId(id);
-            this.store.setCourseName(title)
+            this.store.setCourseName(title);
             this.onTitle = title;
             this.store.searchPeople();
         }
@@ -380,11 +396,15 @@
             this.onUpTitle = title;
         }
         handleSuccessVideo (res, file) {
+            debugger
+            if(res.file.split('.')[1] == 'ppt' || res.file.split('.')[1] == 'pptx'){
+                this.store.setPPtPages(res.pageCount);
+            }
             this.store.setVideo(res.file);
         }
         handleFormatError (file) {
             let alert: any = Message;
-            alert.warning(file.name + ' 文件格式错误！请上传ogg、mp4、WebM格式文件！');
+            alert.warning(file.name + ' 文件格式错误！请上传ogg、mp4、WebM、ppt、pptx格式文件！');
         }
         handleFormatPictrueError (file) {
             let alert: any = Message;

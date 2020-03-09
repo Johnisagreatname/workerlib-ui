@@ -3,6 +3,7 @@
     import {getModule} from 'vuex-module-decorators';
     import {Tab, TabItem, XHeader, Cell, Flexbox, FlexboxItem, Swiper, SwiperItem, Badge, ViewBox, Group} from 'vux'
     import MobileStore from '../../../store/mobile/MobileStore';
+    import PlayStore from '../../../store/mobile/PlayStore';
     import WorkerStore from "../../../store/modules/WorkerStore";
     import router from '../../../router/.invoke/router'
     import CommentsStore from "../../../store/modules/CommentsStore";
@@ -24,6 +25,7 @@
     })
     export default class Details extends Vue {
         private store: any;
+        private playStore: any;
         private wstore: any;
         private storeComm: any;
         public sex: string;
@@ -40,6 +42,7 @@
             this.token = router.currentRoute.query.token;
             localStorage.setItem('token', this.token)
             this.store = getModule(MobileStore)
+            this.playStore = getModule(PlayStore)
             this.wstore = getModule(WorkerStore)
             this.storeComm = getModule(CommentsStore)
         }
@@ -59,7 +62,17 @@
             this.storeComm.setPunishmentsId(this.userId);
             this.storeComm.searchCommentSparticulars();
         }
-
+        goBack(cultivate_id,id){
+            this.playStore.setArId(id);
+            this.playStore.setCultivate_id(cultivate_id);
+            this.playStore.searchCul();
+                this['$router'].push({
+                    path:'/mobile/play',
+                    query:{
+                        token:this.token
+                    }
+                });
+        }
         getBody(): any {
             document.body.style.minWidth = window.screen.width + 'px'
         }
@@ -91,7 +104,16 @@
                 return "女";
             }
         }
+        //获取年龄
+        getYear(idNumber): number {
+            if (!idNumber) return;
+            this.now = new Date();
+            this.year = this.now.getTime();
+            this.date = new Date(idNumber.substring(6, 10) + "," + idNumber.substring(10, 12) + "," + idNumber.substring(12, 14)).getTime();
 
+            var age = Math.floor((this.year - this.date) / (1000 * 60 * 60 * 24 * 31 * 12));
+            return age;
+        }
         getLeave(): string {
             if (this.wstore.involvedProjectInfo == null) {
                 return "离场"
@@ -150,15 +172,7 @@
             return b;
         }
 
-        //获取年龄
-        getAge(idNumber): number {
-            debugger
-            if (!idNumber) return;
-            this.now = new Date();
-            this.year = this.now.getTime();
-            this.date = new Date(idNumber.substring(6, 10) + "," + idNumber.substring(10, 12) + "," + idNumber.substring(12, 14)).getTime();
-            return Math.floor((this.year - this.date) / (1000 * 60 * 60 * 24 * 31 * 12));
-        }
+
     }
 </script>
 <template lang="pug" src="@/views/mobile/details.pug"/>

@@ -121,10 +121,10 @@
                                     Option(v-for="item in getCType()", :value="item.name", :key="item.name") {{item.name}}
                         .divTwo
                             .name
-                                span 总课时
+                                span 总课时(分钟)
                                 span(:style={'color': 'red'}) *
                             .input
-                                Input(clearable,style="width: 345px",size=large,v-model="totalHours",placeholder="请输入总课时")
+                                Input(clearable,style="width: 345px",size=large,v-model="totalHours",placeholder="请输入总课时(分钟)")
                         .divTwo
                             .name
                                 span 授课方式
@@ -146,7 +146,7 @@
                                     Option(v-for="item in getType()", :value="item.name", :key="item.name") {{item.name}}
                 TabPane(label="资料上传",name="name2",icon="ios-cloud-upload-outline")
                     Upload(multiple,type="drag",action="/api/workerlib/courseware/video/upload",
-                    :on-success="handleSuccessVideo",:format="['ogg','mp4','WebM']",:on-format-error="handleFormatError",
+                    :on-success="handleSuccessVideo",:format="['ogg','mp4','WebM','ppt','pptx']",:on-format-error="handleFormatError",
                     :style={
                         'width': '90%',
                         'margin-top': '5%',
@@ -156,7 +156,7 @@
                         div(style="padding: 90px 0")
                             Icon(type="ios-add" size="52" style="color: #3399ff")
                             p 点击上传
-                            p （请上传某种格式视频）
+                            p （请上传某种格式视频或幻灯片(PPT)）
                 TabPane(label="课件详情",name="name3",icon="ios-folder-outline")
                     Upload(multiple,type="drag",action="/api/workerlib/courseware/cover_picture/upload",
                     :on-success="handleSuccessPicture",:format="['jpg','jpeg','png']",:on-format-error="handleFormatPictrueError",
@@ -204,10 +204,10 @@
                                     Option(v-for="item in getCType()", :value="item.name", :key="item.name") {{item.name}}
                         .divTwo
                             .name
-                                span 总课时
+                                span 总课时(分钟)
                                 span(:style={'color': 'red'}) *
                             .input
-                                Input(clearable,style="width: 345px",size=large,v-model="totalHours",placeholder="请输入总课时")
+                                Input(clearable,style="width: 345px",size=large,v-model="totalHours",placeholder="请输入总课时(分钟)")
                         .divTwo
                             .name
                                 span 绑定课件工种分类
@@ -217,7 +217,7 @@
                                     Option(v-for="item in getType()", :value="item.name", :key="item.name") {{item.name}}
                 TabPane(label="资料上传",name="name2",icon="ios-cloud-upload-outline")
                     Upload(multiple,type="drag",action="/api/workerlib/courseware/video/upload",
-                    :on-success="handleSuccessVideo",:format="['ogg','mp4','WebM']",:on-format-error="handleFormatError",
+                    :on-success="handleSuccessVideo",:format="['ogg','mp4','WebM','ppt','pptx']",:on-format-error="handleFormatError",
                     :style={
                         'width': '90%',
                         'margin-top': '5%',
@@ -227,7 +227,7 @@
                         div(style="padding: 90px 0")
                             Icon(type="ios-add" size="52" style="color: #3399ff")
                             p 点击上传
-                            p （请上传某种格式视频）
+                            p （请上传某种格式视频或幻灯片(PPT)）
                 TabPane(label="课件详情",name="name3",icon="ios-folder-outline")
                     Upload(multiple,type="drag",action="/api/workerlib/courseware/cover_picture/upload",
                     :on-success="handleSuccessPicture",:format="['jpg','jpeg','png']",:on-format-error="handleFormatPictrueError",
@@ -326,10 +326,10 @@
                                     Option(v-for="item in getCType()", :value="item.name", :key="item.name") {{item.name}}
                         .divTwo
                             .name
-                                span 总课时
+                                span 总课时(分钟)
                                 span(:style={'color': 'red'}) *
                             .input
-                                Input(clearable,style="width: 345px",size=large,v-model="editTotalHours",placeholder="请输入总课时")
+                                Input(clearable,style="width: 345px",size=large,v-model="editTotalHours",placeholder="请输入总课时(分钟)")
                         .divTwo
                             .name
                                 span 授课方式
@@ -355,7 +355,7 @@
                             'width': '100%', 'height': '100%'
                         })
                     Upload(multiple,type="drag",action="/api/workerlib/courseware/video/upload",
-                    :on-success="handleSuccessVideo",:format="['ogg','mp4','WebM']",:on-format-error="handleFormatError",
+                    :on-success="handleSuccessVideo",:format="['ogg','mp4','WebM','ppt','pptx']",:on-format-error="handleFormatError",
                     :style={
                         'width': '140px',
                         'float': 'left',
@@ -364,7 +364,7 @@
                         div(style="padding: 25px 0")
                             Icon(type="ios-add" size="52" style="color: #3399ff")
                             p 点击上传
-                            p （请上传某种格式视频）
+                            p （请上传某种格式视频或幻灯片(PPT)）
                 TabPane(label="课件详情",name="name3",icon="ios-folder-outline")
                     .headPhotos(v-if="editParticulars != ''")
                         img(:src="'/api/workerlib/preview/courseware/cover_picture/'+editId",:style={
@@ -428,14 +428,18 @@
                     .input
                         Input(type="textarea",clearable,:style={'width': '995px'},size=large,v-model="mark")
             .top
+                //.left1(v-if="singleUser == true")
+                //    span 111111111111111
                 .left1
-                    Button(type="primary",ghost,style="margin-left: 10px",@click="addSelected()") 添加所选
-                    Input(v-model="selectUserName",:style={'width': '100px', 'margin-left': '10px'},placeholder="名字",icon="ios-search-outline",@on-click="search")
-
+                    Button(type="primary",ghost,style="margin-left: 10px",@click="addSelected()",v-if="singleUser == false") 添加所选
+                    Button(type="primary",ghost,style="margin-left: 10px",@click="addSelected()",v-else,disabled) 添加所选
+                    Input(v-model="selectUserName",:style={'width': '100px', 'margin-left': '10px'},placeholder="名字",icon="ios-search-outline",@on-click="search",v-if="singleUser == false")
+                    Input(v-model="selectUserName",:style={'width': '100px', 'margin-left': '10px'},placeholder="名字",icon="ios-search-outline",@on-click="search",v-else,disabled)
+                    Checkbox(v-model="singleUser",:style={'margin-left': '10px'},@on-change="checkAllGroupChange()") 自有工人
                     //Select(clearable,filterable,:style={'width': '100px', 'margin-left': '10px'},placeholder="状态",v-model="selectLeave")
                     //    Option(v-for="item in getMenus()", :value="item.key",:key="item.key") {{item.value}}
 
-                    Table(border=false, ref="selection", :columns="getColumns()", :data="getData()",:row-class-name="rowClass", id="communal",
+                    Table(v-if="singleUser == false",border=false, ref="selection", :columns="getColumns()", :data="getData()",:row-class-name="rowClass", id="communal",
                     :style="{'margin-top': '10px'}",
                     @on-select="handleSelectRow",@on-select-all="handleSelectAll",
                     @on-select-cancel="handleSelectRowCancel",@on-select-all-cancel = "handleSelectAllCancel"
@@ -451,10 +455,23 @@
                         template(slot-scope="{row}",slot="operation")
                             Button(v-if="offChecked(row.eafId)",type="primary",style="margin-right: 5px",@click="show(row.eafId,row.eafName,row.cwrPhoto)") 加入培训
                             Button(v-else,type="primary",ghost,style="margin-right: 5px") 加入培训
-
-                    Page(:total="pageInTotal",show-elevator,show-total,
+                    div(v-if="singleUser == true",:style={'text-align':'center','margin-top': '30px','font-size':'18px'}) 已选择全部自有工人
+                    div(v-if="singleUser == true",:style={'text-align':'center','margin-top': '10px'}) 共{{pageInTotal}}人
+                    Page(v-if="singleUser == false",:total="pageInTotal",show-elevator,show-total,
                     @on-page-size-change="onPageSizeInChange",@on-change="onPageIndexInChange",:style={'text-align':'center','margin-top': '10px'})
-                .right1
+
+
+                .right1(v-if="singleUser == true")
+                        div(:style={
+                            'text-align': 'center',
+                            'margin-top': '30px',
+                            'font-size': '18px'
+                        }) 已选择全部自有工人
+                        div(:style={
+                            'text-align': 'center',
+                            'margin-top': '10px'
+                        }) 共{{pageInTotal}}人
+                .right1(v-else)
                     .rdiv(v-for="item in this.store.checkeds")
                         .rimg
                             img(:src="'http://113.105.121.93:1818'+item.photo",:style={
