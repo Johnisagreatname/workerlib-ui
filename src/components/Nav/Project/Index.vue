@@ -106,7 +106,6 @@
             this.addProject = false;
         }
         okAdd() : any{
-            debugger
             //找到属于当前项目的人员并且是在场的状态（把项目人员的ID转为map）
             let list = this.store.projectPeoples.filter(a => a.project_id ==this.store.projectId && a.leave == 1).map(b=>b.archives_id);
             //找到属于这个项目的人员并且是离场的状态

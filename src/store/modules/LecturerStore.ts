@@ -38,7 +38,8 @@ export default class LecturerStore extends VuexModule {
                 {"field":"name"},
                 {"field":"type"},
                 {"field":"photo"},
-                {"field":"curriculum"}
+                {"field":"curriculum"},
+                {"field":"personalreesume"}
             ]
         }).then((data)=>{
             if(!data){

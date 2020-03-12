@@ -337,8 +337,7 @@ export default class WorkerStore extends VuexModule {
     }
     @Action
     public async synchronization() {
-        let alert: any = Message;
-        await request.post('/alluser/SynAlluser').then((data)=>{
+        await request.post('api/sync/alluser').then((data)=>{
             if(!data){
                 return;
             }
@@ -895,7 +894,8 @@ export default class WorkerStore extends VuexModule {
             if(!data){
                 return;
             }
-            this.added(data)
+            this.successInsertArchives(data);
+            // this.added(data)
         }).catch((e)=>{
             console.log(e)
             let alert: any = Message;
@@ -918,6 +918,7 @@ export default class WorkerStore extends VuexModule {
     }
     @Action
     public async insertWorkType(id) {
+        debugger
         if(this.type.length>0){
             for(let i=0;i<this.type.length;i++){
                 let item = {};
@@ -927,11 +928,12 @@ export default class WorkerStore extends VuexModule {
                 this.insertList.push(item);
             }
         }
-        await request.put('/api/workerlib/worktytpe', this.insertList).then((data)=>{
+        await request.put('/api/workerlib/worktype', this.insertList).then((data)=>{
             if(!data){
                 return;
             }
-            this.successInsertWorkType(data)
+            this.successInsertWorkType(data);
+
         }).catch((e)=>{
             console.log(e)
             let alert: any = Message;
@@ -952,6 +954,43 @@ export default class WorkerStore extends VuexModule {
             alert.warning(e.message || e)
         });
     }
+    @Action
+    public async searchEafId(id) {
+        debugger
+        await request.post('/api/workerlib/alluser',{
+            "pageInfo" : {},
+            "conditionList": [{
+                "name": "id",
+                "value": id,
+                "algorithm": "EQ"
+            } ],
+            "sortList": [],
+            "groupList" : [],
+            "keywords" : [],
+            "selectList": []
+        }).then((data)=>{
+            if(!data){
+                return;
+            }
+            this.insertWorkType(data.data[0].eafId);
+            this.insertUserGroupRole(data.data[0].id);
+        }).catch((e)=>{
+            let alert: any = Message;
+            if(!e) {
+                alert.warning('未知错误！')
+                return
+            }
+            if(e.response && e.response.data && e.response.data.message) {
+                alert.warning(e.response.data.message)
+                return
+            }
+            if(!e.message) {
+                return;
+            }
+            alert.warning(e.message || e)
+        });
+
+    }
 	@Action
     public async insertUserGroupRole(id) {
         await request.put('/api/workerlib/usergrouprole', {
@@ -959,6 +998,9 @@ export default class WorkerStore extends VuexModule {
             "userId":id,
             "roleId":this.roleName[0].roleId
         }).then((data)=>{
+            if(!data){
+                return;
+            }
             this.addUserGroupRole(data);
         }).catch((e)=>{
             console.log(e)
@@ -1099,27 +1141,27 @@ export default class WorkerStore extends VuexModule {
             alert.warning(e.message || e)
         });
     }
-	@Mutation
+	@Action
      public addUserGroupRole(data: any){
         if(data.status == 0) {
             this.search();
+            let alert: any = Message;
+            alert.warning('成功！');
         }
      }
     @Action
-    public added(data: any) {
+    public successInsertArchives(data: any) {
         if(data.status == 0) {
-            this.insertWorkType(data.data);
-			this.insertUserGroupRole(data.data);
+            this.searchEafId(data.data);
         }
     }
-    @Action
+    @Mutation
     public successInsertWorkType(data: any) {
         if(data.status == 0) {
             this.insertEafId = null;
             this.insertList = new Array<any>();
-            let alert: any = Message;
-            alert.warning('成功！');
-            this.search();
+
+
         }
     }
     @Action

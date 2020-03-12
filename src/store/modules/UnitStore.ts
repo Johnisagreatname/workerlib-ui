@@ -308,7 +308,7 @@ export default class UnitStore extends VuexModule {
     @Action
     public async synchronization() {
         let alert: any = Message;
-        await request.post('/unit/SynUnit').then((data)=>{
+        await request.post('api/sync/unit').then((data)=>{
             if(!data){
                 return;
             }

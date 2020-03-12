@@ -239,7 +239,7 @@ export default class ProjectStore extends VuexModule {
     @Action
     public async synchronization() {
         let alert: any = Message;
-        await request.post('/project/SynProject').then((data)=>{
+        await request.post('api/sync/project').then((data)=>{
                 if(!data){
                     return;
                 }
@@ -1039,7 +1039,7 @@ export default class ProjectStore extends VuexModule {
         if(data.status == 0){
             this.search();
             let alert: any = Message;
-            alert.warning('成功！');
+            alert.warning(data.message);
         }
     }
 
