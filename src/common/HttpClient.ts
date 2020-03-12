@@ -21,16 +21,16 @@ const removePending: any = (config: any, f: any) => {
     // 判断该请求是否在请求队列中
     if (pending.indexOf(flagUrl) !== -1) {
         // 如果在请求中，并存在f,f即axios提供的取消函数
-        if (f) {
-            f('您操作太快了'); // 执行取消操作
-        } else {
+        // if (f) {
+        //     f('您操作太快了'); // 执行取消操作
+        // } else {
             pending.splice(pending.indexOf(flagUrl), 1); // 把这条记录从数组中移除
-        }
+        // }
     } else {
         // 如果不存在在请求队列中，加入队列
-        if (f) {
+        // if (f) {
             pending.push(flagUrl);
-        }
+        // }
     }
 };
 
@@ -59,9 +59,9 @@ service.interceptors.request.use((config: any) => {
     // neverCancel 配置项，允许多个请求
     // if (!config.neverCancel) {
     //     // 生成cancelToken
-    //     config.cancelToken = new CancelToken((c: any) => {
-    //         removePending(config, c);
-    //     });
+        config.cancelToken = new CancelToken((c: any) => {
+            removePending(config, c);
+        });
     // }
     // 在这里可以统一修改请求头，例如 加入 用户 token 等操作
     //   if (store.getters.sessionId) {
@@ -83,9 +83,12 @@ service.interceptors.response.use(
         // if (pending.length === 0 ) {
         //     store.commit('changeLoading', false);
         // }
-        store.commit('changeLoading', false);
+        // store.commit('changeLoading', false);
         // 移除队列中的该请求，注意这时候没有传第二个参数f
         removePending(response.config);
+        if (!pending.length) {
+            store.commit('changeLoading', false);
+        }
         if(response.status){
             if(response.status != 200) {
                 throw response.data.message;

@@ -5,6 +5,7 @@
     import { Component, Vue, Prop, Model} from 'vue-property-decorator';
     import { getModule } from 'vuex-module-decorators';
 	import router from '../../../router/.invoke/router';
+    import { Message } from 'iview';
 
     @Component({
         components:{
@@ -41,7 +42,7 @@
             this.store = getModule(UnitStore);
 			this.workerStore = getModule(WorkerStore);
         }
-
+        loading = true;
         @Model('isCollapsed', { type: Boolean }) private isCollapsed !: boolean;
 
         rowClassName (row, index) : string {
@@ -114,7 +115,49 @@
             }
             return this.store.unit;
         }
+        messageWarningFn (text) {
+            let alert: any = Message;
+            alert.warning(text);
+            setTimeout(() => {
+                this.loading = false;
+                this.$nextTick(() => {
+                    this.loading = true;
+                })
+            }, 1000)
+        }
         ok() : any{
+            if(!this.store.project_license){
+                this.messageWarningFn('请输入施工许可证！');
+                return;
+            }
+            if(!this.store.unit_name){
+                this.messageWarningFn('请输入参建单位名称！');
+                return;
+            }
+            if(!this.store.unit_number){
+                this.messageWarningFn('请输入参建单位编号！');
+                return;
+            }
+            if(!this.store.people_number){
+                this.messageWarningFn('请输入当前人数！');
+                return;
+            }
+            if(!this.store.entrance_time){
+                this.messageWarningFn('请选择入场日期！');
+                return;
+            }
+            if(!this.store.principal){
+                this.messageWarningFn('请输入负责人！');
+                return;
+            }
+            if(!this.store.status){
+                this.messageWarningFn('请选择在场状态！');
+                return;
+            }
+            if(!this.store.unit_type){
+                this.messageWarningFn('请选择单位类型！');
+                return;
+            }
             this.store.insertUnit();
             this.addUnit = false;
         }
@@ -134,6 +177,9 @@
 
         public search() {
             this.store.search();
+        }
+        synchronization(){
+            this.store.synchronization();
         }
         
 		userCount(unit_id) {

@@ -1,11 +1,11 @@
 .body
     .topOne
         .divOne
-            span 选择公司：
-                Input(v-model="selectOrganization",clearable,style="width: 200px")
-        .divOne
             span 项目名称：
                 Input(v-model="selectProjectName",clearable,style="width: 200px")
+        .divOne
+            span 选择公司：
+                Input(v-model="selectOrganization",clearable,style="width: 200px")
         .divOne
             span 项目状态：
                 Select(clearable,filterable,style="width:200px",v-model="selectStatus")
@@ -15,7 +15,7 @@
     .hr
     .button
         Button(type="primary", ghost, icon="ios-add-circle-outline",@click="addProject=!addProject") 新增项目
-        Button(type="primary", ghost, icon="ios-log-in",@@click="this.store.synchronization") 同步项目
+        Button(type="primary", ghost, icon="ios-log-in",@click="this.store.synchronization") 同步项目
         Button(type="primary", ghost, icon="ios-log-out",@click="this.store.upload") 导出信息
 
     .bodyTwo
@@ -106,7 +106,7 @@
                     span(:style={'color': 'red'}) *
                 .input
                     Select(clearable,filterable,style="width:345px", v-model="status")
-                        Option(v-for="item in getMenus()", :value="item.value",:key="item.value") {{item.name}}setPeoplesId
+                        Option(v-for="item in getMenus()", :value="item.value",:key="item.value") {{item.name}}
     Modal(:value="addPeoples",title="添加人员",@on-ok="okAdd()",@on-cancel="cancelAdd()",width='50%',:loading = "loading")
         .addBody
             .topOne2
@@ -120,11 +120,12 @@
                 @on-select="handleSelectRowPeople",
                 @on-select-cancel="handleSelectRowCancelPeople",
                 @on-select-all="handleSelectAllPeople",
-                @on-select-all-cancel="handleSelectAllCancelPeople"
-                )
-                template(slot-scope="{row, index }",slot="workType")
-                    Select(clearable,filterable,@on-change="selectChange",:value="getUserWorkTypeMenuItem(row.workType, row.eafId)",v-if="row.workType!=null")                            Option(v-for="item in getUserWorkTypeMenus(row.workType)", :value="item.name+'_'+row.eafId",:key="item.name") {{item.name}}
-                    Select(clearable,filterable,v-else,disabled,value="无")
+                @on-select-all-cancel="handleSelectAllCancelPeople")
+
+                    template(slot-scope="{row, index}",slot="workType")
+                        Select(clearable,filterable,@on-change="selectChange",v-if="row.workType!=null")
+                            Option(v-for="item in getUserWorkTypeMenus(row.workType)", :value="item.name+'_'+row.eafId",:key="item.name") {{item.name}}
+                        Select(clearable,filterable,v-else,disabled,value="无")
 
 
                 Page(:total="pageInTotal",show-elevator,show-total,
@@ -146,7 +147,6 @@
                 'text-align': 'center',
                 'margin-top': '10px'
             })
-        div(slot="footer")
     Modal(title="以下人员已在当前项目，请取消选中!",:value="viewProjectPeople",:styles="{top: '20px'}",@on-ok="okProjectPeople()",@on-cancel="cancelProjectPeople()",:loading = "loading")
         .divL
             .divCheck(v-for="item in this.noProjectPeople")

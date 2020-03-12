@@ -15,7 +15,7 @@
     .hr
     .button
         Button(type="primary", ghost, icon="ios-add-circle-outline",@click="addUnit=!addUnit") 新增单位
-        Button(type="primary", ghost, icon="ios-log-in") 同步单位
+        Button(type="primary", ghost, icon="ios-log-in",@click="synchronization()") 同步单位
         Button(type="primary", ghost, icon="ios-log-out",@click="this.store.upload") 导出信息
         //Button(type="primary", ghost, icon="ios-add-circle-outline") 添加单位评价
 
@@ -31,7 +31,7 @@
     .footer
         Page(:total="pageTotal",show-sizer,show-elevator,show-total,@on-page-size-change="onPageSizeChange",@on-change="onPageIndexChange",:page-size=20)
 
-    Modal(:value="addUnit",title="新增单位",@on-ok="ok()",@on-cancel="cancel()",width='50%')
+    Modal(:value="addUnit",title="新增单位",@on-ok="ok()",@on-cancel="cancel()",width='50%',:loading = "loading")
         .addBody
             //.divTwo
             //    .name

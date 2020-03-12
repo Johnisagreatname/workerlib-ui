@@ -26,12 +26,14 @@
         public checkedInternal: boolean;
         private store: any;
         public addLecturer: boolean;
+        public selectInfo: boolean;
         mounted() {
             this.store.search();
         }
         constructor() {
             super();
             this.addLecturer = false;
+            this.selectInfo = false;
             this.checkedInternal = true;
             this.store = getModule(LecturerStore)
         }
@@ -49,6 +51,16 @@
             ];
             return this.options;
         }
+        info(personalreesume){
+            this.personalreesume = personalreesume;
+            this.selectInfo = true;
+        }
+        okSelectInfo(){
+            this.selectInfo = false;
+        }
+        cancelSelectInfo(){
+            this.selectInfo = false;
+        }
         toggle(name){
             if(name=="内部讲师"){
                 this.store.setSelectType(1);
@@ -58,8 +70,30 @@
                 this.store.search();
             }
         }
-
+        loading = true;
+        messageWarningFn (text) {
+            let alert: any = Message;
+            alert.warning(text);
+            setTimeout(() => {
+                this.loading = false;
+                this.$nextTick(() => {
+                    this.loading = true;
+                })
+            }, 500)
+        }
         ok() : any{
+            if(!this.store.lecturerInfo.name){
+                this.messageWarningFn('请输入姓名！');
+                return;
+            }
+            if(!this.store.lecturerInfo.curriculum){
+                this.messageWarningFn('请输入课程！');
+                return;
+            }
+            if(!this.store.lecturerInfo.type){
+                this.messageWarningFn('请选择课程类型！');
+                return;
+            }
             this.store.insertLecturer();
             this.addLecturer = false;
         }

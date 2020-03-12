@@ -77,9 +77,11 @@
         }
         changeIn(){
             this.store.setNotIn(false);
+            this.store.search();
         }
         changeNot(){
             this.store.setIn(false);
+            this.store.search();
         }
 
         get getNotIn():boolean{
@@ -245,7 +247,7 @@
                 this.messageWarningFn('请输入手机号码！');
                 return;
             }
-            if(!this.store.type){
+            if(!this.store.type || this.store.type.length<=0){
                 this.messageWarningFn('请选择工种！');
                 return;
             }

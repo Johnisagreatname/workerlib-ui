@@ -58,7 +58,7 @@
             this.store.searchProjectPeople();
         }
         search() {
-            this.store.pageSize(10);
+            this.store.pageSize(20);
             this.store.pageIndex(1);
             this.store.search();
         }
@@ -106,14 +106,19 @@
             this.addProject = false;
         }
         okAdd() : any{
+            //找到属于当前项目的人员并且是在场的状态（把项目人员的ID转为map）
             let list = this.store.projectPeoples.filter(a => a.project_id ==this.store.projectId && a.leave == 1).map(b=>b.archives_id);
+            //找到属于这个项目的人员并且是离场的状态
             let lList = this.store.projectPeoples.filter(a => a.project_id ==this.store.projectId && a.leave == 2);
+            //把选中的人员不在当前项目赋值 this.noProjectPeople
             this.noProjectPeople = this.store.peopleId.filter(a=>list.indexOf(a.eafId)>-1);
             if(!this.noProjectPeople.length) {
                 for(let i = 0;i<this.store.peopleId.length;i++){
+                    debugger
                     let insert = {};
                     let insertProjectWorkType = {};
                     let people = this.store.peopleId[i];
+                    //当前循环的人员是不是离场的人员 是就修改
                     if(lList.filter(x => x.archives_id == people.eafId).length>0) {
                         this.store.setUpdateList(lList.filter(x => x.archives_id == people.eafId)[0].id);
                     }else {
@@ -142,6 +147,7 @@
                 }
                 this.store.clearUpdateList();
                 this.store.clearInsertList();
+                this.store.clearPeopleId();
                 this.store.clearChecked();
                 this.addPeoples = false;
             }else {
@@ -284,8 +290,7 @@
             if(list.length == 1) {
                 return list[0].name+'_'+eafId;
             }
-
-            return ''
+            return '';
         }
 
         handleSelectRowPeople(selection, row) {

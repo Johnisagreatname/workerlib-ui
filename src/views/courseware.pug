@@ -156,7 +156,7 @@
                         div(style="padding: 90px 0")
                             Icon(type="ios-add" size="52" style="color: #3399ff")
                             p 点击上传
-                            p （请上传某种格式视频或幻灯片(PPT)）
+                            p （请上传ogg,mp4,WebM格式视频或幻灯片(PPT)）
                 TabPane(label="课件详情",name="name3",icon="ios-folder-outline")
                     Upload(multiple,type="drag",action="/api/workerlib/courseware/cover_picture/upload",
                     :on-success="handleSuccessPicture",:format="['jpg','jpeg','png']",:on-format-error="handleFormatPictrueError",
@@ -227,7 +227,7 @@
                         div(style="padding: 90px 0")
                             Icon(type="ios-add" size="52" style="color: #3399ff")
                             p 点击上传
-                            p （请上传某种格式视频或幻灯片(PPT)）
+                            p （请上传ogg,mp4,WebM格式视频或幻灯片(PPT)）
                 TabPane(label="课件详情",name="name3",icon="ios-folder-outline")
                     Upload(multiple,type="drag",action="/api/workerlib/courseware/cover_picture/upload",
                     :on-success="handleSuccessPicture",:format="['jpg','jpeg','png']",:on-format-error="handleFormatPictrueError",
@@ -364,7 +364,7 @@
                         div(style="padding: 25px 0")
                             Icon(type="ios-add" size="52" style="color: #3399ff")
                             p 点击上传
-                            p （请上传某种格式视频或幻灯片(PPT)）
+                            p （请上传ogg,mp4,WebM格式视频或幻灯片(PPT)）
                 TabPane(label="课件详情",name="name3",icon="ios-folder-outline")
                     .headPhotos(v-if="editParticulars != ''")
                         img(:src="'/api/workerlib/preview/courseware/cover_picture/'+editId",:style={

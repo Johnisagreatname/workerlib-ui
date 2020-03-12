@@ -219,6 +219,7 @@ export default class ProjectStore extends VuexModule {
                     return;
                 }
             this.sucessInsertProjectWorkType(data);
+            this.searchProjectPeople();
         }).catch((e)=>{
             let alert: any = Message;
             if(!e) {
@@ -238,7 +239,7 @@ export default class ProjectStore extends VuexModule {
     @Action
     public async synchronization() {
         let alert: any = Message;
-        await request.post('/project/SynProject').then((data)=>{
+        await request.post('api/sync/project').then((data)=>{
                 if(!data){
                     return;
                 }
@@ -277,6 +278,7 @@ export default class ProjectStore extends VuexModule {
             return;
             }
             this.sucessUpdate(data);
+            this.searchProjectPeople();
         }).catch((e)=>{
             let alert: any = Message;
             if(!e) {
@@ -994,14 +996,18 @@ export default class ProjectStore extends VuexModule {
         this.updateList= new Array<any>() ;
     }
     @Mutation
+    private clearPeopleId() {
+        this.peopleId= new Array<any>() ;
+    }
+    @Mutation
     private sucessUpdate(data: any) {
         if(data.status == 0) {
-            for (let i = 0; i < this.projectPeoples.length; i++) {
-                if (this.updateList.findIndex(x => x.id == this.projectPeoples[i].id) > -1) {
-                    this.projectPeoples[i].leave == 1;
-
-                }
-            }
+            // for (let i = 0; i < this.projectPeoples.length; i++) {
+            //     if (this.updateList.findIndex(x => x.id == this.projectPeoples[i].id) > -1) {
+            //         this.projectPeoples[i].leave == 1;
+            //
+            //     }
+            // }
             this.leave = null;
             this.updateList= new Array<any>() ;
             let alert: any = Message;
@@ -1018,9 +1024,10 @@ export default class ProjectStore extends VuexModule {
     @Mutation
     private sucessInsertProjectWorkType(data: any) {
         if(data.status== 0){
-        for(let i = 0;i<this.insertList.length;i++){
-            this.projectPeoples.push(this.insertList[i]);
-        }
+        // for(let i = 0;i<this.insertList.length;i++){
+        //     this.projectPeoples.push(this.insertList[i]);
+        // }
+
             this.insertList=new Array<any>() ;
             this.insertProjectWorkTypeList=new Array<any>() ;
         let alert: any = Message;
@@ -1032,7 +1039,7 @@ export default class ProjectStore extends VuexModule {
         if(data.status == 0){
             this.search();
             let alert: any = Message;
-            alert.warning('成功！');
+            alert.warning(data.message);
         }
     }
 

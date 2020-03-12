@@ -15,7 +15,7 @@
                             p(:style={'font-weight': 'bold', 'font-size': '18px'}) {{item.name}}
                             p 课程：{{item.curriculum}}
                             p 培训履历：
-                                a 查看详情
+                                a(@click="info(item.personalreesume)") 查看详情
                             p(v-if="item.evaluate == null ") 培训评价: 无
                             p(v-else) 培训评价: {{item.evaluate}}
                             p(v-if="item.type == 1 ") 讲师类型：
@@ -39,7 +39,7 @@
                             p(:style={'font-weight': 'bold', 'font-size': '18px'}) {{item.name}}
                             p 课程：{{item.curriculum}}
                             p 培训履历：
-                                a 查看详情
+                                a(@click="info(item.personalreesume)") 查看详情
                             p(v-if="item.evaluate == null ") 培训评价: 无
                             p(v-else) 培训评价: {{item.evaluate}}
                             p(v-if="item.type == 1 ") 讲师类型：
@@ -74,7 +74,6 @@
                                 Option(v-for="item in getType()", :value="item.key", :key="item.key") {{item.value}}
                     .divTwo
                         .name 上传照片
-                            span(:style={'color': 'red'}) *
                         .input
                             Upload(multiple,type="drag",action="/api/workerlib/lecturer/photo/upload",
                             :on-success="handleSuccessPhoto",:format="['jpg','jpeg','png']",:on-format-error="handleFormatError",
@@ -94,3 +93,6 @@
                        'margin-left': '15%',
                         'margin-top': '4%'
                    })
+    Modal(:value="selectInfo",title="培训履历",@on-ok="okSelectInfo()",@on-cancel="cancelSelectInfo()",width='70%')
+        .input
+            span {{this.personalreesume}}

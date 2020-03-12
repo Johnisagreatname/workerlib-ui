@@ -156,7 +156,7 @@ export default class CommentsStore extends VuexModule {
     }
     @Action
     public async count() {
-        await request.post('/api/workerlib/archives/count', await this.getParams()).then((data)=>{
+        await request.post('/api/workerlib/comments/count', await this.getParams()).then((data)=>{
             if(!data){
                 return;
             }

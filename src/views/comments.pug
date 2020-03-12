@@ -25,8 +25,18 @@
             .com 中评{{item.commMiddle}}
             .com 差评{{item.commBad}}
         .y1
-            span(:style={'color':'#000000','font-weight':'bold','font-size':'15px'}) 所属工种
-            span {{item.workType}}
+            span(:style={
+                'color': '#000000', 'font-weight': 'bold', 'font-size': '15px'
+            }) 所属工种
+        span(:title="item.workType",:style={
+            'display': 'inline-block',
+            'width': '90%',
+            'overflow': 'hidden',
+            'textOverflow': 'ellipsis',
+            'whiteSpace': 'nowrap',
+            'margin-left': '14px',
+            'height': '48px'
+        }) {{item.workType}}
         .y2
             Button(type="primary", ghost,@click="details(item.eafId)") 查看详情
             Button(type="primary", ghost,@click="addCommtentlist(item.eafId)") 添加评价

@@ -30,8 +30,8 @@
         private storeComm: any;
         public sex: string;
         public now: Date;
-        public year: any;
-        public date: any;
+        public year: number;
+        public date: number;
         private userId: any
         private token: any;
 
@@ -41,6 +41,8 @@
             this.userId = router.currentRoute.query.eafid;
             this.token = router.currentRoute.query.token;
             localStorage.setItem('token', this.token)
+            this.year = null;
+            this.date = null;
             this.store = getModule(MobileStore)
             this.playStore = getModule(PlayStore)
             this.wstore = getModule(WorkerStore)
@@ -110,9 +112,7 @@
             this.now = new Date();
             this.year = this.now.getTime();
             this.date = new Date(idNumber.substring(6, 10) + "," + idNumber.substring(10, 12) + "," + idNumber.substring(12, 14)).getTime();
-
-            var age = Math.floor((this.year - this.date) / (1000 * 60 * 60 * 24 * 31 * 12));
-            return age;
+            return Math.floor((this.year - this.date) / (1000 * 60 * 60 * 24 * 31 * 12));
         }
         getLeave(): string {
             if (this.wstore.involvedProjectInfo == null) {
