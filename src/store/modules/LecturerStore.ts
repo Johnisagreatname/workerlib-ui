@@ -33,14 +33,7 @@ export default class LecturerStore extends VuexModule {
             "sortList": [],
             "groupList": [],
             "keywords": [],
-            "selectList": [
-                {"field":"id"},
-                {"field":"name"},
-                {"field":"type"},
-                {"field":"photo"},
-                {"field":"curriculum"},
-                {"field":"personalreesume"}
-            ]
+            "selectList": []
         }).then((data)=>{
             if(!data){
                 return;

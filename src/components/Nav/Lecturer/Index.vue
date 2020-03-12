@@ -27,6 +27,7 @@
         private store: any;
         public addLecturer: boolean;
         public selectInfo: boolean;
+        public personalreesumes: any;
         mounted() {
             this.store.search();
         }
@@ -35,6 +36,7 @@
             this.addLecturer = false;
             this.selectInfo = false;
             this.checkedInternal = true;
+            this.personalreesumes = null;
             this.store = getModule(LecturerStore)
         }
         //获取讲师数据
@@ -51,8 +53,9 @@
             ];
             return this.options;
         }
-        info(personalreesume){
-            this.personalreesume = personalreesume;
+        info(personalreesume):any{
+            debugger
+            this.personalreesumes = personalreesume;
             this.selectInfo = true;
         }
         okSelectInfo(){
