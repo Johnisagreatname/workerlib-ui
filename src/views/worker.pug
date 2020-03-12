@@ -335,7 +335,6 @@
          span 是否导出?
    Modal(:value="uploadData",title="上传资料",@on-ok="okUpload()",@on-cancel="cancelUpload()",width='70%',:loading="loading")
       .addBody
-
          .uploadTop
             a(href="/css/images/template.xls", target='_blank')
                Button(icon="ios-cloud-download-outline",:style={borderColor: '#2d8cf0', color: '#2d8cf0'}) 下载模板

@@ -32,7 +32,7 @@
                 div(style="padding: 50px 0")
                     Icon(type="ios-add" size="52" style="color: #3399ff")
                     p 点击上传
-                    p （请上传某种格式视频）
+                    p （请上传ogg,mp4,WebM格式视频）
 
             Upload(multiple,type="drag",action="/api/workerlib/indexVideo/file/upload",
             :on-success="handleSuccessPicture",:format="['jpg','jpeg','png']",:on-format-error="handleFormatPictrueError",

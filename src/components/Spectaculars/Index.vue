@@ -127,7 +127,7 @@
             }
         }
         goBack(){
-            if(this.roleName == '讲师'){
+            if(this.roleName == '讲师'){//除了讲师其他权限都进入工人档案页面
                 this['$router'].push("/nav/lecturer");
             }else{
                 this['$router'].push("/nav/worker");

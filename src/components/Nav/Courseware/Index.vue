@@ -396,7 +396,6 @@
             this.onUpTitle = title;
         }
         handleSuccessVideo (res, file) {
-            debugger
             if(res.file.split('.')[1] == 'ppt' || res.file.split('.')[1] == 'pptx'){
                 this.store.setPPtPages(res.pageCount);
             }

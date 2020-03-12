@@ -20,6 +20,7 @@ export default class CultivateStore extends VuexModule {
     public pageIndex: number;
     public pageSize: number;
     public pageTotal:number;
+    public courseNum:number;
 
     public inPageIndex: number;
     public inPageSize: number;
@@ -79,6 +80,7 @@ export default class CultivateStore extends VuexModule {
         this.okCultivate = '是';
 
         this.infoId=null;
+        this.courseNum=null;
     }
 
     @Action
@@ -183,7 +185,7 @@ export default class CultivateStore extends VuexModule {
     public getInParams() : any {
         if(this.infoId){
             let item ={};
-            item["name"]="c.cultivate_id";
+            item["name"]="b.course_id";
             item["value"]=this.infoId;
             item["algorithm"] = "EQ"
             this.conditionList.push(item);
@@ -210,12 +212,23 @@ export default class CultivateStore extends VuexModule {
                         "value": "a.eafId",
                         "algorithm": "EQ"
                     }]
-                }, {
+                },{
+                    "tablename": "cultivate",
+                    "alias": "b",
+                    "joinMode": "Left",
+                    "onList": [{
+                        "name": "c.cultivate_id",
+                        "value": "b.id",
+                        "algorithm": "EQ"
+                    }]
+                },
+
+                {
                     "tablename": "courseware",
                     "alias": "o",
                     "joinMode": "Left",
                     "onList": [{
-                        "name": "c.cultivate_id",
+                        "name": "b.course_id",
                         "value": "o.id",
                         "algorithm": "EQ"
                     }]
@@ -356,6 +369,7 @@ export default class CultivateStore extends VuexModule {
     @Action
     public async UpdateCultivate() {
         await request.put('/api/workerlib/cultivate/'+this.viewId,{
+            "peoples":this.courseNum,
             "state": this.isOk
         }).then((data)=>{
             if(!data){
@@ -466,6 +480,10 @@ export default class CultivateStore extends VuexModule {
     public setPageTotal(data: number) {
         this.cList = [];
         this.pageTotal = data;
+    }
+    @Mutation
+    public setOkCourseNum(data: number) {
+        this.courseNum = data;
     }
     @Mutation
     public setPageIndex(data: number) {

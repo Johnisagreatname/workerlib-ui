@@ -737,7 +737,14 @@ export default class WorkerStore extends VuexModule {
     }
     @Action
     public async count() {
-        await request.post('/api/workerlib/people/count', await this.getParams()).then((total)=>{
+        let url = '/api/workerlib/people/count';
+        if(this.in==true){
+            url='/api/workerlib/project_allpeople_in/count';
+        }
+        if(this.notIn==true){
+            url='/api/workerlib/project_allpeople_not/count';
+        }
+        await request.post(url, await this.getParams()).then((total)=>{
             if(!total){
                 return;
             }
@@ -1095,7 +1102,7 @@ export default class WorkerStore extends VuexModule {
 	@Mutation
      public addUserGroupRole(data: any){
         if(data.status == 0) {
-            this.search();this.search();
+            this.search();
         }
      }
     @Action

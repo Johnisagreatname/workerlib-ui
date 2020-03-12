@@ -15,7 +15,11 @@ export default class LoginStore extends VuexModule {
 
     public username:String = 'admin'; //state
     public password:String = '';
+    public roleName:any;
+    constructor(e) {
+        super(e)
 
+    }
     @Action({ commit: 'success' })
     public async login() {
         await request.post('api/workerlib/login', {
@@ -24,8 +28,13 @@ export default class LoginStore extends VuexModule {
         }).then((data)=>{
             if (data.data) {
                 sessionStorage.setItem('loginInfo', JSON.stringify(data));
-
+                this.roleName = JSON.parse(sessionStorage.getItem('loginInfo')).data.userGroupRoleModels[0].role.roleName;
+                if(this.roleName && this.roleName == '管理员' || this.roleName == '超级管理员' || this.roleName == '来宾'){
                 router.push({path: '/spectaculars'})
+                }else {
+                    router.push({path: '/nav/lecturer'})
+                }
+
             } else {
                 let alert: any = Message;
                 alert.warning('账号或密码错误！');

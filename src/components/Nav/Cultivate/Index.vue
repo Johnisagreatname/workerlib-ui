@@ -39,6 +39,7 @@
         public viewTraining:boolean;
         public onDelete:boolean;
         public checkAllGroup :Array<any>;
+        public uploadData:boolean;
         constructor() {
             super();
             this.store = getModule(CultivateStore);
@@ -47,6 +48,7 @@
             this.viewTraining = false;
             this.onDelete = false;
             this.checkAllGroup = [];
+            this.uploadData = false;
         }
         rowClass(row, index) {
             return "rowClasses"
@@ -85,7 +87,23 @@
         deleteCultivate(){
             this.onDelete = true;
         }
+        handleSuccessExcel (res, file) {
 
+                let alert: any = Message;
+                alert.warning('成功！');
+                this.store.search();
+
+        }
+        handleFormatErrorExcel (file) {
+            let alert: any = Message;
+            alert.warning(file.name + ' 文件格式错误！xls、xlsx格式文件！');
+        }
+        okUploads():any{
+            this.uploadData = false;
+        }
+        cancelUploads():any{
+            this.uploadData = false;
+        }
         okStart() : any{
 
             this.startTraining = false;
@@ -101,6 +119,7 @@
         upOperation(name){
             if(name.split('_')[0] == 'add') {
                 this.store.setViewId(name.split('_')[1]);
+
                 this.uploadTraining = true;
             }else {
                 this.store.setViewId(name.split('_')[1]);
@@ -280,6 +299,12 @@
         }
         get okCultivate():string{
             return this.store.okCultivate;
+        }
+        set courseNum(data:number){
+            this.store.setOkCourseNum(data);
+        }
+        get courseNum():number{
+            return this.store.courseNum;
         }
     }
 </script>

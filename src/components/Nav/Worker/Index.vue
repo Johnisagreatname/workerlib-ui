@@ -77,9 +77,11 @@
         }
         changeIn(){
             this.store.setNotIn(false);
+            this.store.search();
         }
         changeNot(){
             this.store.setIn(false);
+            this.store.search();
         }
 
         get getNotIn():boolean{

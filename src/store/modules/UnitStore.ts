@@ -176,7 +176,7 @@ export default class UnitStore extends VuexModule {
         return {
 
             "conditionList": [{
-                "name": "u.unit_id",
+                "name": "unit_id",
                 "value":  this.uplodId.map(x => x.unit_id),
                 "algorithm": "IN"
             }],
@@ -283,7 +283,7 @@ export default class UnitStore extends VuexModule {
     @Action
     public async upload() {
         let alert: any = Message;
-        await request.post('/api/workerlib/userview/export',await this.getUploadParams(),
+        await request.post('/api/workerlib/unitview/export',await this.getUploadParams(),
             {responseType: 'blob', params: '项目工程档案'}).then((data)=>{
                 if(!data){
                     return;
@@ -407,6 +407,8 @@ export default class UnitStore extends VuexModule {
     public added(data: any) {
         if(data.status == 0) {
             this.search();
+            let alert: any = Message;
+            alert.warning('成功！');
         }
     }
     @Action

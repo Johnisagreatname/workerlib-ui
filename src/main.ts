@@ -4,12 +4,12 @@
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router/.invoke/router'
-
+import VueTouch from 'vue-touch'
 import iView from 'iview'
 import 'iview/dist/styles/iview.css'
 
 Vue.use(iView)
-
+Vue.use(VueTouch, {name: 'v-touch'})
 import store from './store';
 
 /* eslint-disable no-new */
