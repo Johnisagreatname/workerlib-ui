@@ -13,7 +13,7 @@
                 'height': '100%'
             })
             span(class="image-remove",@click="onDelete(item.id)") +
-    Modal(:value="addVideo",title="上传",@on-ok="okUpload()",@on-cancel="cancelUpload()",width='75%',:loading = "loading")
+    Modal(:value="addVideo",title="上传",@on-ok="okUpload()",@on-cancel="cancelUpload()",width='70%',:loading = "loading")
         .addBody2
             span(:style={'font-size': '16px', 'padding-right': '20px'}) 首页显示：
             RadioGroup(v-model="okVideo")

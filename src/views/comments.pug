@@ -57,6 +57,7 @@
                          Select(clearable,filterable,style="width:380px",v-model="insertProject",v-if="this.store.projectList.length>0")
                              Option(v-for="item in getProjectList()", :value="item.project_name", :key="item.project_name") {{item.project_name}}
                          Select(clearable,filterable,style="width:380px",v-model="insertProject",disabled,v-else)
+                         span(:style={'color': 'red','font-size':'12px','margin-left':'10px'}) (暂无项目)
                              //Option(v-for="item in getProjectList()", :value="item.project_name", :key="item.project_name") {{item.project_name}}
                  .div
                      .d1
@@ -101,7 +102,7 @@
                                 Option(v-for="item in getProjectList()", :value="item.project_name", :key="item.project_name") {{item.project_name}}
                             Select(clearable,filterable,style="width:380px",v-model="insertProject",disabled,v-else)
                                 Option(v-for="item in getProjectList()", :value="item.project_name", :key="item.project_name") {{item.project_name}}
-
+                            span(:style={'color': 'red','font-size':'12px','margin-left':'10px'}) (暂无项目)
                     .dd
                         .m1
                             span 评语
@@ -126,7 +127,7 @@
                         Rate(v-model="item.score")
 
 
-    Modal(:value="commtentcInfo",title="评价详情",@on-ok="okInfo()",@on-cancel="cancelInfo()",width='64%')
+    Modal(:value="commtentcInfo",title="评价详情",@on-ok="okInfo()",@on-cancel="cancelInfo()",width='70%')
         .minBody
             .c1
                 .c2

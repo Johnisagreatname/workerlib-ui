@@ -49,7 +49,7 @@
             .footer
                 span 共{{getLecturer().length}}条记录
 
-    Modal(:value="addLecturer",title="新增人员",@on-ok="ok()",@on-cancel="cancel()",width='70%')
+    Modal(:value="addLecturer",title="新增人员",@on-ok="ok()",@on-cancel="cancel()",width='70%',:loading="loading")
         Tabs( value="name1")
             TabPane(label="基本信息" name="name1")
                 .addBody

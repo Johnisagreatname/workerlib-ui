@@ -109,8 +109,33 @@
         }
         ok() : any{
             if(this.store.insertType == 1){//不良评价
+                if(this.store.projectList.length>0 && !this.store.insertProject){
+                    this.messageWarningFn('请输入选择项目！');
+                    return;
+                }
+                if(!this.store.insertDescription){
+                    this.messageWarningFn('请输入不良记录评价！');
+                    return;
+                }
+                if(!this.store.insertAppraiseTime){
+                    this.messageWarningFn('请选择事件时间！');
+                    return;
+                }
+                if(!this.store.insertPunishment){
+                    this.messageWarningFn('请选择处罚类型！');
+                    return;
+                }
                 this.store.insertBadnessAppraise();
             }else {//综合评价
+
+                if(this.store.projectList.length>0 && !this.store.insertProject){
+                    this.messageWarningFn('请输入选择项目！');
+                    return;
+                }
+                if(!this.store.insertDescription){
+                    this.messageWarningFn('请输入评语！');
+                    return;
+                }
                 this.store.insertSynthesizeAppraise();
             }
             this.addCommtent = false;

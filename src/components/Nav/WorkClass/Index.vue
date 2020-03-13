@@ -75,6 +75,14 @@
             }
         }
         ok() : any{
+            if(!this.store.addName){
+                this.messageWarningFn("请输入工种名称！");
+                return;
+            }
+            if(!this.store.addValue){
+                this.messageWarningFn("请输入工种值！");
+                return;
+            }
             if(this.store.commentList.filter(x => x.name == this.store.addName).length>0){
                 this.messageWarningFn("工种名称已存在！");
                 return;

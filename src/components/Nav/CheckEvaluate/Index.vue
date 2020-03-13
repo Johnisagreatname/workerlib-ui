@@ -82,7 +82,8 @@
             if(!this.store.insertRatingname){
                 this.messageWarningFn('请输入评定记录名称！');
                 return;
-            }if(this.store.rate.filter(a =>a.ratingname == this.store.insertRatingname).length>0){
+            }
+            if(this.store.rate.filter(a =>a.ratingname == this.store.insertRatingname).length>0){
                 this.messageWarningFn('评定记录名称已存在！');
                 return;
             }
@@ -211,6 +212,22 @@
         }
 
         ok() : any{
+            if(!this.store.rateWorkType){
+                this.messageWarningFn('请选择评定工种！');
+                return;
+            }
+            if(!this.store.rank){
+                this.messageWarningFn('请选择评定等级！');
+                return;
+            }
+            if(!this.store.grade){
+                this.messageWarningFn('请选择评定级别！');
+                return;
+            }
+            if(!this.store.evaluateTime){
+                this.messageWarningFn('请选择评定时间！');
+                return;
+            }
             let item = {};
             item["userId"] = this.addId;
             item["grade"] = this.store.grade;
@@ -262,6 +279,7 @@
             this.addViewTeamRate = !this.addViewTeamRate;
         }
         okViewTeamRate():any{
+
             this.addViewTeamRate=false;
         }
         cancelViewTeamRate():any{

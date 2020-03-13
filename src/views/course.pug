@@ -55,6 +55,6 @@
                     InputNumber(:min=1,clearable,style="width: 345px",size=large,v-model="editValue")
     Modal(:value="deleteCommentType",title="删除课程类型",@on-ok="deleteOK()",@on-cancel="deleteCancel()",width='50%',:styles="{top: '20px'}",)
         .delBody
-            .divTwo
+            .divTwo(:style={'width':'50%'})
                 span 确定要删除该课程类型？
 

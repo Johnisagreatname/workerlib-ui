@@ -3,6 +3,7 @@
     import AccountStore from '../../../store/modules/AccountStore';
     import { Component, Vue, Prop, Model} from 'vue-property-decorator';
     import { getModule } from 'vuex-module-decorators';
+    import { Message } from 'iview';
 
     @Component({
         components:{
@@ -61,14 +62,46 @@
             return this.store.modegroup;
         }
         set modegroup(data) {
-
             this.store.setModegroup(data);
         }
+        loading = true;
+        messageWarningFn (text) {
+            let alert: any = Message;
+            alert.warning(text);
+            setTimeout(() => {
+                this.loading = false;
+                this.$nextTick(() => {
+                    this.loading = true;
+                })
+            }, 500)
+        }
         async ok() {
+            debugger
+            if(!this.store.userInfo.username){
+                this.messageWarningFn('请输入用户名！');
+                return;
+            }
+            if(!this.store.userInfo.password){
+                this.messageWarningFn('请输入密码！');
+                return;
+            }
+            if(!this.store.moderole){
+                this.messageWarningFn('请选择角色！');
+                return;
+            }
+
+            if(this.store.moderole == "9d83cad925124244b1b5ec7cf0656015" && !this.store.modegroup){
+                this.messageWarningFn('请选择项目名称！');
+                return;
+            }
             await this.store.insertUser();
             this.addProject = false;
         }
         yes() : any{
+            if(!this.store.modegroup){
+                this.messageWarningFn('请选择项目名称！');
+                return;
+            }
             this.store.updateUser();
         }
         popupDelUser(userId){
@@ -82,11 +115,17 @@
         popupUpdUser(userId){
             this.uid = userId;
             this.store.setUid(this.uid);
-            this.updUser = !this.updUser;
+            this.updUser = true;
             // this.store.updateUser(userId);
         }
         cancel():any {
             this.addProject = false;
+        }
+        cancelYes():any {
+            this.updUser = true;
+        }
+        cancelDeletes():any{
+            this.delUser = false;
         }
 
         get name(): string {
