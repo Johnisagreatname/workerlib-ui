@@ -14,32 +14,32 @@ import MessageUtils from "../../common/MessageUtils";
 })
 export default class UnitStore extends VuexModule {
     @Mutation
-    public setProjectNameList(data:any) { 
-        
+    public setProjectNameList(data:any) {
+
     }
 
     @Mutation
-    public setSUnitName(data:string) { 
-        
+    public setSUnitName(data:string) {
+
     }
 
     @Mutation
-    public setSStatus(data:number) { 
-        
+    public setSStatus(data:number) {
+
     }
 
     @Mutation
-    public setSProjectName(data:string) { 
-        
+    public setSProjectName(data:string) {
+
     }
 
     @Mutation
-    public setGetProjectName(data:any) { 
-        
+    public setGetProjectName(data:any) {
+
     }
     @Mutation
-    public setPageInfo(data: any) { 
-        
+    public setPageInfo(data: any) {
+
     }
     @Mutation
     private selectStatus(data: number) {
@@ -58,7 +58,7 @@ export default class UnitStore extends VuexModule {
         this.pageSize = data;
     }
     @Mutation
-    public setPageIndex(data: number) { 
+    public setPageIndex(data: number) {
         this.pageIndex = data;
     }
     @Mutation
@@ -67,35 +67,35 @@ export default class UnitStore extends VuexModule {
         this.pageTotal = data;
     }
     @Mutation
-    public setProject_name(data:string) { 
+    public setProject_name(data:string) {
         this.project_name=data;
     }
     @Mutation
-    public setPrincipal(data:string) { 
+    public setPrincipal(data:string) {
         this.principal = data;
     }
     @Mutation
-    public setUnit_type(data:number) { 
+    public setUnit_type(data:number) {
         this.unit_type = data;
     }
     @Mutation
-    public setPeople_number(data:string) { 
+    public setPeople_number(data:string) {
         this.people_number = data;
     }
     @Mutation
-    public setEntrance_time(data:Date) { 
+    public setEntrance_time(data:Date) {
         this.entrance_time = data;
     }
     @Mutation
-    public setUnit_name(data:string) { 
+    public setUnit_name(data:string) {
         this.unit_name = data;
     }
     @Mutation
-    public setUnit_number(data:string) { 
+    public setUnit_number(data:string) {
         this.unit_number = data;
     }
     @Mutation
-    public setProject_license(data:string) { 
+    public setProject_license(data:string) {
         this.project_license = data;
     }
     @Mutation
@@ -103,7 +103,7 @@ export default class UnitStore extends VuexModule {
         this.project_id = data;
     }
     @Mutation
-    public setId(data:number) { 
+    public setId(data:number) {
         this.id = data;
     }
     @Mutation
