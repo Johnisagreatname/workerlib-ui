@@ -17,20 +17,20 @@ const CancelToken: any = axios.CancelToken;
 
 const removePending: any = (config: any, f: any) => {
     // 获取请求的url
-    const flagUrl = config.url;
+    const flagUrl = JSON.stringify({url: config.url, data: config.data, method: config.method});
     // 判断该请求是否在请求队列中
     if (pending.indexOf(flagUrl) !== -1) {
         // 如果在请求中，并存在f,f即axios提供的取消函数
-        // if (f) {
-        //     f('您操作太快了'); // 执行取消操作
-        // } else {
+        if (f) {
+            //f('您操作太快了'); // 执行取消操作
+        } else {
             pending.splice(pending.indexOf(flagUrl), 1); // 把这条记录从数组中移除
-        // }
+        }
     } else {
         // 如果不存在在请求队列中，加入队列
-        // if (f) {
+        if (f) {
             pending.push(flagUrl);
-        // }
+        }
     }
 };
 
@@ -57,17 +57,18 @@ function downLoad(data, name) {
 service.interceptors.request.use((config: any) => {
     config.headers.Authorization = localStorage.getItem('token') ? localStorage.getItem('token') : ''
     // neverCancel 配置项，允许多个请求
-    // if (!config.neverCancel) {
-    //     // 生成cancelToken
+    if (!config.neverCancel) {
+         // 生成cancelToken
         config.cancelToken = new CancelToken((c: any) => {
             removePending(config, c);
         });
-    // }
+    }
     // 在这里可以统一修改请求头，例如 加入 用户 token 等操作
-    //   if (store.getters.sessionId) {
+    if (store.getters.sessionId) {
     //     config.headers['X-SessionId'] = getSessionId(); // 让每个请求携带token--['X-Token']为自定义key
-    //   }
+    }
     name = config.params ? config.params : ''
+
     if (loadingUrlList.includes(config.url.split("?")[0])) {
         store.commit('changeLoading', true);
     }
@@ -80,15 +81,12 @@ service.interceptors.request.use((config: any) => {
 service.interceptors.response.use(
 
     (response: any) => {
-        // if (pending.length === 0 ) {
-        //     store.commit('changeLoading', false);
-        // }
-        // store.commit('changeLoading', false);
-        // 移除队列中的该请求，注意这时候没有传第二个参数f
-        removePending(response.config);
-        if (!pending.length) {
+
+        if (loadingUrlList.includes(response.config.url.split("?")[0])) {
             store.commit('changeLoading', false);
         }
+        // 移除队列中的该请求，注意这时候没有传第二个参数f
+        removePending(response.config);
         if(response.status){
             if(response.status != 200) {
                 throw response.data.message;
@@ -109,9 +107,11 @@ service.interceptors.response.use(
 
         // 异常处理
         console.log(error)
-
         pending = [];
         if(error.response != undefined) {
+            if (loadingUrlList.includes(error.response.config.url.split("?")[0])) {
+                store.commit('changeLoading', false);
+            }
             if (error.response.status == 401) {
                 router.push("/login");
                 return;

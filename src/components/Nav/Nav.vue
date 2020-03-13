@@ -3,6 +3,7 @@
     import NavStore from '../../store/modules/NavStore';
     import {Component, Vue, Prop, Model, Watch} from 'vue-property-decorator';
     import { getModule } from 'vuex-module-decorators';
+    import store from "../../store";
 
     @Component({
         data() {
@@ -23,15 +24,6 @@
                     'menu-item',
                     this.isCollapsed ? 'collapsed-menu' : ''
                 ]
-            },
-
-            getLoading() {
-                return this.$store.state.loading
-            }
-        },
-        watch: {
-            getLoading: function(news) {
-                this.loading = news
             }
         }
     })
@@ -96,6 +88,7 @@
 
         select(e, isInit) : void {
 
+            store.commit('changeLoading', false);
             if(!isInit) {
                 this['$router'].push(e);
             }

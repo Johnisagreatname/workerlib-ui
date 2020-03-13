@@ -115,11 +115,6 @@
     "not ie <= 8"
   ],
   "listen": "8000",
-  "root": "./web",
-  "db": "./db/",
-  "zip": "none",
-  "charset": "utf8",
-  "debug": true,
   "scope": {},
   "locals": {},
   "build": {

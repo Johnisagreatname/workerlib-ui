@@ -49,8 +49,10 @@
    :class="isChecked(item.eafId) ? 'people-selected' : 'people'")
       .headPhotos
          .circle
+            img(:src="'/api/workerlib/preview/people/photo/'+item.id",:style={'width':'100%','height':'100%',
+                'border-radius': '50%'},v-if="item.photo")
             img(:src="'http://113.105.121.93:1818'+item.cwrPhoto",:style={'width':'100%','height':'100%',
-                'border-radius': '50%'},v-if="item.cwrPhoto")
+                'border-radius': '50%'},v-else-if="item.cwrPhoto")
             img(src="~@/assets/css/images/headerPicture.png",:style={'width': '100%', 'height': '100%','border-radius': '50%'},v-else)
 
       .top
@@ -171,10 +173,11 @@
                .oTop
                   .oTop1
                      .oCircle
-                        img(:src="'http://113.105.121.93:1818'+this.store.peopleInfo.cwrPhoto",:style={
-                            'width': '100%', 'height': '100%',
-                            'border-radius': '50%'
-                        })
+                        img(:src="'/api/workerlib/preview/people/photo/'+this.store.peopleInfo.id",:style={'width':'100%','height':'100%',
+                            'border-radius': '50%'},v-if="this.store.peopleInfo.photo")
+                        img(:src="'http://113.105.121.93:1818'+this.store.peopleInfo.cwrPhoto",:style={'width':'100%','height':'100%',
+                            'border-radius': '50%'},v-else-if="this.store.peopleInfo.cwrPhoto")
+                        img(src="~@/assets/css/images/headerPicture.png",:style={'width': '100%', 'height': '100%','border-radius': '50%'},v-else)
                   .oTop2
                      .top2
                         span {{this.store.peopleInfo.eafName}}

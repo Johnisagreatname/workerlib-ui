@@ -111,7 +111,7 @@ export default class CheckEvaluateStore extends VuexModule {
 
         this.pageInIndex=1;
         this.pageInSize= 8;
-        this.pageInTotal = 0;
+        this.pageInTotal = -1;
         this.pageViewIndex=1;
         this.pageViewSize= 10;
         this.pageViewTotal = 0;
