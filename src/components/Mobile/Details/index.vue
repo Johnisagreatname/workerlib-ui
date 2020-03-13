@@ -151,11 +151,19 @@
         }
 
         getUrl(personInfo): string {
-            if (personInfo == null) {
-                return ""
-            } else {
+            if (!personInfo) {
+                return "~@/assets/css/images/headerPicture.png";
+            }
+
+            if(personInfo.photo) {
+                return '/api/workerlib/preview/people/photo/'+personInfo.id;
+            }
+
+            if(personInfo.cwrPhoto) {
                 return "http://113.105.121.93:1818" + personInfo.cwrPhoto;
             }
+
+            return "~@/assets/css/images/headerPicture.png";
         }
 
         //身份证掩码

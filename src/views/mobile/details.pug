@@ -9,8 +9,8 @@
                     flexbox(orient="vertical")
                         flexbox-item
                             div(class="flex-demo") {{this.store.personInfo.eafName}} | {{checkSex(this.store.personInfo.cwrIdnum)}} | {{getYear(this.store.personInfo.cwrIdnum)}}岁
-                        flexbox-item
-                            div(class="flex-demo2") 查看证件
+                        //flexbox-item
+                        //    div(class="flex-demo2") 查看证件
                 flexbox-item(span="100")
                     img(class="img-rq",:src="getCodeUrl(this.store.personInfo)")
             group
@@ -127,23 +127,23 @@
         //                width="20",
         //                style="display:block;margin-right:5px;",
         //                src="")
-        div(class="div-bg")
-            div(class="text-title") 工资明细
-            group
-                cell(title='总收入',
-                    :value = "this.wstore.salaryInfo.pay",
-                    is-link =false)
-                    img(slot="icon",
-                        width="20",
-                        style="display:block;margin-right:5px;",
-                        src="")
-                cell(title='总到账',
-                    :value = "this.wstore.salaryInfo.income",
-                    is-link =false)
-                    img(slot="icon",
-                        width="20",
-                        style="display:block;margin-right:5px;",
-                        src="")
+//        div(class="div-bg")
+//            div(class="text-title") 工资明细
+//            group
+//                cell(title='总收入',
+//                    :value = "this.wstore.salaryInfo.pay",
+//                    is-link =false)
+//                    img(slot="icon",
+//                        width="20",
+//                        style="display:block;margin-right:5px;",
+//                        src="")
+//                cell(title='总到账',
+//                    :value = "this.wstore.salaryInfo.income",
+//                    is-link =false)
+//                    img(slot="icon",
+//                        width="20",
+//                        style="display:block;margin-right:5px;",
+//                        src="")
         div(class="div-bg")
             div(class="text-title") 员工评价
             divider
