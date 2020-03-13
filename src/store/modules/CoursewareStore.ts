@@ -63,7 +63,7 @@ export default class CoursewareStore extends VuexModule {
 
         this.pageInIndex=1;
         this.pageInSize= 8;
-        this.pageInTotal = 0;
+        this.pageInTotal = -1;
 
         this.cultivateArchivesList = [];
         this.addCultivateArchivesList = [];
@@ -575,6 +575,30 @@ export default class CoursewareStore extends VuexModule {
     @Action
     public async searchPeople() {
         await request.post('/api/workerlib/people',await this.getPeopleParams()).then((data)=>{
+            if(!data){
+                return;
+            }
+            this.successPeople(data);
+            this.countPeople();
+        }).catch((e)=>{
+            let alert: any = Message;
+            if(!e) {
+                alert.warning('未知错误！')
+                return
+            }
+            if(e.response && e.response.data && e.response.data.message) {
+                alert.warning(e.response.data.message)
+                return
+            }
+            if(!e.message) {
+                return;
+            }
+            alert.warning(e.message || e)
+        });
+    }
+    @Action
+    public async searchPeopleIn() {
+        await request.post('/api/workerlib/project_allpeople_in',await this.getPeopleParams()).then((data)=>{
             if(!data){
                 return;
             }

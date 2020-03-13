@@ -53,7 +53,6 @@
             this.offLeave =false;
         }
         mounted() {
-        	this.store.findRole();
             if(this.store.notIn){
                 if(this.store.notIn == true){
                     this.store.searchNot();

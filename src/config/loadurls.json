@@ -1,2 +1,8 @@
 [
+  "/api/workerlib/people",
+  "/api/workerlib/unitview",
+  "/api/workerlib/project",
+  "/api/workerlib/lecturer",
+  "/api/workerlib/courseware",
+  "/api/workerlib/comments"
 ]

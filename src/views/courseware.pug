@@ -445,10 +445,9 @@
                     @on-select-cancel="handleSelectRowCancel",@on-select-all-cancel = "handleSelectAllCancel"
                     )
                         template(slot-scope="{ row }" ,slot="photo")
-                            img(:src="'http://113.105.121.93:1818/'+row.cwrPhoto",:style={
-                                           'width': '50px', 'height': '50px',
-                                           'border-radius': '50%'
-                                       })
+                            img(:src="'/api/workerlib/preview/people/photo/'+row.id",:style={'width': '50px', 'height': '50px','border-radius': '50%'},v-if="row.photo")
+                            img(:src="'http://113.105.121.93:1818'+row.cwrPhoto",:style={'width': '50px', 'height': '50px','border-radius': '50%'},v-else-if="row.cwrPhoto")
+                            img(src="~@/assets/css/images/headerPicture.png",:style={'width': '50px', 'height': '50px','border-radius': '50%'},v-else)
                         template(slot-scope="{row}",slot="leave")
                             span(v-if="row.leave==1") 在场
                             span(v-if="row.leave==2") 离场
@@ -474,10 +473,10 @@
                 .right1(v-else)
                     .rdiv(v-for="item in this.store.checkeds")
                         .rimg
-                            img(:src="'http://113.105.121.93:1818'+item.photo",:style={
-                                'width': '50px', 'height': '50px',
-                                'border-radius': '50%'
-                            })
+                            img(:src="'/api/workerlib/preview/people/photo/'+item.id",:style={'width': '50px', 'height': '50px','border-radius': '50%'},v-if="item.photo")
+                            img(:src="'http://113.105.121.93:1818'+item.cwrPhoto",:style={'width': '50px', 'height': '50px','border-radius': '50%'},v-else-if="item.cwrPhoto")
+                            img(src="~@/assets/css/images/headerPicture.png",:style={'width': '50px', 'height': '50px','border-radius': '50%'},v-else)
+
                             span(class="image-remove",@click="show(item.id,item.name,item.photo)") +
                         .rname
                             span {{item.name}}
