@@ -29,10 +29,12 @@ export default class LoginStore extends VuexModule {
             if (data.data) {
                 sessionStorage.setItem('loginInfo', JSON.stringify(data));
                 this.roleName = JSON.parse(sessionStorage.getItem('loginInfo')).data.userGroupRoleModels[0].role.roleName;
-                if(this.roleName && this.roleName == '管理员' || this.roleName == '超级管理员' || this.roleName == '来宾'){
-                router.push({path: '/spectaculars'})
-                }else {
+                if(this.roleName && this.roleName == '讲师'){
                     router.push({path: '/nav/lecturer'})
+                }else if(this.roleName && this.roleName == '外部监理') {
+                    router.push({path: '/nav/comments'})
+                }else {
+                    router.push({path: '/spectaculars'})
                 }
 
             } else {
