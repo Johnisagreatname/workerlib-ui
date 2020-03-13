@@ -337,7 +337,7 @@ export default class WorkerStore extends VuexModule {
     }
     @Action
     public async synchronization() {
-        await request.post('asyncapi/sync/alluser').then((data)=>{
+        await request.post('api/sync/alluser').then((data)=>{
             if(!data){
                 return;
             }

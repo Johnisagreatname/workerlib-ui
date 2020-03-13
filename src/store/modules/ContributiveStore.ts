@@ -29,7 +29,7 @@ export default class ContributiveStore extends VuexModule {
 
     @Action
     public async search() {
-        await request.post('/asyncapi/workerlib/join', {
+        await request.post('/api/workerlib/join', {
             "joinTables": [{
                 "tablename": "salary",
                 "alias": "a",
