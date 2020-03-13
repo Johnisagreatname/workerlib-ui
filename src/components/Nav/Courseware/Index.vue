@@ -131,8 +131,17 @@
             // if(this.store.courseWare.video == "" || this.store.courseWare.video == null ){
             //     this.messageWarningFn('请上传资料！');
             //     this.pageName = "name2"
-            //     return;
+            //
+            // return;
             // }
+            if(this.store.courseWare.describe == "" || this.store.courseWare.describe == null ){
+                this.messageWarningFn('请输入描述！');
+                return;
+            }
+            if(this.store.courseWare.particulars == "" || this.store.courseWare.particulars == null ){
+                this.messageWarningFn('请输入课程详情！');
+                return;
+            }
             this.store.setStatus(1);
             this.store.insertCourseware();
             this.store.clearCourseWare();
@@ -158,6 +167,14 @@
             }
             if(this.store.courseWare.type_work == "" || this.store.courseWare.type_work == null ){
                 this.messageWarningFn('请绑定课件工种分类！');
+                return;
+            }
+            if(this.store.courseWare.describe == "" || this.store.courseWare.describe == null ){
+                this.messageWarningFn('请输入描述！');
+                return;
+            }
+            if(this.store.courseWare.particulars == "" || this.store.courseWare.particulars == null ){
+                this.messageWarningFn('请输入课程详情！');
                 return;
             }
             this.store.setStatus(2);
@@ -192,6 +209,14 @@
             //     this.pageName = "name2"
             //     return;
             // }
+            if(this.store.courseWareEdit.describe == "" || this.store.courseWareEdit.describe == null ){
+                this.messageWarningFn('请输入描述！');
+                return;
+            }
+            if(this.store.courseWareEdit.particulars == "" || this.store.courseWareEdit.particulars == null ){
+                this.messageWarningFn('请输入课程详情！');
+                return;
+            }
             this.store.updateCourseware();
             this.updateCourseware = false;
         }

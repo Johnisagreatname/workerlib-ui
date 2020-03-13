@@ -54,7 +54,7 @@
         .footer
             Page(:total="totalRecords",show-sizer,show-elevator,show-total,@on-page-size-change="onPageSizeChange",@on-change="onPageIndexChange",:page-size=20)
 
-    Modal(:value="addRate",title="技能评价",@on-ok="ok()",@on-cancel="cancel()",width='70%')
+    Modal(:value="addRate",title="技能评价",@on-ok="ok()",@on-cancel="cancel()",width='70%',:loading = "loading")
         .addBody
             .divTwo
                 .name
@@ -144,7 +144,7 @@
                             span(class="image-remove",@click="show(item.id,item.name,item.photo)") +
                         .rname
                             span {{item.name}}
-    Modal(:value="addViewTeamRate",title="人员评级",@on-ok="okViewTeamRate()",@on-cancel="cancelViewTeamRate()",width='70%')
+    Modal(:value="addViewTeamRate",title="人员评级",@on-ok="okViewTeamRate()",@on-cancel="cancelViewTeamRate()",width='70%',:loading = "loading")
         .addBody1
             .topOne
                 .divOne

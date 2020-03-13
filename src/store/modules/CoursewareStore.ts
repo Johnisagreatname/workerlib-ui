@@ -644,7 +644,7 @@ export default class CoursewareStore extends VuexModule {
         let alert: any = Message;
         if(data.status == 0) {
             this.search();
-            alert.warning("成功！");
+            alert.warning(data.message);
         }
     }
     @Mutation

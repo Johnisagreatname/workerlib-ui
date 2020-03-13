@@ -38,7 +38,7 @@
     .footer
         Page(:total="totalRecords",show-sizer,show-elevator,show-total,@on-page-size-change="onPageSizeChange",@on-change="onPageIndexChange",:page-size=20)
 
-    Modal(:value="addProject",title="新增项目",@on-ok="ok()",@on-cancel="cancel()",width='50%',:loading = "loading")
+    Modal(:value="addProject",title="新增项目",@on-ok="ok()",@on-cancel="cancel()",width='70%',:loading = "loading")
         .addBody
             .divTwo
                 .name
@@ -107,7 +107,7 @@
                 .input
                     Select(clearable,filterable,style="width:345px", v-model="status")
                         Option(v-for="item in getMenus()", :value="item.value",:key="item.value") {{item.name}}
-    Modal(:value="addPeoples",title="添加人员",@on-ok="okAdd()",@on-cancel="cancelAdd()",width='50%',:loading = "loading")
+    Modal(:value="addPeoples",title="添加人员",@on-ok="okAdd()",@on-cancel="cancelAdd()",width='70%',:loading = "loading")
         .addBody
             .topOne2
                 .divOne
@@ -134,7 +134,7 @@
                     'margin-top': '10px'
                 })
 
-    Modal(:value="viewPeoples",title="查看人员",@on-ok="okView()",@on-cancel="cancelView()",width='50%',:loading = "loading")
+    Modal(:value="viewPeoples",title="查看人员",@on-ok="okView()",@on-cancel="cancelView()",width='70%',:loading = "loading")
         .addBody
             Button(type="primary", ghost, icon="ios-log-out",@click="updatePeople()",:style="{'margin-bottom': '10px'}") 退场
             Table(border=false, ref="selection", :columns="getPeopleProjectColumns()", :data="getViewPeoples()",

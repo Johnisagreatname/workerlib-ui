@@ -31,7 +31,7 @@
     .footer
         Page(:total="getTotalRecords()",show-sizer,show-elevator,show-total,@on-page-size-change="onPageSizeChange",@on-change="onPageIndexChange")
 
-    Modal(:value="addProject",title="新增人员",@on-ok="ok()",@on-cancel="cancel()",width='70%')
+    Modal(:value="addProject",title="新增人员",@on-ok="ok()",@on-cancel="cancel()",width='70%',:loading="loading")
         .addBody
             .divTwo
                 .name
@@ -68,15 +68,15 @@
             //        span(:style={'color': 'red'}) *
             //    .input
             //        Input(clearable,style="width: 345px",size=large,v-model="builderLicense")
-    Modal(:value="updUser",title="修改密码",@on-ok="yes()",@on-cancel="cancel()",width='70%')
-        .addBody
+    Modal(:value="updUser",title="修改密码",@on-ok="yes()",@on-cancel="cancelYes()",width='70%')
+        .addBody(:style={'height': '82px'})
             .divTwo
                 .name
                     span 新密码
                     span(:style={'color': 'red'}) *
                 .input
                     Input(clearable,style="width: 400px",size=large,v-model="password",placeholder="请输入密码")
-    Modal(:value="delUser",title="修改密码",@on-ok="deletes()",@on-cancel="cancel()",width='70%')
+    Modal(:value="delUser",title="删除用户",@on-ok="deletes()",@on-cancel="cancelDeletes()",width='70%')
         .addBody
             .divTwo
                 .name

@@ -65,6 +65,14 @@
             }
         }
         ok() : any{
+            if(!this.store.addName){
+                this.messageWarningFn("请输入课程类型名称！");
+                return;
+            }
+            if(!this.store.addValue){
+                this.messageWarningFn("请输入课程类型值！");
+                return;
+            }
             if(this.store.commentList.filter(x => x.name == this.store.addName).length>0){
                 this.messageWarningFn("课程类型已存在！");
                 return;
@@ -80,6 +88,14 @@
             this.addCommentType = false;
         }
         updateOk() : any{
+            if(!this.store.editName){
+                this.messageWarningFn("请输入课程类型名称！");
+                return;
+            }
+            if(!this.store.editValue){
+                this.messageWarningFn("请输入课程类型值！");
+                return;
+            }
             if(this.store.commentList.filter(x => x.name == this.store.editName).length>0){
                 this.messageWarningFn("课程类型名称已存在！");
                 return;
