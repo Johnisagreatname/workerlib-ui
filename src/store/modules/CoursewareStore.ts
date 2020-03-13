@@ -156,7 +156,7 @@ export default class CoursewareStore extends VuexModule {
             delete this.page.pageSize
         }else {
             this.page.pageIndex = this.pageInIndex;
-            this.page.pageSize = this.pageSize;
+            this.page.pageSize = this.pageInSize;
 
         }
         if(this.selectLeave != undefined && this.selectLeave > -1

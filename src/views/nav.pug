@@ -38,7 +38,7 @@
                     Icon(type="md-checkbox")
                     span 技能鉴定
 
-                MenuItem(name="/nav/comments",v-if="this.roleName == '管理员' || this.roleName == '超级管理员' || this.roleName == '来宾'")
+                MenuItem(name="/nav/comments",v-if="this.roleName == '管理员' || this.roleName == '超级管理员' || this.roleName == '来宾' || this.roleName == '外部监理'")
                     Icon(type="ios-create")
                     span 综合评价
 
