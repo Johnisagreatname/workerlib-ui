@@ -32,7 +32,11 @@ export default class MobileStore extends VuexModule {
         this.conditionListp = [];
         this.conditionListr = [];
         this.projectInfo = [];
-        this.personInfo = null;
+        this.personInfo = {
+            eafName: '',
+            cwrIdnum: '',
+            eafPhone: '',
+        };
         this.rateInfo = null;
         this.workType = null;
         this.attendances = null;

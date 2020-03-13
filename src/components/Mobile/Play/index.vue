@@ -120,45 +120,7 @@
         get url() {
             return encodeURI("http://39.108.103.150:8000/api/workerlib/preview/courseware/video/"+this.playStore.list.id);
         }
-        changeIndexLeft(e){
-            if((this.page-1)<=1){
-                this.page = 1;
-            }else {
-                this.page = (this.page-1);
-                if(this.playStore.list.archivesStatus=="待培训" || this.playStore.list.archivesStatus=="培训中" ){
-                    if((this.playStore.list.training_pages-1) >= 1){
-                        this.playStore.setTrainingPages(this.playStore.list.training_pages-1);
-                        this.playStore.setArchivesStatus("培训中");
-                        this.playStore.setWhether(2);
-                        this.playStore.updateCul();
-                    }
-                }
-            }
 
-        }
-        changeIndexRight(){
-            if((this.page+1)>this.playStore.list.pptPages){
-                this.page = this.playStore.list.pptPages;
-            }else {
-                this.page = (this.page+1);
-                if(this.playStore.list.archivesStatus=="待培训" || this.playStore.list.archivesStatus=="培训中" ){
-                    if((this.playStore.list.training_pages+1) > this.playStore.list.training_pages){
-                        if((this.playStore.list.training_pages+1) == this.playStore.list.pptPages){
-                            this.playStore.setTrainingPages(this.playStore.list.training_pages+1);
-                            this.playStore.setArchivesStatus("已培训");
-                            this.playStore.setWhether(1);
-                            this.playStore.updateCul();
-                        }else{
-                            this.playStore.setTrainingPages(this.playStore.list.training_pages+1);
-                            this.playStore.setArchivesStatus("培训中");
-                            this.playStore.setWhether(2);
-                            this.playStore.updateCul();
-                        }
-                    }
-                }
-            }
-
-        }
         getBody(): any {
             document.body.style.minWidth = window.screen.width + 'px'
         }
@@ -179,38 +141,6 @@
                 return rate.grade + rate.rank;
             }
         }
-
-
-        getCodeUrl(personInfo): string {
-            if (personInfo == null) {
-                return ""
-            } else {
-                return "/api/workerlib/download/people/code/" + personInfo.id;
-            }
-        }
-
-        getUrl(personInfo): string {
-            if (personInfo == null) {
-                return ""
-            } else {
-                return "http://113.105.121.93:1818" + personInfo.cwrPhoto;
-            }
-        }
-
-        //身份证掩码
-        replaceID(idNumber): string {
-            if (!idNumber) return;
-            const b = idNumber.replace(/^(.{3})(?:\d+)(.{4})/, '$1***********$2');
-            return b;
-        }
-
-        //手机号掩码
-        replacePhone(idNumber): string {
-            if (!idNumber) return;
-            const b = idNumber.replace(/^(.{3})(?:\d+)(.{2})/, '$1******$2');
-            return b;
-        }
-
 
     }
 </script>

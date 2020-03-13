@@ -239,7 +239,7 @@ export default class ProjectStore extends VuexModule {
     @Action
     public async synchronization() {
         let alert: any = Message;
-        await request.post('api/sync/project').then((data)=>{
+        await request.post('asyncapi/sync/project').then((data)=>{
                 if(!data){
                     return;
                 }
