@@ -74,8 +74,7 @@
             this.store.searchPeople();
         }
         checkAllGroupChange(){
-            this.store.setSelectUnitId("E1518A607E764390848F188390482597");
-            this.store.searchPeople();
+            this.store.searchPeopleIn();
         }
         getColumns() : any{
             return this.store.columns;

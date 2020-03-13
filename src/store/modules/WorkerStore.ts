@@ -82,7 +82,7 @@ export default class WorkerStore extends VuexModule {
         super(e)
         this.pageIndex=1;
         this.pageSize= 10;
-        this.pageTotal = 0;
+        this.pageTotal = -1;
         this.date = new Date();
 
         this.inPageIndex=1;
@@ -1023,47 +1023,6 @@ export default class WorkerStore extends VuexModule {
         });
     }
 
-
-    @Action
-    public async findRole() {
-        await request.post('/api/workerlib/role', {
-            "conditionList": [{
-                "name": "roleName",
-                "value": "工人",
-                "algorithm": "EQ"
-
-            }],
-            "sortList": [],
-
-            "groupList" : [],
-
-            "keywords" : [],
-            "selectList": []
-        }).then((data)=>{
-            if(!data){
-                return;
-            }
-            this.successRole(data);
-        }).catch((e)=>{
-            console.log(e)
-            let alert: any = Message;
-            if(!e) {
-                alert.warning('未知错误！')
-                return
-            }
-
-            if(e.response && e.response.data && e.response.data.message) {
-                alert.warning(e.response.data.message)
-                return
-            }
-
-            if(!e.message) {
-                return;
-            }
-
-            alert.warning(e.message || e)
-        });
-    }
     @Action
     public async selectCheckWorkceMonth() {
         await request.post('/api/workerlib/user_salary', {
@@ -1182,10 +1141,7 @@ export default class WorkerStore extends VuexModule {
 
         }
     }
-	@Mutation
-    public successRole(data:any){
-        this.roleName =  data.data;
-    }
+
     @Mutation
     private sucessCheckWorkceMonth(data: any) {
         this.checkWorkceMonth = data.data;
@@ -1309,7 +1265,7 @@ export default class WorkerStore extends VuexModule {
     public setSelectStatus(data:number){
         this.selectStatus = data;
     }
-    
+
 	@Mutation
     public setSelectSex(data:number){
         this.selectSex = data;
