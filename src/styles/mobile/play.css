@@ -39,3 +39,62 @@
     height: 100%;
     overflow: scroll
 }
+
+.left {
+    width: 2rem;
+    height: 2rem;
+    background: #a5a49d;
+    position: absolute;
+    top: 50%;
+    border-radius: 0px 15px 15px 0px;
+    font-size: 1.2rem;
+}
+
+.right {
+    width: 2rem;
+    height: 2rem;
+    background: #a5a49d;
+    position: absolute;
+    top: 50%;
+    right: 0px;
+    border-radius: 15px 0px 0px 15px;
+    font-size: 1.2rem;
+}
+.right i {
+    margin-left: 12px;
+}
+.animate {
+    -webkit-transition: all .3s;
+    -moz-transition: all .3s;
+    -ms-transition: all .3s;
+    -ms-transition: all .3s;
+    transition: all .3s;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    -moz-backface-visibility: hidden;
+    -ms-backface-visibility: hidden;
+}
+
+.toggle_for {
+    display: block;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+}
+
+:checked ~ .left,:checked ~ .right {
+    visibility: hidden;
+    opacity: 0;
+    top: -20px;
+    z-index: 1;
+}
+
+#home label {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+#toggle{
+    display: none;
+}
