@@ -182,10 +182,10 @@ export default class UnitStore extends VuexModule {
             }],
             "keywords" : [],
             "selectList": [
-                {"field": "u.unit_number" ,"alias":"参建单位编号"},
-                {"field": "u.unit_name" ,"alias":"参建单位名称"},
-                {"field": "b.worker_count" ,"alias":"当前人数"},
-                {"field": "u.principal","alias":"负责人" }
+                {"field": "unit_number" ,"alias":"参建单位编号"},
+                {"field": "unit_name" ,"alias":"参建单位名称"},
+                {"field": "worker_count" ,"alias":"当前人数"},
+                {"field": "principal","alias":"负责人" }
             ]
         };
     }
@@ -337,7 +337,6 @@ export default class UnitStore extends VuexModule {
             "project_license":this.project_license,
             "unit_number":this.unit_number,
             "unit_name":this.unit_name,
-            "people_number":this.people_number,
             "unit_type":this.unit_type,
             "entrance_time":this.entrance_time ? this.entrance_time.getFullYear() + "-" + this.entrance_time.getMonth() + "-" + this.entrance_time.getDate():null,
             "principal":this.principal,
@@ -416,7 +415,7 @@ export default class UnitStore extends VuexModule {
         if(data.status == 0){
             this.search();
             let alert: any = Message;
-            alert.warning('成功！');
+            alert.warning(data.message);
         }
     }
     @Mutation

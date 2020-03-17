@@ -20,6 +20,11 @@
     float: left;
     margin-left:45px;
 }
+.or{
+    width: 100%;
+    height: 506px;
+    overflow: auto;
+}
 .divOne2{
     display: block;
     height: 70px;

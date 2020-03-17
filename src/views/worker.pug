@@ -300,6 +300,7 @@
             .three
                .buttonTop
                   h2 员工评价
+
                .threeDiv
                   span(:style={'font-size':'16px'}) 平均分：
                      span(:style={'font-size':'18px','font-weight':'bold'}) {{this.store.commentInfo.synthesize}}
@@ -310,26 +311,27 @@
                   .com 中评 {{this.store.commentInfo.commMiddle}}
                   .com 差评 {{this.store.commentInfo.commBad}}
                .middleHr
-               .threeDiv(v-for="item in getCommentSparticularsList()")
-                  p(:style={
-                      color:'#1397ff',
-                      fontSize: '16px',
-                      display: 'inline-block',
-                      width: '100%',
-                      overflow: 'hidden',
-                      textOverflow: 'ellipsis',
-                      whiteSpace: 'nowrap'},:title="item.project_name") {{item.project_name}}
-                  p(:style={'color':'#9b9b9b','font-size': '12px'},v-if="item.type == 1") {{item.username}}  |  {{item.appraise_time}}
-                  p(:style={'color':'#9b9b9b','font-size': '12px'},v-else) {{item.username}}  |  {{item.createOn}}
+               .or
+                  .threeDiv(v-for="item in getCommentSparticularsList()")
+                     p(:style={
+                         color:'#1397ff',
+                         fontSize: '16px',
+                         display: 'inline-block',
+                         width: '100%',
+                         overflow: 'hidden',
+                         textOverflow: 'ellipsis',
+                         whiteSpace: 'nowrap'},:title="item.project_name") {{item.project_name}}
+                     p(:style={'color':'#9b9b9b','font-size': '12px'},v-if="item.type == 1") {{item.username}}  |  {{item.appraise_time}}
+                     p(:style={'color':'#9b9b9b','font-size': '12px'},v-else) {{item.username}}  |  {{item.createOn}}
 
-                  p(v-if="item.type == 1") 处罚：{{item.punishment}}
-                  p(:style={'color':'#000000','font-size': '14px'},v-else) {{item.description}}
-                     Rate(disabled,:value="Number(item.score)",allow-half)
-                  img(src="~@/assets/css/images/commentOne.png" :style={
-                      'width': '59px',
-                      'height': '25px'
-                  },v-if="item.type == 1")
-                  img(src="~@/assets/css/images/commentsTwo.png" :style={'width': '59px', 'height': '25px'},v-else)
+                     p(v-if="item.type == 1") 处罚：{{item.punishment}}
+                     p(:style={'color':'#000000','font-size': '14px'},v-else) {{item.description}}
+                        Rate(disabled,:value="Number(item.score)",allow-half)
+                     img(src="~@/assets/css/images/commentOne.png" :style={
+                         'width': '59px',
+                         'height': '25px'
+                     },v-if="item.type == 1")
+                     img(src="~@/assets/css/images/commentsTwo.png" :style={'width': '59px', 'height': '25px'},v-else)
 
    Modal(title="是否将以下人员退场？",v-model="onLeave",:styles="{top: '20px'}",@on-ok="okLeave()",@on-cancel="cancelLeave()")
       .divL

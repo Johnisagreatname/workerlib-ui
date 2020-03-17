@@ -138,10 +138,6 @@
                 this.messageWarningFn('请输入参建单位编号！');
                 return;
             }
-            if(!this.store.people_number){
-                this.messageWarningFn('请输入当前人数！');
-                return;
-            }
             if(!this.store.entrance_time){
                 this.messageWarningFn('请选择入场日期！');
                 return;

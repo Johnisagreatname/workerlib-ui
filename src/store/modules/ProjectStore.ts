@@ -277,8 +277,8 @@ export default class ProjectStore extends VuexModule {
             if(!data){
             return;
             }
-            this.sucessUpdate(data);
             this.searchProjectPeople();
+            this.sucessUpdate(data);
         }).catch((e)=>{
             let alert: any = Message;
             if(!e) {
@@ -466,6 +466,7 @@ export default class ProjectStore extends VuexModule {
     }
     @Action
     public async insertProject() {
+        let alert: any = Message;
         await request.put('/api/workerlib/project', {
                 "project_id":null,
                 "project_name":this.projectInfo.project_name,
@@ -484,9 +485,9 @@ export default class ProjectStore extends VuexModule {
                     return;
                 }
                 this.added(data)
+                alert.warning('成功！');
         }).catch((e)=>{
             console.log(e)
-            let alert: any = Message;
             if(!e) {
                 alert.warning('未知错误！');
                 return;
@@ -578,7 +579,6 @@ export default class ProjectStore extends VuexModule {
     }
     @Action
     public added(data: any) {
-
         if(data.status == 0) {
             this.search();
         }

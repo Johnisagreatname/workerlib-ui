@@ -51,10 +51,11 @@ export default class CoursewareStore extends VuexModule {
 
     public id:number;
     public cultivate_id:number;
-
+    public in:boolean;
 
     constructor(e) {
         super(e)
+        this.in = false;
         this.checkeds =  new Array();
         this.checkAllGroup =  new Array();
         this.pageIndex=1;
@@ -156,7 +157,7 @@ export default class CoursewareStore extends VuexModule {
             delete this.page.pageSize
         }else {
             this.page.pageIndex = this.pageInIndex;
-            this.page.pageSize = this.pageSize;
+            this.page.pageSize = this.pageInSize;
 
         }
         if(this.selectLeave != undefined && this.selectLeave > -1
@@ -1021,6 +1022,10 @@ export default class CoursewareStore extends VuexModule {
     @Mutation
     public setTrainingAddress(data:string){
         this.cultivate.trainingAddress = data;
+    }
+    @Mutation
+    public setIn(data:boolean){
+        this.in = data;
     }
     @Mutation
     public setCStatus(data:number){
