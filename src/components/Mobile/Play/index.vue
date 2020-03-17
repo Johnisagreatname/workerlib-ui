@@ -34,34 +34,30 @@
         private interval: any;
         private page:number;
         private micromessenger:boolean;
-
+        private loading: boolean;
 
         constructor() {
             super();
             this.getBody();
+            this.loading = true;
             this.page = 1;
             this.userId = router.currentRoute.query.eafid;
             this.token = router.currentRoute.query.token;
             this.playStore = getModule(PlayStore)
             localStorage.setItem('token', this.token)
             this.micromessenger = false;
-            // this.interval = setInterval(() => {
-            //     if(this.playStore.list.video.split('.')[1] == 'ppt' || this.playStore.list.video.split('.')[1] == 'pptx'){
-            //
-            //     }else{
-            //         if(this.playStore.list.training_time!=this.playStore.list.total_hours){
-            //             if((this.playStore.list.training_time+1)>this.playStore.list.training_time){
-            //                 if((this.playStore.list.training_time+1)==this.playStore.list.total_hours){
-            //
-            //                 }else{
-            //
-            //                 }
-            //             }
-            //         }
-            //
-            //     }
-            //     console.log('请求')
-            // }, 1000)
+            this.$nextTick(() => {
+                let img = document.getElementById("preview");
+                img.onload = (e)=>{
+                    let loading = document.getElementById('loading');
+                    loading.style.display = 'none';
+                    this.loading = false
+                }
+
+                img.onerror = () => {
+                    this.loading = false
+                }
+            })
         }
         mounted() {
             var browser = {
@@ -124,6 +120,9 @@
             if((this.page-1)<=1){
                 this.page = 1;
             }else {
+                let loading = document.getElementById('loading');
+                loading.style.display = 'block';
+                this.loading = true;
                 this.page = (this.page-1);
                 if(this.playStore.list.archivesStatus=="待培训" || this.playStore.list.archivesStatus=="培训中" ){
                     if((this.playStore.list.training_pages-1) >= 1){
@@ -140,6 +139,9 @@
             if((this.page+1)>this.playStore.list.pptPages){
                 this.page = this.playStore.list.pptPages;
             }else {
+                let loading = document.getElementById('loading');
+                loading.style.display = 'block';
+                this.loading = true;
                 this.page = (this.page+1);
                 if(this.playStore.list.archivesStatus=="待培训" || this.playStore.list.archivesStatus=="培训中" ){
                     if((this.playStore.list.training_pages+1) > this.playStore.list.training_pages){
