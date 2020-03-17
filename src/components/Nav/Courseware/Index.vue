@@ -74,7 +74,15 @@
             this.store.searchPeople();
         }
         checkAllGroupChange(){
-            this.store.searchPeopleIn();
+            debugger
+
+            if(this.singleUser  == true) {
+                this.store.setSelectUnitId("E1518A607E764390848F188390482597");
+            }else {
+                this.store.setSelectUnitId(null);
+            }
+            this.store.searchPeople();
+
         }
         getColumns() : any{
             return this.store.columns;
@@ -288,9 +296,11 @@
         // 单选
         handleSelectRow(selection, row) {
             var itemTrue = {};
+            itemTrue['userId'] = row.id;
             itemTrue['id'] = row.eafId;
             itemTrue['name'] = row.eafName;
-            itemTrue['photo'] = row.cwrPhoto;
+            itemTrue['cwrPhoto'] = row.cwrPhoto;
+            itemTrue['photo'] = row.photo;
             this.checkAllGroup.push(itemTrue);
         }
         handleSelectRowCancel(selection, row){
@@ -308,9 +318,11 @@
             for(let i= 0;i<selection.length;i++){
                 var itemTrue = {};
                 let row = selection[i];
+                itemTrue['userId'] = row.id;
                 itemTrue['id'] = row.eafId;
                 itemTrue['name'] = row.eafName;
-                itemTrue['photo'] = row.cwrPhoto;
+                itemTrue['cwrPhoto'] = row.cwrPhoto;
+                itemTrue['photo'] = row.photo;
                 this.checkAllGroup.push(itemTrue);
             }
         }
@@ -328,8 +340,10 @@
             for (let i=0;i<this.checkAllGroup.length;i++){
                 var itemTrue = {};
                 let row = this.checkAllGroup[i];
+                itemTrue['userId'] = row.userId;
                 itemTrue['id'] = row.id;
                 itemTrue['name'] = row.name;
+                itemTrue['cwrPhoto'] = row.cwrPhoto;
                 itemTrue['photo'] = row.photo;
                 this.store.setChecked(itemTrue);
                 let index = this.store.peoples.findIndex(x => x.eafId == row.id);
@@ -338,13 +352,16 @@
             this.checkAllGroup = [];
         }
 
-        show(id: number,name:string,photo:string): void {
+        show(userId:number,id: number,name:string,cwrPhoto:string,photo:string): void {
+            debugger
             let index = this.store.checkeds.findIndex(x => x.id == id); //已有列表
             if(index > -1) {
                 this.store.checkeds.splice(index, 1);   //去除
                 var item = {};
+                item['userId'] = userId;
                 item['id'] = id;
                 item['name'] = name;
+                item['cwrPhoto'] = cwrPhoto;
                 item['photo'] = photo;
                 this.checkAllGroup.push(item);
                 let indexPeople = this.store.peoples.findIndex(x => x.eafId == id);
@@ -357,8 +374,10 @@
                 this.checkAllGroup.splice(this.checkAllGroup.findIndex(x => x.id == id), 1);   //去除
             }
             var itemTrue = {};
+            itemTrue['userId'] = userId;
             itemTrue['id'] = id;
             itemTrue['name'] = name;
+            itemTrue['cwrPhoto'] = cwrPhoto;
             itemTrue['photo'] = photo;
             this.store.setChecked(itemTrue);
             for(let i = 0;i < this.store.peoples.length;i++) {

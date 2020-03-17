@@ -337,7 +337,7 @@ export default class WorkerStore extends VuexModule {
     }
     @Action
     public async synchronization() {
-        await request.post('api/sync/alluser').then((data)=>{
+        await request.post('api/sync/archives').then((data)=>{
             if(!data){
                 return;
             }
@@ -918,7 +918,6 @@ export default class WorkerStore extends VuexModule {
     }
     @Action
     public async insertWorkType(id) {
-        debugger
         if(this.type.length>0){
             for(let i=0;i<this.type.length;i++){
                 let item = {};
@@ -956,7 +955,6 @@ export default class WorkerStore extends VuexModule {
     }
     @Action
     public async searchEafId(id) {
-        debugger
         await request.post('/api/workerlib/alluser',{
             "pageInfo" : {},
             "conditionList": [{
@@ -972,8 +970,8 @@ export default class WorkerStore extends VuexModule {
             if(!data){
                 return;
             }
-            this.insertWorkType(data.data[0].eafId);
-            this.insertUserGroupRole(data.data[0].id);
+            this.sucessSearchEafId(data);
+
         }).catch((e)=>{
             let alert: any = Message;
             if(!e) {
@@ -997,7 +995,7 @@ export default class WorkerStore extends VuexModule {
             "userGroupRoleId":null,
             "userId":id,
             "roleId":this.roleName[0].roleId
-        }).then((data)=>{
+        }).then((data)=>{debugger
             if(!data){
                 return;
             }
@@ -1104,8 +1102,6 @@ export default class WorkerStore extends VuexModule {
      public addUserGroupRole(data: any){
         if(data.status == 0) {
             this.search();
-            let alert: any = Message;
-            alert.warning('成功！');
         }
      }
     @Action
@@ -1114,13 +1110,20 @@ export default class WorkerStore extends VuexModule {
             this.searchEafId(data.data);
         }
     }
+    @Action
+    public async sucessSearchEafId(data: any) {
+        if(data.status == 0) {
+            this.insertUserGroupRole(data.data[0].id);
+            this.insertWorkType(data.data[0].eafId);
+        }
+    }
     @Mutation
-    public successInsertWorkType(data: any) {
+    public successInsertWorkType(data: any){
         if(data.status == 0) {
             this.insertEafId = null;
             this.insertList = new Array<any>();
-
-
+            let alert: any = Message;
+            alert.warning('成功！');
         }
     }
     @Action

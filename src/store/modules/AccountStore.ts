@@ -380,6 +380,7 @@ export default class AccountStore extends VuexModule {
 
     @Mutation
     public setModerole(data) {
+        this.insertList = new Array<any>();
         this.moderole = data;
         let item = {};
         item["userGroupRoleId"] = null;
