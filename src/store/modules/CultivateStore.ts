@@ -185,7 +185,7 @@ export default class CultivateStore extends VuexModule {
     public getInParams() : any {
         if(this.infoId){
             let item ={};
-            item["name"]="b.course_id";
+            item["name"]="b.id";
             item["value"]=this.infoId;
             item["algorithm"] = "EQ"
             this.conditionList.push(item);
@@ -219,17 +219,6 @@ export default class CultivateStore extends VuexModule {
                     "onList": [{
                         "name": "c.cultivate_id",
                         "value": "b.id",
-                        "algorithm": "EQ"
-                    }]
-                },
-
-                {
-                    "tablename": "courseware",
-                    "alias": "o",
-                    "joinMode": "Left",
-                    "onList": [{
-                        "name": "b.course_id",
-                        "value": "o.id",
                         "algorithm": "EQ"
                     }]
                 }
@@ -451,10 +440,12 @@ export default class CultivateStore extends VuexModule {
     }
     @Mutation
     public success(data: any) {
+        this.cList = new Array<any>();
         this.cultivate = data.data;
     }
     @Mutation
     public successInfo(data: any) {
+        this.conditionList = new Array<any>();
         this.cultivateArchives = data.data;
     }
     @Mutation
@@ -491,6 +482,7 @@ export default class CultivateStore extends VuexModule {
     }
     @Mutation
     public setInPageTotal(data: number) {
+        debugger
         this.conditionList = [];
         this.inPageTotal = data;
     }
@@ -628,11 +620,6 @@ export default class CultivateStore extends VuexModule {
             sortable: true
         },
         {
-            title: '任务状态',
-            key: 'state',
-            sortable: true
-        },
-        {
             title: '发起人',
             key: 'username',
             sortable: true
@@ -718,7 +705,7 @@ export default class CultivateStore extends VuexModule {
         },
         {
             title: '培训课程',
-            key: 'title',
+            key: 'course_name',
             sortable: true,
             render: (h, params) => {
                 return h('div', [
@@ -731,21 +718,11 @@ export default class CultivateStore extends VuexModule {
                             whiteSpace: 'nowrap'
                         },
                         domProps: {
-                            title: params.row.title
+                            title: params.row.course_name
                         }
-                    }, params.row.title)
+                    }, params.row.course_name)
                 ])
             }
-        },
-        {
-            title: '培训课时',
-            slot: 'total_hours',
-            sortable: true
-        },
-        {
-            title: '培训时长',
-            slot: 'training_time',
-            sortable: true
         },
         {
             title: '是否通过',

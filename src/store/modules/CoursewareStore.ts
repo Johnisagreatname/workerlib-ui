@@ -354,7 +354,7 @@ export default class CoursewareStore extends VuexModule {
             "pptPages":this.courseWare.pptPages,
             "total_hours":this.courseWare.total_hours,
             "teaching_method":this.courseWare.teaching_method,
-            "whether":"是",
+            "whether":this.courseWare.whether,
             "type_work":this.courseWare.type_work,
             "video":this.courseWare.video,
             "cover_picture":this.courseWare.cover_picture,

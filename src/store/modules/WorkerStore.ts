@@ -655,24 +655,8 @@ export default class WorkerStore extends VuexModule {
     //参与培训
     @Action
     public async  selectCultivate(){
-        await request.post('/api/workerlib/join',{
-            "joinTables": [
-                {
-                    "tablename": "cultivate_archives",
-                    "alias": "a",
-                    "JoinMode": "Left",
-                },
-                {
-                    "tablename": "cultivate",
-                    "alias": "c",
-                    "JoinMode": "Left",
-                    "onList": [{
-                        "name": "a.cultivate_id",
-                        "value": "c.id",
-                        "algorithm": "EQ"
-                    }]
-                }
-            ],
+        await request.post('/api/workerlib/detailscourseware',{
+
             "pageInfo" : {},
             "conditionList": [{
                 "name": "archives_id",
@@ -682,36 +666,7 @@ export default class WorkerStore extends VuexModule {
             "sortList": [],
             "groupList" : [],
             "keywords" : [],
-            "selectList": [
-                {
-                    "field":"course_name"
-                },{
-                    "field":"a.id",
-                    "alias":"id"
-                },
-                {
-                    "field":"cultivate_id"
-                }, {
-                    "field":"c.courseware_brief"
-                },
-                {
-                    "field":"status"
-                },
-                {
-                    "field":"training_time"
-                },
-                {
-                    "field":"archivesStatus"
-                },
-                {
-                    "field": "c.startTime",  //字段名
-                    "alias":"startTime"
-                },
-                {
-                    "field": "a.endTime",  //字段名
-                    "alias":"endTime"
-                }
-            ]
+            "selectList": []
         }).then((data)=>{
             if(!data){
                 return;

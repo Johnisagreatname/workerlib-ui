@@ -46,20 +46,6 @@
             localStorage.setItem('token', this.token)
             this.micromessenger = false;
             // this.interval = setInterval(() => {
-            //     if(this.playStore.list.video.split('.')[1] == 'ppt' || this.playStore.list.video.split('.')[1] == 'pptx'){
-            //
-            //     }else{
-            //         if(this.playStore.list.training_time!=this.playStore.list.total_hours){
-            //             if((this.playStore.list.training_time+1)>this.playStore.list.training_time){
-            //                 if((this.playStore.list.training_time+1)==this.playStore.list.total_hours){
-            //
-            //                 }else{
-            //
-            //                 }
-            //             }
-            //         }
-            //
-            //     }
             //     console.log('请求')
             // }, 1000)
         }

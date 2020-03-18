@@ -2,10 +2,6 @@
     view-box(ref="viewBox")
         x-header(v-if="!this.micromessenger" ,:left-options="{showBack: false}",style="background-color:#0E93FF;") {{this.playStore.list.title}}
         div(class="body")
-            //iframe(src="https://view.officeapps.live.com/op/view.aspx?src=http%3A%2F%2Fvideo.ch9.ms%2Fbuild%2F2011%2Fslides%2FTOOL-532T_Sutter.pptx")
-            //iframe(src="https://view.officeapps.live.com/op/view.aspx?src=http://39.108.103.150:8000/home/workerlib-ui/upload/courseware/video/2020/03/00/59e9fcc5d70e436f82bc74702e2b76fd/%E7%AC%AC%E4%B8%80%E9%A1%B5.pptx")
-            //iframe(:src="`${url}`")
-            //span(class="left")
             .imgDiv
                 img(:src="'/api/workerlib/preview/courseware/video/'+this.playStore.list.id+'/'+this.page",class="img")
             v-touch(v-on:swipeleft="changeIndexRight()",v-on:swiperight="changeIndexLeft()",class="div")
@@ -13,19 +9,7 @@
                 //img(src="~@/assets/css/images/2.png",class="img")
             #buttons
                 p(:style={"color": "#c3c3c3", "text-align": "center"}) 第{{this.page}}张幻灯片, 共{{this.playStore.list.pptPages}}张
-                //Button(class="right",type="default", ghost, icon="md-arrow-dropright",@click="changeIndexRight()")
 
-
-
-            //#buttons(v-if="!this.micromessenger")
-            //    //Button(class="left",type="default", ghost, icon="md-arrow-dropleft",@click="changeIndexLeft()")
-            //    Button(class="buttom",type="text")
-            //        span(:style={"color":"white"}) 第{{this.page}}张幻灯片
-            //    Button(class="buttom2",type="text")
-            //        span(:style={"color":"white"}) 共{{this.playStore.list.pptPages}}张
-            //    //Button(class="right",type="default", ghost, icon="md-arrow-dropright",@click="changeIndexRight()")
-            //
-            //span(class="right")
         //div(class="body",v-else)
         //    video(controls="controls",autoplay,muted ,loop,width="100%",height="100%")
         //        source(:src="'/api/workerlib/download/courseware/video/'+id")

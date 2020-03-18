@@ -99,6 +99,11 @@ body {
     font-size: 14px;
     color: #2d8cf0;
 }
+.text-red {
+    text-align: left;
+    font-size: 14px;
+    color: red;
+}
 
 .badge-main {
     margin-left: 10px;

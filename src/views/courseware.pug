@@ -136,7 +136,12 @@
                                 span 是否必学课程
                                 span(:style={'color': 'red'}) *
                             .input
-                                Radio(v-model="whether",disabled) 是
+                                RadioGroup(v-model="whether")
+                                    Radio(label="是")
+                                        span 是
+                                    Radio(label="否")
+                                        span 否
+                                //Radio(v-model="whether",disabled) 是
                         .divTwo
                             .name
                                 span 绑定课件工种分类

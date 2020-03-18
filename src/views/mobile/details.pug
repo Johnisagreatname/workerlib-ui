@@ -9,8 +9,9 @@
                     flexbox(orient="vertical")
                         flexbox-item
                             div(class="flex-demo") {{this.store.personInfo.eafName}} | {{checkSex(this.store.personInfo.cwrIdnum)}} | {{getYear(this.store.personInfo.cwrIdnum)}}岁
-                        //flexbox-item
-                        //    div(class="flex-demo2") 查看证件
+                        flexbox-item
+                            div(class="flex-demo2") 查看详情
+
                 flexbox-item(span="100")
                     img(class="img-rq",:src="getCodeUrl(this.store.personInfo)")
             group
@@ -104,7 +105,8 @@
                             flexbox-item
                                 div(class="text-main") {{item.courseware_brief}}
                             flexbox-item
-                                div(class="text-blue") 学习时长：{{item.training_time}}小时
+                                div(class="text-red",v-if="item.whether == '是'") 必修
+                                div(class="text-blue",v-else) 选修
                         flexbox(orient="vertical")
                             flexbox-item
                                 div(class="text-main") {{item.archivesStatus}}
@@ -127,23 +129,23 @@
         //                width="20",
         //                style="display:block;margin-right:5px;",
         //                src="")
-//        div(class="div-bg")
-//            div(class="text-title") 工资明细
-//            group
-//                cell(title='总收入',
-//                    :value = "this.wstore.salaryInfo.pay",
-//                    is-link =false)
-//                    img(slot="icon",
-//                        width="20",
-//                        style="display:block;margin-right:5px;",
-//                        src="")
-//                cell(title='总到账',
-//                    :value = "this.wstore.salaryInfo.income",
-//                    is-link =false)
-//                    img(slot="icon",
-//                        width="20",
-//                        style="display:block;margin-right:5px;",
-//                        src="")
+        div(class="div-bg")
+            div(class="text-title") 工资明细
+            group
+                cell(title='总收入',
+                    :value = "this.wstore.salaryInfo.pay",
+                    is-link =false)
+                    img(slot="icon",
+                        width="20",
+                        style="display:block;margin-right:5px;",
+                        src="")
+                cell(title='总到账',
+                    :value = "this.wstore.salaryInfo.income",
+                    is-link =false)
+                    img(slot="icon",
+                        width="20",
+                        style="display:block;margin-right:5px;",
+                        src="")
         div(class="div-bg")
             div(class="text-title") 员工评价
             divider
@@ -163,7 +165,9 @@
                 div(v-else,:style={'color':'red'}) {{item.punishment}}
                 div(v-if="item.type == 1",:style={'color':'red'}) 处罚：{{item.punishment}}
                 div(v-else,:style={'color':'red'}) {{item.description}}
-
+    //
+    //i-modal(title="标题" visible="{{ visible1 }}" bind:ok="handleClose1" bind:cancel="handleClose1")
+    //    view
 
 
 
