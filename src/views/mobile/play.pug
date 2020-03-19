@@ -1,16 +1,29 @@
 #home
     view-box(ref="viewBox")
         x-header(v-if="!this.micromessenger" ,:left-options="{showBack: false}",style="background-color:#0E93FF;") {{this.playStore.list.title}}
-        div(class="body")
-            .imgDiv
-                img(:src="'/api/workerlib/preview/courseware/video/'+this.playStore.list.id+'/'+this.page",class="img")
-            v-touch(v-on:swipeleft="changeIndexRight()",v-on:swiperight="changeIndexLeft()",class="div")
+        div(class="body",v-show="!getVideo()")
+            //video(controls="controls",autoplay,muted ,loop,width="800px",height="460px")
+            //    source(:src="'/api/workerlib/play/indexVideo/file/'+this.store.indexVideo.id")
+            //
+            video(controls="controls",autoplay,muted ,loop,width="100%",height="100%")
+                source(:src="'/api/workerlib/play/courseware/video/'+this.playStore.list.id")
 
-                //img(src="~@/assets/css/images/2.png",class="img")
+        div(class="body",v-show="getVideo()")
+            .imgDiv
+                Spin#loading(fix)
+                    Icon(type="ios-loading", size=18, class="demo-spin-icon-load")
+                img#preview(:src="'/api/workerlib/preview/courseware/video/'+this.playStore.list.id+'/'+this.page", class="img")
+
+            label(for="toggle")
+                v-touch(v-on:swipeleft="changeIndexRight()",v-on:swiperight="changeIndexLeft()",class="div")
+            input(id="toggle", type="checkbox")
+            .left.animate(@click="changeIndexLeft()")
+                Icon(type="ios-arrow-back")
+            .right.animate(@click="changeIndexRight()")
+                Icon(type="ios-arrow-forward")
             #buttons
                 p(:style={"color": "#c3c3c3", "text-align": "center"}) 第{{this.page}}张幻灯片, 共{{this.playStore.list.pptPages}}张
 
-        //div(class="body",v-else)
-        //    video(controls="controls",autoplay,muted ,loop,width="100%",height="100%")
-        //        source(:src="'/api/workerlib/download/courseware/video/'+id")
+
+
 

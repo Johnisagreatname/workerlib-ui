@@ -288,7 +288,7 @@ export default class UnitStore extends VuexModule {
                 if(!data){
                     return;
                 }
-                alert.warning('成功！');
+                alert.success('成功！');
         }).catch((e)=>{
             let alert: any = Message;
             if(!e) {

@@ -22,9 +22,17 @@
             ViewBox,
             Group
         },
-        // beforeDestroy() {
-        //     clearInterval(this.interval)
-        // }
+        beforeDestroy() {
+            debugger
+            if(this.playStore.list.training_time < this.playStore.list.total_hours){
+                this.playStore.setTrainingTime(0);
+                this.playStore.setArchivesStatus("待培训");
+                this.playStore.setWhether(3);
+                this.playStore.updateCul();
+            }
+            clearInterval(this.interval);
+
+        }
     })
 
     export default class Play extends Vue {
@@ -34,20 +42,53 @@
         private interval: any;
         private page:number;
         private micromessenger:boolean;
+        private loading: boolean;
 
 
         constructor() {
             super();
             this.getBody();
+            this.loading = true;
             this.page = 1;
             this.userId = router.currentRoute.query.eafid;
             this.token = router.currentRoute.query.token;
             this.playStore = getModule(PlayStore)
             localStorage.setItem('token', this.token)
             this.micromessenger = false;
-            // this.interval = setInterval(() => {
-            //     console.log('请求')
-            // }, 1000)
+            this.interval = setInterval(() => {
+                if(this.playStore.list && this.playStore.list.video.split('.')[1] == 'ogg' ||
+                   this.playStore.list.video.split('.')[1] == 'mp4' ||
+                   this.playStore.list.video.split('.')[1] == 'WebM'
+                ){
+                    if(this.playStore.list.archivesStatus=="待培训" || this.playStore.list.archivesStatus=="培训中" ){
+
+                        if(this.playStore.list.training_time+1 >= this.playStore.list.total_hours){
+                            this.playStore.setTrainingTime(this.playStore.list.training_time+1);
+                            this.playStore.setArchivesStatus("已培训");
+                            this.playStore.setWhether(1);
+                            this.playStore.updateCul();
+                        }else{
+                            this.playStore.setTrainingTime(this.playStore.list.training_time+1);
+                            this.playStore.setArchivesStatus("培训中");
+                            this.playStore.setWhether(2);
+                            this.playStore.updateCul();
+                        }
+
+                    }
+                }
+            }, 100000)
+            this.$nextTick(() => {
+                let img = document.getElementById("preview");
+                img.onload = (e)=>{
+                    let loading = document.getElementById('loading');
+                    loading.style.display = 'none';
+                    this.loading = false
+                }
+
+                img.onerror = () => {
+                    this.loading = false
+                }
+            })
         }
         mounted() {
             var browser = {
@@ -106,19 +147,14 @@
         get url() {
             return encodeURI("http://39.108.103.150:8000/api/workerlib/preview/courseware/video/"+this.playStore.list.id);
         }
-        changeIndexLeft(e){
+        changeIndexLeft(){
             if((this.page-1)<=1){
                 this.page = 1;
             }else {
+                let loading = document.getElementById('loading');
+                loading.style.display = 'block';
+                this.loading = true;
                 this.page = (this.page-1);
-                if(this.playStore.list.archivesStatus=="待培训" || this.playStore.list.archivesStatus=="培训中" ){
-                    if((this.playStore.list.training_pages-1) >= 1){
-                        this.playStore.setTrainingPages(this.playStore.list.training_pages-1);
-                        this.playStore.setArchivesStatus("培训中");
-                        this.playStore.setWhether(2);
-                        this.playStore.updateCul();
-                    }
-                }
             }
 
         }
@@ -126,23 +162,30 @@
             if((this.page+1)>this.playStore.list.pptPages){
                 this.page = this.playStore.list.pptPages;
             }else {
+                let loading = document.getElementById('loading');
+                loading.style.display = 'block';
+                this.loading = true;
+                //页数改变
                 this.page = (this.page+1);
-                if(this.playStore.list.archivesStatus=="待培训" || this.playStore.list.archivesStatus=="培训中" ){
-                    if((this.playStore.list.training_pages+1) > this.playStore.list.training_pages){
-                        if((this.playStore.list.training_pages+1) == this.playStore.list.pptPages){
-                            this.playStore.setTrainingPages(this.playStore.list.training_pages+1);
+                if(this.playStore.list.archivesStatus=="待培训" || this.playStore.list.archivesStatus=="培训中" ) {
+                    //当前学习的页数是不是大于数据库的页数
+                    if (this.page > this.playStore.list.training_pages) {
+                        //当前学习的也是是不是等于总页数
+                        if (this.page == this.playStore.list.pptPages) {
+                            this.playStore.setTrainingPages(this.playStore.list.training_pages + 1);
                             this.playStore.setArchivesStatus("已培训");
                             this.playStore.setWhether(1);
                             this.playStore.updateCul();
-                        }else{
-                            this.playStore.setTrainingPages(this.playStore.list.training_pages+1);
+                        } else {
+                            this.playStore.setTrainingPages(this.playStore.list.training_pages + 1);
                             this.playStore.setArchivesStatus("培训中");
                             this.playStore.setWhether(2);
                             this.playStore.updateCul();
                         }
                     }
                 }
-            }
+                }
+
 
         }
         getBody(): any {
@@ -201,4 +244,5 @@
     }
 </script>
 <template lang="pug" src="@/views/mobile/play.pug"/>
+<style scoped src="@/styles/mobile/play.css"/>
 <style scoped src="@/styles/mobile/play.css"/>

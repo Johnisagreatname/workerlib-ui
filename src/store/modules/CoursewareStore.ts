@@ -89,8 +89,9 @@ export default class CoursewareStore extends VuexModule {
         this.selectUserName="";
         this.selectUnitId="";
         this.selectLeave=null;
-
         this.courseWare = {};
+        this.courseWare.cover_picture = "";
+        this.courseWare.video = "";
     }
     @Action
     public getParams() : any {
@@ -661,7 +662,7 @@ export default class CoursewareStore extends VuexModule {
         let alert: any = Message;
         if(data.status == 0) {
             this.search();
-            alert.warning("成功！");
+            alert.success("成功！");
         }
     }
     @Action
@@ -669,7 +670,7 @@ export default class CoursewareStore extends VuexModule {
         let alert: any = Message;
         if(data.status == 0) {
             this.search();
-            alert.warning(data.message);
+            alert.success("成功！");
         }
     }
     @Mutation
@@ -680,7 +681,7 @@ export default class CoursewareStore extends VuexModule {
             this.cultivateArchivesList = new Array<any>();
             this.addCultivateArchivesList = new Array<any>();
             let alert: any = Message;
-            alert.warning("新建培训计划成功！");
+            alert.success("新建培训计划成功！");
         }
 
     }
@@ -957,6 +958,7 @@ export default class CoursewareStore extends VuexModule {
     @Mutation
     public setCoverPicture(data:string){
         this.courseWare.cover_picture = data;
+        debugger
     }
 
     @Mutation

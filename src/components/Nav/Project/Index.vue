@@ -114,7 +114,6 @@
             this.noProjectPeople = this.store.peopleId.filter(a=>list.indexOf(a.eafId)>-1);
             if(!this.noProjectPeople.length) {
                 for(let i = 0;i<this.store.peopleId.length;i++){
-                    debugger
                     let insert = {};
                     let insertProjectWorkType = {};
                     let people = this.store.peopleId[i];
@@ -220,7 +219,6 @@
             return '';
         }
         handleSelectRow(selection, row) {
-
             let item = {};
             item["project_id"] = row.project_id;
             this.store.setUplodId(item);

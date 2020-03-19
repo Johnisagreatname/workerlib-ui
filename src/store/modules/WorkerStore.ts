@@ -1078,7 +1078,7 @@ export default class WorkerStore extends VuexModule {
             this.insertEafId = null;
             this.insertList = new Array<any>();
             let alert: any = Message;
-            alert.warning('成功！');
+            alert.success('成功！');
         }
     }
     @Action
@@ -1086,7 +1086,7 @@ export default class WorkerStore extends VuexModule {
         if(data.status == 0){
             this.search();
             let alert: any = Message;
-            alert.warning('成功！');
+            alert.success('成功！');
         }
     }
     @Action
@@ -1095,7 +1095,7 @@ export default class WorkerStore extends VuexModule {
         if(data.status == 0) {
             this.checkeds = new Array<any>();
             this.search();
-            alert.warning("成功！");
+            alert.success("成功！");
 
         }
     }

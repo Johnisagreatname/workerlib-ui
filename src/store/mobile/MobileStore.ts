@@ -46,16 +46,23 @@ export default class MobileStore extends VuexModule {
 
     @Action
     public getParams(): any {
-        let item = {};
-        this.userId = router.currentRoute.query.eafid;
-        item["name"] = "eafId";
-        item["value"] = this.userId;
-        item["algorithm"] = "EQ";
-        this.conditionList.push(item);
+        //
+        // let item = {};
+        // this.userId = router.currentRoute.query.eafid;
+        // item["name"] = "eafId";
+        // item["value"] = this.userId;
+        // item["algorithm"] = "EQ";
+        // this.conditionList.push(item);
         return {
             "pageInfo": {},
 
-            "conditionList": this.conditionList,
+            "conditionList": [
+                {
+                    "name": "eafId",
+                    "value":router.currentRoute.query.eafid,
+                    "algorithm":"EQ"
+                }
+            ],
 
             "sortList": [],
 
@@ -117,6 +124,9 @@ export default class MobileStore extends VuexModule {
         // @ts-ignore
 
         await request.post('/api/workerlib/alluser_rate', await this.getParamsRate()).then((data) => {
+            if(!data){
+                return;
+            }
             this.successRate(data);
         }).catch((e) => {
             let alert: any = Message;
@@ -138,8 +148,10 @@ export default class MobileStore extends VuexModule {
     @Action
     public async selectPersonInfo() {
         // @ts-ignore
-
         await request.post('/api/workerlib/alluser', await this.getParams()).then((data) => {
+            if(!data){
+                return;
+            }
             this.success(data);
         }).catch((e) => {
             let alert: any = Message;
@@ -161,6 +173,9 @@ export default class MobileStore extends VuexModule {
     public async selectWorkType() {
         // @ts-ignore
         await request.post('/api/workerlib/worktype', await this.getParams()).then((data) => {
+            if(!data){
+                return;
+            }
             this.successWorkType(data);
         }).catch((e) => {
             let alert: any = Message;

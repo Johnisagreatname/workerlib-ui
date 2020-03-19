@@ -135,7 +135,13 @@
 
         }
         getWorkType(){
-            return this.store.workTypeList;
+            if(this.store.workTypeList){
+                return this.store.workTypeList;
+            }
+            else {
+                return new Array();
+            }
+
         }
 
         getWorkTypeCount(){

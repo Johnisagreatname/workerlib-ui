@@ -104,18 +104,18 @@
         }
         handleFormatError (file) {
             let alert: any = Message;
-            alert.warning(file.name + ' 文件格式错误！请上传jpg、jpeg、png格式文件！');
+            alert.error(file.name + ' 文件格式错误！请上传jpg、jpeg、png格式文件！');
         }
         handleSuccessExcel (res, file) {
             if(res.status == 0){
                 let alert: any = Message;
-                alert.warning('成功！');
+                alert.success('成功！');
                 this.store.search();
             }
         }
         handleFormatErrorExcel (file) {
             let alert: any = Message;
-            alert.warning(file.name + ' 文件格式错误！xls、xlsx格式文件！');
+            alert.error(file.name + ' 文件格式错误！xls、xlsx格式文件！');
         }
         handleSuccessIdCardfront (res, file) {
             this.store.setIdCardfront(res.file);

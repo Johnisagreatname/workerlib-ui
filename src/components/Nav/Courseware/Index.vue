@@ -353,7 +353,6 @@
         }
 
         show(userId:number,id: number,name:string,cwrPhoto:string,photo:string): void {
-            debugger
             let index = this.store.checkeds.findIndex(x => x.id == id); //已有列表
             if(index > -1) {
                 this.store.checkeds.splice(index, 1);   //去除
@@ -439,21 +438,27 @@
             this.onUpTitle = title;
         }
         handleSuccessVideo (res, file) {
+            let alert: any = Message;
             if(res.file.split('.')[1] == 'ppt' || res.file.split('.')[1] == 'pptx'){
                 this.store.setPPtPages(res.pageCount);
             }
             this.store.setVideo(res.file);
+            alert.success("上传成功！");
         }
         handleFormatError (file) {
             let alert: any = Message;
-            alert.warning(file.name + ' 文件格式错误！请上传ogg、mp4、WebM、ppt、pptx格式文件！');
+            alert.error(file.name + ' 文件格式错误！请上传ogg、mp4、WebM、ppt、pptx格式文件！');
         }
         handleFormatPictrueError (file) {
             let alert: any = Message;
-            alert.warning(file.name + ' 文件格式错误！请上传jpg、jpeg、png格式文件！');
+            alert.error(file.name + ' 文件格式错误！请上传jpg、jpeg、png格式文件！');
         }
         handleSuccessPicture (res, file) {
+            debugger
             this.store.setCoverPicture(res.file);
+
+            let alert: any = Message;
+            alert.success("上传成功！");
         }
         onPageSizeChange(pageSize){
             this.store.setPageSize(pageSize);
@@ -633,6 +638,12 @@
         }
         get editVideo():string{
             return this.store.courseWareEdit.video;
+        }
+        set getVideo(data:string){
+            this.store.setVideo(data);
+        }
+        get getVideo():string{
+            return this.store.courseWare.video;
         }
 
         set editParticulars(data:string){

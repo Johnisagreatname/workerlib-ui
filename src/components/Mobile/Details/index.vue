@@ -7,7 +7,7 @@
     import WorkerStore from "../../../store/modules/WorkerStore";
     import router from '../../../router/.invoke/router'
     import CommentsStore from "../../../store/modules/CommentsStore";
-
+    import {Message} from "iview";
     @Component({
         components: {
             Cell,
@@ -34,6 +34,9 @@
         public date: number;
         private userId: any
         private token: any;
+        private idNumModal:boolean;
+        private idNum:string;
+        private hidden:boolean;
 
         constructor() {
             super();
@@ -47,6 +50,9 @@
             this.playStore = getModule(PlayStore)
             this.wstore = getModule(WorkerStore)
             this.storeComm = getModule(CommentsStore)
+            this.idNumModal = false;
+            this.hidden = false;
+            this.idNum = null;
         }
 
         mounted() {
@@ -75,8 +81,36 @@
                     }
                 });
         }
+        clickIdNumModal(){
+            this.idNumModal = true;
+        }
+        ok(){
+            let alert: any = Message;
+
+            if(this.idNum == this.store.personInfo.cwrIdnum){
+                this.hidden = true;
+                this.idNum = null;
+                alert.success("身份证号码正确");
+            }else{
+                this.hidden = false;
+                this.idNum = null;
+                alert.error("身份证号码不正确！");
+
+            }
+        }
+        cancel(){
+            let alert: any = Message;
+            alert.warning("你点击了取消");
+        }
         getBody(): any {
             document.body.style.minWidth = window.screen.width + 'px'
+        }
+
+        set getIdNUm(data:string){
+            this.idNum=data;
+        }
+        get getIdNUm():string{
+            return this.idNum;
         }
 
         getCommentSparticularsList(): any {

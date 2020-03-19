@@ -24,10 +24,10 @@
             .com 中评{{item.commMiddle}}
             .com 差评{{item.commBad}}
         .y1
-            span(:style={
+            span(v-if="item.workType",:style={
                 'color': '#000000', 'font-weight': 'bold', 'font-size': '15px'
-            }) 所属工种
-        span(:title="item.workType",:style={
+            }) 所属工种:
+        span(v-if="item.workType",:title="item.workType",:style={
             'display': 'inline-block',
             'width': '90%',
             'overflow': 'hidden',
@@ -36,6 +36,17 @@
             'margin-left': '14px',
             'height': '48px'
         }) {{item.workType}}
+        span(v-else,title="暂无工种",:style={
+            'display': 'inline-block',
+            'width': '90%',
+            'overflow': 'hidden',
+            'textOverflow': 'ellipsis',
+            'whiteSpace': 'nowrap',
+            'margin-left': '14px',
+            'height': '48px',
+            'color': 'red',
+            'text-align': 'center'
+        }) 暂无工种
         .y2
             Button(type="primary", ghost,@click="details(item.eafId)") 查看详情
             Button(type="primary", ghost,@click="addCommtentlist(item.eafId)") 添加评价
@@ -82,9 +93,8 @@
                          span 添加图片
                      .d2
 
-                         Upload(multiple,type="drag",action="/api/workerlib/appraise_photo/photo/upload",
+                         Upload(type="drag",action="/api/workerlib/appraise_photo/photo/upload",
                          :on-success="handleSuccessPhoto",:format="['jpg','jpeg','png']",:on-format-error="handleFormatError",
-                         :show-upload-list="false",
                          :style={'width': '30%'})
                              div(style="padding: 20px 0")
                                  Icon(type="ios-add" size="52" style="color: #3399ff")
@@ -112,9 +122,8 @@
                         .m1
                             span 添加图片
                         .m2
-                            Upload(multiple,type="drag",action="/api/workerlib/appraise_photo/photo/upload",
+                            Upload(type="drag",action="/api/workerlib/appraise_photo/photo/upload",
                             :on-success="handleSuccessPhoto",:format="['jpg','jpeg','png']",:on-format-error="handleFormatError",
-                            :show-upload-list="false",
                             :style={'width': '30%'})
                                 div(style="padding: 20px 0")
                                     Icon(type="ios-add" size="52" style="color: #3399ff")

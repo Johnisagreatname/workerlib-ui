@@ -162,8 +162,10 @@
                             Icon(type="ios-add" size="52" style="color: #3399ff")
                             p 点击上传
                             p （请上传ogg,mp4,WebM格式视频或幻灯片(PPT)）
+                            p(v-if="this.store.courseWare.video") 已上传:
+                                span(:style="{'color':'#2d8cf0'}") {{this.store.courseWare.video}}
                 TabPane(label="课件详情",name="name3",icon="ios-folder-outline")
-                    Upload(multiple,type="drag",action="/api/workerlib/courseware/cover_picture/upload",
+                    Upload(type="drag",action="/api/workerlib/courseware/cover_picture/upload",
                     :on-success="handleSuccessPicture",:format="['jpg','jpeg','png']",:on-format-error="handleFormatPictrueError",
                     :style={
                         'width': '60%',
@@ -175,6 +177,10 @@
                             Icon(type="ios-add" size="52" style="color: #3399ff")
                             p 封面图片
                             p （点击上传）
+                            p （请上传jpg、jpeg、png格式文件）
+                            p(v-if="this.store.courseWare.cover_picture") 已上传:
+                                span(:style="{'color':'#2d8cf0'}") {{this.store.courseWare.cover_picture}}
+
                     .divTwo
                         .name
                             span 描述

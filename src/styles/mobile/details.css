@@ -39,6 +39,7 @@ body {
     background-color: #f78e0f;
     border-radius: 10px;
     background-clip: padding-box;
+    cursor: pointer;
 }
 
 .img-header {

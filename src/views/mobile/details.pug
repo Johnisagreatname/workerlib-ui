@@ -10,12 +10,12 @@
                         flexbox-item
                             div(class="flex-demo") {{this.store.personInfo.eafName}} | {{checkSex(this.store.personInfo.cwrIdnum)}} | {{getYear(this.store.personInfo.cwrIdnum)}}岁
                         flexbox-item
-                            div(class="flex-demo2") 查看详情
+                            div(@click="clickIdNumModal()",class="flex-demo2") 查看详情
 
                 flexbox-item(span="100")
                     img(class="img-rq",:src="getCodeUrl(this.store.personInfo)")
             group
-                cell(title='手机号码',
+                cell(v-if="this.hidden == false",title='手机号码',
                     :value = "replacePhone(this.store.personInfo.eafPhone)",
                     is-link =false,
                     style="cell-value-color:#0E93FF;")
@@ -23,8 +23,24 @@
                         width="15",
                         style="display:block;margin-right:10px;",
                         src="~@/assets/css/images/phoneNumber.png")
-                cell(title='身份证号',
+                cell(v-if="this.hidden == true",title='手机号码',
+                    :value = "this.store.personInfo.eafPhone",
+                    is-link =false,
+                    style="cell-value-color:#0E93FF;")
+                    img(slot="icon",
+                        width="15",
+                        style="display:block;margin-right:10px;",
+                        src="~@/assets/css/images/phoneNumber.png")
+                cell(v-if="this.hidden == false",title='身份证号',
                     :value = "replaceID(this.store.personInfo.cwrIdnum)",
+                    is-link =false,
+                    style="@cell-value-color:#0E93FF")
+                    img(slot="icon",
+                        width="18",
+                        style="display:block;margin-right:10px;",
+                        src="~@/assets/css/images/idUnmber.png")
+                cell(v-if="this.hidden == true",title='身份证号',
+                    :value = "this.store.personInfo.cwrIdnum",
                     is-link =false,
                     style="@cell-value-color:#0E93FF")
                     img(slot="icon",
@@ -93,7 +109,7 @@
                             div(class="text-main") 退场时间
                         flexbox-item
                             div(class="text-blue") {{getDateFormat(item.cwrUserOut)}}
-        div(class="div-bg")
+        div(class="div-bg",v-if="this.hidden == true")
             div(class="text-title") 参与培训
             divider
             flexbox(orient="horizontal",v-for="item in getCultivateList()")
@@ -111,7 +127,7 @@
                             flexbox-item
                                 div(class="text-main") {{item.archivesStatus}}
                             flexbox-item
-                                div(class="text-blue") 时间：{{item.startTime}}
+                                div(class="text-blue") 时间：{{(item.startTime || ' ').split(' ')[0]}}
         //div(class="div-bg")
         //    div(class="text-title") 出勤记录
         //    group
@@ -129,7 +145,7 @@
         //                width="20",
         //                style="display:block;margin-right:5px;",
         //                src="")
-        div(class="div-bg")
+        div(class="div-bg",v-if="this.hidden == true")
             div(class="text-title") 工资明细
             group
                 cell(title='总收入',
@@ -146,7 +162,7 @@
                         width="20",
                         style="display:block;margin-right:5px;",
                         src="")
-        div(class="div-bg")
+        div(class="div-bg",v-if="this.hidden == true")
             div(class="text-title") 员工评价
             divider
             div(v-for="item in getCommentSparticularsList()")
@@ -157,17 +173,18 @@
                             'width': '100%',
                             'overflow': 'hidden',
                             'textOverflow': 'ellipsis',
-                            'whiteSpace': 'nowrap'
+                            'whiteSpace': 'nowrap',
+                            'padding-left': '20px'
                             }) {{item.project_name}}
                     flexbox-item
                         div(class="flex-demo2") 综合评价
-                div(v-if="item.type == 1",:style={'color':'red'}) {{item.description}}  {{item.username}}
-                div(v-else,:style={'color':'red'}) {{item.punishment}}
-                div(v-if="item.type == 1",:style={'color':'red'}) 处罚：{{item.punishment}}
-                div(v-else,:style={'color':'red'}) {{item.description}}
-    //
-    //i-modal(title="标题" visible="{{ visible1 }}" bind:ok="handleClose1" bind:cancel="handleClose1")
-    //    view
+                div(v-if="item.type == 1",:style={'color':'red','padding-left': '20px'}) {{item.description}}  {{item.username}}
+                div(v-else,:style={'color':'red','padding-left': '20px'}) {{item.punishment}}
+                div(v-if="item.type == 1",:style={'color':'red','padding-left': '20px'}) 处罚：{{item.punishment}}
+                div(v-else,:style={'color':'red','padding-left': '20px'}) {{item.description}}
+    Modal(v-model="idNumModal",title="请输入身份证号码",@on-ok="ok", @on-cancel="cancel" )
+        Input(v-model="getIdNUm")
+
 
 
 

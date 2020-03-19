@@ -170,7 +170,7 @@ export default class ProjectStore extends VuexModule {
     public async upload() {
         let alert: any = Message;
         await request.post('/api/workerlib/project/export',await this.getUploadParams(),{responseType: 'blob', params: '项目工程档案'}).then((data)=>{
-            alert.warning('成功！');
+            alert.success('成功！');
         }).catch((e)=>{
             let alert: any = Message;
             if(!e) {
