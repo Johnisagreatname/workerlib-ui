@@ -5,7 +5,7 @@
             //video(controls="controls",autoplay,muted ,loop,width="800px",height="460px")
             //    source(:src="'/api/workerlib/play/indexVideo/file/'+this.store.indexVideo.id")
             //
-            video(controls="controls",autoplay,muted ,loop,width="100%",height="100%")
+            video(controls="controls",autoplay,loop,width="100%",height="100%")
                 source(:src="'/api/workerlib/play/courseware/video/'+this.playStore.list.id")
 
         div(class="body",v-show="getVideo()")
