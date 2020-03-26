@@ -237,7 +237,8 @@ export default class CultivateStore extends VuexModule {
 
             "keywords" : [],
 
-            "selectList": []
+            "selectList": [
+            ]
 
         }
     }

@@ -34,6 +34,7 @@ export default class WorkerStore extends VuexModule {
     public startTime:Date;
     public endTime:Date;
     public photo:string;
+    public updatePhoto:string;
     public idCardfront:string;
     public idCardReverse:string;
     public certificate:string;
@@ -114,11 +115,12 @@ export default class WorkerStore extends VuexModule {
         this.project = "";
         this.archivesId = null;
 
-        this.checkeds = new Array();
+        this.checkeds = [];
 
         this.startTime = null;
         this.endTime = null;
         this.photo = "";
+        this.updatePhoto = "";
         this.idCardfront="";
         this.idCardReverse="";
         this.certificate="";
@@ -975,7 +977,6 @@ export default class WorkerStore extends VuexModule {
             alert.warning(e.message || e)
         });
     }
-
     @Action
     public async selectCheckWorkceMonth() {
         await request.post('/api/workerlib/user_salary', {
@@ -1053,6 +1054,75 @@ export default class WorkerStore extends VuexModule {
             alert.warning(e.message || e)
         });
     }
+    @Action
+    public async inupdate() {
+        await request.post('/api/import/userUpdate', {
+            "pageInfo" : {},
+            "conditionList": [],
+            "sortList": [],
+            "groupList" : [],
+            "keywords" : [],
+            "selectList": []
+        }).then((data)=>{
+            if(!data){
+                return;
+            }
+        }).catch((e)=>{
+            console.log(e)
+            let alert: any = Message;
+            if(!e) {
+                alert.warning('未知错误！');
+                return;
+            }
+
+            if(e.response && e.response.data && e.response.data.message) {
+                alert.warning(e.response.data.message)
+                return
+            }
+
+            if(!e.message) {
+                return;
+            }
+
+            alert.warning(e.message || e)
+        });
+    }
+    @Action
+    public async updateHead() {
+
+        await request.post('/api/workerlib/alluser/update',{
+            "data": {
+                "photo": this.updatePhoto
+            },
+            "conditionList": [{
+                "name": "eafId",
+                "value":  this.infoId,
+                "algorithm": "IN"
+            }
+            ],
+            "keywords" : []
+
+        }).then((data)=>{
+            if(!data){
+                return;
+            }
+            this.successUpdateHead(data);
+        }).catch((e)=>{
+            let alert: any = Message;
+            if(!e) {
+                alert.warning('未知错误！');
+                return
+            }
+            if(e.response && e.response.data && e.response.data.message) {
+                alert.warning(e.response.data.message)
+                return
+            }
+            if(!e.message) {
+                return;
+            }
+            alert.warning(e.message || e)
+        });
+    }
 	@Action
      public addUserGroupRole(data: any){
         if(data.status == 0) {
@@ -1086,7 +1156,7 @@ export default class WorkerStore extends VuexModule {
         if(data.status == 0){
             this.search();
             let alert: any = Message;
-            alert.success('成功！');
+            alert.success(data.message);
         }
     }
     @Action
@@ -1094,6 +1164,15 @@ export default class WorkerStore extends VuexModule {
         let alert: any = Message;
         if(data.status == 0) {
             this.checkeds = new Array<any>();
+            this.search();
+            alert.success("成功！");
+
+        }
+    }
+    @Action
+    public successUpdateHead(data: any) {
+        let alert: any = Message;
+        if(data.status == 0) {
             this.search();
             alert.success("成功！");
 
@@ -1170,6 +1249,10 @@ export default class WorkerStore extends VuexModule {
     @Mutation
     public setPhoto(data: string) {
         this.photo = data;
+    }
+    @Mutation
+    public setUpdatePhoto(data: string) {
+        this.updatePhoto = data;
     }
     @Mutation
     public setIdCardfront(data: string) {

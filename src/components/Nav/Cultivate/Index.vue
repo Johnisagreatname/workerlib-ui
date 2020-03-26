@@ -88,7 +88,6 @@
             this.onDelete = true;
         }
         handleSuccessExcel (res, file) {
-
                 let alert: any = Message;
                 alert.success('成功！');
                 this.store.search();
@@ -133,6 +132,8 @@
             item["file"] = res.file;
             item["url"] = "video"
             this.store.setInsertCultivateVideo(item);
+            let alert: any = Message;
+            alert.success('上传成功！');
         }
         handleFormatError (file) {
             let alert: any = Message;
@@ -148,6 +149,8 @@
             item["file"] = res.file;
             item["url"] = "photo"
             this.store.setInsertCultivateVideo(item);
+            let alert: any = Message;
+            alert.success('上传成功！');
         }
         toggle(name){
             if(name=="线上培训"){

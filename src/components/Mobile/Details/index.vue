@@ -145,7 +145,8 @@
             if (!idNumber) return;
             this.now = new Date();
             this.year = this.now.getTime();
-            this.date = new Date(idNumber.substring(6, 10) + "," + idNumber.substring(10, 12) + "," + idNumber.substring(12, 14)).getTime();
+            this.date = new Date(idNumber.substring(6, 10) , idNumber.substring(10, 12) , idNumber.substring(12, 14)).getTime();
+            // alert(this.date);
             return Math.floor((this.year - this.date) / (1000 * 60 * 60 * 24 * 31 * 12));
         }
         getLeave(): string {

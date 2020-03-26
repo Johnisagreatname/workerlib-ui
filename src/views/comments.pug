@@ -10,7 +10,7 @@
     .hr
     .people(v-for="(item, index) in getComments()", :value="item.eafId", @click="clickChecked(item.eafId)", :key="index")
         .circle
-            img(:src="'/api/workerlib/preview/people/photo/'+item.id",:style={'width':'100%','height':'100%', 'border-radius': '50%'},v-if="item.photo")
+            img(:src="'/api/workerlib/preview/alluser/photo/'+item.id",:style={'width':'100%','height':'100%', 'border-radius': '50%'},v-if="item.photo")
             img(:src="'http://113.105.121.93:1818'+item.cwrPhoto",:style={'width':'100%','height':'100%', 'border-radius': '50%'},v-else-if="item.cwrPhoto")
             img(src="~@/assets/css/images/headerPicture.png",:style={'width':'100%','height':'100%', 'border-radius': '50%'},v-else)
         .name
@@ -95,7 +95,7 @@
 
                          Upload(type="drag",action="/api/workerlib/appraise_photo/photo/upload",
                          :on-success="handleSuccessPhoto",:format="['jpg','jpeg','png']",:on-format-error="handleFormatError",
-                         :style={'width': '30%'})
+                         :style={'width': '30%'},multiple)
                              div(style="padding: 20px 0")
                                  Icon(type="ios-add" size="52" style="color: #3399ff")
                                  p 点击上传

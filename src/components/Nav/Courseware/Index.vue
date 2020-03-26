@@ -38,6 +38,7 @@
         public addUpCourseware: boolean;
         public deleteCourseware: boolean;
         public updateCourseware: boolean;
+        public sendToMessage: boolean;
         public addCultivate: boolean;
         public addUpCultivate: boolean;
         public pageName: string;
@@ -54,6 +55,7 @@
             this.indeterminate= true;
             this.checkAll = false;
             this.addCultivate = false;
+            this.sendToMessage = false;
             this.addUpCultivate = false;
             this.addCourseware = false;
             this.addUpCourseware = false;
@@ -158,6 +160,12 @@
             this.store.clearCourseWare();
             this.addCourseware = false;
         }
+        okMessage():any {
+            this.sendToMessage = true;
+        }
+        cancelMessage():any {
+            this.sendToMessage = false;
+        }
         okUp() : any{
             this.store.setTeachingMethod("现场培训");
             if(this.store.courseWare.title == "" || this.store.courseWare.title == null ){
@@ -243,7 +251,6 @@
             return this.store.teacherList;
         }
         okAdd() : any{
-
             this.store.setState("待学习");
             this.store.setCStatus(1);
             if(this.singleUser==true){
@@ -251,6 +258,7 @@
                 for(let i = 0; i< this.store.peoples.length;i++){
                     var itemTrue = {};
                     itemTrue['archives_id'] = this.store.peoples[i].eafId;
+                    itemTrue['cwrIdnum'] = this.store.peoples[i].cwrIdnum;
                     // itemTrue['cultivate_id'] = this.store.cultivate.course_id;
                     this.store.setCultivateArchivesList(itemTrue);
                 }
@@ -259,6 +267,7 @@
                 for(let i = 0; i< this.store.checkeds.length;i++){
                     var itemTrue = {};
                     itemTrue['archives_id'] = this.store.checkeds[i].id;
+                    itemTrue['cwrIdnum'] = this.store.checkeds[i].cwrIdnum;
                     this.store.setCultivateArchivesList(itemTrue);
                 }
             }
@@ -301,6 +310,7 @@
             itemTrue['name'] = row.eafName;
             itemTrue['cwrPhoto'] = row.cwrPhoto;
             itemTrue['photo'] = row.photo;
+            itemTrue['cwrIdnum'] = row.cwrIdnum;
             this.checkAllGroup.push(itemTrue);
         }
         handleSelectRowCancel(selection, row){
@@ -323,6 +333,7 @@
                 itemTrue['name'] = row.eafName;
                 itemTrue['cwrPhoto'] = row.cwrPhoto;
                 itemTrue['photo'] = row.photo;
+                itemTrue['cwrIdnum'] = row.cwrIdnum;
                 this.checkAllGroup.push(itemTrue);
             }
         }
@@ -345,6 +356,7 @@
                 itemTrue['name'] = row.name;
                 itemTrue['cwrPhoto'] = row.cwrPhoto;
                 itemTrue['photo'] = row.photo;
+                itemTrue['cwrIdnum'] = row.cwrIdnum;
                 this.store.setChecked(itemTrue);
                 let index = this.store.peoples.findIndex(x => x.eafId == row.id);
                 this.$set(this.store.peoples[index], '_disabled', true)
@@ -352,7 +364,7 @@
             this.checkAllGroup = [];
         }
 
-        show(userId:number,id: number,name:string,cwrPhoto:string,photo:string): void {
+        show(userId:number,cwrIdnum:string,id: number,name:string,cwrPhoto:string,photo:string): void {
             let index = this.store.checkeds.findIndex(x => x.id == id); //已有列表
             if(index > -1) {
                 this.store.checkeds.splice(index, 1);   //去除
@@ -362,6 +374,7 @@
                 item['name'] = name;
                 item['cwrPhoto'] = cwrPhoto;
                 item['photo'] = photo;
+                item['cwrIdnum'] = cwrIdnum;
                 this.checkAllGroup.push(item);
                 let indexPeople = this.store.peoples.findIndex(x => x.eafId == id);
                 if(indexPeople > -1)  {  //未选中列表
@@ -378,6 +391,7 @@
             itemTrue['name'] = name;
             itemTrue['cwrPhoto'] = cwrPhoto;
             itemTrue['photo'] = photo;
+            itemTrue['cwrIdnum'] = cwrIdnum;
             this.store.setChecked(itemTrue);
             for(let i = 0;i < this.store.peoples.length;i++) {
                 if(this.store.peoples[i].eafId == id){
@@ -520,6 +534,13 @@
         }
         get title():string{
             return this.store.courseWare.title;
+        }
+
+        set message(data:string){
+            this.store.setMessage(data);
+        }
+        get message():string{
+            return this.store.message;
         }
 
         set course(data:string){
@@ -715,6 +736,7 @@
             return this.store.cultivate.trainingInstitution;
         }
         set trainingTeacher(data:string){
+            this.store.setTeacherId(this.store.teacherList.filter(a => a.name == data).map(b => b.id)[0]);
             this.store.setTrainingTeacher(data);
         }
         get trainingTeacher():string{

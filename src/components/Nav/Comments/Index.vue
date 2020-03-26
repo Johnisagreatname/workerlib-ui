@@ -146,10 +146,12 @@
         }
         handleSuccessPhoto (res, file) {
             this.store.setInsertPhoto(res.file);
+            let alert: any = Message;
+            alert.success('上传成功！');
         }
         handleFormatError (file) {
             let alert: any = Message;
-            alert.error(file.name + ' 文件格式错误！请上传jpg、jpeg、png格式文件！');
+            alert.error(file.name + '文件格式错误！请上传jpg、jpeg、png格式文件！');
         }
         details(id): any {
             this.store.setPunishmentsId(id);

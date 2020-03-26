@@ -18,7 +18,6 @@ export default class LoginStore extends VuexModule {
     public roleName:any;
     constructor(e) {
         super(e)
-
     }
     @Action({ commit: 'success' })
     public async login() {

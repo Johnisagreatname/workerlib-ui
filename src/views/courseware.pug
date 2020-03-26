@@ -407,7 +407,7 @@
     Modal(title="删除",v-model="deleteCourseware",:styles="{top: '20px'}",@on-ok="okDel()",@on-cancel="cancelDel()")
         .divL
             p 是否删除该课件？
-    Modal(:value="addCultivate",title="开始培训",@on-ok="okAdd()",@on-cancel="cancelAdd()",width='70%',:loading="loading")
+    Modal(:value="addCultivate",title="开始培训",@on-ok="okMessage()",@on-cancel="cancelAdd()",width='70%',:loading="loading")
         .addBody1
             .top
                 .cdivOne
@@ -439,8 +439,6 @@
                     .input
                         Input(type="textarea",clearable,:style={'width': '995px'},size=large,v-model="mark")
             .top
-                //.left1(v-if="singleUser == true")
-                //    span 111111111111111
                 .left1
                     Button(type="primary",ghost,style="margin-left: 10px",@click="addSelected()",v-if="singleUser == false") 添加所选
                     Button(type="primary",ghost,style="margin-left: 10px",@click="addSelected()",v-else,disabled) 添加所选
@@ -456,14 +454,14 @@
                     @on-select-cancel="handleSelectRowCancel",@on-select-all-cancel = "handleSelectAllCancel"
                     )
                         template(slot-scope="{ row }" ,slot="photo")
-                            img(:src="'/api/workerlib/preview/people/photo/'+row.id",:style={'width': '50px', 'height': '50px','border-radius': '50%'},v-if="row.photo")
+                            img(:src="'/api/workerlib/preview/alluer/photo/'+row.id",:style={'width': '50px', 'height': '50px','border-radius': '50%'},v-if="row.photo")
                             img(:src="'http://113.105.121.93:1818'+row.cwrPhoto",:style={'width': '50px', 'height': '50px','border-radius': '50%'},v-else-if="row.cwrPhoto")
                             img(src="~@/assets/css/images/headerPicture.png",:style={'width': '50px', 'height': '50px','border-radius': '50%'},v-else)
                         template(slot-scope="{row}",slot="leave")
                             span(v-if="row.leave==1") 在场
                             span(v-if="row.leave==2") 离场
                         template(slot-scope="{row}",slot="operation")
-                            Button(v-if="offChecked(row.eafId)",type="primary",style="margin-right: 5px",@click="show(row.id,row.eafId,row.eafName,row.cwrPhoto,row.photo)") 加入培训
+                            Button(v-if="offChecked(row.eafId)",type="primary",style="margin-right: 5px",@click="show(row.id,row.cwrIdnum,row.eafId,row.eafName,row.cwrPhoto,row.photo)") 加入培训
                             Button(v-else,type="primary",ghost,style="margin-right: 5px") 加入培训
                     div(v-if="singleUser == true",:style={'text-align':'center','margin-top': '30px','font-size':'18px'}) 已选择全部自有工人
                     div(v-if="singleUser == true",:style={'text-align':'center','margin-top': '10px'}) 共{{pageInTotal}}人
@@ -484,10 +482,14 @@
                 .right1(v-else)
                     .rdiv(v-for="item in this.store.checkeds")
                         .rimg
-                            img(:src="'/api/workerlib/preview/people/photo/'+item.userId",:style={'width': '50px', 'height': '50px','border-radius': '50%'},v-if="item.photo")
+                            img(:src="'/api/workerlib/preview/alluser/photo/'+item.userId",:style={'width': '50px', 'height': '50px','border-radius': '50%'},v-if="item.photo")
                             img(:src="'http://113.105.121.93:1818'+item.cwrPhoto",:style={'width': '50px', 'height': '50px','border-radius': '50%'},v-else-if="item.cwrPhoto")
                             img(src="~@/assets/css/images/headerPicture.png",:style={'width': '50px', 'height': '50px','border-radius': '50%'},v-else)
 
                             span(class="image-remove",@click="show(item.userId,item.id,item.name,item.cwrPhoto,item.photo)") +
                         .rname
                             span {{item.name}}
+
+
+    Modal(:value="sendToMessage",title="是否推送消息？",@on-ok="okAdd()",@on-cancel="cancelMessage()",width='40%')
+        Input(type="textarea",clearable,:style={'width': '100%'},size=large,v-model="message",:rows="4")

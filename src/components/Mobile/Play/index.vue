@@ -23,12 +23,15 @@
             Group
         },
         beforeDestroy() {
-            debugger
-            if(this.playStore.list.training_time < this.playStore.list.total_hours){
-                this.playStore.setTrainingTime(0);
-                this.playStore.setArchivesStatus("待培训");
-                this.playStore.setWhether(3);
-                this.playStore.updateCul();
+            if(this.playStore.list && this.playStore.list.video.split('.')[1] == 'ogg' ||
+                this.playStore.list.video.split('.')[1] == 'mp4' ||
+                this.playStore.list.video.split('.')[1] == 'WebM') {
+                    if (this.playStore.list.training_time < this.playStore.list.total_hours) {
+                        this.playStore.setTrainingTime(0);
+                        this.playStore.setArchivesStatus("待培训");
+                        this.playStore.setWhether(3);
+                        this.playStore.updateCul();
+                    }
             }
             clearInterval(this.interval);
 
@@ -76,7 +79,7 @@
 
                     }
                 }
-            }, 100000)
+            }, 60000)
             this.$nextTick(() => {
                 let img = document.getElementById("preview");
                 img.onload = (e)=>{
@@ -159,6 +162,7 @@
 
         }
         changeIndexRight(){
+            debugger
             if((this.page+1)>this.playStore.list.pptPages){
                 this.page = this.playStore.list.pptPages;
             }else {

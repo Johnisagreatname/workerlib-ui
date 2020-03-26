@@ -55,7 +55,6 @@ export default class MobileStore extends VuexModule {
         // this.conditionList.push(item);
         return {
             "pageInfo": {},
-
             "conditionList": [
                 {
                     "name": "eafId",
@@ -63,13 +62,9 @@ export default class MobileStore extends VuexModule {
                     "algorithm":"EQ"
                 }
             ],
-
             "sortList": [],
-
             "groupList": [],
-
             "keywords": [],
-
             "selectList": []
         };
     }

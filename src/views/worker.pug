@@ -40,16 +40,17 @@
    .hr
    .button
       Button(type="primary", ghost,@click="addWorker=!addWorker",icon="ios-add-circle-outline") 新增
-      Button(type="primary", ghost, icon="ios-log-in",@click="this.store.synchronization") 同步工人
+      Button(type="primary", ghost, icon="ios-log-in",@click="this.store.synchronization",v-if="this.roleName=='IT管理员'") 同步工人
       Button(type="primary", ghost, icon="ios-log-out",@click="upload()") 导出
       Button(type="primary",ghost,icon="ios-cloud-upload-outline",@click="uploadData=!uploadData") 导入薪资
+      //Button(type="primary",ghost,icon="ios-cloud-upload-outline",@click="inup()") 导入11
 
    div(v-for="(item, index) in getPeopleList()", :key="index",
    @click="onCheck(item.eafId,item.eafName,item.leave)",
    :class="isChecked(item.eafId) ? 'people-selected' : 'people'")
       .headPhotos
          .circle
-            img(:src="'/api/workerlib/preview/people/photo/'+item.id",:style={'width':'100%','height':'100%',
+            img(:src="'/api/workerlib/preview/alluser/photo/'+item.id",:style={'width':'100%','height':'100%',
                 'border-radius': '50%'},v-if="item.photo")
             img(:src="'http://113.105.121.93:1818'+item.cwrPhoto",:style={'width':'100%','height':'100%',
                 'border-radius': '50%'},v-else-if="item.cwrPhoto")
@@ -172,8 +173,8 @@
             .oneTop
                .oTop
                   .oTop1
-                     .oCircle
-                        img(:src="'/api/workerlib/preview/people/photo/'+this.store.peopleInfo.id",:style={'width':'100%','height':'100%',
+                     .oCircle(@click="onUploadHead()")
+                        img(:src="'/api/workerlib/preview/alluser/photo/'+this.store.peopleInfo.id",:style={'width':'100%','height':'100%',
                             'border-radius': '50%'},v-if="this.store.peopleInfo.photo")
                         img(:src="'http://113.105.121.93:1818'+this.store.peopleInfo.cwrPhoto",:style={'width':'100%','height':'100%',
                             'border-radius': '50%'},v-else-if="this.store.peopleInfo.cwrPhoto")
@@ -337,6 +338,16 @@
       .divL
          .divCheck(v-for="item in this.store.checkeds")
             p {{item.name}}
+   Modal(title="修改头像",v-model="onUpload",@on-ok="okUpdateUpload()",@on-cancel="cancelUpdateUpload()")
+      .addBodyHead
+         .uploadButtom
+            Upload(multiple,type="drag",action="/api/workerlib/alluser/photo/upload",
+            :on-success="handleSuccessUpdatePhoto",:format="['jpg','jpeg','png']",:on-format-error="handleFormatError")
+               div(style="padding: 20px 0")
+                  Icon(type="ios-add" size="52" style="color: #3399ff")
+                  p 点击上传
+                  p(v-if="this.store.updatePhoto") 已上传:
+                     span(:style="{'color':'#2d8cf0'}") {{this.store.updatePhoto}}
    Modal(title="导出",v-model="onUp",:styles="{top: '20px'}",@on-ok="okUp()",@on-cancel="cancelUp()")
       .divL2
          span 是否导出?

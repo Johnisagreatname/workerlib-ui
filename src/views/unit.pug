@@ -15,7 +15,7 @@
     .hr
     .button
         Button(type="primary", ghost, icon="ios-add-circle-outline",@click="addUnit=!addUnit") 新增单位
-        Button(type="primary", ghost, icon="ios-log-in",@click="synchronization()") 同步单位
+        Button(type="primary", ghost, icon="ios-log-in",@click="synchronization()",v-if="this.roleName=='IT管理员'") 同步单位
         Button(type="primary", ghost, icon="ios-log-out",@click="this.store.upload") 导出信息
         //Button(type="primary", ghost, icon="ios-add-circle-outline") 添加单位评价
 

@@ -3,10 +3,10 @@
         Sider(collapsible, :collapsed-width="78",v-model='isCollapsed')
             .logo
             Menu(:open-names="['1']",accordion,@on-select="select",width="auto", :class="menuitemClasses",theme="dark")
-                MenuItem(name="/spectaculars",v-if="this.roleName == '管理员' || this.roleName == '超级管理员' || this.roleName == '来宾'")
+                MenuItem(name="/spectaculars",v-if="this.roleName == '管理员' || this.roleName == 'IT管理员' || this.roleName == '超级管理员' || this.roleName == '来宾'")
                     Icon(type="md-home")
                     span 首页
-                Submenu(name="项目",v-if="this.roleName == '管理员' || this.roleName == '超级管理员' || this.roleName == '来宾'")
+                Submenu(name="项目",v-if="this.roleName == '管理员' || this.roleName == 'IT管理员' || this.roleName == '超级管理员' || this.roleName == '来宾'")
                     template( slot="title")
                         Icon(type="ios-folder-open")
                         span 项目
@@ -15,34 +15,34 @@
                     MenuItem(name="/nav/unit")
                         span 施工单位管理
 
-                MenuItem(name="/nav/worker",v-if="this.roleName == '管理员' || this.roleName == '超级管理员' || this.roleName == '来宾'")
+                MenuItem(name="/nav/worker",v-if="this.roleName == '管理员' || this.roleName == 'IT管理员' || this.roleName == '超级管理员' || this.roleName == '来宾'")
                     Icon(type="md-people")
                     span 工人档案
 
-                MenuItem(name="/nav/lecturer",v-if="this.roleName == '管理员' || this.roleName == '超级管理员' || this.roleName=='讲师' || this.roleName == '来宾'")
+                MenuItem(name="/nav/lecturer",v-if="this.roleName == '管理员' || this.roleName == 'IT管理员' || this.roleName == '超级管理员' || this.roleName=='讲师' || this.roleName == '来宾'")
                     Icon(type="md-school")
                     span 讲师档案
 
-                Submenu(name="培训",v-if="this.roleName == '管理员' || this.roleName == '超级管理员' || this.roleName=='讲师' || this.roleName == '来宾'")
+                Submenu(name="培训",v-if="this.roleName == '管理员' || this.roleName == 'IT管理员' || this.roleName == '超级管理员' || this.roleName=='讲师' || this.roleName == '来宾'")
                     template( slot="title")
                         Icon(type="ios-book")
                         span 培训
                     MenuItem(name="/nav/courseware")
                         span 培训课件
-                    MenuItem(name="/nav/examinationPaper")
-                        span 考试管理
+                    //MenuItem(name="/nav/examinationPaper")
+                    //    span 考试管理
                     MenuItem(name="/nav/cultivate")
                         span 培训记录
 
-                MenuItem(name="/nav/checkEvaluate",v-if="this.roleName == '管理员' || this.roleName == '超级管理员' || this.roleName == '来宾'")
+                MenuItem(name="/nav/checkEvaluate",v-if="this.roleName == '管理员' || this.roleName == 'IT管理员' || this.roleName == '超级管理员' || this.roleName == '来宾'")
                     Icon(type="md-checkbox")
                     span 技能鉴定
 
-                MenuItem(name="/nav/comments",v-if="this.roleName == '管理员' || this.roleName == '超级管理员' || this.roleName == '来宾' || this.roleName == '外部监理'")
+                MenuItem(name="/nav/comments",v-if="this.roleName == '管理员' || this.roleName == 'IT管理员' || this.roleName == '超级管理员' || this.roleName == '来宾' || this.roleName == '外部监理'")
                     Icon(type="ios-create")
                     span 综合评价
 
-                Submenu(name="设置",v-if="this.roleName == '管理员' || this.roleName == '超级管理员' || this.roleName == '来宾'")
+                Submenu(name="设置",v-if="this.roleName == '管理员' || this.roleName == 'IT管理员' || this.roleName == '超级管理员' || this.roleName == '来宾'")
                     template( slot="title")
                         Icon(type="md-settings")
                         span 设置

@@ -76,7 +76,6 @@
             }, 500)
         }
         async ok() {
-            debugger
             if(!this.store.userInfo.username){
                 this.messageWarningFn('请输入用户名！');
                 return;
@@ -90,19 +89,20 @@
                 return;
             }
 
-            if(this.store.moderole == "9d83cad925124244b1b5ec7cf0656015" && !this.store.modegroup){
-                this.messageWarningFn('请选择项目名称！');
-                return;
-            }
+            // if(this.store.moderole == "9d83cad925124244b1b5ec7cf0656015" && !this.store.modegroup){
+            //     this.messageWarningFn('请选择项目名称！');
+            //     return;
+            // }
             await this.store.insertUser();
             this.addProject = false;
         }
         yes() : any{
-            if(!this.store.modegroup){
-                this.messageWarningFn('请选择项目名称！');
+            if(!this.store.userInfo.password){
+                this.messageWarningFn('请输入密码！');
                 return;
             }
             this.store.updateUser();
+            this.updUser = false;
         }
         popupDelUser(userId){
             this.store.setUid(userId);
@@ -113,16 +113,16 @@
             this.store.deleteUser();
         }
         popupUpdUser(userId){
+            debugger
             this.uid = userId;
-            this.store.setUid(this.uid);
+            this.store.setUid(userId);
             this.updUser = true;
-            // this.store.updateUser(userId);
         }
         cancel():any {
             this.addProject = false;
         }
         cancelYes():any {
-            this.updUser = true;
+            this.updUser = false;
         }
         cancelDeletes():any{
             this.delUser = false;

@@ -205,16 +205,13 @@ export default class AccountStore extends VuexModule {
         });
     }
 
-
-
-
     @Action
     public async deleteUser(){
         await request.delete('/api/workerlib/user/'+this.uid).then((data)=>{
             if(!data){
                 return;
             }
-            this.added(data)
+            this.addedt(data)
         }).catch((e)=>{
             console.log(e)
             let alert: any = Message;
@@ -296,7 +293,7 @@ export default class AccountStore extends VuexModule {
             if(!data){
                 return;
             }
-            this.added(data)
+            this.addedt(data)
         }).catch((e)=>{
             console.log(e)
             let alert: any = Message;
@@ -326,7 +323,7 @@ export default class AccountStore extends VuexModule {
             if(!data){
                 return;
             }
-                this.added(data)
+            this.added(data)
         }).catch((e)=>{
             console.log(e)
             let alert: any = Message;
@@ -446,6 +443,9 @@ export default class AccountStore extends VuexModule {
     public addedt(data: any) {
         if(data.status == 0) {
             this.search();
+            let alert: any = Message;
+            alert.success('成功！');
+
         }
     }
 

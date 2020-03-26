@@ -28,6 +28,7 @@
         public viewProjectPeople: boolean;
         public selectWorkType:Array<any>;
         public noProjectPeople:Array<any>;
+        public roleName:any;
         private store: any;
         messageWarningFn (text) {
             let alert: any = Message;
@@ -48,7 +49,7 @@
             this.viewPeoples = false;
             this.viewProjectPeople = false;
             this.store = getModule(ProjectStore);
-
+            this.roleName = JSON.parse(sessionStorage.getItem('loginInfo')).data.userGroupRoleModels[0].role.roleName;
         }
         loading = true;
         mounted() {
@@ -71,10 +72,10 @@
                 this.messageWarningFn('请输入项目简介！');
                 return;
             }
-            if(!this.store.projectInfo.builder_license){
-                this.messageWarningFn('请输入施工许可证！');
-                return;
-            }
+            // if(!this.store.projectInfo.builder_license){
+            //     this.messageWarningFn('请输入施工许可证！');
+            //     return;
+            // }
             if(!this.store.projectInfo.start_time){
                 this.messageWarningFn('请选择开工时间！');
                 return;

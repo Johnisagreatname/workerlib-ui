@@ -61,6 +61,8 @@
         }
         handleSuccessVideo (res, file) {
             this.store.setInsertVideo(res.file);
+            let alert: any = Message;
+            alert.success('上传成功！');
         }
         handleFormatError (file) {
             let alert: any = Message;
@@ -75,6 +77,8 @@
             item["file"] = res.file;
             item["type"] = "photo"
             this.store.setInsertPhoto(item);
+            let alert: any = Message;
+            alert.success('上传成功！');
         }
         handleUpload(file){
             if(this.store.indexVideo.filter(a =>a.type == 'video').length>0){

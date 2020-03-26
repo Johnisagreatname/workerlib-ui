@@ -1,5 +1,7 @@
 .spectaculars
-    .fh(@click="goBack()") 管理平台
+    a(v-if="this.userName=='hujiang'",href="javascript:history.go(-1)")
+        .fh() 返回
+    .fh(v-else,@click="goBack()") 管理平台
     .header
         .headerLeft
             .headerLogo
