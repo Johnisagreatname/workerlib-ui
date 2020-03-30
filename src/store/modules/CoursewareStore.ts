@@ -29,6 +29,7 @@ export default class CoursewareStore extends VuexModule {
     public cultivate:Cultivate;
 
     public peoples: any;
+    public message: string;
 
     public selectProjectName:string;
     public selectUserName:string;
@@ -85,12 +86,15 @@ export default class CoursewareStore extends VuexModule {
         this.id = null;
         this.cultivate_id = null;
 
+        this.message = "";
+
         this.selectProjectName = "";
         this.selectUserName="";
         this.selectUnitId="";
         this.selectLeave=null;
-
         this.courseWare = {};
+        this.courseWare.cover_picture = "";
+        this.courseWare.video = "";
     }
     @Action
     public getParams() : any {
@@ -212,7 +216,6 @@ export default class CoursewareStore extends VuexModule {
             "keywords" : []
         };
     }
-
     @Action
     public async search() {
         await request.post('/api/workerlib/courseware',await this.getParams()).then((data)=>{
@@ -237,7 +240,6 @@ export default class CoursewareStore extends VuexModule {
             alert.warning(e.message || e)
         });
     }
-
     @Action
     public async count() {
         await request.post('/api/workerlib/courseware/count', await this.getParams()).then((total)=>{
@@ -354,7 +356,7 @@ export default class CoursewareStore extends VuexModule {
             "pptPages":this.courseWare.pptPages,
             "total_hours":this.courseWare.total_hours,
             "teaching_method":this.courseWare.teaching_method,
-            "whether":"是",
+            "whether":this.courseWare.whether,
             "type_work":this.courseWare.type_work,
             "video":this.courseWare.video,
             "cover_picture":this.courseWare.cover_picture,
@@ -434,6 +436,7 @@ export default class CoursewareStore extends VuexModule {
             "courseware_brief":this.cultivate.courseware_brief,
             "status":this.cultivate.status,
             "trainingInstitution":this.cultivate.trainingInstitution,
+            "teacher_id":this.cultivate.teacher_id,
             "trainingTeacher":this.cultivate.trainingTeacher,
             "trainingAddress":this.cultivate.trainingAddress
         }).then((data)=>{
@@ -472,7 +475,7 @@ export default class CoursewareStore extends VuexModule {
             if(!data){
                 return;
             }
-            this.successAddCultivateArchives(data);
+            this.successMessage(data);
         }).catch((e)=>{
             console.log(e)
             let alert: any = Message;
@@ -502,6 +505,41 @@ export default class CoursewareStore extends VuexModule {
             this.addCultivateArchivesList.push(itemTrue);
         }
         await request.put('/api/workerlib/cultivate_archives', this.addCultivateArchivesList).then((data)=>{
+            if(!data){
+                return;
+            }
+            this.successMessage(data);
+        }).catch((e)=>{
+            console.log(e)
+            let alert: any = Message;
+            if(!e) {
+                alert.warning('未知错误！');
+                return;
+            }
+
+            if(e.response && e.response.data && e.response.data.message) {
+                alert.warning(e.response.data.message)
+                return
+            }
+
+            if(!e.message) {
+                return;
+            }
+
+            alert.warning(e.message || e)
+        });
+    }
+    @Action
+    public async messageSend(){
+        await request.post('/api/message/send', {
+            "message": this.message,
+            "receiver": {
+                "groupId": "",
+                "roleId": "",
+                "usernames": this.cultivateArchivesList.map(a => a.cwrIdnum)
+            },
+            "sendMode": "USER"   //发送方式: ALL(0, "ALL"), USER(1, "USER"), GROUP(2, "GROUP"), ROLE(3, "ROLE")
+        }).then((data)=>{
             if(!data){
                 return;
             }
@@ -661,7 +699,7 @@ export default class CoursewareStore extends VuexModule {
         let alert: any = Message;
         if(data.status == 0) {
             this.search();
-            alert.warning("成功！");
+            alert.success("成功！");
         }
     }
     @Action
@@ -669,7 +707,13 @@ export default class CoursewareStore extends VuexModule {
         let alert: any = Message;
         if(data.status == 0) {
             this.search();
-            alert.warning(data.message);
+            alert.success("成功！");
+        }
+    }
+    @Action
+    public successMessage(data: any) {
+        if(data.status == 0) {
+            this.messageSend();
         }
     }
     @Mutation
@@ -680,7 +724,7 @@ export default class CoursewareStore extends VuexModule {
             this.cultivateArchivesList = new Array<any>();
             this.addCultivateArchivesList = new Array<any>();
             let alert: any = Message;
-            alert.warning("新建培训计划成功！");
+            alert.success("新建培训计划成功！");
         }
 
     }
@@ -708,8 +752,8 @@ export default class CoursewareStore extends VuexModule {
     @Mutation
     public successPeople(data: any) {
         this.peoples = data.data;
+        this.message = "你有一条["+this.cultivate.course_name+"]培训待学习！";
     }
-
     @Mutation
     private successInfo(data: any) {
         this.courseWareEdit = data.data[0];
@@ -721,7 +765,6 @@ export default class CoursewareStore extends VuexModule {
     @Mutation
     public clear() {
         this.checkAllGroup = [];
-
     }
 
 
@@ -776,13 +819,10 @@ export default class CoursewareStore extends VuexModule {
     public setPageIndex(data: number) {
         this.pageIndex = data;
     }
-
     @Mutation
     public setPageSize(data: number) {
         this.pageSize = data;
     }
-
-
     @Mutation
     private setChecked(data: any) {
         this.checkeds.push(data);
@@ -791,71 +831,55 @@ export default class CoursewareStore extends VuexModule {
     private setCheckAllGroup(data: any) {
         this.checkAllGroup.push(data);
     }
-
     @Mutation
     public setInPageTotal(data: number) {
         this.peopleConditionList = [];
         this.pageInTotal = data;
     }
-
-
     @Mutation
     public setInPageSize(data: number) {
         this.pageInSize = data;
     }
-
     @Mutation
     public setInPageIndex(data: number) {
         this.pageInIndex = data;
     }
-
-
-
     @Mutation
     public setSelectStatus(data: number) {
         this.selectStatus = data;
     }
-
     @Mutation
     public setSelectTitle(data: string) {
         this.selectTitle = data;
     }
-
     @Mutation
     public setSelectTypeWork(data: string) {
         this.selectTypeWork = data;
     }
-
     @Mutation
     public setEditId(data:number){
         this.courseWareEdit.id = data;
     }
-
     @Mutation
     public setCourseWareEdit(data: any) {
         this.courseWareEdit = data;
     }
-
     @Mutation
     public setEditTitle(data:string){
         this.courseWareEdit.title = data;
     }
-
     @Mutation
     public setEditCourse(data:string){
         this.courseWareEdit.course = data;
     }
-
     @Mutation
     public setEditTotalHours(data:string){
         this.courseWareEdit.total_hours = data;
     }
-
     @Mutation
     public setEditTeachingMethod(data:string){
         this.courseWareEdit.teaching_method = data;
     }
-
     @Mutation
     public setEditWhether(data:string){
         this.courseWareEdit.whether = data;
@@ -864,87 +888,70 @@ export default class CoursewareStore extends VuexModule {
     public sucessTeacherList(data:any){
         this.teacherList = data.data;
     }
-
     @Mutation
     public setEditTypeWork(data:any){
         this.courseWareEdit.type_work = data.join();
     }
-
     @Mutation
     public setEditVideo(data:string){
         this.courseWareEdit.video = data;
     }
-
     @Mutation
     public setEditCoverPicture(data:string){
         this.courseWareEdit.cover_picture = data;
     }
-
     @Mutation
     public setEditDescribe(data:string){
         this.courseWareEdit.describe = data;
     }
-
     @Mutation
     public setEditParticulars(data:string){
         this.courseWareEdit.particulars = data;
     }
-
     @Mutation
     public setEditStatus(data:number){
         this.courseWareEdit.status = data;
     }
-
     @Mutation
     public setSelectProjectName(data:string){
         this.selectProjectName = data;
     }
-
     @Mutation
     public setSelectUserName(data:string){
         this.selectUserName = data;
     }
-
     @Mutation
     public setSelectUnitId(data:string){
         this.selectUnitId = data;
     }
-
     @Mutation
     public setSelectLeave(data:number){
         this.selectLeave = data;
     }
-
     @Mutation
     public setTitle(data:string){
         this.courseWare.title = data;
     }
-
     @Mutation
     public setCourse(data:string){
         this.courseWare.course = data;
     }
-
     @Mutation
     public setTotalHours(data:string){
         this.courseWare.total_hours = data;
     }
-
     @Mutation
     public setTeachingMethod(data:string){
         this.courseWare.teaching_method = data;
     }
-
     @Mutation
     public setWhether(data:string){
         this.courseWare.whether = data;
     }
-
     @Mutation
     public setTypeWork(data:any){
         this.courseWare.type_work = data.join();
     }
-
     @Mutation
     public setVideo(data:string){
         this.courseWare.video = data;
@@ -953,17 +960,14 @@ export default class CoursewareStore extends VuexModule {
     public setPPtPages(data:number){
         this.courseWare.pptPages = data;
     }
-
     @Mutation
     public setCoverPicture(data:string){
         this.courseWare.cover_picture = data;
     }
-
     @Mutation
     public setDescribe(data:string){
         this.courseWare.describe = data;
     }
-
     @Mutation
     public setParticulars(data:string){
         this.courseWare.particulars = data;
@@ -1020,6 +1024,10 @@ export default class CoursewareStore extends VuexModule {
         this.cultivate.trainingTeacher = data;
     }
     @Mutation
+    public setTeacherId(data:string){
+        this.cultivate.teacher_id = data;
+    }
+    @Mutation
     public setTrainingAddress(data:string){
         this.cultivate.trainingAddress = data;
     }
@@ -1034,6 +1042,10 @@ export default class CoursewareStore extends VuexModule {
     @Mutation
     public setCourseName(data:string){
         this.cultivate.course_name = data;
+    }
+    @Mutation
+    public setMessage(data:string){
+        this.message = data;
     }
     @Mutation
     public setCultivateArchivesList(data:any){
@@ -1081,6 +1093,7 @@ interface Cultivate {
     mark?:string;
     courseware_brief?:string;
     trainingInstitution?:string;
+    teacher_id?:string;
     trainingTeacher?:string;
     trainingAddress?:string;
     status?:number;

@@ -185,7 +185,7 @@ export default class CultivateStore extends VuexModule {
     public getInParams() : any {
         if(this.infoId){
             let item ={};
-            item["name"]="b.course_id";
+            item["name"]="b.id";
             item["value"]=this.infoId;
             item["algorithm"] = "EQ"
             this.conditionList.push(item);
@@ -221,17 +221,6 @@ export default class CultivateStore extends VuexModule {
                         "value": "b.id",
                         "algorithm": "EQ"
                     }]
-                },
-
-                {
-                    "tablename": "courseware",
-                    "alias": "o",
-                    "joinMode": "Left",
-                    "onList": [{
-                        "name": "b.course_id",
-                        "value": "o.id",
-                        "algorithm": "EQ"
-                    }]
                 }
             ],
             "pageInfo" : {
@@ -248,7 +237,8 @@ export default class CultivateStore extends VuexModule {
 
             "keywords" : [],
 
-            "selectList": []
+            "selectList": [
+            ]
 
         }
     }
@@ -277,7 +267,51 @@ export default class CultivateStore extends VuexModule {
             alert.warning(e.message || e)
         });
     }
-
+    @Action
+    public getUploadParams() : any {
+        return {
+            "conditionList": [{
+                "name": "cultivate_id",
+                "value":  this.checkedDelete.map(x => x.id),
+                "algorithm": "IN"
+            }
+            ],
+            "keywords" : [],
+            "selectList": [
+                {"field": "course_name","alias":"培训课程" },
+                {"field": "archivesStatus","alias":"培训状态" },
+                {"field": "eafName" ,"alias":"姓名"},
+                {"field": "training_time" ,"alias":"培训时长（分钟）"},
+                {"field": "training_pages" ,"alias":"PPT观看页数"},
+                {"field": "eafPhone" ,"alias":"手机号码"},
+                {"field": "unit_name","alias":"所属公司" },
+                {"field": "project_name","alias":"项目部" },
+                {"field": "cwrIdnum","alias":"身份证号码" },
+                {"field": "startTime","alias":"培训时间" }
+            ]
+        };
+    }
+    @Action
+    public async upload() {
+        let alert: any = Message;
+        await request.post('/api/workerlib/exporttraining/export',await this.getUploadParams(),{responseType: 'blob', params: '项目工程档案'}).then((data)=>{
+            alert.success('成功！');
+        }).catch((e)=>{
+            let alert: any = Message;
+            if(!e) {
+                alert.warning('未知错误！');
+                return
+            }
+            if(e.response && e.response.data && e.response.data.message) {
+                alert.warning(e.response.data.message)
+                return
+            }
+            if(!e.message) {
+                return;
+            }
+            alert.warning(e.message || e)
+        });
+    }
     @Action
     public async searchInfo() {
         await request.post('/api/workerlib/join',await this.getInParams()).then((data)=>{
@@ -451,10 +485,12 @@ export default class CultivateStore extends VuexModule {
     }
     @Mutation
     public success(data: any) {
+        this.cList = new Array<any>();
         this.cultivate = data.data;
     }
     @Mutation
     public successInfo(data: any) {
+        this.conditionList = new Array<any>();
         this.cultivateArchives = data.data;
     }
     @Mutation
@@ -465,15 +501,16 @@ export default class CultivateStore extends VuexModule {
     public successUpdateCultivate(data: any) {
         if(data.status == 0){
             let alert: any = Message;
-            alert.warning("成功！");
+            alert.success("成功！");
             this.insertCultivateVideo = new Array<any>();
         }
     }
-    @Mutation
+    @Action
     public successDelete(data: any) {
         if(data.status == 0) {
+            this.search();
             let alert: any = Message;
-            alert.warning("删除成功！");
+            alert.success("成功！");
         }
     }
     @Mutation
@@ -576,6 +613,11 @@ export default class CultivateStore extends VuexModule {
             align: 'center'
         },
         {
+            title:'序号',
+            slot:'num',
+            sortable: true
+        },
+        {
             title: '课程简介',
             key: 'courseware_brief',
             sortable: true,
@@ -628,11 +670,6 @@ export default class CultivateStore extends VuexModule {
             sortable: true
         },
         {
-            title: '任务状态',
-            key: 'state',
-            sortable: true
-        },
-        {
             title: '发起人',
             key: 'username',
             sortable: true
@@ -648,6 +685,11 @@ export default class CultivateStore extends VuexModule {
             type: 'selection',
             width: 60,
             align: 'center'
+        },
+        {
+            title:'序号',
+            slot:'num',
+            sortable: true
         },
         {
             title: '培训课程',
@@ -682,12 +724,44 @@ export default class CultivateStore extends VuexModule {
         },{
             title: '培训讲师',
             key: 'trainingTeacher',
-            sortable: true
+            sortable: true,
+            render: (h, params) => {
+                return h('div', [
+                    h('span', {
+                        style: {
+                            display: 'inline-block',
+                            width: '100%',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            whiteSpace: 'nowrap'
+                        },
+                        domProps: {
+                            title: params.row.trainingTeacher
+                        }
+                    }, params.row.trainingTeacher)
+                ])
+            }
         },
         {
             title: '培训地点',
             key: 'trainingAddress',
-            sortable: true
+            sortable: true,
+            render: (h, params) => {
+                return h('div', [
+                    h('span', {
+                        style: {
+                            display: 'inline-block',
+                            width: '100%',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            whiteSpace: 'nowrap'
+                        },
+                        domProps: {
+                            title: params.row.trainingAddress
+                        }
+                    }, params.row.trainingAddress)
+                ])
+            }
         },
         {
             title: '任务状态',
@@ -718,7 +792,7 @@ export default class CultivateStore extends VuexModule {
         },
         {
             title: '培训课程',
-            key: 'title',
+            key: 'course_name',
             sortable: true,
             render: (h, params) => {
                 return h('div', [
@@ -731,21 +805,11 @@ export default class CultivateStore extends VuexModule {
                             whiteSpace: 'nowrap'
                         },
                         domProps: {
-                            title: params.row.title
+                            title: params.row.course_name
                         }
-                    }, params.row.title)
+                    }, params.row.course_name)
                 ])
             }
-        },
-        {
-            title: '培训课时',
-            slot: 'total_hours',
-            sortable: true
-        },
-        {
-            title: '培训时长',
-            slot: 'training_time',
-            sortable: true
         },
         {
             title: '是否通过',

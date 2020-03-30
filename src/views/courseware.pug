@@ -136,7 +136,12 @@
                                 span 是否必学课程
                                 span(:style={'color': 'red'}) *
                             .input
-                                Radio(v-model="whether",disabled) 是
+                                RadioGroup(v-model="whether")
+                                    Radio(label="是")
+                                        span 是
+                                    Radio(label="否")
+                                        span 否
+                                //Radio(v-model="whether",disabled) 是
                         .divTwo
                             .name
                                 span 绑定课件工种分类
@@ -157,8 +162,10 @@
                             Icon(type="ios-add" size="52" style="color: #3399ff")
                             p 点击上传
                             p （请上传ogg,mp4,WebM格式视频或幻灯片(PPT)）
+                            p(v-if="this.store.courseWare.video") 已上传:
+                                span(:style="{'color':'#2d8cf0'}") {{this.store.courseWare.video}}
                 TabPane(label="课件详情",name="name3",icon="ios-folder-outline")
-                    Upload(multiple,type="drag",action="/api/workerlib/courseware/cover_picture/upload",
+                    Upload(type="drag",action="/api/workerlib/courseware/cover_picture/upload",
                     :on-success="handleSuccessPicture",:format="['jpg','jpeg','png']",:on-format-error="handleFormatPictrueError",
                     :style={
                         'width': '60%',
@@ -170,6 +177,10 @@
                             Icon(type="ios-add" size="52" style="color: #3399ff")
                             p 封面图片
                             p （点击上传）
+                            p （请上传jpg、jpeg、png格式文件）
+                            p(v-if="this.store.courseWare.cover_picture") 已上传:
+                                span(:style="{'color':'#2d8cf0'}") {{this.store.courseWare.cover_picture}}
+
                     .divTwo
                         .name
                             span 描述
@@ -420,16 +431,20 @@
                         Row
                             Col(span="12")
                                 DatePicker(v-model="startTime",type="date",placeholder="请选择",style="width: 240px")
-            .top
-                .ccdivOne
+            .top3
+                .cdivOne
                     .name2
                         span 备注
                         span(:style={'color': 'red'}) *
                     .input
-                        Input(type="textarea",clearable,:style={'width': '995px'},size=large,v-model="mark")
+                        Input(type="textarea",clearable,:style={'width': '240px'},size=large,v-model="mark",:rows="4")
+                .cdivOne
+                    .name2
+                        span 推送消息
+                        span(:style={'color': 'red'}) *
+                    .input
+                        Input(type="textarea",clearable,:style={'width': '240px'},size=large,v-model="message",:rows="4")
             .top
-                //.left1(v-if="singleUser == true")
-                //    span 111111111111111
                 .left1
                     Button(type="primary",ghost,style="margin-left: 10px",@click="addSelected()",v-if="singleUser == false") 添加所选
                     Button(type="primary",ghost,style="margin-left: 10px",@click="addSelected()",v-else,disabled) 添加所选
@@ -445,14 +460,14 @@
                     @on-select-cancel="handleSelectRowCancel",@on-select-all-cancel = "handleSelectAllCancel"
                     )
                         template(slot-scope="{ row }" ,slot="photo")
-                            img(:src="'/api/workerlib/preview/people/photo/'+row.id",:style={'width': '50px', 'height': '50px','border-radius': '50%'},v-if="row.photo")
+                            img(:src="'/api/workerlib/preview/alluer/photo/'+row.id",:style={'width': '50px', 'height': '50px','border-radius': '50%'},v-if="row.photo")
                             img(:src="'http://113.105.121.93:1818'+row.cwrPhoto",:style={'width': '50px', 'height': '50px','border-radius': '50%'},v-else-if="row.cwrPhoto")
                             img(src="~@/assets/css/images/headerPicture.png",:style={'width': '50px', 'height': '50px','border-radius': '50%'},v-else)
                         template(slot-scope="{row}",slot="leave")
                             span(v-if="row.leave==1") 在场
                             span(v-if="row.leave==2") 离场
                         template(slot-scope="{row}",slot="operation")
-                            Button(v-if="offChecked(row.eafId)",type="primary",style="margin-right: 5px",@click="show(row.id,row.eafId,row.eafName,row.cwrPhoto,row.photo)") 加入培训
+                            Button(v-if="offChecked(row.eafId)",type="primary",style="margin-right: 5px",@click="show(row.id,row.cwrIdnum,row.eafId,row.eafName,row.cwrPhoto,row.photo)") 加入培训
                             Button(v-else,type="primary",ghost,style="margin-right: 5px") 加入培训
                     div(v-if="singleUser == true",:style={'text-align':'center','margin-top': '30px','font-size':'18px'}) 已选择全部自有工人
                     div(v-if="singleUser == true",:style={'text-align':'center','margin-top': '10px'}) 共{{pageInTotal}}人
@@ -473,10 +488,11 @@
                 .right1(v-else)
                     .rdiv(v-for="item in this.store.checkeds")
                         .rimg
-                            img(:src="'/api/workerlib/preview/people/photo/'+item.userId",:style={'width': '50px', 'height': '50px','border-radius': '50%'},v-if="item.photo")
+                            img(:src="'/api/workerlib/preview/alluser/photo/'+item.userId",:style={'width': '50px', 'height': '50px','border-radius': '50%'},v-if="item.photo")
                             img(:src="'http://113.105.121.93:1818'+item.cwrPhoto",:style={'width': '50px', 'height': '50px','border-radius': '50%'},v-else-if="item.cwrPhoto")
                             img(src="~@/assets/css/images/headerPicture.png",:style={'width': '50px', 'height': '50px','border-radius': '50%'},v-else)
 
                             span(class="image-remove",@click="show(item.userId,item.id,item.name,item.cwrPhoto,item.photo)") +
                         .rname
                             span {{item.name}}
+

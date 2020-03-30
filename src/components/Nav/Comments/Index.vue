@@ -109,7 +109,7 @@
         }
         ok() : any{
             if(this.store.insertType == 1){//不良评价
-                if(this.store.projectList.length>0 && !this.store.insertProject){
+                if(!this.store.insertProject){
                     this.messageWarningFn('请输入选择项目！');
                     return;
                 }
@@ -128,7 +128,7 @@
                 this.store.insertBadnessAppraise();
             }else {//综合评价
 
-                if(this.store.projectList.length>0 && !this.store.insertProject){
+                if(!this.store.insertProject){
                     this.messageWarningFn('请输入选择项目！');
                     return;
                 }
@@ -146,10 +146,12 @@
         }
         handleSuccessPhoto (res, file) {
             this.store.setInsertPhoto(res.file);
+            let alert: any = Message;
+            alert.success('上传成功！');
         }
         handleFormatError (file) {
             let alert: any = Message;
-            alert.warning(file.name + ' 文件格式错误！请上传jpg、jpeg、png格式文件！');
+            alert.error(file.name + '文件格式错误！请上传jpg、jpeg、png格式文件！');
         }
         details(id): any {
             this.store.setPunishmentsId(id);

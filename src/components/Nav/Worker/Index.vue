@@ -32,6 +32,7 @@
 
         public disabled:boolean;
         public uploadData:boolean;
+        public onUpload:boolean;
         public onUp:boolean;
         public offLeave :boolean;
         public sex: string;
@@ -40,17 +41,20 @@
         public now: Date;
         public year :any;
         public date:any;
+        public roleName:any;
         constructor() {
             super();
             this.store = getModule(WorkerStore)
             this.storeComm = getModule(CommentsStore)
             this.addWorker = false;
             this.uploadData = false;
+            this.onUpload = false;
             this.onUp = false;
             this.particulars = false;
             this.certificate = false;
             this.onLeave = false;
             this.offLeave =false;
+            this.roleName = JSON.parse(sessionStorage.getItem('loginInfo')).data.userGroupRoleModels[0].role.roleName;
         }
         mounted() {
             if(this.store.notIn){
@@ -101,30 +105,47 @@
         }
         handleSuccessPhoto (res, file) {
             this.store.setPhoto(res.file);
+            let alert: any = Message;
+            alert.success('上传成功！');
+        }
+        handleSuccessUpdatePhoto (res, file) {
+            this.store.setUpdatePhoto(res.file);
+            let alert: any = Message;
+            alert.success('上传成功！');
         }
         handleFormatError (file) {
             let alert: any = Message;
-            alert.warning(file.name + ' 文件格式错误！请上传jpg、jpeg、png格式文件！');
+            alert.error(file.name + ' 文件格式错误！请上传jpg、jpeg、png格式文件！');
         }
         handleSuccessExcel (res, file) {
             if(res.status == 0){
                 let alert: any = Message;
-                alert.warning('成功！');
+                alert.success('上传成功！');
                 this.store.search();
             }
         }
+        inup(){
+            this.store.inupdate();
+
+        }
         handleFormatErrorExcel (file) {
             let alert: any = Message;
-            alert.warning(file.name + ' 文件格式错误！xls、xlsx格式文件！');
+            alert.error(file.name + ' 文件格式错误！xls、xlsx格式文件！');
         }
         handleSuccessIdCardfront (res, file) {
             this.store.setIdCardfront(res.file);
+            let alert: any = Message;
+            alert.success('上传成功！');
         }
         handleSuccessIdCardReverse (res, file) {
-            this.store. setIdCardReverse(res.file);
+            this.store.setIdCardReverse(res.file);
+            let alert: any = Message;
+            alert.success('上传成功！');
         }
         handleSuccessCertificate (res, file) {
-            this.store. setCertificate(res.file);
+            this.store.setCertificate(res.file);
+            let alert: any = Message;
+            alert.success('上传成功！');
         }
         getPeopleList():any{
             return this.store.peoples;
@@ -166,6 +187,18 @@
         }
         checkLeave() {
             this.onLeave=!this.onLeave;
+        }
+        onUploadHead(){
+            this.onUpload = true;
+        }
+        okUpdateUpload(){
+            this.store.updateHead();
+            this.onUpload = false;
+            this.particulars = false;
+        }
+        cancelUpdateUpload(){
+            this.store.setUpdatePhoto(null);
+            this.onUpload = false;
         }
         getMenus() : any {
             if(this.options) return this.options;
@@ -224,6 +257,7 @@
         cancelUpload():any{
             this.uploadData = false;
         }
+
         okUp():any{
             this.store.setCheck(this.store.checkeds.filter(x => x.id).map(x => x.id));
             this.store.upload();

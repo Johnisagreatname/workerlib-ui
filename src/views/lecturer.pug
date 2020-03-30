@@ -55,6 +55,18 @@
                 .addBody
                     .divTwo
                         .name
+                            span 账号
+                            span(:style={'color': 'red'}) *
+                        .input
+                            Input(clearable,style="width: 345px",size=large,v-model="user")
+                    .divTwo
+                        .name
+                            span 密码
+                            span(:style={'color': 'red'}) *
+                        .input
+                            Input(clearable,style="width: 345px",size=large,v-model="passWord")
+                    .divTwo
+                        .name
                             span 姓名
                             span(:style={'color': 'red'}) *
                         .input

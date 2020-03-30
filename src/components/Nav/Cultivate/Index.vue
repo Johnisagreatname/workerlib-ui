@@ -88,15 +88,14 @@
             this.onDelete = true;
         }
         handleSuccessExcel (res, file) {
-
                 let alert: any = Message;
-                alert.warning('成功！');
+                alert.success('成功！');
                 this.store.search();
 
         }
         handleFormatErrorExcel (file) {
             let alert: any = Message;
-            alert.warning(file.name + ' 文件格式错误！xls、xlsx格式文件！');
+            alert.error(file.name + ' 文件格式错误！xls、xlsx格式文件！');
         }
         okUploads():any{
             this.uploadData = false;
@@ -133,14 +132,16 @@
             item["file"] = res.file;
             item["url"] = "video"
             this.store.setInsertCultivateVideo(item);
+            let alert: any = Message;
+            alert.success('上传成功！');
         }
         handleFormatError (file) {
             let alert: any = Message;
-            alert.warning(file.name + ' 文件格式错误！ogg、mp4、WebM格式文件！');
+            alert.error(file.name + ' 文件格式错误！ogg、mp4、WebM格式文件！');
         }
         handleFormatPictrueError (file) {
             let alert: any = Message;
-            alert.warning(file.name + ' 文件格式错误！请上传jpg、jpeg、png格式文件！');
+            alert.error(file.name + ' 文件格式错误！请上传jpg、jpeg、png格式文件！');
         }
         handleSuccessPicture (res, file) {
             let item = {};
@@ -148,6 +149,8 @@
             item["file"] = res.file;
             item["url"] = "photo"
             this.store.setInsertCultivateVideo(item);
+            let alert: any = Message;
+            alert.success('上传成功！');
         }
         toggle(name){
             if(name=="线上培训"){
@@ -165,7 +168,8 @@
             var itemTrue = {};
             itemTrue['id'] = row.id;
             itemTrue['name'] = row.course_name;
-            this.store.setCheckedDelete(itemTrue)
+            itemTrue['course_id'] = row.course_id;
+            this.store.setCheckedDelete(itemTrue);
 
         }
         handleSelectRowCancel(selection,row){
@@ -178,6 +182,7 @@
                 var itemTrue = {};
                 itemTrue['id'] = row.id;
                 itemTrue['name'] = row.course_name;
+                itemTrue['course_id'] = row.course_id;
                 this.store.setCheckedDelete(itemTrue)
             }
         }

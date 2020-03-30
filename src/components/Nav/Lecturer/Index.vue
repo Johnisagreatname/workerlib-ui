@@ -1,6 +1,7 @@
 <script lang="ts">
     import "@/assets/css/common.css";
     import LecturerStore from '../../../store/modules/LecturerStore';
+    import AccountStore from '../../../store/modules/AccountStore';
     import { Component, Vue, Prop, Model} from 'vue-property-decorator';
     import { getModule } from 'vuex-module-decorators';
     import { Message } from 'iview';
@@ -54,7 +55,6 @@
             return this.options;
         }
         info(personalreesume):any{
-            debugger
             this.personalreesumes = personalreesume;
             this.selectInfo = true;
         }
@@ -85,6 +85,14 @@
             }, 500)
         }
         ok() : any{
+            if(!this.store.user){
+                this.messageWarningFn('请输入账号！');
+                return;
+            }
+            if(!this.store.passWord){
+                this.messageWarningFn('请输入密码！');
+                return;
+            }
             if(!this.store.lecturerInfo.name){
                 this.messageWarningFn('请输入姓名！');
                 return;
@@ -97,7 +105,8 @@
                 this.messageWarningFn('请选择课程类型！');
                 return;
             }
-            this.store.insertLecturer();
+
+            this.store.insertUser();
             this.addLecturer = false;
         }
         cancel():any {
@@ -105,16 +114,30 @@
         }
         handleSuccessPhoto (res, file) {
             this.store.setPhoto(res.file);
+            let alert: any = Message;
+            alert.success('上传成功！');
         }
         handleFormatError (file) {
             let alert: any = Message;
-            alert.warning(file.name + ' 文件格式错误！请上传jpg、jpeg、png格式文件！');
+            alert.error(file.name + ' 文件格式错误！请上传jpg、jpeg、png格式文件！');
         }
         set userName(data:string){
             this.store.setName(data);
         }
         get userName():string{
             return this.store.lecturerInfo.name;
+        }
+        set user(data:string){
+            this.store.setUser(data);
+        }
+        get user():string{
+            return this.store.user;
+        }
+        set passWord(data:string){
+            this.store.setPassWord(data);
+        }
+        get passWord():string{
+            return this.store.passWord;
         }
 
         set curriculum(data:string){

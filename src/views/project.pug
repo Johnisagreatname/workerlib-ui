@@ -15,8 +15,9 @@
     .hr
     .button
         Button(type="primary", ghost, icon="ios-add-circle-outline",@click="addProject=!addProject") 新增项目
-        Button(type="primary", ghost, icon="ios-log-in",@click="this.store.synchronization") 同步项目
-        Button(type="primary", ghost, icon="ios-log-out",@click="this.store.upload") 导出信息
+        Button(type="primary", ghost, icon="ios-log-in",@click="this.store.synchronization",v-if="this.roleName=='IT管理员'") 同步项目
+        Button(type="primary", ghost, icon="ios-log-out",@click="this.store.upload") 导出项目信息
+        Button(type="primary", ghost, icon="ios-log-out",@click="this.store.uploadPeople") 导出项目人员信息
 
     .bodyTwo
         Table(border, ref="selection", :columns="getColumns()", :data="getData()",
@@ -55,7 +56,7 @@
             .divTwo
                 .name
                     span 施工许可证
-                    span(:style={'color': 'red'}) *
+                    span(:style={'color': 'red'})
                 .input
                     Input(clearable,style="width: 345px",size=large,v-model="builderLicense")
             .divTwo

@@ -174,7 +174,7 @@ export default class IndexVideoStore extends VuexModule {
             this.insertPhoto = new  Array<any>();
             this.insertList = new Array<any>();
             let alert: any = Message;
-            alert.warning('成功！')
+            alert.success('成功！')
         }
     }
     @Mutation

@@ -18,6 +18,7 @@ export default class PlayStore extends VuexModule {
     private id:number;
     private list:any;
     private trainingPages:number;
+    private trainingTime:number;
     private archivesStatus:string;
     private whether:number;
     private arId:number;
@@ -27,7 +28,8 @@ export default class PlayStore extends VuexModule {
         super(e);
         this.url = "";
         this.id = null;
-        this.trainingPages = null;
+        this.trainingPages = 1;
+        this.trainingTime = 0;
         this.whether = null;
         this.archivesStatus = "";
         this.list = {};
@@ -135,6 +137,7 @@ export default class PlayStore extends VuexModule {
         await request.put('/api/workerlib/cultivate_archives/'+this.arId,{
                 "training_pages":this.trainingPages,
                 "archivesStatus":this.archivesStatus,
+                "training_time":this.trainingTime,
                 "whether":this.whether
         }).then((data)=>{
             if(!data){
@@ -173,6 +176,10 @@ export default class PlayStore extends VuexModule {
     @Mutation
     public setTrainingPages(data:number){
         this.trainingPages = data;
+    }
+    @Mutation
+    public setTrainingTime(data:number){
+        this.trainingTime = data;
     }
     @Mutation
     public setArchivesStatus(data:string){

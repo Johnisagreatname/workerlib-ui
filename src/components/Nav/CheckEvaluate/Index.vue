@@ -439,14 +439,17 @@
                 return true;
             }
         }
-        show(id: number,name:string,photo:string): void {
+        show(userId:number,id: number,name:string,photo:string,userPhoto:string): void {
+            debugger
             let index = this.store.checkeds.findIndex(x => x.id == id); //已有列表
             if(index > -1) {
                 this.store.checkeds.splice(index, 1);   //去除
                 var item = {};
                 item['id'] = id;
+                item['userId'] = userId;
                 item['name'] = name;
                 item['photo'] = photo;
+                item['userPhoto'] = userPhoto;
                 this.checkAllGroup.push(item);
                 let indexPeople = this.store.peoples.findIndex(x => x.eafId == id);
                 if(indexPeople > -1)  {  //未选中列表
@@ -459,8 +462,10 @@
             }
             var itemTrue = {};
             itemTrue['id'] = id;
+            itemTrue['userId'] = userId;
             itemTrue['name'] = name;
             itemTrue['photo'] = photo;
+            itemTrue['userPhoto'] = userPhoto;
             this.store.setChecked(itemTrue);
             for(let i = 0;i < this.store.peoples.length;i++) {
                 if(this.store.peoples[i].eafId == id){
@@ -476,8 +481,10 @@
         handleSelectRow(selection, row) {
             var itemTrue = {};
             itemTrue['id'] = row.eafId;
+            itemTrue['userId'] = row.id;
             itemTrue['name'] = row.eafName;
             itemTrue['photo'] = row.cwrPhoto;
+            itemTrue['userPhoto'] = row.photo;
             this.checkAllGroup.push(itemTrue);
         }
         handleSelectRowCancel(selection, row){
@@ -496,8 +503,10 @@
                 var itemTrue = {};
                 let row = selection[i];
                 itemTrue['id'] = row.eafId;
+                itemTrue['userId'] = row.id;
                 itemTrue['name'] = row.eafName;
                 itemTrue['photo'] = row.cwrPhoto;
+                itemTrue['userPhoto'] = row.photo;
                 this.checkAllGroup.push(itemTrue);
             }
         }

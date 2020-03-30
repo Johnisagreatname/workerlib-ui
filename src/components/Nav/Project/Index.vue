@@ -28,6 +28,7 @@
         public viewProjectPeople: boolean;
         public selectWorkType:Array<any>;
         public noProjectPeople:Array<any>;
+        public roleName:any;
         private store: any;
         messageWarningFn (text) {
             let alert: any = Message;
@@ -48,7 +49,7 @@
             this.viewPeoples = false;
             this.viewProjectPeople = false;
             this.store = getModule(ProjectStore);
-
+            this.roleName = JSON.parse(sessionStorage.getItem('loginInfo')).data.userGroupRoleModels[0].role.roleName;
         }
         loading = true;
         mounted() {
@@ -71,10 +72,10 @@
                 this.messageWarningFn('请输入项目简介！');
                 return;
             }
-            if(!this.store.projectInfo.builder_license){
-                this.messageWarningFn('请输入施工许可证！');
-                return;
-            }
+            // if(!this.store.projectInfo.builder_license){
+            //     this.messageWarningFn('请输入施工许可证！');
+            //     return;
+            // }
             if(!this.store.projectInfo.start_time){
                 this.messageWarningFn('请选择开工时间！');
                 return;
@@ -114,7 +115,6 @@
             this.noProjectPeople = this.store.peopleId.filter(a=>list.indexOf(a.eafId)>-1);
             if(!this.noProjectPeople.length) {
                 for(let i = 0;i<this.store.peopleId.length;i++){
-                    debugger
                     let insert = {};
                     let insertProjectWorkType = {};
                     let people = this.store.peopleId[i];
@@ -220,7 +220,6 @@
             return '';
         }
         handleSelectRow(selection, row) {
-
             let item = {};
             item["project_id"] = row.project_id;
             this.store.setUplodId(item);
@@ -228,7 +227,9 @@
         }
         handleSelectRowCancel(selection,row){
             for(let i = 0;i < this.store.project.length;i++) {
+
                 if(this.store.uplodId.findIndex(x => x.project_id == row.project_id) > 0){
+                    debugger
                     this.$set(this.store.project[i], '_checked', false);
                 }
 

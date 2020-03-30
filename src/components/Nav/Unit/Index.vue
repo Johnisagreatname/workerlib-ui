@@ -35,12 +35,13 @@
         public addUnit: boolean;
         private store: any;
         private workerStore: any;
-
+        public roleName:any;
         constructor() {
             super();
             this.addUnit = false;
             this.store = getModule(UnitStore);
 			this.workerStore = getModule(WorkerStore);
+            this.roleName = JSON.parse(sessionStorage.getItem('loginInfo')).data.userGroupRoleModels[0].role.roleName;
         }
         loading = true;
         @Model('isCollapsed', { type: Boolean }) private isCollapsed !: boolean;

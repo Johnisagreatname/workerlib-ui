@@ -567,6 +567,7 @@
     padding-left: 20px;
     cursor: pointer;
     transition: all .5s;
+    color: white;
 }
 .fh:hover {
     right: 0;

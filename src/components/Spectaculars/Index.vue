@@ -4,6 +4,7 @@
     import SpectacularsStore from '../../store/modules/SpectacularsStore';
     import IndexVideoStore from '../../store/modules/IndexVideoStore';
     import WorkerStore from '../../store/modules/WorkerStore';
+    import LoginStore from '../../store/modules/LoginStore';
     import ProjectStore from '../../store/modules/ProjectStore';
     import { Component, Vue, Prop, Model} from 'vue-property-decorator';
     import { getModule } from 'vuex-module-decorators';
@@ -93,24 +94,27 @@
         }
         backgroundList = ['#41ccd3','#2498e3','#2268d4','#d6c76e','#d39255','#35c87a','#44ae2e','#7d5dcc']
         private store: any;
+        private loginStore: any;
         private workerStore: any;
         private indexVideoStore: any;
         private projectStore: any;
         public $echarts: any;
         public selectWorkType: Array<any>;
         public roleName:any;
+        public userName:any;
 
         carousel = 0;
         carouselPhoto = 0;
         constructor(e) {
             super(e);
             this.store = getModule(SpectacularsStore);
+            this.loginStore = getModule(LoginStore);
             this.indexVideoStore = getModule(IndexVideoStore);
             this.workerStore = getModule(WorkerStore);
             this.projectStore = getModule(ProjectStore);
             this.selectWorkType = [];
             this.roleName = JSON.parse(sessionStorage.getItem('loginInfo')).data.userGroupRoleModels[0].role.roleName;
-
+            this.userName = JSON.parse(sessionStorage.getItem('loginInfo')).data.username;
         }
         getColor(index){
             if(index%2!=0){
@@ -127,7 +131,7 @@
             }
         }
         goBack(){
-            if(this.roleName == '讲师'){//除了讲师其他权限都进入工人档案页面
+           if(this.roleName == '讲师'){//除了讲师其他权限都进入工人档案页面
                 this['$router'].push("/nav/lecturer");
             }else{
                 this['$router'].push("/nav/worker");
@@ -135,7 +139,13 @@
 
         }
         getWorkType(){
-            return this.store.workTypeList;
+            if(this.store.workTypeList){
+                return this.store.workTypeList;
+            }
+            else {
+                return new Array();
+            }
+
         }
 
         getWorkTypeCount(){

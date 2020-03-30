@@ -170,7 +170,46 @@ export default class ProjectStore extends VuexModule {
     public async upload() {
         let alert: any = Message;
         await request.post('/api/workerlib/project/export',await this.getUploadParams(),{responseType: 'blob', params: '项目工程档案'}).then((data)=>{
-            alert.warning('成功！');
+            alert.success('成功！');
+        }).catch((e)=>{
+            let alert: any = Message;
+            if(!e) {
+                alert.warning('未知错误！');
+                return
+            }
+            if(e.response && e.response.data && e.response.data.message) {
+                alert.warning(e.response.data.message)
+                return
+            }
+            if(!e.message) {
+                return;
+            }
+            alert.warning(e.message || e)
+        });
+    }
+    @Action
+    public async uploadPeople() {
+        let alert: any = Message;
+        await request.post('/api/workerlib/projectpeople/export',{
+            "conditionList": [{
+            "name": "project_id",
+            "value":  this.uplodId.map(x => x.project_id),
+            "algorithm": "IN"
+        }
+        ],
+            "keywords" : [],
+            "selectList": [
+            {"field": "name","alias":"姓名" },
+            {"field": "phone" ,"alias":"电话号码"},
+            {"field": "id_number" ,"alias":"身份证号码"},
+            {"field": "leave" ,"alias":"是否在场"},
+            {"field": "start_time" ,"alias":"进场时间"},
+            {"field": "end_time","alias":"退场时间" },
+            {"field": "project_name","alias":"所在项目" }
+        ]
+
+        },{responseType: 'blob', params: '项目工人档案'}).then((data)=>{
+            alert.success('成功！');
         }).catch((e)=>{
             let alert: any = Message;
             if(!e) {
@@ -472,8 +511,8 @@ export default class ProjectStore extends VuexModule {
                 "project_name":this.projectInfo.project_name,
                 "project_brief":this.projectInfo.project_brief,
                 "builder_license":this.projectInfo.builder_license,
-                "start_time":this.projectInfo.start_time ? this.projectInfo.start_time.getFullYear() + "-" + this.projectInfo.start_time.getMonth() + "-" + this.projectInfo.start_time.getDate():null,
-                "end_time":this.projectInfo.end_time ? this.projectInfo.end_time.getFullYear() + "-" + this.projectInfo.end_time.getMonth() + "-" + this.projectInfo.end_time.getDate():null,
+                "start_time":this.projectInfo.start_time.getFullYear() + "-" + (this.projectInfo.start_time.getMonth()+1) + "-" + this.projectInfo.start_time.getDate(),
+                "end_time":this.projectInfo.end_time.getFullYear() + "-" + (this.projectInfo.end_time.getMonth()+1) + "-" + this.projectInfo.end_time.getDate(),
                 "construction":this.projectInfo.construction,
                 "organization":this.projectInfo.organization,
                 "supervising":this.projectInfo.supervising,
@@ -1024,14 +1063,10 @@ export default class ProjectStore extends VuexModule {
     @Mutation
     private sucessInsertProjectWorkType(data: any) {
         if(data.status== 0){
-        // for(let i = 0;i<this.insertList.length;i++){
-        //     this.projectPeoples.push(this.insertList[i]);
-        // }
-
             this.insertList=new Array<any>() ;
             this.insertProjectWorkTypeList=new Array<any>() ;
-        let alert: any = Message;
-        alert.warning('成功！');
+            let alert: any = Message;
+            alert.warning('成功！');
         }
     }
     @Action
