@@ -407,7 +407,7 @@
     Modal(title="删除",v-model="deleteCourseware",:styles="{top: '20px'}",@on-ok="okDel()",@on-cancel="cancelDel()")
         .divL
             p 是否删除该课件？
-    Modal(:value="addCultivate",title="开始培训",@on-ok="okMessage()",@on-cancel="cancelAdd()",width='70%',:loading="loading")
+    Modal(:value="addCultivate",title="开始培训",@on-ok="okAdd()",@on-cancel="cancelAdd()",width='70%',:loading="loading")
         .addBody1
             .top
                 .cdivOne
@@ -431,13 +431,19 @@
                         Row
                             Col(span="12")
                                 DatePicker(v-model="startTime",type="date",placeholder="请选择",style="width: 240px")
-            .top
-                .ccdivOne
+            .top3
+                .cdivOne
                     .name2
                         span 备注
                         span(:style={'color': 'red'}) *
                     .input
-                        Input(type="textarea",clearable,:style={'width': '995px'},size=large,v-model="mark")
+                        Input(type="textarea",clearable,:style={'width': '240px'},size=large,v-model="mark",:rows="4")
+                .cdivOne
+                    .name2
+                        span 推送消息
+                        span(:style={'color': 'red'}) *
+                    .input
+                        Input(type="textarea",clearable,:style={'width': '240px'},size=large,v-model="message",:rows="4")
             .top
                 .left1
                     Button(type="primary",ghost,style="margin-left: 10px",@click="addSelected()",v-if="singleUser == false") 添加所选
@@ -490,6 +496,3 @@
                         .rname
                             span {{item.name}}
 
-
-    Modal(:value="sendToMessage",title="是否推送消息？",@on-ok="okAdd()",@on-cancel="cancelMessage()",width='40%')
-        Input(type="textarea",clearable,:style={'width': '100%'},size=large,v-model="message",:rows="4")

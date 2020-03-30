@@ -125,7 +125,7 @@
                             span(v-if="row.leave==1") 在场
                             span(v-if="row.leave==2") 离场
                         template(slot-scope="{row}",slot="operation")
-                            Button(v-if="offChecked(row.eafId)",type="primary",style="margin-right: 5px",@click="show(row.eafId,row.eafName,row.cwrPhoto)") 加入培训
+                            Button(v-if="offChecked(row.eafId)",type="primary",style="margin-right: 5px",@click="show(row.id,row.eafId,row.eafName,row.cwrPhoto,row.photo)") 加入培训
                             Button(v-else,type="primary",ghost,style="margin-right: 5px") 加入培训
 
                     Page(:total="pageInTotal",show-elevator,show-total,
@@ -136,10 +136,10 @@
                 .right1
                     .rdiv(v-for="item in this.store.checkeds")
                         .rimg
-                            img(:src="'/api/workerlib/preview/alluser/photo/'+item.id",:style={'width': '50px', 'height': '50px','border-radius': '50%'},v-if="item.photo")
-                            img(:src="'http://113.105.121.93:1818'+item.cwrPhoto",:style={'width': '50px', 'height': '50px','border-radius': '50%'},v-else-if="item.cwrPhoto")
+                            img(:src="'/api/workerlib/preview/alluser/photo/'+item.userId",:style={'width': '50px', 'height': '50px','border-radius': '50%'},v-if="item.userPhoto")
+                            img(:src="'http://113.105.121.93:1818'+item.photo",:style={'width': '50px', 'height': '50px','border-radius': '50%'},v-else-if="item.photo")
                             img(src="~@/assets/css/images/headerPicture.png",:style={'width': '50px', 'height': '50px','border-radius': '50%'},v-else)
-                            span(class="image-remove",@click="show(item.id,item.name,item.photo)") +
+                            span(class="image-remove",@click="show(item.id,item.name,item.photo,item.userPhoto)") +
                         .rname
                             span {{item.name}}
     Modal(:value="addViewTeamRate",title="人员评级",@on-ok="okViewTeamRate()",@on-cancel="cancelViewTeamRate()",width='70%',:loading = "loading")

@@ -160,12 +160,6 @@
             this.store.clearCourseWare();
             this.addCourseware = false;
         }
-        okMessage():any {
-            this.sendToMessage = true;
-        }
-        cancelMessage():any {
-            this.sendToMessage = false;
-        }
         okUp() : any{
             this.store.setTeachingMethod("现场培训");
             if(this.store.courseWare.title == "" || this.store.courseWare.title == null ){
@@ -251,6 +245,22 @@
             return this.store.teacherList;
         }
         okAdd() : any{
+            if(this.store.cultivate.courseware_brief == "" || this.store.cultivate.courseware_brief == null ){
+                this.messageWarningFn('请输入课程简介！');
+                return;
+            }
+            if(this.store.cultivate.start_time){
+                this.messageWarningFn('请选择培训日期！');
+                return;
+            }
+            if(this.store.cultivate.mark == "" || this.store.cultivate.mark == null ){
+                this.messageWarningFn('请输入备注！');
+                return;
+            }
+            if(this.store.message == "" || this.store.message == null ){
+                this.messageWarningFn('请输入推送消息！');
+                return;
+            }
             this.store.setState("待学习");
             this.store.setCStatus(1);
             if(this.singleUser==true){
@@ -468,7 +478,6 @@
             alert.error(file.name + ' 文件格式错误！请上传jpg、jpeg、png格式文件！');
         }
         handleSuccessPicture (res, file) {
-            debugger
             this.store.setCoverPicture(res.file);
 
             let alert: any = Message;

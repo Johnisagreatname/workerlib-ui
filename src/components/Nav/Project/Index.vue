@@ -227,7 +227,9 @@
         }
         handleSelectRowCancel(selection,row){
             for(let i = 0;i < this.store.project.length;i++) {
+
                 if(this.store.uplodId.findIndex(x => x.project_id == row.project_id) > 0){
+                    debugger
                     this.$set(this.store.project[i], '_checked', false);
                 }
 

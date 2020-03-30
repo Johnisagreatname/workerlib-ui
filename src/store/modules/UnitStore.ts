@@ -338,7 +338,7 @@ export default class UnitStore extends VuexModule {
             "unit_number":this.unit_number,
             "unit_name":this.unit_name,
             "unit_type":this.unit_type,
-            "entrance_time":this.entrance_time ? this.entrance_time.getFullYear() + "-" + this.entrance_time.getMonth() + "-" + this.entrance_time.getDate():null,
+            "entrance_time":this.entrance_time.getFullYear() + "-" + (this.entrance_time.getMonth()+1) + "-" + this.entrance_time.getDate(),
             "principal":this.principal,
             "status":this.status
         }).then((data)=>{

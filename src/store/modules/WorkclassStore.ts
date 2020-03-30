@@ -121,7 +121,12 @@ export default class WorkclassStore extends VuexModule {
                     "algorithm": "EQ",
                 }
             ],
-            "sortList": [],
+            "sortList": [
+                {
+                    "name": "value", //字段名
+                    "desc": true  //true为降序，false为升序
+                }
+            ],
             "groupList" : [],
             "keywords" : [],
             "selectList": []
