@@ -54,6 +54,8 @@ router.beforeEach((to, from ,next) => {
     }else{
       if(to.path==="/mobile/details"){
         next()
+      }else if(to.path==="/mobile/moveLogin"){
+          next()
       }
       else if(to.path==="/login" ){
         next()

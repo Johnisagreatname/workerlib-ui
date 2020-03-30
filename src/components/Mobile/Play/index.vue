@@ -249,4 +249,3 @@
 </script>
 <template lang="pug" src="@/views/mobile/play.pug"/>
 <style scoped src="@/styles/mobile/play.css"/>
-<style scoped src="@/styles/mobile/play.css"/>

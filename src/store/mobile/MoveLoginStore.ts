@@ -30,7 +30,12 @@ export default class MoveLoginStore extends VuexModule {
             if (data.data) {
                 sessionStorage.setItem('loginInfo', JSON.stringify(data));
                 this.roleName = JSON.parse(sessionStorage.getItem('loginInfo')).data.userGroupRoleModels[0].role.roleName;
-                router.push({path: '/spectaculars'})
+                router.push({
+                    path:'/mobile/details',
+                    query:{
+                        eafid:"CB21D9A77652420E8DB7E44D8538BF89"
+            }
+                });
 
             } else {
                 let alert: any = Message;
