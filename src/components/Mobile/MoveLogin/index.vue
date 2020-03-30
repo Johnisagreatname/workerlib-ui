@@ -51,5 +51,5 @@
     }
 </script>
 
-<style scoped src="@/styles/login.css" />
-<template lang="pug" src="@/views/login.pug" />
+<style scoped src="@/styles/mobile/moveLogin.css" />
+<template lang="pug" src="@/views/mobile/moveLogin.pug" />
