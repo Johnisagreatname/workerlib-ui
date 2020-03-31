@@ -805,15 +805,10 @@ export default class WorkerStore extends VuexModule {
                 "name": "project_id",
                 "value": this.projectId,
                 "algorithm": "EQ",
-            }, ],
-
-            "sortList": [ ],
-
-            "groupList" : [
-            ],
-
+            }],
+            "sortList": [],
+            "groupList" : [],
             "keywords" : [],
-
             "selectList": []
 
         }).then((data)=>{
@@ -851,8 +846,7 @@ export default class WorkerStore extends VuexModule {
             if(!data){
                 return;
             }
-            this.successInsertArchives(data);
-            // this.added(data)
+            this.selectUser();
         }).catch((e)=>{
             console.log(e)
             let alert: any = Message;
@@ -870,6 +864,36 @@ export default class WorkerStore extends VuexModule {
                 return;
             }
 
+            alert.warning(e.message || e)
+        });
+    }
+    @Action
+    public async selectUser() {
+        await request.post('/api/workerlib/user', {
+            "conditionList": [{
+                "name": "username",
+                "value": this.card,
+                "algorithm": "EQ"
+            } ],
+        }).then((data)=>{
+            if(!data){
+                return;
+            }
+            this.searchEafId();
+        }).catch((e)=>{
+            console.log(e)
+            let alert: any = Message;
+            if(!e) {
+                alert.warning('未知错误！');
+                return;
+            }
+            if(e.response && e.response.data && e.response.data.message) {
+                alert.warning(e.response.data.message)
+                return
+            }
+            if(!e.message) {
+                return;
+            }
             alert.warning(e.message || e)
         });
     }
@@ -911,12 +935,12 @@ export default class WorkerStore extends VuexModule {
         });
     }
     @Action
-    public async searchEafId(id) {
+    public async searchEafId() {
         await request.post('/api/workerlib/alluser',{
             "pageInfo" : {},
             "conditionList": [{
-                "name": "id",
-                "value": id,
+                "name": "cwrIdnum",
+                "value": this.card,
                 "algorithm": "EQ"
             } ],
             "sortList": [],
@@ -927,7 +951,7 @@ export default class WorkerStore extends VuexModule {
             if(!data){
                 return;
             }
-            this.sucessSearchEafId(data);
+            this.insertWorkType(data.data[0].eafId);
 
         }).catch((e)=>{
             let alert: any = Message;
@@ -951,8 +975,8 @@ export default class WorkerStore extends VuexModule {
         await request.put('/api/workerlib/usergrouprole', {
             "userGroupRoleId":null,
             "userId":id,
-            "roleId":this.roleName[0].roleId
-        }).then((data)=>{debugger
+            "roleId":"703d28f4a8134a9b87fb971d0e31f9e5"
+        }).then((data)=>{
             if(!data){
                 return;
             }
@@ -1124,24 +1148,12 @@ export default class WorkerStore extends VuexModule {
         });
     }
 	@Action
-     public addUserGroupRole(data: any){
+    public addUserGroupRole(data: any){
         if(data.status == 0) {
             this.search();
         }
      }
-    @Action
-    public successInsertArchives(data: any) {
-        if(data.status == 0) {
-            this.searchEafId(data.data);
-        }
-    }
-    @Action
-    public async sucessSearchEafId(data: any) {
-        if(data.status == 0) {
-            this.insertUserGroupRole(data.data[0].id);
-            this.insertWorkType(data.data[0].eafId);
-        }
-    }
+
     @Mutation
     public successInsertWorkType(data: any){
         if(data.status == 0) {

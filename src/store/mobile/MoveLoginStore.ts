@@ -30,13 +30,7 @@ export default class MoveLoginStore extends VuexModule {
             if (data.data) {
                 sessionStorage.setItem('loginInfo', JSON.stringify(data));
                 this.roleName = JSON.parse(sessionStorage.getItem('loginInfo')).data.userGroupRoleModels[0].role.roleName;
-                router.push({
-                    path:'/mobile/details',
-                    query:{
-                        eafid:"CB21D9A77652420E8DB7E44D8538BF89"
-            }
-                });
-
+                this.searchEafId();
             } else {
                 let alert: any = Message;
                 alert.warning('账号或密码错误！');
@@ -61,7 +55,47 @@ export default class MoveLoginStore extends VuexModule {
             alert.warning(e.message || e)
         });
     }
+    @Action
+    public async searchEafId() {
+        await request.post('api/workerlib/alluser', {
+            "conditionList": [{
+                "name": "cwrIdnum",
+                "value": this.username,
+                "algorithm": "EQ"
+            }]
+        }).then((data)=>{
+            debugger
+            if (data.data) {
+                router.push({
+                    path:'/mobile/details',
+                    query:{
+                        eafid:data.data[0].eafId
+                    }
+                });
+            } else {
+                let alert: any = Message;
+                alert.warning('账号或密码错误！');
+            }
+        }).catch((e)=>{
+            console.log(e)
+            let alert: any = Message;
+            if(!e) {
+                alert.warning('未知错误！')
+                return
+            }
 
+            if(e.response && e.response.data && e.response.data.message) {
+                alert.warning(e.response.data.message)
+                return
+            }
+
+            if(!e.message) {
+                return;
+            }
+
+            alert.warning(e.message || e)
+        });
+    }
     @Mutation
     private setUsername(data: String) {
         this.username = data;
