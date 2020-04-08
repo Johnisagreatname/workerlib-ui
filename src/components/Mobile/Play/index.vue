@@ -162,7 +162,6 @@
 
         }
         changeIndexRight(){
-            debugger
             if((this.page+1)>this.playStore.list.pptPages){
                 this.page = this.playStore.list.pptPages;
             }else {

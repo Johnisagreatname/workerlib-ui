@@ -104,7 +104,6 @@ service.interceptors.response.use(
 
     },
     (error: any) => {
-
         // 异常处理
         console.log(error)
         pending = [];

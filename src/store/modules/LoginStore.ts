@@ -34,6 +34,8 @@ export default class LoginStore extends VuexModule {
                     router.push({path: '/nav/comments'})
                 }else if(this.roleName && this.roleName == '工人') {
                     router.push({path: '/login'})
+                    let alert: any = Message;
+                    alert.warning('工人禁止登录！')
                 }else {
                     router.push({path: '/spectaculars'})
                 }
