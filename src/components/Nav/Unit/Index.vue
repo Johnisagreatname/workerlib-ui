@@ -172,7 +172,8 @@
             this.store.search();
         }
 
-        public search() {
+        search() {
+            this.store.setPageIndex(1);
             this.store.search();
         }
         synchronization(){

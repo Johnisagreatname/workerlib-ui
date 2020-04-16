@@ -13,7 +13,7 @@ import router from '../../router/.invoke/router'
 })
 export default class LoginStore extends VuexModule {
 
-    public username:String = 'admin'; //state
+    public username:String = 'CYGRADMIN'; //state
     public password:String = '';
     public roleName:any;
     constructor(e) {

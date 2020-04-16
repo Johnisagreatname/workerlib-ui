@@ -1,6 +1,9 @@
 #home
     .freamwork
+        .title
+            span 登录
         .inputName
             Input(prefix="ios-contact", v-model="username",size="large")
             Input(prefix="md-unlock",type="password", v-model="password", @keyup.enter.native="login",size="large",:style={marginTop: '5%'})
             Button(@click="login") 立即登录
+            span(:style={marginTop: '24px',float: 'right',color: '#1d51e9'},@click="toRegister()") 没有账号?立即注册>>

@@ -15,7 +15,7 @@ import router from '../../router/.invoke/router'
 })
 export default class MoveLoginStore extends VuexModule {
 
-    public username:String = 'admin'; //state
+    public username:String = ''; //state
     public password:String = '';
     public roleName:any;
     constructor(e) {
@@ -64,7 +64,6 @@ export default class MoveLoginStore extends VuexModule {
                 "algorithm": "EQ"
             }]
         }).then((data)=>{
-            debugger
             if (data.data) {
                 router.push({
                     path:'/mobile/details',

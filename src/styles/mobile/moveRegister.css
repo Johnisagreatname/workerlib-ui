@@ -11,17 +11,17 @@
     background-size: 100% 100%;
     background-repeat: no-repeat;
 }
-.inputName{
-    margin-top: 270px;
-    margin-left: 30px;
-    margin-right: 30px;
-}
 .title{
     width: 100%;
     text-align: center;
     margin-top: 50px;
     font-size: 18px;
     color: #fff;
+}
+.inputName{
+    margin-top: 260px;
+    margin-left: 30px;
+    margin-right: 30px;
 }
 #home .freamwork  .ivu-btn, #home .freamwork  .ivu-btn:active, #home .freamwork  .ivu-btn:focus{
     outline: 0;

@@ -43,7 +43,7 @@
       Button(type="primary", ghost, icon="ios-log-in",@click="this.store.synchronization",v-if="this.roleName=='IT管理员'") 同步工人
       Button(type="primary", ghost, icon="ios-log-out",@click="upload()") 导出
       Button(type="primary",ghost,icon="ios-cloud-upload-outline",@click="uploadData=!uploadData") 导入薪资
-      //Button(type="primary",ghost,icon="ios-cloud-upload-outline",@click="inup()") 导入11
+      Button(type="primary",ghost,icon="ios-desktop-outline",@click="peoplesIn()") 统计工种
 
    div(v-for="(item, index) in getPeopleList()", :key="index",
    @click="onCheck(item.eafId,item.eafName,item.leave)",
@@ -363,3 +363,14 @@
                div(:style={padding: '200px 0',height:'500px'})
                   Icon(type="ios-add" size="52" style="color: #3399ff")
                   p 点击上传
+   Modal(:value="peopleIn",title="统计工种",width='50%',@on-cancel="peopleInCancel()")
+      .addBody
+         Table(border, ref="selection", :columns="getPeopleInColumns()", :data="getPeopleInData()",height="550")
+            template(slot-scope="{row, index }",slot="operation")
+               span(:style={color:'blue',cursor:'pointer'},@click="info(row.workType)") 查看
+      div(slot="footer")
+   Modal(:value="peopleInfo",title="详情",width='50%',@on-cancel="peopleInfoCancel()")
+      .addBody
+         Table(border, ref="selection", :columns="getPeopleInfoColumns()", :data="getPeopleInfoData()",height="550")
+      div(slot="footer")
+

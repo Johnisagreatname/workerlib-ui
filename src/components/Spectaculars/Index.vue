@@ -37,6 +37,7 @@
         }
 
         mounted() {
+            this.store.login();
             this.store.searchWorkType();
             this.store.searchWorkTypeCount();
             this.store.searchWorkTypeCountTwo();
@@ -113,8 +114,8 @@
             this.workerStore = getModule(WorkerStore);
             this.projectStore = getModule(ProjectStore);
             this.selectWorkType = [];
-            this.roleName = JSON.parse(sessionStorage.getItem('loginInfo')).data.userGroupRoleModels[0].role.roleName;
-            this.userName = JSON.parse(sessionStorage.getItem('loginInfo')).data.username;
+            this.roleName = JSON.parse(sessionStorage.getItem('loginInfo'))?JSON.parse(sessionStorage.getItem('loginInfo')).data.userGroupRoleModels[0].role.roleName:"";
+            this.userName = router.currentRoute.query.token?router.currentRoute.query.token:"";
         }
         getColor(index){
             if(index%2!=0){
@@ -137,6 +138,21 @@
                 this['$router'].push("/nav/worker");
             }
 
+        }
+        clicka(){
+            this['$router'].push("/nav/worker");
+        }
+        clickb(){
+            this['$router'].push("/nav/lecturer");
+        }
+        clickc(){
+            this['$router'].push("/nav/courseware");
+        }
+        clickd(){
+            this['$router'].push("/nav/cultivate");
+        }
+        clicke(){
+            this['$router'].push("/nav/comments");
         }
         getWorkType(){
             if(this.store.workTypeList){

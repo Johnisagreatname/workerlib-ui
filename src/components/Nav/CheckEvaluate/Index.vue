@@ -440,7 +440,6 @@
             }
         }
         show(userId:number,id: number,name:string,photo:string,userPhoto:string): void {
-            debugger
             let index = this.store.checkeds.findIndex(x => x.id == id); //已有列表
             if(index > -1) {
                 this.store.checkeds.splice(index, 1);   //去除

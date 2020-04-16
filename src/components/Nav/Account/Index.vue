@@ -113,7 +113,6 @@
             this.store.deleteUser();
         }
         popupUpdUser(userId){
-            debugger
             this.uid = userId;
             this.store.setUid(userId);
             this.updUser = true;

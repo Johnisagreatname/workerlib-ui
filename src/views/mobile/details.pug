@@ -114,7 +114,7 @@
             divider
             flexbox(orient="horizontal",v-for="item in getCultivateList()")
                 flexbox-item(span="40")
-                    img(class="img-vedio",src="~@/assets/css/images/vedio.png",@click="goBack(item.cultivate_id,item.id)")
+                    img(class="img-vedio",src="~@/assets/css/images/vedio.png",@click="goBack(item.id,item.cultivate_id,item.peoples)")
                 flexbox-item
                     flexbox(orient="horizontal")
                         flexbox(orient="vertical")
@@ -125,9 +125,11 @@
                                 div(class="text-blue",v-else) 选修
                         flexbox(orient="vertical")
                             flexbox-item
-                                div(class="text-main") {{item.archivesStatus}}
+                                div(class="text-main",v-if="item.whether") {{item.archivesStatus}}
+                                div(class="text-main",v-else) 待培训
                             flexbox-item
-                                div(class="text-blue") 时间：{{(item.startTime || ' ').split(' ')[0]}}
+                                div(class="text-blue",v-if="item.startTime") 时间：{{(item.startTime || ' ').split(' ')[0]}}
+                                div(class="text-blue",v-else) {{new Date().split(' ')[0]}}
         //div(class="div-bg")
         //    div(class="text-title") 出勤记录
         //    group

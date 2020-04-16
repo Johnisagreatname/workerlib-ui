@@ -30,6 +30,7 @@
         }
         mounted() {
             this.store.getStudyType();
+            this.store.setSelectStatus(2);
             this.store.search();
         }
         loading = true;
@@ -54,6 +55,7 @@
             return "rowClasses"
         }
         search(){
+
             this.store.searchInfo();
         }
         getDateFormat (d: number) : string {
