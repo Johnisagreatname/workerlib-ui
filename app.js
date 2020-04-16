@@ -18,7 +18,7 @@ function shouldCompress (req, res) {
 }
 
 // 超时时间
-const TIME_OUT = 60 * 1e3;
+const TIME_OUT = 600 * 1e3;
 
 // 设置端口
 app.set('port', config.listen);
