@@ -62,7 +62,7 @@
             Breadcrumb(:style="{margin: '10px 0'}")
                 span 您当前的位置：
                 BreadcrumbItem(v-if="getMenuList()",v-for="item in getMenuList()") {{item}}
-            Content(:style="{padding: '24px', minHeight: '280px', background: '#fff'}")
+            Content(:style="{padding: '24px', minHeight: '280px', background: '#fff',borderRadius: '40px'}")
                 Content
                     router-view
 
