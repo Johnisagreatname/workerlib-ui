@@ -1,78 +1,67 @@
 .layout
-    Layout(:style="{minHeight: '100vh'}")
-        Sider(collapsible, :collapsed-width="78",v-model='isCollapsed')
-            .logo
-            Menu(:open-names="['1']",accordion,@on-select="select",width="auto", :class="menuitemClasses",theme="dark")
-                MenuItem(name="/spectaculars",v-if="this.roleName == '管理员' || this.roleName == 'IT管理员' || this.roleName == '超级管理员' || this.roleName == '来宾'")
-                    Icon(type="md-home")
-                    span 首页
-                Submenu(name="项目",v-if="this.roleName == '管理员' || this.roleName == 'IT管理员' || this.roleName == '超级管理员' || this.roleName == '来宾'")
-                    template( slot="title")
-                        Icon(type="ios-folder-open")
-                        span 项目
-                    MenuItem(name="/nav/project")
-                        span 项目人员管理
-                    MenuItem(name="/nav/unit")
-                        span 施工单位管理
+    Layout
+        Sider(:style="{height: '1080px'}",width=228)
+            Menu(active-name="主页",theme="light",width="auto",:open-names="['1']",:style="{color: '#fff'}")
+                MenuItem(name="主页",:style="{marginTop: '240px'}",@click.native="clickMenu('homepage')")
+                    span(class="top-angle",v-if="homepage")
+                    span(class="bottom-angle",v-if="homepage")
+                    img(src="~@/assets/css/images/主页蓝.png",v-if="homepage",:style="{marginLeft: '12px'}")
+                    img(src="~@/assets/css/images/主页.png",v-else)
+                    Item 主　　页
+                MenuItem(name="项目管理",@click.native="clickMenu('projectManagement')")
+                    span(class="top-angle",v-if="projectManagement")
+                    span(class="bottom-angle",v-if="projectManagement")
+                    img(src="~@/assets/css/images/项目管理蓝.png",v-if="projectManagement",:style="{marginLeft: '12px'}")
+                    img(src="~@/assets/css/images/项目管理.png",v-else)
+                    Item 项目管理
+                MenuItem(name="人员管理",@click.native="clickMenu('peopleManagement')")
+                    span(class="top-angle",v-if="peopleManagement")
+                    span(class="bottom-angle",v-if="peopleManagement")
+                    img(src="~@/assets/css/images/人员管理蓝.png",v-if="peopleManagement",:style="{marginLeft: '12px'}")
+                    img(src="~@/assets/css/images/人员管理.png",v-else)
+                    Item 人员管理
+                MenuItem(name="培训管理",@click.native="clickMenu('trainingManagement')")
+                    span(class="top-angle",v-if="trainingManagement")
+                    span(class="bottom-angle",v-if="trainingManagement")
+                    img(src="~@/assets/css/images/培训管理蓝.png",v-if="trainingManagement",:style="{marginLeft: '12px'}")
+                    img(src="~@/assets/css/images/培训管理.png",v-else)
+                    Item 培训管理
+                MenuItem(name="讲师管理",@click.native="clickMenu('lecturerManagement')")
+                    span(class="top-angle",v-if="lecturerManagement")
+                    span(class="bottom-angle",v-if="lecturerManagement")
+                    img(src="~@/assets/css/images/讲师管理蓝.png",v-if="lecturerManagement",:style="{marginLeft: '12px'}")
+                    img(src="~@/assets/css/images/讲师管理.png",v-else)
+                    Item 讲师管理
+                MenuItem(name="综合评价",@click.native="clickMenu('comprehensiveAssessment')")
+                    span(class="top-angle",v-if="comprehensiveAssessment")
+                    span(class="bottom-angle",v-if="comprehensiveAssessment")
+                    img(src="~@/assets/css/images/综合评价蓝.png",v-if="comprehensiveAssessment",:style="{marginLeft: '12px'}")
+                    img(src="~@/assets/css/images/综合评价.png",v-else)
+                    Item 综合评价
+                MenuItem(name="不良评价",@click.native="clickMenu('badEvaluation')")
+                    span(class="top-angle",v-if="badEvaluation")
+                    span(class="bottom-angle",v-if="badEvaluation")
+                    img(src="~@/assets/css/images/不良评价蓝.png",v-if="badEvaluation",:style="{marginLeft: '12px'}")
+                    img(src="~@/assets/css/images/不良评价.png",v-else)
+                    Item 不良评价
+                MenuItem(name="技能鉴定",@click.native="clickMenu('skillAppraisal')")
+                    span(class="top-angle",v-if="skillAppraisal")
+                    span(class="bottom-angle",v-if="skillAppraisal")
+                    img(src="~@/assets/css/images/技能鉴定蓝.png",v-if="skillAppraisal",:style="{marginLeft: '12px'}")
+                    img(src="~@/assets/css/images/技能鉴定.png",v-else)
+                    Item 技能鉴定
+                MenuItem(name="设置",@click.native="clickMenu('setting')")
+                    span(class="top-angle",v-if="setting")
+                    span(class="bottom-angle",v-if="setting")
+                    img(src="~@/assets/css/images/设置蓝.png",v-if="setting",:style="{marginLeft: '12px'}")
+                    img(src="~@/assets/css/images/设置.png",v-else)
+                    Item 设　 置
 
-                MenuItem(name="/nav/worker",v-if="this.roleName == '管理员' || this.roleName == 'IT管理员' || this.roleName == '超级管理员' || this.roleName == '来宾'")
-                    Icon(type="md-people")
-                    span 工人档案
-
-                MenuItem(name="/nav/lecturer",v-if="this.roleName == '管理员' || this.roleName == 'IT管理员' || this.roleName == '超级管理员' || this.roleName=='讲师' || this.roleName == '来宾'")
-                    Icon(type="md-school")
-                    span 讲师档案
-
-                Submenu(name="培训",v-if="this.roleName == '管理员' || this.roleName == 'IT管理员' || this.roleName == '超级管理员' || this.roleName=='讲师' || this.roleName == '来宾'")
-                    template( slot="title")
-                        Icon(type="ios-book")
-                        span 培训
-                    MenuItem(name="/nav/courseware")
-                        span 培训课件
-                    //MenuItem(name="/nav/examinationPaper")
-                    //    span 考试管理
-                    MenuItem(name="/nav/cultivate")
-                        span 培训记录
-
-                MenuItem(name="/nav/checkEvaluate",v-if="this.roleName == '管理员' || this.roleName == 'IT管理员' || this.roleName == '超级管理员' || this.roleName == '来宾'")
-                    Icon(type="md-checkbox")
-                    span 技能鉴定
-
-                MenuItem(name="/nav/comments",v-if="this.roleName == '管理员' || this.roleName == 'IT管理员' || this.roleName == '超级管理员' || this.roleName == '来宾' || this.roleName == '外部监理'")
-                    Icon(type="ios-create")
-                    span 综合评价
-
-                Submenu(name="设置",v-if="this.roleName == '管理员' || this.roleName == 'IT管理员' || this.roleName == '超级管理员' || this.roleName == '来宾'")
-                    template( slot="title")
-                        Icon(type="md-settings")
-                        span 设置
-                    MenuItem(name="/nav/account")
-                        span 帐号
-                    //MenuItem(name="/nav/role")
-                    //    span 角色
-                    MenuItem(name="/nav/workclass")
-                        span 工种
-                    MenuItem(name="/nav/commentType")
-                        span 工人评价
-                    MenuItem(name="/nav/grade")
-                        span 评定等级
-                    MenuItem(name="/nav/rate")
-                        span 评定级别
-                    MenuItem(name="/nav/course")
-                        span 课件类型
-                    MenuItem(name="/nav/punishment")
-                        span 处罚
-                    MenuItem(name="/nav/indexVideo")
-                        span 首页设置
-        Layout
-            Content
-                .headers(v-if="title!='首页'")
-                    .circle
-                    span {{title}}
-                router-view
-                //Col(class="demo-spin-col",span="8")
-                Spin(fix, v-show="$store.state.loading")
-                    Icon(type="ios-loading",size=18,class="demo-spin-icon-load")
-                    div Loading
+        Layout(:style="{padding: '0 24px 24px'}")
+            Breadcrumb(:style="{margin: '24px 0'}")
+                BreadcrumbItem Home
+                BreadcrumbItem Components
+            Content(:style="{padding: '24px', minHeight: '280px', background: '#fff'}")
+                Content
 
 
