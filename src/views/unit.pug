@@ -11,7 +11,7 @@
         //        Select(v-model="selectStatus",clearable,filterable,style="width:200px")
         //            Option(v-for="item in getMenus()", :value="item.key",:key="item.key") {{item.value}}
         .search
-            Button(@click="this.store.search") 搜索
+            Button(@click="search()") 搜索
     .hr
     .button
         Button(type="primary", ghost, icon="ios-add-circle-outline",@click="addUnit=!addUnit") 新增单位

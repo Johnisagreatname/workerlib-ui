@@ -24,10 +24,10 @@
                     DropdownMenu(slot="list")
                         DropdownItem
                             Icon(type="ios-create-outline")
-                            span(@click="popupUpdUser(row.userId)") 修改密码
+                            span(@click="popupUpdUser(row.id)") 修改密码
                         DropdownItem
                             Icon(type="ios-remove-circle-outline")
-                            span(@click="popupDelUser(row.userId)") 删除用户
+                            span(@click="popupDelUser(row.id)") 删除用户
     .footer
         Page(:total="getTotalRecords()",show-sizer,show-elevator,show-total,@on-page-size-change="onPageSizeChange",@on-change="onPageIndexChange")
 
@@ -78,6 +78,4 @@
                     Input(clearable,style="width: 400px",size=large,v-model="password",placeholder="请输入密码")
     Modal(:value="delUser",title="删除用户",@on-ok="deletes()",@on-cancel="cancelDeletes()",width='70%')
         .addBody
-            .divTwo
-                .name
-                    span 确认删除改用户吗？
+            span 确认删除改用户吗？

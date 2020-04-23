@@ -4,6 +4,8 @@ import request from "../../common/HttpClient";
 import {Message} from "iview";
 import MessageUtils from "../../common/MessageUtils";
 import Echart from 'echarts';
+import router from "../../router/.invoke/router";
+import {AxiosRequestConfig} from "axios";
 
 @Module({
     namespaced: true,
@@ -44,50 +46,55 @@ export default class SpectacularsStore extends VuexModule {
         this.workTypeCount = null;
         this.projectCount = {};
         this.projectCountBE = {};
-        this.saleDate = new Date();
-        this.saleMonthDate = new Date();
+        this.saleDate = new Date(new Date().getTime() - 1000*60*60*24*31*12);
+        this.saleMonthDate = new Date('2019/08/01');
         this.echartOptions = [];
         this.echartSkill = [];
         this.echartCultivate = [];
         this.echartCultivateCount = [];
         this.$echarts = Echart;
     }
+    @Action
+    public async login() {
+        await request.get('api/workerlib/session/user?token:'+router.currentRoute.query.token).then((data)=>{
+            if (data.data) {
+                sessionStorage.setItem('loginInfo', JSON.stringify(data));
+            }
+        }).catch((e)=>{
+            console.log(e)
+            let alert: any = Message;
+            if(!e) {
+                alert.warning('未知错误！')
+                return
+            }
 
+            if(e.response && e.response.data && e.response.data.message) {
+                alert.warning(e.response.data.message)
+                return
+            }
+
+            if(!e.message) {
+                return;
+            }
+
+            alert.warning(e.message || e)
+        });
+    }
     @Action
     public async searchWorkType() {
-        await request.post('/api/workerlib/worktype',
+        await request.post('/api/workerlib/worktypeview',
             {
-                "pageInfo" : {
-                    "pageIndex": 1,
-                    "pageSize": 5
-                },
+                "pageInfo" : {},
 
-                "conditionList": [{
-                    "name": "workType",
-                    "value": null,
-                    "algorithm": "NOT"
-                }],
+                "conditionList": [],
 
-                "sortList": [{
-                    "name": "total",
-                    "desc": true
-                }],
+                "sortList": [],
 
-                "groupList" : [
-                    "workType"
-                ],
+                "groupList" : [],
 
                 "keywords" : [],
 
-                "selectList": [{
-                    "field": "workType",
-                    "alias":"workType"
-                },{
-                    "field":"workType",
-                    "function": "COUNT",
-                    "alias":"total"
-                }
-                ]
+                "selectList": []
             }
         ).then((data)=>{
             if(!data){

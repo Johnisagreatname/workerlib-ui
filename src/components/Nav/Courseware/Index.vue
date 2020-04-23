@@ -71,13 +71,14 @@
         rowClass(row, index) {
             return "rowClasses"
         }
-
+        searchs(){
+            this.store.setPageIndex(1);
+            this.store.search();
+        }
         search(){
             this.store.searchPeople();
         }
         checkAllGroupChange(){
-            debugger
-
             if(this.singleUser  == true) {
                 this.store.setSelectUnitId("E1518A607E764390848F188390482597");
             }else {

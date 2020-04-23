@@ -12,419 +12,168 @@ import {Message} from "iview";
     store,
 })
 export default class ProjectStore extends VuexModule {
+    private projectList:Array<any>; //项目列表
+    private unitList:Array<any>; //单位列表
+    private workTypeList:Array<any>; //工种列表
+    private userList:Array<any>; //人员列表
+    private userSalaryList: Array<any>; //工资列表
+    private userTrainingRecordList: Array<any>; //培训记录列表
+
+    private userConditionList:Array<any>;
+    private userSalaryConditionList:Array<any>;
+
+    private id: number;
+
+    private userPageSize : number;
+    private userPageIndex : number;
+    private userPageTotal : number;
+
+    private selectProjectId : string;
+    private selectUserId : string;
+    private selectUserName : string;
+    private selectUnitId: string;
+    private selectSex: string;
+    private selectWorkType: string;
+    private selectStatus: number;
+    private selectMinAge: number;
+    private selectMaxAge: number;
+    private selectEafUserStatus: number;
+
+    private selectSalaryProjectId: string;
+    private selectSalaryUserId: string;
+
+    private selectTrainingRecordUserId :string;
+
+    // private insertProjectName: string;
+    // private insertProjectBrief: string;
+    // private insertBuilderLicense: string;
+    // private insertStartTime: Date;
+    // private insertEndTime: Date;
+    // private insertConstruction: string;
+    // private insertOrganization: string;
+    // private insertSupervising: string;
+    // private insertProjectSupervision: string;
+    // private insertProjectAddress: string;
+    // private insertStatus: number;
+
+    //新增人员
+    private insertUnitId: string;
+    private insertProjectId: string;
+    private insertTemId: string;
+    private insertWorkType: string;
+    private insertTeamGroupLeader: number;
+    private insertLeave: number;
+    private insertStartTime: Date;
+    private insertEndTime: Date;
+    private insertPhone: number;
+    private insertIdNum: string;
+    private insertPhoto: string;
+    private insertIdCardFront: string;
+    private insertIdCardReverse: string;
+    private insertServiceContract: string;
+    private insertCertificate: string;
+
+
+    private amendServiceContract: string;
+    private amendIdCardFront: string;
+    private amendIdCardReverse: string;
+    private amendCertificate: string;
+
+
+
+
+
     constructor(e) {
         super(e);
-        this.pageInfo = {
-            pageIndex: 1,
-            pageSize: 20
-        };
-        this.project = [];
-        this.checkeds = [];
-        this.searchConditionList = [];
-        this.searchPeopleConditionList = [];
-        this.updateList = [];
-        this.insertList = [];
-        this.insertProjectWorkTypeList = [];
-        this.peoples = [];
-        this.projectPeoples = [];
-        this.projectInfo = {};
-        this.projectType = [];
-        this.workType = [];
-        this.viewPeople = [];
-        this.uplodId = [];
-        this.peopleId = [];
+        this.projectList = [];
+        this.unitList = [];
+        this.workTypeList = [];
+        this.userList = [];
+        this.userSalaryList = [];
+        this.userTrainingRecordList = [];
+
+        this.userConditionList = [];
+        this.userSalaryConditionList = [];
+
+        this.id  = null;
+
+        this.userPageSize = 15;
+        this.userPageIndex = 1;
+        this.userPageTotal = 0;
+
+        this.selectProjectId = null;
+        this.selectUnitId = null;
+        this.selectSex = null;
+        this.selectWorkType = null;
+        this.selectStatus = null;
+        this.selectMinAge = null;
+        this.selectMaxAge = null;
         this.selectUserName = null;
-        this.viewProjectId = null;
-        this.projectId = null;
-        this.leave = null;
-        this.pageInIndex=1;
-        this.pageInSize= 10;
-        this.pageInTotal = 0;
-        this.pageProjectIndex=1;
-        this.pageProjectSize= 10;
-        this.pageProjectTotal = 0;
+        this.selectUserId = null;
+        this.selectEafUserStatus = null;
+
+        this.selectSalaryProjectId = null;
+        this.selectSalaryUserId = null;
+
+        this.selectTrainingRecordUserId = null;
+        //新增项目
+        // this.insertProjectName = null;
+        // this.insertProjectBrief = null;
+        // this.insertBuilderLicense = null;
+        // this.insertStartTime = null;
+        // this.insertEndTime = null;
+        // this.insertConstruction = null;
+        // this.insertOrganization = null;
+        // this.insertSupervising = null;
+        // this.insertProjectSupervision = null;
+        // this.insertProjectAddress = null;
+        // this.insertStatus = null;
+
+        //新增人员
+        this.insertUnitId = null;
+        this.insertProjectId = null;
+        this.insertTemId = null;
+        this.insertWorkType = null;
+        this.insertTeamGroupLeader = null;
+        this.insertLeave = null;
+        this.insertStartTime = null;
+        this.insertEndTime = null;
+        this.insertPhone = null;
+        this.insertIdNum = null;
+        this.insertPhoto = null;
+        this.insertIdCardFront = null;
+        this.insertIdCardReverse = null;
+        this.insertServiceContract = null;
+        this.insertCertificate = null;
+
+        this.amendServiceContract = null;
+        this.amendIdCardFront = null;
+        this.amendIdCardReverse = null;
+        this.amendCertificate = null;
+
     }
-    public checkeds: Array<any>;
-    public project: Array<ProjectInfo>;
-    public projectType: Array<ProjectType>;
-    public workType: Array<WorkType>;
-    public pageInfo: PageInfo;
-    public projectInfo:ProjectInfo;
-
-
-    public archivesId:number;
-    public selectUserName:string;
-    public projectId:string;
-    public pageInIndex: number;
-    public pageInSize: number;
-    public pageInTotal:number;
-    public pageProjectIndex: number;
-    public pageProjectSize: number;
-    public pageProjectTotal:number;
-    public viewProjectId:string;
-    public leave:number;
-
-
-
-    public peoples: Array<any>;
-    public projectPeoples: Array<any>;
-    public uplodId:Array<any>;
-    public viewPeople:Array<any>;
-    public updateList:Array<any>;
-    public insertList:Array<any>;
-    public insertProjectWorkTypeList:Array<any>;
-    public peopleId:Array<any>;
-    public searchConditionList:Array<any>;
-    public searchPeopleConditionList:Array<any>;
+    // 项目列表
     @Action
-    public getUploadParams() : any {
+    public getProjectListParams() : any {
         return {
-            "conditionList": [{
-                "name": "project_id",
-                "value":  this.uplodId.map(x => x.project_id),
-                "algorithm": "IN"
-            }
-            ],
+            "pageInfo" : {},
+            "conditionList":[],
+            "sortList": [],
+            "groupList" : ["project_id"],
             "keywords" : [],
             "selectList": [
-                {"field": "project_name","alias":"项目名称" },
-                {"field": "project_brief" ,"alias":"项目简介"},
-                {"field": "builder_license" ,"alias":"施工许可证"},
-                {"field": "start_time" ,"alias":"开工时间"},
-                {"field": "end_time" ,"alias":"合同竣工时间"},
-                {"field": "construction","alias":"建设单位" },
-                {"field": "organization","alias":"施工单位" },
-                {"field": "supervising","alias":"监理单位" }
+                {"field": "project_id","alias":"projectId"},
+                {"field": "project_name","alias":"projectName"}
             ]
         };
     }
     @Action
-    public getPeopleParams() : any {
-        if(this.selectUserName){
-            let item ={};
-            item["name"]="eafName";
-            item["value"]=this.selectUserName;
-            item["algorithm"] = "LIKE"
-            this.searchPeopleConditionList.push(item);
-        }
-        return {
-            "pageInfo" : {
-                "pageIndex": this.pageInIndex,
-                "pageSize": this.pageInSize
-            },
-            "conditionList": this.searchPeopleConditionList,
-
-            "sortList": [ ],
-
-            "groupList" : [
-            ],
-
-            "keywords" : [],
-
-            "selectList": []
-        };
-    }
-    @Action
-    public getParams() : any {
-        if(this.projectInfo.selectOrganization){
-            let item ={};
-            item["name"]="organization";
-            item["value"]=this.projectInfo.selectOrganization;
-            item["algorithm"] = "LIKE"
-            this.searchConditionList.push(item);
-        }
-        if(this.projectInfo.selectProjectName){
-            let item ={};
-            item["name"]="project_name";
-            item["value"]=this.projectInfo.selectProjectName;
-            item["algorithm"] = "LIKE"
-            this.searchConditionList.push(item);
-        }
-        if(this.projectInfo.selectStatus != undefined &&this.projectInfo.selectStatus != null) {
-            let status = this.projectInfo.selectStatus - 1
-            if (status > -1) {
-                let item = {};
-                item["name"] = "status";
-                item["value"] = status;
-                item["algorithm"] = "EQ"
-                this.searchConditionList.push(item);
-            }
-        }
-        return {
-            "pageInfo" : {
-                "pageIndex": this.pageInfo.pageIndex,
-                "pageSize": this.pageInfo.pageSize
-            },
-
-            "conditionList": this.searchConditionList,
-
-            "sortList": [],
-
-            "groupList" : [],
-
-            "keywords" : [],
-            "selectList": []
-        };
-    }
-    @Action
-    public async upload() {
-        let alert: any = Message;
-        await request.post('/api/workerlib/project/export',await this.getUploadParams(),{responseType: 'blob', params: '项目工程档案'}).then((data)=>{
-            alert.success('成功！');
-        }).catch((e)=>{
-            let alert: any = Message;
-            if(!e) {
-                alert.warning('未知错误！');
-                return
-            }
-            if(e.response && e.response.data && e.response.data.message) {
-                alert.warning(e.response.data.message)
-                return
-            }
-            if(!e.message) {
-                return;
-            }
-            alert.warning(e.message || e)
-        });
-    }
-    @Action
-    public async uploadPeople() {
-        let alert: any = Message;
-        await request.post('/api/workerlib/projectpeople/export',{
-            "conditionList": [{
-            "name": "project_id",
-            "value":  this.uplodId.map(x => x.project_id),
-            "algorithm": "IN"
-        }
-        ],
-            "keywords" : [],
-            "selectList": [
-            {"field": "name","alias":"姓名" },
-            {"field": "phone" ,"alias":"电话号码"},
-            {"field": "id_number" ,"alias":"身份证号码"},
-            {"field": "leave" ,"alias":"是否在场"},
-            {"field": "start_time" ,"alias":"进场时间"},
-            {"field": "end_time","alias":"退场时间" },
-            {"field": "project_name","alias":"所在项目" }
-        ]
-
-        },{responseType: 'blob', params: '项目工人档案'}).then((data)=>{
-            alert.success('成功！');
-        }).catch((e)=>{
-            let alert: any = Message;
-            if(!e) {
-                alert.warning('未知错误！');
-                return
-            }
-            if(e.response && e.response.data && e.response.data.message) {
-                alert.warning(e.response.data.message)
-                return
-            }
-            if(!e.message) {
-                return;
-            }
-            alert.warning(e.message || e)
-        });
-    }
-    @Action
-    public async insert() {
-        await request.put('/api/workerlib/archives',this.insertList
-            ).then((data)=>{
-                if(!data){
-                    return;
-                }
-            this.sucessInsert(data);
-        }).catch((e)=>{
-            let alert: any = Message;
-            if(!e) {
-                alert.warning('未知错误！');
-                return
-            }
-            if(e.response && e.response.data && e.response.data.message) {
-                alert.warning(e.response.data.message)
-                return
-            }
-            if(!e.message) {
-                return;
-            }
-            alert.warning(e.message || e)
-        });
-    }
-    @Action
-    public async insertProjectWorkType() {
-        await request.put('/api/workerlib/projectworktype',this.insertProjectWorkTypeList
-            ).then((data)=>{
-                if(!data){
-                    return;
-                }
-            this.sucessInsertProjectWorkType(data);
-            this.searchProjectPeople();
-        }).catch((e)=>{
-            let alert: any = Message;
-            if(!e) {
-                alert.warning('未知错误！');
-                return
-            }
-            if(e.response && e.response.data && e.response.data.message) {
-                alert.warning(e.response.data.message)
-                return
-            }
-            if(!e.message) {
-                return;
-            }
-            alert.warning(e.message || e)
-        });
-    }
-    @Action
-    public async synchronization() {
-        let alert: any = Message;
-        await request.post('api/sync/project').then((data)=>{
-                if(!data){
-                    return;
-                }
-            this.sucessSynchronization(data);
-        }).catch((e)=>{
-            let alert: any = Message;
-            if(!e) {
-                alert.warning('未知错误！');
-                return
-            }
-            if(e.response && e.response.data && e.response.data.message) {
-                alert.warning(e.response.data.message)
-                return
-            }
-            if(!e.message) {
-                return;
-            }
-            alert.warning(e.message || e)
-        });
-    }
-    @Action
-    public async update() {
-        await request.post('/api/workerlib/archives/update',{
-            "data":{
-                "leave": this.leave
-            },
-            "conditionList": [{
-                "name": "id",
-                "value": this.updateList,
-                "algorithm": "IN"
-            }],
-            "keywords" : []
-            }
-        ).then((data)=>{
-            if(!data){
-            return;
-            }
-            this.searchProjectPeople();
-            this.sucessUpdate(data);
-        }).catch((e)=>{
-            let alert: any = Message;
-            if(!e) {
-                alert.warning('未知错误！');
-                return
-            }
-            if(e.response && e.response.data && e.response.data.message) {
-                alert.warning(e.response.data.message)
-                return
-            }
-            if(!e.message) {
-                return;
-            }
-            alert.warning(e.message || e)
-        });
-    }
-    @Action
-    public async searchViewPeople() {
-        await request.post('/api/workerlib/project_user',{
-
-                "pageInfo" : {
-                    "pageIndex": this.pageProjectIndex,
-                    "pageSize": this.pageProjectSize
-                },
-                "conditionList": [{
-                    "name": "project_id",
-                    "value": this.viewProjectId,
-                    "algorithm": "EQ"
-                },{
-                    "name": "leave",
-                    "value": 1,
-                    "algorithm": "EQ"
-                }],
-
-                "groupList" : [],
-
-                "keywords" : []
-            }
-        ).then((data)=>{
+    public async searchProjectList() {
+        await request.post('/api/workerlib/project',await this.getProjectListParams()).then((data)=>{
             if(!data){
                 return;
             }
-            this.sucessViewPeople(data);
-            this.projectCount();
-        }).catch((e)=>{
-            let alert: any = Message;
-            if(!e) {
-                alert.warning('未知错误！');
-                return
-            }
-            if(e.response && e.response.data && e.response.data.message) {
-                alert.warning(e.response.data.message)
-                return
-            }
-            if(!e.message) {
-                return;
-            }
-            alert.warning(e.message || e)
-        });
-    }
-    @Action
-    public async projectCount() {
-        await request.post('/api/workerlib/project_user/count',{
-
-                "pageInfo" : {
-                    "pageIndex": this.pageProjectIndex,
-                    "pageSize": this.pageProjectSize
-                },
-                "conditionList": [{
-                    "name": "project_id",
-                    "value": this.viewProjectId,
-                    "algorithm": "EQ"
-                }],
-
-                "groupList" : [],
-
-                "keywords" : []
-            }
-        ).then((data)=>{
-            if(!data){
-                return;
-            }
-            this.setProjectPageTotal(data.data);
-        }).catch((e)=>{
-            let alert: any = Message;
-            if(!e) {
-                alert.warning('未知错误！');
-                return
-            }
-            if(e.response && e.response.data && e.response.data.message) {
-                alert.warning(e.response.data.message)
-                return
-            }
-            if(!e.message) {
-                return;
-            }
-            alert.warning(e.message || e)
-        });
-    }
-    @Action
-    public async search() {
-        await request.post('/api/workerlib/project', await this.getParams()).then((data)=>{
-            if(!data) {
-               return;
-            }
-            this.success(data);
-            this.count();
+            this.successProjectList(data);
         }).catch((e)=>{
             console.log(e)
             let alert: any = Message;
@@ -436,123 +185,668 @@ export default class ProjectStore extends VuexModule {
                 alert.warning(e.response.data.message)
                 return
             }
-
             if(!e.message) {
                 return;
             }
-
             alert.warning(e.message || e)
         });
     }
+    @Mutation
+    private successProjectList(data){
+        this.projectList = data.data;
+    }
+
+    // 单位列表
     @Action
-    public async count() {
-        await request.post('/api/workerlib/project/count', await this.getParams()).then((total)=>{
-            if(!total){
+    public getUnitListParams() : any {
+        return {
+            "pageInfo" : {},
+            "conditionList":[],
+            "sortList": [],
+            "groupList" : ["unit_id"],
+            "keywords" : [],
+            "selectList": [
+                {"field": "unit_id","alias":"unitId"},
+                {"field": "unit_name","alias":"unitName"}
+            ]
+        };
+    }
+    @Action
+    public async searchUnitList() {
+        await request.post('/api/workerlib/unit',await this.getUnitListParams()).then((data)=>{
+            if(!data){
                 return;
             }
-            this.setPageTotal(total.data)
+            this.successUnitList(data);
         }).catch((e)=>{
-            MessageUtils.warning(e);
-        });
-    }
-    @Action
-    public async getProjectType(){
-        await request.post('/api/workerlib/dictionaries', {
-            "pageInfo" : {},
-            "conditionList": [{
-                "name": "category",
-                "value": "项目状态",
-                "algorithm": "EQ"
-            }],
-            "sortList": [],
-
-            "groupList" : [],
-
-            "keywords" : [],
-            "selectList": []
-        }).then((data)=>{
-            if(!data){
-               return;
+            console.log(e)
+            let alert: any = Message;
+            if(!e) {
+                alert.warning('未知错误！')
+                return
             }
-            this.successType(data);
-        }).catch((e)=>{
-            MessageUtils.warning(e);
+            if(e.response && e.response.data && e.response.data.message) {
+                alert.warning(e.response.data.message)
+                return
+            }
+            if(!e.message) {
+                return;
+            }
+            alert.warning(e.message || e)
         });
     }
+    @Mutation
+    private successUnitList(data){
+        this.unitList = data.data;
+    }
+
+    // 工种列表
     @Action
-    public async getWorkType(){
-        await request.post('/api/workerlib/dictionaries', {
+    public getWorkTypeListParams() : any {
+        return {
             "pageInfo" : {},
-            "conditionList": [{
-                "name": "category",
+            "conditionList":[{
+                "name" : "category",
                 "value": "工种",
                 "algorithm": "EQ"
             }],
             "sortList": [],
-
             "groupList" : [],
+            "keywords" : [],
+            "selectList": [
+                {"field": "name","alias":"workTypeName"}
+            ]
+        };
+    }
+    @Action
+    public async searchWorkTypeList() {
+        await request.post('/api/workerlib/dictionaries',await this.getWorkTypeListParams()).then((data)=>{
+            if(!data){
+                return;
+            }
+            this.successWorkTypeList(data);
+        }).catch((e)=>{
+            console.log(e)
+            let alert: any = Message;
+            if(!e) {
+                alert.warning('未知错误！')
+                return
+            }
+            if(e.response && e.response.data && e.response.data.message) {
+                alert.warning(e.response.data.message)
+                return
+            }
+            if(!e.message) {
+                return;
+            }
+            alert.warning(e.message || e)
+        });
+    }
+    @Mutation
+    private successWorkTypeList(data){
+        this.workTypeList = data.data;
+    }
 
+    // 人员列表
+    @Action
+    public getUserListParams() : any{
+        if(this.selectProjectId){
+            let item ={};
+            item["name"]="projectId";
+            item["value"]=this.selectProjectId;
+            item["algorithm"] = "EQ"
+            this.userConditionList.push(item);
+        }
+        if(this.selectUserName){
+            let item ={};
+            item["name"]="userName";
+            item["value"]=this.selectUserName;
+            item["algorithm"] = "LIKE"
+            this.userConditionList.push(item);
+        }
+        if(this.selectUnitId){
+            let item ={};
+            item["name"]="unitId";
+            item["value"]=this.selectUnitId;
+            item["algorithm"] = "EQ"
+            this.userConditionList.push(item);
+        }
+        if(this.selectSex){
+            let item ={};
+            item["name"]="sex";
+            item["value"]=this.selectSex;
+            item["algorithm"] = "EQ"
+            this.userConditionList.push(item);
+        }
+        if(this.selectWorkType){
+            let item ={};
+            item["name"]="workType";
+            item["value"]=this.selectWorkType;
+            item["algorithm"] = "EQ"
+            this.userConditionList.push(item);
+        }
+        if(this.selectStatus){
+            let item ={};
+            item["name"]="status";
+            item["value"]=this.selectStatus;
+            item["algorithm"] = "EQ"
+            this.userConditionList.push(item);
+        }
+        if(this.selectMinAge){
+            let item ={};
+            item["name"]="age";
+            item["value"]=this.selectMinAge;
+            item["algorithm"] = "GTEQ"
+            this.userConditionList.push(item);
+        }
+        if(this.selectMaxAge){
+            let item ={};
+            item["name"]="age";
+            item["value"]=this.selectMaxAge;
+            item["algorithm"] = "LTEQ"
+            this.userConditionList.push(item);
+        }
+        if(this.selectEafUserStatus){
+            let item ={};
+            item["name"]="eafUserStatus";
+            item["value"]=this.selectEafUserStatus;
+            item["algorithm"] = "EQ"
+            this.userConditionList.push(item);
+        }
+        if(this.selectUserId){
+            let item ={};
+            item["name"]="userId";
+            item["value"]=this.selectUserId;
+            item["algorithm"] = "EQ"
+            this.userConditionList.push(item);
+        }
+        return {
+            "pageInfo" : {
+                "pageIndex": this.userPageIndex,
+                "pageSize": this.userPageSize
+            },
+            "conditionList": this.userConditionList,
+            "sortList": [],
+            "groupList" : [],
             "keywords" : [],
             "selectList": []
-        }).then((data)=>{
-            if(!data) {
-            return;
+        }
+
+}
+    @Action
+    public async searchUserList(){
+        await request.post('/api/workerlib/projectuser',await this.getUserListParams()).then((data)=>{
+            if(!data){
+                return;
             }
-            this.successWorkType(data);
+            this.successUserList(data);
+            this.searchUserListCount();
+        }).catch((e)=>{
+            console.log(e)
+            let alert: any = Message;
+            if(!e) {
+                alert.warning('未知错误！')
+                return
+            }
+            if(e.response && e.response.data && e.response.data.message) {
+                alert.warning(e.response.data.message)
+                return
+            }
+            if(!e.message) {
+                return;
+            }
+            alert.warning(e.message || e)
+        });
+    }
+    @Action
+    public async searchUserListCount() {
+        await request.post('/api/workerlib/project/count',await this.getProjectListParams()).then((total)=>{
+            if(!total){
+                return;
+            }
+            this.setUserPageTotal(total.data)
         }).catch((e)=>{
             MessageUtils.warning(e);
         });
     }
+    // 回调
+    @Mutation
+    private successUserList(data){
+            this.userList = data.data;
+    }
+    // set
+    @Mutation
+    private setSelectProjectId(data : any){
+        this.selectProjectId = data;
+    }
+    @Mutation
+    private setSelectUserName(data : any){
+        this.selectUserName = data;
+    }
+    @Mutation
+    private setSelectUnitId(data : any){
+        this.selectUnitId = data;
+    }
+    @Mutation
+    private setSelectSex(data : any){
+        this.selectSex = data;
+    }
+    @Mutation
+    private setSelectWorkType(data : any){
+        this.selectWorkType = data;
+    }
+    @Mutation
+    private setSelectStatus(data : any){
+        this.selectStatus = data;
+    }
+    @Mutation
+    private setSelectMinAge(data : any){
+        this.selectMinAge = data;
+    }
+    @Mutation
+    private setSelectMaxAge(data : any){
+        this.selectMaxAge = data;
+    }
+    @Mutation
+    private setSelectEafUserStatus(data : any){
+        this.selectEafUserStatus = data;
+    }
+    @Mutation
+    private setSelectUserId(data : any){
+        this.selectUserId = data;
+    }
+    @Mutation
+    private setUserPageSize(data : any){
+        this.userPageSize = data;
+    }
+    @Mutation
+    private setUserPageIndex(data : any){
+        this.userPageIndex = data;
+    }
+    @Mutation
+    private setUserPageTotal(data : any){
+        this.userPageTotal = data;
+    }
+
+    // 新增人员
     @Action
-    public async insertProject() {
-        let alert: any = Message;
-        await request.put('/api/workerlib/project', {
-                "project_id":null,
-                "project_name":this.projectInfo.project_name,
-                "project_brief":this.projectInfo.project_brief,
-                "builder_license":this.projectInfo.builder_license,
-                "start_time":this.projectInfo.start_time.getFullYear() + "-" + (this.projectInfo.start_time.getMonth()+1) + "-" + this.projectInfo.start_time.getDate(),
-                "end_time":this.projectInfo.end_time.getFullYear() + "-" + (this.projectInfo.end_time.getMonth()+1) + "-" + this.projectInfo.end_time.getDate(),
-                "construction":this.projectInfo.construction,
-                "organization":this.projectInfo.organization,
-                "supervising":this.projectInfo.supervising,
-                "project_supervision":this.projectInfo.project_supervision,
-                "project_address":this.projectInfo.project_address,
-                "status":this.projectInfo.status
-            }).then((data)=>{
-                if(!data){
-                    return;
-                }
-                this.added(data)
-                alert.warning('成功！');
+    public async insertUser(){
+        await request.put('/api/workerlib/archives', {
+            "unit_id": this.insertUnitId,
+            "project_id": this.insertProjectId,
+            "team_id": this.insertTemId,
+            "work_type": this.insertWorkType,
+            "cwrUserIn": this.insertStartTime.getFullYear() + "-" + (this.insertStartTime.getMonth()+1) + "-" + this.insertStartTime.getDate(),
+            "cwrUserOut": this.insertEndTime.getFullYear() + "-" + (this.insertEndTime.getMonth()+1) + "-" + this.insertEndTime.getDate(),
+            "teamgroupleader": this.insertTeamGroupLeader,
+            "leave": this.insertLeave,
+            "phone": this.insertPhone,
+            "id_number": this.insertIdNum,
+            "photo": this.insertPhoto,
+            "id_card_front": this.insertIdCardFront,
+            "id_card_reverse": this.insertIdCardReverse,
+            "serviceContract": this.insertServiceContract,
+            "certificate": this.insertCertificate
+        }).then((data)=>{
+            if(!data){
+                return;
+            }
+            this.successInsertUser(data);
+            this.searchUserList();
         }).catch((e)=>{
+            let alert: any = Message;
             console.log(e)
             if(!e) {
                 alert.warning('未知错误！');
                 return;
             }
-
             if(e.response && e.response.data && e.response.data.message) {
                 alert.warning(e.response.data.message)
                 return
             }
-
             if(!e.message) {
                 return;
             }
-
             alert.warning(e.message || e)
         });
     }
+    // 回调
+    @Mutation
+    private successInsertUser(data : any){
+        if(data.status == 0) {
+
+            this.insertUnitId = null;
+            this.insertProjectId = null;
+            this.insertTemId = null;
+            this.insertWorkType = null;
+            this.insertTeamGroupLeader = null;
+            this.insertLeave = null;
+            this.insertStartTime = null;
+            this.insertEndTime = null;
+            this.insertPhone = null;
+            this.insertIdNum = null;
+            this.insertPhoto = null;
+            this.insertIdCardFront = null;
+            this.insertIdCardReverse = null;
+            this.insertServiceContract = null;
+            this.insertCertificate = null;
+            let alert: any = Message;
+            alert.success('成功！');
+        }
+    }
+    // set
+    @Mutation
+    private setInsertUnitId(data : any){
+        this.insertUnitId = data;
+    }
+    @Mutation
+    private setInsertProjectId(data : any){
+        this.insertProjectId = data;
+    }
+    @Mutation
+    private setInsertTemId(data : any){
+        this.insertTemId = data;
+    }
+    @Mutation
+    private setInsertWorkType(data : any){
+        this.insertWorkType = data;
+    }
+    @Mutation
+    private setInsertStartTime(data : any){
+        this.insertStartTime = data;
+    }
+    @Mutation
+    private setInsertEndTime(data : any){
+        this.insertEndTime = data;
+    }
+    @Mutation
+    private setInsertTeamGroupLeader(data : any){
+        this.insertTeamGroupLeader = data;
+    }
+    @Mutation
+    private setInsertLeave(data : any){
+        this.insertLeave = data;
+    }
+    @Mutation
+    private setInsertPhone(data : any){
+        this.insertPhone = data;
+    }
+    @Mutation
+    private setInsertIdNum(data : any){
+        this.insertIdNum = data;
+    }
+    @Mutation
+    private setInsertPhoto(data : any){
+        this.insertPhoto = data;
+    }
+    @Mutation
+    private setInsertIdCardFront(data : any){
+        this.insertIdCardFront = data;
+    }
+    @Mutation
+    private setInsertIdCardReverse(data : any){
+        this.insertIdCardReverse = data;
+    }
+    @Mutation
+    private setInsertServiceContract(data : any){
+        this.insertServiceContract = data;
+    }
+    @Mutation
+    private setInsertCertificate(data : any){
+        this.insertCertificate = data;
+    }
+
+    //新增项目
+    // @Action
+    // public async insertProject() {
+    //     await request.put('/api/workerlib/project', {
+    //         "project_id":null,
+    //         "project_name":this.insertProjectName,
+    //         "project_brief":this.insertProjectBrief,
+    //         "builder_license":this.insertBuilderLicense,
+    //         "start_time":this.insertStartTime.getFullYear() + "-" + (this.insertStartTime.getMonth()+1) + "-" + this.insertStartTime.getDate(),
+    //         "end_time":this.insertEndTime.getFullYear() + "-" + (this.insertEndTime.getMonth()+1) + "-" + this.insertEndTime.getDate(),
+    //         "construction":this.insertConstruction,
+    //         "organization":this.insertOrganization,
+    //         "supervising":this.insertSupervising,
+    //         "project_supervision":this.insertProjectSupervision,
+    //         "project_address":this.insertProjectAddress,
+    //         "status":this.insertStatus
+    //     }).then((data)=>{
+    //         if(!data){
+    //             return;
+    //         }
+    //         this.successInsertProject(data);
+    //     }).catch((e)=>{
+    //         let alert: any = Message;
+    //         console.log(e)
+    //         if(!e) {
+    //             alert.warning('未知错误！');
+    //             return;
+    //         }
+    //         if(e.response && e.response.data && e.response.data.message) {
+    //             alert.warning(e.response.data.message)
+    //             return
+    //         }
+    //         if(!e.message) {
+    //             return;
+    //         }
+    //         alert.warning(e.message || e)
+    //     });
+    // }
+    //新增项目回调
+    // @Action
+    // private successInsertProject(data : any){
+    //     if(data.status == 0) {
+    //         this.searchProjectList();
+    //         let alert: any = Message;
+    //         alert.success('成功！');
+    //     }
+    // }
+
+    // 修改合同
     @Action
-    public async searchPeople() {
-        await request.post('/api/workerlib/project_allpeople',await this.getPeopleParams()).then((data)=>{
+    public async updateServiceContract(){
+        await request.put('/api/workerlib/archives/'+this.id,{
+            "serviceContract": this.amendServiceContract
+        }).then((data)=>{
             if(!data){
                 return;
             }
-            this.successPeople(data);
-            this.countPeople();
+            this.successUpdateServiceContract(data);
         }).catch((e)=>{
+            let alert: any = Message;
+            console.log(e)
+            if(!e) {
+                alert.warning('未知错误！');
+                return;
+            }
+            if(e.response && e.response.data && e.response.data.message) {
+                alert.warning(e.response.data.message)
+                return
+            }
+            if(!e.message) {
+                return;
+            }
+            alert.warning(e.message || e)
+        });
+    }
+    // 回调
+    @Mutation
+    private successUpdateServiceContract(data : any){
+        if(data.status == 0) {
+            this.amendServiceContract = null;   //置空
+            let alert: any = Message;
+            alert.success('上传合同成功！');
+        }
+    }
+    // set
+    @Mutation
+    private setAmendServiceContract(data : any){
+        this.amendServiceContract = data;
+    }
+
+    // 修改身份证正面
+    @Action
+    public async updateIdCardFront(){
+        await request.put('/api/workerlib/archives/'+this.id,{
+            "id_card_front": this.amendIdCardFront
+        }).then((data)=>{
+            if(!data){
+                return;
+            }
+            this.successUpdateIdCardFront(data);
+        }).catch((e)=>{
+            let alert: any = Message;
+            console.log(e)
+            if(!e) {
+                alert.warning('未知错误！');
+                return;
+            }
+            if(e.response && e.response.data && e.response.data.message) {
+                alert.warning(e.response.data.message)
+                return
+            }
+            if(!e.message) {
+                return;
+            }
+            alert.warning(e.message || e)
+        });
+    }
+    // 回调
+    @Mutation
+    private successUpdateIdCardFront(data : any){
+        if(data.status == 0) {
+            this.amendIdCardFront = null;   //置空
+            let alert: any = Message;
+            alert.success('上传身份证正面成功！');
+        }
+    }
+    // set
+    @Mutation
+    private setAmendIdCardFront(data : any){
+        this.amendIdCardFront = data;
+    }
+
+    // 修改身份证反面
+    @Action
+    public async updateIdCardReverse(){
+        await request.put('/api/workerlib/archives/'+this.id,{
+            "id_card_reverse": this.amendIdCardReverse
+        }).then((data)=>{
+            if(!data){
+                return;
+            }
+            this.successUpdateIdCardReverse(data);
+        }).catch((e)=>{
+            let alert: any = Message;
+            console.log(e)
+            if(!e) {
+                alert.warning('未知错误！');
+                return;
+            }
+            if(e.response && e.response.data && e.response.data.message) {
+                alert.warning(e.response.data.message)
+                return
+            }
+            if(!e.message) {
+                return;
+            }
+            alert.warning(e.message || e)
+        });
+    }
+    // 回调
+    @Mutation
+    public successUpdateIdCardReverse(data : any){
+        if(data.status == 0) {
+            this.amendIdCardReverse = null;   //置空
+            let alert: any = Message;
+            alert.success('上传身份证反面成功！');
+        }
+    }
+    // set
+    @Mutation
+    private setAmendIdCardReverse(data : any){
+        this.amendIdCardReverse = data;
+    }
+
+    // 修改证书反面
+    @Action
+    public async updateCertificate(){
+        await request.put('/api/workerlib/archives/'+this.id,{
+            "certificate": this.amendCertificate
+        }).then((data)=>{
+            if(!data){
+                return;
+            }
+            this.successUpdateCertificate(data);
+        }).catch((e)=>{
+            let alert: any = Message;
+            console.log(e)
+            if(!e) {
+                alert.warning('未知错误！');
+                return;
+            }
+            if(e.response && e.response.data && e.response.data.message) {
+                alert.warning(e.response.data.message)
+                return
+            }
+            if(!e.message) {
+                return;
+            }
+            alert.warning(e.message || e)
+        });
+    }
+    // 回调
+    @Mutation
+    private successUpdateCertificate(data : any){
+        if(data.status == 0) {
+            this.amendCertificate = null;   //置空
+            let alert: any = Message;
+            alert.success('上传证书成功！');
+        }
+    }
+    // set
+    @Mutation
+    private setAmendCertificate(data : any){
+        this.amendCertificate = data;
+    }
+
+    //工人工资
+    @Action
+    public getUserSalaryParams() : any {
+        if(this.selectSalaryProjectId){
+            let item ={};
+            item["name"]="projectId";
+            item["value"]=this.selectSalaryProjectId;
+            item["algorithm"] = "EQ"
+            this.userSalaryConditionList.push(item);
+        }
+        if(this.selectSalaryUserId){
+            let item ={};
+            item["name"]="eafId";
+            item["value"]=this.selectSalaryUserId;
+            item["algorithm"] = "EQ"
+            this.userSalaryConditionList.push(item);
+        }
+        return {
+            "pageInfo" : {},
+            "conditionList": this.userSalaryConditionList,
+            "sortList": [],
+            "groupList" : [],
+            "keywords" : [],
+            "selectList": []
+        }
+    }
+    @Action
+    public async selectUserSalary(){
+        await request.post('/api/workerlib/usersalary',await this.getUserSalaryParams()).then((data)=>{
+            if(!data){
+                return;
+            }
+            this.successUserSalary(data);
+        }).catch((e)=>{
+            console.log(e)
             let alert: any = Message;
             if(!e) {
                 alert.warning('未知错误！')
@@ -568,22 +862,40 @@ export default class ProjectStore extends VuexModule {
             alert.warning(e.message || e)
         });
     }
+    // 回调
+    @Mutation
+    private successUserSalary(data : any){
+        if(data.status == 0) {
+            this.userSalaryList = data.data;
+            this.userSalaryConditionList = new Array<any>();   //置空
+        }
+    }
+
+    //工人培训记录
     @Action
-    public async searchProjectPeople() {
-        await request.post('/api/workerlib/archives',
-            {
-                "pageInfo" : {},
-                "conditionList": [],
-                "sortList": [],
-                "groupList" : [],
-                "keywords" : [],
-                "selectList": []
-            }).then((data)=>{
+    public getUserTrainingRecordParams() : any {
+        return {
+            "pageInfo" : {},
+            "conditionList": [{
+                "name": "userId",
+                "value": this.selectTrainingRecordUserId,
+                "algorithm": "EQ"
+            }],
+            "sortList": [],
+            "groupList" : [],
+            "keywords" : [],
+            "selectList": []
+        }
+    }
+    @Action
+    public async selectUserTrainingRecord(){
+        await request.post('/api/workerlib/usertrainingrecord',await this.getUserTrainingRecordParams()).then((data)=>{
             if(!data){
                 return;
             }
-            this.successProjectPeople(data);
+            this.successUserTrainingRecord(data);
         }).catch((e)=>{
+            console.log(e)
             let alert: any = Message;
             if(!e) {
                 alert.warning('未知错误！')
@@ -599,543 +911,11 @@ export default class ProjectStore extends VuexModule {
             alert.warning(e.message || e)
         });
     }
-    @Action
-    public async countPeople() {
-        await request.post('/api/workerlib/alluser/count', await this.getPeopleParams()).then((total)=>{
-            if(!total){
-                return;
-            }
-            this.setInPageTotal(total.data);
-        }).catch((e)=>{
-            MessageUtils.warning(e);
-        });
-    }
-    @Action
-    public addIn(data: any) {
+    // 回调
+    @Mutation
+    private successUserTrainingRecord(data : any){
         if(data.status == 0) {
-            this.search();
+            this.userTrainingRecordList = data.data;
         }
     }
-    @Action
-    public added(data: any) {
-        if(data.status == 0) {
-            this.search();
-        }
-    }
-    @Mutation
-    public successPeople(data: any) {
-        this.peoples = data.data;
-    }
-    @Mutation
-    public successProjectPeople(data: any) {
-        this.projectPeoples = data.data;
-    }
-    @Mutation
-    public setInPageTotal(data: number) {
-        this.searchPeopleConditionList=[];
-        this.pageInTotal = data;
-    }
-    @Mutation
-    public setInPageSize(data: number) {
-        this.pageInSize = data;
-    }
-    @Mutation
-    public setInPageIndex(data: number) {
-        this.pageInIndex = data;
-    }
-    @Mutation
-    public setProjectPageTotal(data: number) {
-        this.pageProjectTotal = data;
-    }
-    @Mutation
-    public setProjectPageSize(data: number) {
-        this.pageProjectSize = data;
-    }
-    @Mutation
-    public setProjectPageIndex(data: number) {
-        this.pageProjectIndex = data;
-    }
-    @Mutation
-    public success(data: any) {
-        this.project = data.data;
-    }
-    @Mutation
-    public successType(data: any) {
-        this.projectType = data.data;
-    }
-    @Mutation
-    public successWorkType(data: any) {
-        this.workType = data.data;
-    }
-    @Mutation
-    public setPageTotal(total: any) {
-
-        this.searchConditionList = [];
-        this.pageInfo = {
-            pageIndex: this.pageInfo.pageIndex,
-            pageSize:  this.pageInfo.pageSize,
-            pageCount: this.pageInfo.pageCount,
-            totalRecords: total
-        };
-    }
-
-    public columns = [
-        {
-            type: 'selection',
-            width: 60,
-            align: 'center'
-        },
-        {
-            title: '项目名称',
-            key: 'project_name',
-            sortable: true,
-            render: (h, params) => {
-                return h('div', [
-                    h('span', {
-                        style: {
-                            display: 'inline-block',
-                            width: '100%',
-                            overflow: 'hidden',
-                            textOverflow: 'ellipsis',
-                            whiteSpace: 'nowrap'
-                        },
-                        domProps: {
-                            title: params.row.project_name
-                        }
-                    }, params.row.project_name)
-                ])
-            }
-        },
-        {
-            title: '项目简介',
-            key: 'project_brief',
-            sortable: true,
-            render: (h, params) => {
-                return h('div', [
-                    h('span', {
-                        style: {
-                            display: 'inline-block',
-                            width: '100%',
-                            overflow: 'hidden',
-                            textOverflow: 'ellipsis',
-                            whiteSpace: 'nowrap'
-                        },
-                        domProps: {
-                            title: params.row.project_brief
-                        }
-                    }, params.row.project_brief)
-                ])
-            }
-        },
-        // {
-        //     title: '施工许可证',
-        //     key: 'builder_license',
-        //     sortable: true,
-        //     render: (h, params) => {
-        //         return h('div', [
-        //             h('span', {
-        //                 style: {
-        //                     display: 'inline-block',
-        //                     width: '100%',
-        //                     overflow: 'hidden',
-        //                     textOverflow: 'ellipsis',
-        //                     whiteSpace: 'nowrap'
-        //                 },
-        //                 domProps: {
-        //                     title: params.row.builder_license
-        //                 }
-        //             }, params.row.builder_license)
-        //         ])
-        //     }
-        // },
-        {
-            title: '开工时间',
-            key: 'start_time',
-            sortable: true
-        },
-        // {
-        //     title: '合同竣工时间',
-        //     key: 'end_time',
-        //     sortable: true,
-        //     width: 180
-        // },
-        {
-            title: '建设单位',
-            key: 'construction',
-            sortable: true,
-            render: (h, params) => {
-                return h('div', [
-                    h('span', {
-                        style: {
-                            display: 'inline-block',
-                            width: '100%',
-                            overflow: 'hidden',
-                            textOverflow: 'ellipsis',
-                            whiteSpace: 'nowrap'
-                        },
-                        domProps: {
-                            title: params.row.construction
-                        }
-                    }, params.row.construction)
-                ])
-            }
-        },
-        {
-            title: '施工单位',
-            key: 'organization',
-            sortable: true,
-            render: (h, params) => {
-                return h('div', [
-                    h('span', {
-                        style: {
-                            display: 'inline-block',
-                            width: '100%',
-                            overflow: 'hidden',
-                            textOverflow: 'ellipsis',
-                            whiteSpace: 'nowrap'
-                        },
-                        domProps: {
-                            title: params.row.organization
-                        }
-                    }, params.row.organization)
-                ])
-            }
-        },
-        {
-            title: '监理单位',
-            key: 'supervising',
-            sortable: true,
-            render: (h, params) => {
-                return h('div', [
-                    h('span', {
-                        style: {
-                            display: 'inline-block',
-                            width: '100%',
-                            overflow: 'hidden',
-                            textOverflow: 'ellipsis',
-                            whiteSpace: 'nowrap'
-                        },
-                        domProps: {
-                            title: params.row.supervising
-                        }
-                    }, params.row.supervising)
-                ])
-            }
-        },
-        {
-            title: '操作',
-            slot: 'operation'
-        }
-    ];
-    public peopleColumns = [
-        {
-            type: 'selection',
-            width: 60,
-            align: 'center'
-        },
-        {
-            title: '姓名',
-            key: 'eafName',
-            sortable: true
-        },
-        {
-            title: '工种',
-            slot: 'workType'
-        },
-        {
-            title: '身份证',
-            key: 'cwrIdnum',
-            sortable: true,
-            render: (h, params) => {
-                return h('div', [
-                    h('span', {
-                        style: {
-                            display: 'inline-block',
-                            width: '100%',
-                            overflow: 'hidden',
-                            textOverflow: 'ellipsis',
-                            whiteSpace: 'nowrap'
-                        },
-                        domProps: {
-                            title: params.row.cwrIdnum
-                        }
-                    }, params.row.cwrIdnum)
-                ])
-            }
-        }
-    ];
-    public peopleProjectColumns = [
-        {
-            type: 'selection',
-            width: 60,
-            align: 'center'
-        },
-        {
-            title: '姓名',
-            key: 'eafName',
-            sortable: true
-        },
-        {
-            title: '工种',
-            key: 'workType',
-            sortable: true,
-            render: (h, params) => {
-                return h('div', [
-                    h('span', {
-                        style: {
-                            display: 'inline-block',
-                            width: '100%',
-                            overflow: 'hidden',
-                            textOverflow: 'ellipsis',
-                            whiteSpace: 'nowrap'
-                        },
-                        domProps: {
-                            title: params.row.workType
-                        }
-                    }, params.row.workType)
-                ])
-            }
-        },
-        {
-            title: '进场时间',
-            key: 'start_time',
-            sortable: true
-        },
-        {
-            title: '参建单位',
-            key: 'construction',
-            sortable: true
-        },
-        {
-            title: '身份证',
-            key: 'cwrIdnum',
-            sortable: true,
-            render: (h, params) => {
-                return h('div', [
-                    h('span', {
-                        style: {
-                            display: 'inline-block',
-                            width: '100%',
-                            overflow: 'hidden',
-                            textOverflow: 'ellipsis',
-                            whiteSpace: 'nowrap'
-                        },
-                        domProps: {
-                            title: params.row.cwrIdnum
-                        }
-                    }, params.row.cwrIdnum)
-                ])
-            }
-        }
-    ];
-
-
-    @Mutation
-    public setSelectUserName(data:string){
-        this.selectUserName = data;
-    }
-    @Mutation
-    public setProjectId(data:string){
-        this.projectId = data;
-    }
-    @Mutation
-    private pageIndex(data: number) {
-        this.pageInfo.pageIndex = data;
-    }
-    @Mutation
-    private pageSize(data: number) {
-        this.pageInfo.pageSize = data;
-    }
-    @Mutation
-    private id(data: number) {
-        this.projectInfo.id = data;
-    }
-    @Mutation
-    private setLeave(data: number) {
-        this.leave = data;
-    }
-    @Mutation
-    private setUplodId(data: any) {
-        this.uplodId.push(data);
-    }
-    @Mutation
-    private setPeoplesId(data: any) {
-        this.peopleId.push(data);
-    }
-    @Mutation
-    private sucessViewPeople(data: any) {
-        this.viewPeople=data.data;
-    }
-    @Mutation
-    private projectName(data: string) {
-        this.projectInfo.project_name = data;
-    }
-    @Mutation
-    private selectProjectName(data: string) {
-        this.projectInfo.selectProjectName = data;
-    }
-    @Mutation
-    private projectBrief(data: string) {
-        this.projectInfo.project_brief = data;
-    }
-    @Mutation
-    private builderLicense(data: string) {
-        this.projectInfo.builder_license = data;
-    }
-    @Mutation
-    private startTime(data: Date) {
-        this.projectInfo.start_time = data;
-    }
-    @Mutation
-    private endTime(data: Date) {
-        this.projectInfo.end_time = data;
-    }
-    @Mutation
-    private construction(data: string) {
-        this.projectInfo.construction = data;
-    }
-    @Mutation
-    private setViewProjectId(data: string) {
-        this.viewProjectId = data;
-    }
-    @Mutation
-    private organization(data: string) {
-        this.projectInfo.organization = data;
-    }
-    @Mutation
-    private selectOrganization(data: string) {
-        this.projectInfo.selectOrganization = data;
-    }
-    @Mutation
-    private supervising(data: string) {
-        this.projectInfo.supervising = data;
-    }
-    @Mutation
-    private projectSupervision(data: string) {
-        this.projectInfo.project_supervision = data;
-    }
-    @Mutation
-    private projectAddress(data: string) {
-        this.projectInfo.project_address = data;
-    }
-    @Mutation
-    private selectProjectAddress(data: string) {
-        this.projectInfo.selectProjectAddress = data;
-    }
-    @Mutation
-    private status(data: number) {
-        this.projectInfo.status = data;
-    }
-    @Mutation
-    private setUpdateList(data: any) {
-        this.updateList.push(data) ;
-    }
-    @Mutation
-    private clearUpdateList() {
-        this.updateList= new Array<any>() ;
-    }
-    @Mutation
-    private clearPeopleId() {
-        this.peopleId= new Array<any>() ;
-    }
-    @Mutation
-    private sucessUpdate(data: any) {
-        if(data.status == 0) {
-            // for (let i = 0; i < this.projectPeoples.length; i++) {
-            //     if (this.updateList.findIndex(x => x.id == this.projectPeoples[i].id) > -1) {
-            //         this.projectPeoples[i].leave == 1;
-            //
-            //     }
-            // }
-            this.leave = null;
-            this.updateList= new Array<any>() ;
-            let alert: any = Message;
-            alert.warning('成功！');
-        }
-    }
-    @Action
-    private sucessInsert(data: any) {
-        if(data.status == 0){
-            this.insertProjectWorkType();
-        }
-
-    }
-    @Mutation
-    private sucessInsertProjectWorkType(data: any) {
-        if(data.status== 0){
-            this.insertList=new Array<any>() ;
-            this.insertProjectWorkTypeList=new Array<any>() ;
-            let alert: any = Message;
-            alert.warning('成功！');
-        }
-    }
-    @Action
-    private sucessSynchronization(data: any) {
-        if(data.status == 0){
-            this.search();
-            let alert: any = Message;
-            alert.warning(data.message);
-        }
-    }
-
-    @Mutation
-    private setInsertList(data: any) {
-        this.insertList.push(data) ;
-    }
-    @Mutation
-    private setInsertProjectWorkTypeList(data: any) {
-        this.insertProjectWorkTypeList.push(data) ;
-    }
-    @Mutation
-    private clearInsertList() {
-        this.insertList=new Array<any>() ;
-    }
-
-    @Mutation
-    private selectStatus(data: number) {
-        this.projectInfo.selectStatus = data;
-    }
-
-    @Mutation
-    private setChecked(data: any) {
-        this.checkeds.push(data);
-    }
-    @Mutation
-    private clearChecked() {
-        this.checkeds=new Array<any>();
-    }
-}
-
-
-interface PageInfo {
-    pageIndex?: number;
-    pageSize?: number;
-    pageCount?:number;
-    totalRecords?:number;
-}
-interface ProjectType {
-    value?: string;
-    name?: string;
-}
-interface WorkType {
-    value?: string;
-    name?: string;
-}
-interface ProjectInfo {
-    id?:number;
-    project_name?:string;
-    project_brief?:string;
-    builder_license?:string;
-    start_time?:Date;
-    end_time?:Date;
-    construction?:string;
-    organization?:string;
-    supervising?:string;
-    project_supervision?:string;
-    project_address?:string;
-    status?:number;
-    selectOrganization?:string;
-    selectProjectAddress?:string;
-    selectProjectName?:string;
-    selectStatus?:number;
 }

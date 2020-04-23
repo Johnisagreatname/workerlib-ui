@@ -60,20 +60,25 @@ export default class WorkerStore extends VuexModule {
     public salaryInfo:any;
     public commentInfo:any;
     public projectList:Array<ProjectList>;
-    public cultivateList:any;
+    public cultivateList:Array<any>;
     public projectType: Array<ProjectType>;
     public unitList:Array<UnitList>;
 
     public check : Array<any>;
     public insertList : Array<any>;
+    public peopleInList:Array<any>;
+    public peopleInfoList:Array<any>;
     public checkWorkceMonth : any;
     public checkWorkce : number;
     public onLeave:number;
     public conditionList:Array<any>;
     public notIn:boolean;
     public in:boolean;
-
+    public pageInIndex: number;
+    public pageInSize: number;
+    public pageInTotal:number;
     public insertEafId:string;
+    public workType:string;
 
     public date :Date;
 
@@ -85,6 +90,9 @@ export default class WorkerStore extends VuexModule {
         this.pageSize= 10;
         this.pageTotal = -1;
         this.date = new Date();
+        this.pageInIndex=1;
+        this.pageInSize= 10;
+        this.pageInTotal = 0;
 
         this.inPageIndex=1;
         this.inPageSize= 1;
@@ -96,6 +104,8 @@ export default class WorkerStore extends VuexModule {
         this.in= false;
 
         this.peoples = [];
+        this.peopleInList = [];
+        this.peopleInfoList = [];
         this.projectType = [];
         this.conditionList = [];
         this.cultivateList = [];
@@ -114,9 +124,8 @@ export default class WorkerStore extends VuexModule {
         this.unit = null;
         this.project = "";
         this.archivesId = null;
-
+        this.workType = "";
         this.checkeds = [];
-
         this.startTime = null;
         this.endTime = null;
         this.photo = "";
@@ -125,14 +134,12 @@ export default class WorkerStore extends VuexModule {
         this.idCardReverse="";
         this.certificate="";
         this.grade = "";
-
         this.involvedProjectInfo = [];
         this.peopleInfo={};
         this.checkWorkceMonth={};
         this.checkWorkce=null;
         this.projectList=[];
         this.unitList = [];
-
 		this.year = new Date().getFullYear();
         this.selectSex = null;
         this.selectAge1 = null;
@@ -344,6 +351,94 @@ export default class WorkerStore extends VuexModule {
                 return;
             }
             this.sucessSynchronization(data);
+        }).catch((e)=>{
+            let alert: any = Message;
+            if(!e) {
+                alert.warning('未知错误！');
+                return
+            }
+            if(e.response && e.response.data && e.response.data.message) {
+                alert.warning(e.response.data.message)
+                return
+            }
+            if(!e.message) {
+                return;
+            }
+            alert.warning(e.message || e)
+        });
+    }
+    @Action
+    public async searchPeoplesIn() {
+        await request.post('api/workerlib/project_allpeople_in',{
+            "groupList" : [ //分组条件
+                "workType"
+            ],
+            "selectList": [{ //显示字段
+                "field": "workType",
+                "alias":"total",
+                "function": "COUNT"
+            },{
+                "field": "workType",
+                "alias":"workType"
+            },{
+                "field": "eafName",
+                "alias":"eafName"
+            },{
+                "field": "cwrIdnum",
+                "alias":"cwrIdnum"
+            }
+            ],
+            "sortList": [{ //排序条件
+                "name": "total", //字段名
+                "desc": true  //true为降序，false为升序
+            }],
+        }).then((data)=>{
+            if(!data){
+                return;
+            }
+
+            this.sucessSearchPeoplesIn(data);
+        }).catch((e)=>{
+            let alert: any = Message;
+            if(!e) {
+                alert.warning('未知错误！');
+                return
+            }
+            if(e.response && e.response.data && e.response.data.message) {
+                alert.warning(e.response.data.message)
+                return
+            }
+            if(!e.message) {
+                return;
+            }
+            alert.warning(e.message || e)
+        });
+    }
+    @Action
+    public async searchPeoplesInfo() {
+        await request.post('api/workerlib/project_allpeople_in',{
+            "conditionList": [{ //查询条件
+                "name": "workType",   //字段名
+                "value": this.workType,   //值
+                "algorithm": "EQ",   //条件: EQ(2, "="), GT(3, ">"), LT(4, "<"), GTEQ(5, ">="), LTEQ(6, "<="), NOT(7, "<>"), NOTEQ(8, "!="), LIKE(9), START(10), END(11), IN(12), NOTIN(13)
+            }],
+            "selectList": [{
+                "field": "workType",
+                "alias":"workType"
+            },{
+                "field": "eafName",
+                "alias":"eafName"
+            },{
+                "field": "cwrIdnum",
+                "alias":"cwrIdnum"
+            }
+            ]
+        }).then((data)=>{
+            if(!data){
+                return;
+            }
+
+            this.sucessSearchPeoplesInfo(data);
         }).catch((e)=>{
             let alert: any = Message;
             if(!e) {
@@ -656,7 +751,7 @@ export default class WorkerStore extends VuexModule {
     }
     //参与培训
     @Action
-    public async  selectCultivate(){
+    public async selectCultivate(){
         await request.post('/api/workerlib/detailscourseware',{
 
             "pageInfo" : {},
@@ -673,7 +768,40 @@ export default class WorkerStore extends VuexModule {
             if(!data){
                 return;
             }
+            this.successAllCultivate(data);
+
+        }).catch((e)=>{
+            let alert: any = Message;
+            if(!e) {
+                alert.warning('未知错误！')
+                return
+            }
+            if(e.response && e.response.data && e.response.data.message) {
+                alert.warning(e.response.data.message)
+                return
+            }
+            if(!e.message) {
+                return;
+            }
+            alert.warning(e.message || e)
+        });
+
+    }
+    @Action
+    public async selectAllCultivate(){
+        await request.post('/api/workerlib/allcourseware',{
+            "pageInfo" : {},
+            "conditionList": [],
+            "sortList": [],
+            "groupList" : [],
+            "keywords" : [],
+            "selectList": []
+        }).then((data)=>{
+            if(!data){
+                return;
+            }
             this.successCultivate(data);
+            this.selectCultivate();
         }).catch((e)=>{
             let alert: any = Message;
             if(!e) {
@@ -846,7 +974,7 @@ export default class WorkerStore extends VuexModule {
             if(!data){
                 return;
             }
-            this.selectUser();
+            this.searchEafId();
         }).catch((e)=>{
             console.log(e)
             let alert: any = Message;
@@ -1153,7 +1281,6 @@ export default class WorkerStore extends VuexModule {
             this.search();
         }
      }
-
     @Mutation
     public successInsertWorkType(data: any){
         if(data.status == 0) {
@@ -1161,6 +1288,18 @@ export default class WorkerStore extends VuexModule {
             this.insertList = new Array<any>();
             let alert: any = Message;
             alert.success('成功！');
+        }
+    }
+    @Mutation
+    public sucessSearchPeoplesIn(data: any){
+        if(data.status == 0) {
+           this.peopleInList = data.data;
+        }
+    }
+    @Mutation
+    public sucessSearchPeoplesInfo(data: any){
+        if(data.status == 0) {
+           this.peopleInfoList = data.data;
         }
     }
     @Action
@@ -1190,7 +1329,6 @@ export default class WorkerStore extends VuexModule {
 
         }
     }
-
     @Mutation
     private sucessCheckWorkceMonth(data: any) {
         this.checkWorkceMonth = data.data;
@@ -1198,6 +1336,18 @@ export default class WorkerStore extends VuexModule {
     @Mutation
     private sucessCheckWorkce(data: any) {
         this.checkWorkce = data.data;
+    }
+    @Mutation
+    public setPageInTotal(data: number) {
+        this.pageInTotal = data;
+    }
+    @Mutation
+    public setPageInSize(data: number) {
+        this.pageInSize = data;
+    }
+    @Mutation
+    public setPageInIndex(data: number) {
+        this.pageInIndex = data;
     }
     @Mutation
     private setCheck(data: any) {
@@ -1247,8 +1397,30 @@ export default class WorkerStore extends VuexModule {
         this.projectList = data.data;
     }
     @Mutation
+    private setWorkType(data: any) {
+        this.workType = data;
+    }
+    @Mutation
     private successCultivate(data: any) {
         this.cultivateList = data.data;
+    }
+    @Mutation
+    private successAllCultivate(data: any) {
+        if(this.cultivateList){
+            for(let i=0;i<data.data.length;i++){
+                if(this.cultivateList.filter(a => a.cultivate_id == data.data[i].cultivate_id).length>0){
+                    continue;
+                }else {
+                    this.cultivateList.push(data.data[i]);
+                }
+            }
+        }else {
+            this.cultivateList.push(data.data);
+        }
+    }
+    @Mutation
+    private clearAllCultivate(data: any) {
+        this.cultivateList=new Array<any>();
     }
     @Mutation
     private successUnitList(data: any) {
@@ -1408,6 +1580,63 @@ export default class WorkerStore extends VuexModule {
     public setInPageSize(data: number) {
         this.inPageSize = data;
     }
+    public columns = [
+        {
+            title: '工种',
+            key: 'workType',
+            render: (h, params) => {
+                return h('div', [
+                    h('span', {
+                        style: {
+                            display: 'inline-block',
+                            width: '100%',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            whiteSpace: 'nowrap'
+                        },
+                        domProps: {
+                            title: params.row.workType
+                        }
+                    }, params.row.workType)
+                ])
+            }
+        },
+        {
+            title: '人数',
+            key: 'total'
+        },
+
+        {
+            title: '操作',
+            slot: 'operation'
+        }
+    ];
+    public columnsInfo = [
+        {
+            title: '姓名',
+            key: 'eafName',
+            render: (h, params) => {
+                return h('div', [
+                    h('span', {
+                        style: {
+                            display: 'inline-block',
+                            width: '100%',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            whiteSpace: 'nowrap'
+                        },
+                        domProps: {
+                            title: params.row.eafName
+                        }
+                    }, params.row.eafName)
+                ])
+            }
+        },
+        {
+            title: '身份证号',
+            key: 'cwrIdnum'
+        }
+    ];
 }
 interface ProjectType {
     value?: string;

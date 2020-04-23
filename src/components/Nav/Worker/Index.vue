@@ -27,6 +27,8 @@
         private storeComm: any;
         public addWorker: boolean;
         public particulars: boolean;
+        public peopleIn: boolean;
+        public peopleInfo: boolean;
         public onLeave: boolean;
         public certificate: boolean;
 
@@ -42,6 +44,7 @@
         public year :any;
         public date:any;
         public roleName:any;
+        public workType:any;
         constructor() {
             super();
             this.store = getModule(WorkerStore)
@@ -52,8 +55,11 @@
             this.onUp = false;
             this.particulars = false;
             this.certificate = false;
+            this.peopleIn = false;
+            this.peopleInfo = false;
             this.onLeave = false;
             this.offLeave =false;
+            this.workType = "";
             this.roleName = JSON.parse(sessionStorage.getItem('loginInfo')).data.userGroupRoleModels[0].role.roleName;
         }
         mounted() {
@@ -76,6 +82,7 @@
             }
         }
         search(){
+            this.store.setPageIndex(1);
             this.store.search();
         }
         changeIn(){
@@ -86,7 +93,45 @@
             this.store.setIn(false);
             this.store.search();
         }
+        peopleInCancel(){
+            this.peopleIn = false;
+        }
+        getPeopleInColumns(){
+            return this.store.columns;
+        }
+        getPeopleInData(){
+            return this.store.peopleInList;
+        }
+        info(workType){
+            this.store.setWorkType(workType);
+            this.store.searchPeoplesInfo();
+            this.peopleInfo = true;
+        }
+        peopleInfoCancel(){
+            this.peopleInfo = false;
+        }
+        getPeopleInfoColumns(){
+            return this.store.columnsInfo;
+        }
+        getPeopleInfoData(){
+            return this.store.peopleInfoList;
+        }
+        onPageSizeInChange(pageSize){
+            this.store.setPageInSize(pageSize);
+            this.store.setPageInIndex(1);
+            this.onPageIndexInChange(1);
+        }
+        onPageIndexInChange(pageIndex){
+            this.store.setPageInIndex(pageIndex);
+            this.store.searchPeoplesIn();
+        }
+        get totalRecords():number{
+            return this.store.pageInTotal;
+        }
 
+        set totalRecords(data:number){
+            this.store.setPageInTotal(data);
+        }
         get getNotIn():boolean{
             return this.store.notIn;
         }
@@ -188,6 +233,10 @@
         checkLeave() {
             this.onLeave=!this.onLeave;
         }
+        peoplesIn(){
+            this.store.searchPeoplesIn();
+            this.peopleIn = true;
+        }
         onUploadHead(){
             this.onUpload = true;
         }
@@ -272,12 +321,20 @@
                 this.messageWarningFn('请输入姓名！');
                 return;
             }
-            if(!this.store.card){
+            const regIdCard = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
+            if (!this.store.card) {
                 this.messageWarningFn('请输入身份证号！');
                 return;
+            }else if(!regIdCard.test(this.store.card)){
+                this.messageWarningFn('身份证号不正确！');
+                return;
             }
-            if(!this.store.phone){
+            const regIdPhone = /^1[3456789]\d{9}$/;
+            if (!this.store.phone) {
                 this.messageWarningFn('请输入手机号码！');
+                return;
+            }else if(!regIdPhone.test(this.store.phone)){
+                this.messageWarningFn("手机号码有误，请重填");
                 return;
             }
             if(!this.store.type || this.store.type.length<=0){

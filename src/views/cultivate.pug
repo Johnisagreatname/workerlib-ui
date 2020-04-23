@@ -1,42 +1,6 @@
 .body
     template
-        Tabs(value="线上培训",@on-click="toggle",:style={height:'1000px'})
-            TabPane(label="线上培训",name="线上培训",icon="ios-paper-outline")
-                .topOne
-                    .divOne
-                        span 培训课程：
-                            Input(clearable,style="width: 260px",v-model="selectCourseName")
-                    .divOne
-                        span 课程状态：
-                            Select(filterable,clearable,style="width:260px",v-model="selectState")
-                                Option(v-for="item in getStudy()", :value="item.name", :key="item.name") {{item.name}}
-                    .search
-                        Button(@click="this.store.search") 搜索
-                .hr
-                .button
-                    //Button(type="primary", ghost, icon="ios-log-out") 导出
-                    Button(type="primary", ghost, icon="ios-remove-circle-outline",@click="deleteCultivate()") 删除
-                    Button(type="primary", ghost, icon="ios-log-out",@click="this.store.upload") 导出培训记录
-                .hr
-                .bodyTwo
-                    Table(border,:columns="getColumns()", :data="getData()",
-                    @on-select="handleSelectRow",@on-select-all="handleSelectAll",
-                    @on-select-cancel="handleSelectRowCancel",@on-select-all-cancel="handleSelectAllCancel")
-                        template(slot-scope="{row, index }",slot="num")
-                            span {{index+1}}
-                        template(slot-scope="{row, index }",slot="startTime")
-                            span {{getDateFormat(row.startTime)}}
-                        template(slot-scope="{row, index }",slot="operation")
-                            template
-                                Dropdown(trigger="click",@on-click = "change",placement="top-start")
-                                    a(href="javascript:void(0)" :style={"font-size": "16px"})
-                                        span 详细操作
-                                        Icon(type="md-arrow-dropdown" )
-                                    DropdownMenu(slot="list")
-                                        DropdownItem(:name="row.id")
-                                            Icon(type="ios-contact-outline")
-                                            span 培训详情
-
+        Tabs(value="线下培训",@on-click="toggle",:style={height:'1000px'})
             TabPane(label="线下培训",name="线下培训",icon="ios-paper-outline")
                 .topOne
                     .divOne
@@ -79,6 +43,41 @@
                                             Icon(type="ios-create-outline")
                                             span 查看记录
 
+            TabPane(label="线上培训",name="线上培训",icon="ios-paper-outline")
+                .topOne
+                    .divOne
+                        span 培训课程：
+                            Input(clearable,style="width: 260px",v-model="selectCourseName")
+                    .divOne
+                        span 课程状态：
+                            Select(filterable,clearable,style="width:260px",v-model="selectState")
+                                Option(v-for="item in getStudy()", :value="item.name", :key="item.name") {{item.name}}
+                    .search
+                        Button(@click="this.store.search") 搜索
+                .hr
+                .button
+                    //Button(type="primary", ghost, icon="ios-log-out") 导出
+                    Button(type="primary", ghost, icon="ios-remove-circle-outline",@click="deleteCultivate()") 删除
+                    Button(type="primary", ghost, icon="ios-log-out",@click="this.store.upload") 导出培训记录
+                .hr
+                .bodyTwo
+                    Table(border,:columns="getColumns()", :data="getData()",
+                    @on-select="handleSelectRow",@on-select-all="handleSelectAll",
+                    @on-select-cancel="handleSelectRowCancel",@on-select-all-cancel="handleSelectAllCancel")
+                        template(slot-scope="{row, index }",slot="num")
+                            span {{index+1}}
+                        template(slot-scope="{row, index }",slot="startTime")
+                            span {{getDateFormat(row.startTime)}}
+                        template(slot-scope="{row, index }",slot="operation")
+                            template
+                                Dropdown(trigger="click",@on-click = "change",placement="top-start")
+                                    a(href="javascript:void(0)" :style={"font-size": "16px"})
+                                        span 详细操作
+                                        Icon(type="md-arrow-dropdown" )
+                                    DropdownMenu(slot="list")
+                                        DropdownItem(:name="row.id")
+                                            Icon(type="ios-contact-outline")
+                                            span 培训详情
     .footer
         Page(:total="pageTotal",show-sizer,show-elevator,show-total,@on-page-size-change="onPageSizeChange",@on-change="onPageIndexChange",:page-size=20)
     Modal(:value="startTraining",title="培训详情",@on-ok="okStart()",@on-cancel="cancelStart()",width='70%',:loading="loading")

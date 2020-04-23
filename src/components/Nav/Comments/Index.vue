@@ -62,6 +62,10 @@
                 })
             }, 1000)
         }
+        search(){
+            this.store.setPageIndex(1);
+            this.store.search();
+        }
         getComments() : any{
             return this.store.comments;
         }
