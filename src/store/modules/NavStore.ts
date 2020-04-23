@@ -13,11 +13,19 @@ import {Watch} from "vue-property-decorator";
 })
     export default class NavStore extends VuexModule {
 
-    public title:String = '首页'; //state
-
+    public menuList: Array<any> //state
+    constructor(e) {
+        super(e);
+        this.menuList=[];
+        this.menuList.push("主页");
+    }
 
     @Mutation
-    private setTitle(data: any) {
-        this.title = data
+    private setMenuList(data: any) {
+        this.menuList.push(data);
+    }
+    @Mutation
+    private clearMenuList() {
+        this.menuList = new Array<any>();
     }
 }

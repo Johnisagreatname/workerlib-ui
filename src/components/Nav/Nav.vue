@@ -3,7 +3,6 @@
     import NavStore from '../../store/modules/NavStore';
     import {Component, Vue, Prop, Model, Watch} from 'vue-property-decorator';
     import { getModule } from 'vuex-module-decorators';
-    import store from "../../store";
 
     @Component({
         data() {
@@ -29,8 +28,8 @@
     })
     export default class Nav extends Vue {
         @Model('isCollapsed', { type: Boolean }) private isCollapsed !: boolean;
-        homepage = true;              //主页
-        projectManagement = false;     //项目管理
+        homepage = false;              //主页
+        projectManagement = true;     //项目管理
         peopleManagement  = false;     //人员管理
         trainingManagement  = false;   //培训管理
         lecturerManagement  = false;   //讲师管理
@@ -39,19 +38,30 @@
         skillAppraisal  = false;           //技能鉴定
         setting  = false;           //设置
 
+        private store: any;
+        constructor() {
+            super();
+            this.store = getModule(NavStore)
+        }
         mounted(){
         }
-        clickMenu(checked){
+        clickMenu(checked,menuName,path){
             let menu = ["homepage","projectManagement","peopleManagement","trainingManagement","lecturerManagement",
                 "comprehensiveAssessment","badEvaluation","skillAppraisal","setting"];
             for(let i = 0;i < menu.length; i++){
                 if(menu[i]==checked){
-                    this[checked] = true
+                    debugger
+                    this[checked] = true;
+                    this.store.setMenuList(menuName);
+                    this['$router'].push(path);
                 }else {
                     this[`${menu[i]}`] = false
                 }
             }
 
+        }
+        getMenuList(){
+            return this.store.menuList;
         }
 
     }
