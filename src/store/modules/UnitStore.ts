@@ -212,6 +212,7 @@ export default class UnitStore extends VuexModule {
             "groupList" : [],
 
             "keywords" : [],
+
             "selectList": []
         };
     }
@@ -254,6 +255,7 @@ export default class UnitStore extends VuexModule {
             alert.warning(e.message || e)
         });
     }
+
     @Action
     public async search() {
         await request.post('/api/workerlib/unitview',await this.getParams()).then((data)=>{
@@ -276,10 +278,13 @@ export default class UnitStore extends VuexModule {
             if(!e.message) {
                 return;
             }
-
             alert.warning(e.message || e)
         });
     }
+
+
+
+
     @Action
     public async upload() {
         let alert: any = Message;
@@ -329,6 +334,8 @@ export default class UnitStore extends VuexModule {
             alert.warning(e.message || e)
         });
     }
+
+
     @Action
     public async insertUnit() {
         await request.put('/api/workerlib/unit', {
@@ -402,6 +409,8 @@ export default class UnitStore extends VuexModule {
             MessageUtils.warning(e);
         });
     }
+
+
     @Action
     public added(data: any) {
         if(data.status == 0) {

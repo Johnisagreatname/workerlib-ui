@@ -23,6 +23,7 @@
             }
         }
     })
+
     export default class Unit extends Vue {
         mounted() {
             this.store.search();
