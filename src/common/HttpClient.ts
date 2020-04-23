@@ -36,7 +36,7 @@ const removePending: any = (config: any, f: any) => {
 
 /* 创建axios实例 */
 const service = axios.create({
-    timeout: 200000, // 请求超时时间
+    timeout: 300000, // 请求超时时间
     headers:{'Content-Type': 'application/json', 'Accept': 'application/json'}
 });
 

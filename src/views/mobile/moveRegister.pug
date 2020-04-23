@@ -1,0 +1,12 @@
+#home
+    .freamwork
+        .title
+            span 注册
+        .inputName
+            Input(prefix="ios-contact",clearable,v-model="userName",placeholder="姓名")
+            Input(prefix="ios-card",clearable,v-model="card",placeholder="身份证号码",:style={marginTop: '5%'})
+            Input(prefix="ios-call",clearable,v-model="phone",placeholder="手机号码",:style={marginTop: '5%'})
+            Input(prefix="md-checkmark-circle-outline",id="inputCode",v-model="codeNumber",placeholder="请输入验证码",:style={marginTop: '5%'})
+            canvas(id="myCanvas",:style={height: '70px',width: '180px',marginTop: '5%'})
+            Button(@click="ok()") 立即注册
+            span(:style={marginTop: '24px', float: 'right', color: '#1d51e9'},@click="toLogin()") 已有账号?立即登录>>

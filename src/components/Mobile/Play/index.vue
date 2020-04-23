@@ -4,9 +4,7 @@
     import {Tab, TabItem, XHeader, Cell, Flexbox, FlexboxItem, Swiper, SwiperItem, Badge, ViewBox, Group} from 'vux'
     import MobileStore from '../../../store/mobile/MobileStore';
     import PlayStore from '../../../store/mobile/PlayStore';
-    import WorkerStore from "../../../store/modules/WorkerStore";
     import router from '../../../router/.invoke/router'
-    import CommentsStore from "../../../store/modules/CommentsStore";
 
     @Component({
         components: {
@@ -23,10 +21,10 @@
             Group
         },
         beforeDestroy() {
-            if(this.playStore.list && this.playStore.list.video.split('.')[1] == 'ogg' ||
-                this.playStore.list.video.split('.')[1] == 'mp4' ||
-                this.playStore.list.video.split('.')[1] == 'WebM') {
-                    if (this.playStore.list.training_time < this.playStore.list.total_hours) {
+            if(this.playStore.list && this.playStore.courseWareList.video.split('.')[1] == 'ogg' ||
+                this.playStore.courseWareList.video.split('.')[1] == 'mp4' ||
+                this.playStore.courseWareList.video.split('.')[1] == 'WebM') {
+                    if (this.playStore.list.training_time < this.playStore.courseWareList.total_hours) {
                         this.playStore.setTrainingTime(0);
                         this.playStore.setArchivesStatus("待培训");
                         this.playStore.setWhether(3);
@@ -42,6 +40,7 @@
         private userId: any
         private token: any;
         private playStore: any;
+        private mobileStore: any;
         private interval: any;
         private page:number;
         private micromessenger:boolean;
@@ -56,16 +55,18 @@
             this.userId = router.currentRoute.query.eafid;
             this.token = router.currentRoute.query.token;
             this.playStore = getModule(PlayStore)
+            this.mobileStore = getModule(MobileStore)
             localStorage.setItem('token', this.token)
             this.micromessenger = false;
             this.interval = setInterval(() => {
-                if(this.playStore.list && this.playStore.list.video.split('.')[1] == 'ogg' ||
-                   this.playStore.list.video.split('.')[1] == 'mp4' ||
-                   this.playStore.list.video.split('.')[1] == 'WebM'
+                debugger
+                if(this.playStore.courseWareList && this.playStore.courseWareList.video.split('.')[1] == 'ogg' ||
+                   this.playStore.courseWareList.video.split('.')[1] == 'mp4' ||
+                   this.playStore.courseWareList.video.split('.')[1] == 'WebM'
                 ){
                     if(this.playStore.list.archivesStatus=="待培训" || this.playStore.list.archivesStatus=="培训中" ){
 
-                        if(this.playStore.list.training_time+1 >= this.playStore.list.total_hours){
+                        if(this.playStore.list.training_time+1 >= this.playStore.courseWareList.total_hours){
                             this.playStore.setTrainingTime(this.playStore.list.training_time+1);
                             this.playStore.setArchivesStatus("已培训");
                             this.playStore.setWhether(1);
@@ -136,19 +137,31 @@
         }
 
         getVideo(){
-            if(this.playStore.list.video){
-                if(this.playStore.list.video.split('.')[1] == 'ppt' || this.playStore.list.video.split('.')[1] == 'pptx'){
+            debugger
+            if(this.playStore.courseWareList.video){
+                if(this.playStore.courseWareList.video.split('.')[1] == 'ppt' || this.playStore.courseWareList.video.split('.')[1] == 'pptx'){
                     return true;
                 }else {
+                    debugger
+                    this.$nextTick(() => {
+                        var videoWrap = document.getElementById("video")
+                        if (videoWrap.childNodes && videoWrap.childNodes.length) videoWrap.removeChild(videoWrap.childNodes[0])
+                        var video = document.createElement("video")
+                        video["controls"] = true
+                        video["autoplay"] = true
+                        video["loop"] = true
+                        // video["width"] = "100%"
+                        // video["height"] = "100%"
+                        var source = document.createElement("source")
+                        source["src"] = '/api/workerlib/play/courseware/video/'+this.playStore.courseWareList.id
+                        video.appendChild(source)
+                        videoWrap.appendChild(video)
+                        videoWrap.getElementsByTagName("video")[0]["style"]["width"] = "100%"
+                        videoWrap.getElementsByTagName("video")[0]["style"]["height"] = "100%"
+                    })
                     return false;
                 }
             }
-        }
-        get id(){
-            return this.playStore.list.id;
-        }
-        get url() {
-            return encodeURI("http://39.108.103.150:8000/api/workerlib/preview/courseware/video/"+this.playStore.list.id);
         }
         changeIndexLeft(){
             if((this.page-1)<=1){
@@ -162,8 +175,8 @@
 
         }
         changeIndexRight(){
-            if((this.page+1)>this.playStore.list.pptPages){
-                this.page = this.playStore.list.pptPages;
+            if((this.page+1)>this.playStore.courseWareList.pptPages){
+                this.page = this.playStore.courseWareList.pptPages;
             }else {
                 let loading = document.getElementById('loading');
                 loading.style.display = 'block';
@@ -174,7 +187,7 @@
                     //当前学习的页数是不是大于数据库的页数
                     if (this.page > this.playStore.list.training_pages) {
                         //当前学习的也是是不是等于总页数
-                        if (this.page == this.playStore.list.pptPages) {
+                        if (this.page == this.playStore.courseWareList.pptPages) {
                             this.playStore.setTrainingPages(this.playStore.list.training_pages + 1);
                             this.playStore.setArchivesStatus("已培训");
                             this.playStore.setWhether(1);

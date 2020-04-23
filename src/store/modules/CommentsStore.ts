@@ -342,7 +342,9 @@ export default class CommentsStore extends VuexModule {
                 return;
             }
             if(data.status == 0) {
-                this.insertAppraisePhoto(data.data);
+                if(this.insertPhoto.length>0){
+                    this.insertAppraisePhoto(data.data);
+                }
                 this.insertAppraiseScore(data.data);
             }
 
@@ -498,7 +500,7 @@ export default class CommentsStore extends VuexModule {
         if(data.status == 0) {
             this.search();
             let alert: any = Message;
-            alert.warning("成功！");
+            alert.success("成功！");
         }
     }
     @Mutation

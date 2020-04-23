@@ -62,7 +62,9 @@
             // this.store.selectAttendances();
             this.wstore.setInfoId(this.userId);
             this.wstore.searchInvolvedProject();
-            this.wstore.selectCultivate();
+
+            this.wstore.clearAllCultivate();
+            this.wstore.selectAllCultivate();
             this.wstore.selectCheckWorkceMonth();
             this.wstore.selectCheckWorkce();
             this.wstore.selectSalary();
@@ -70,14 +72,17 @@
             this.storeComm.setPunishmentsId(this.userId);
             this.storeComm.searchCommentSparticulars();
         }
-        goBack(cultivate_id,id){
-            this.playStore.setArId(id);
+        goBack(id,cultivate_id,peoples){
+            this.playStore.setCourseWare_id(id);
             this.playStore.setCultivate_id(cultivate_id);
+            this.playStore.setPeoples(peoples);
+            this.playStore.searchCourseWare();
             this.playStore.searchCul();
                 this['$router'].push({
                     path:'/mobile/play',
                     query:{
-                        token:this.token
+                        token:this.token,
+                        eafid:this.userId
                     }
                 });
         }

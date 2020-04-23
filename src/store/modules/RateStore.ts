@@ -281,7 +281,7 @@ export default class RateStore extends VuexModule {
             this.search();
             this.searchList();
             let alert: any = Message;
-            alert.warning('成功！');
+            alert.success('成功！');
         }
     }
     @Action
@@ -290,7 +290,7 @@ export default class RateStore extends VuexModule {
             this.search();
             this.searchList();
             let alert: any = Message;
-            alert.warning('成功！');
+            alert.success('成功！');
         }
     }
     @Action
@@ -299,7 +299,7 @@ export default class RateStore extends VuexModule {
             this.search();
             this.searchList();
             let alert: any = Message;
-            alert.warning('成功！');
+            alert.success('成功！');
         }
     }
     @Mutation

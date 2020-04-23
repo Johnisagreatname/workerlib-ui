@@ -3,6 +3,7 @@
     import {getModule} from 'vuex-module-decorators';
     import {Tab, TabItem, XHeader, Cell, Flexbox, FlexboxItem, Swiper, SwiperItem, Badge, ViewBox, Group} from 'vux'
     import MoveLoginStore from '../../../store/mobile/MoveLoginStore';
+    import router from '../../../router/.invoke/router'
 
     @Component({
         components: {
@@ -29,7 +30,9 @@
             super();
             this.store = getModule(MoveLoginStore)
         }
-
+        toRegister(){
+            router.push({path: '/mobile/moveRegister'})
+        }
         get username() : String {
             return this.store.username
         }

@@ -114,7 +114,11 @@
     /*background-image: url('~@/assets/css/images/banner.png');*/
     /*background-repeat: no-repeat;*/
     /*background-position: center;*/
-    margin-top: 40px;
+    /*margin-top: 40px;*/
+}
+.bodyMiddleTitle{
+    height: 40px;
+    line-height: 60px;
 }
 .bodyMiddleMiddle{
     width: 800px;
@@ -555,7 +559,7 @@
     margin-left: auto;
 }
 .fh{
-    width: 120px;
+    width: 110px;
     height: 50px;
     font-size: 14px;
     background-color: #0079ba;
@@ -563,13 +567,24 @@
     line-height: 50px;
     position: absolute;
     top: 50px;
-    right: -50px;
+    right: 0;
     padding-left: 20px;
     cursor: pointer;
     transition: all .5s;
     color: white;
 }
-.fh:hover {
-    right: 0;
- }
+.ivu-progress{
+    width: 70% !important;
+}
+.bodyMiddleMenu{
+    text-align: center;
+    float: left;
+    width: 20%;
+    font-size: 14px;
+    cursor: pointer;
+    height: 40px;
+}
+.bodyMiddleMenu:hover{
+    color: blue;
+}
 

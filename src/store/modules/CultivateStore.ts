@@ -68,7 +68,7 @@ export default class CultivateStore extends VuexModule {
         this.inPageIndex=1;
         this.inPageSize= 10;
         this.inPageTotal = 0;
-        this.selectStatus = 1;
+        this.selectStatus = 2;
         this.viewId = null;
 
         this.selectCourseName = "";
@@ -78,7 +78,6 @@ export default class CultivateStore extends VuexModule {
         this.selectUserName = "";
         this.isOk = "已完成";
         this.okCultivate = '是';
-
         this.infoId=null;
         this.courseNum=null;
     }
@@ -170,7 +169,12 @@ export default class CultivateStore extends VuexModule {
 
             "conditionList": this.cList,
 
-            "sortList": [ ],
+            "sortList": [
+                { //排序条件
+                    "name": "startTime", //字段名
+                    "desc": true  //true为降序，false为升序
+                }
+            ],
 
             "groupList" : [
             ],

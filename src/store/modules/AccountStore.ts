@@ -30,6 +30,7 @@ export default class AccountStore extends VuexModule {
         this.role = [];
         this.userList = [];
         this.insertList = [];
+        this.conditionList = [];
         this.moderole ='';
         this.modegroup = '';
         this.userId='';
@@ -47,6 +48,7 @@ export default class AccountStore extends VuexModule {
     public role:Array<Role>;
     public group:Array<Group>;
     public insertList:Array<any>;
+    public conditionList:Array<any>;
 
     @Action
     public getParams() : any {
@@ -66,34 +68,36 @@ export default class AccountStore extends VuexModule {
             "selectList": []
         };
     }
-
     @Action
-    public async search() {
-        let param = {
-            "pageInfo" : {
-                "pageIndex": this.pageInfo.pageIndex,
-                "pageSize": this.pageInfo.pageSize
-            },
-
-            "conditionList": [],
-
-            "sortList": [],
-
-            "groupList" : [],
-
-            "keywords" : [],
-            "selectList": []
-        }
-
+    public getSearchParams() : any {
         if(this.userInfo.username && this.userInfo.username.trim()) {
-            param.conditionList.push({
+            this.conditionList.push({
                 "name": "username",
                 "value": this.userInfo.username,
                 "algorithm": "LIKE",
             })
         }
+        return {
+                "pageInfo" : {
+                    "pageIndex": this.pageInfo.pageIndex,
+                    "pageSize": this.pageInfo.pageSize
+                },
 
-        await request.post('/api/workerlib/user', param).then((data)=>{
+                "conditionList": this.conditionList,
+
+                "sortList": [],
+
+                "groupList" : [],
+
+                "keywords" : [],
+                "selectList": []
+            }
+    }
+
+    @Action
+    public async search() {
+
+        await request.post('/api/workerlib/user', await this.getSearchParams()).then((data)=>{
             if(!data){
                 return;
             }
@@ -234,21 +238,7 @@ export default class AccountStore extends VuexModule {
 
     @Action
     public async count() {
-        await request.post('/api/workerlib/user/count', {
-            "pageInfo" : {
-                "pageIndex": this.pageInfo.pageIndex,
-                "pageSize": this.pageInfo.pageSize
-            },
-
-            "conditionList": [],
-
-            "sortList": [],
-
-            "groupList" : [],
-
-            "keywords" : [],
-            "selectList": []
-        }).then((total)=>{
+        await request.post('/api/workerlib/user/count', await this.getSearchParams()).then((total)=>{
             if(!total){
                 return;
             }
@@ -458,6 +448,7 @@ export default class AccountStore extends VuexModule {
             pageCount: this.pageInfo.pageCount,
             totalRecords: total
         };
+        this.conditionList = new Array<any>();
     }
 
     @Mutation

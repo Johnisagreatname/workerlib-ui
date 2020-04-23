@@ -1,18 +1,13 @@
 #home
     view-box(ref="viewBox")
-        x-header(v-if="!this.micromessenger" ,:left-options="{showBack: false}",style="background-color:#0E93FF;") {{this.playStore.list.title}}
+        x-header(v-if="!this.micromessenger" ,:left-options="{showBack: false}",style="background-color:#0E93FF;") {{this.playStore.courseWareList.title}}
         div(class="body",v-show="!getVideo()")
-            //video(controls="controls",autoplay,muted ,loop,width="800px",height="460px")
-            //    source(:src="'/api/workerlib/play/indexVideo/file/'+this.store.indexVideo.id")
-            //
-            video(controls="controls",autoplay,loop,width="100%",height="100%")
-                source(:src="'/api/workerlib/play/courseware/video/'+this.playStore.list.id")
-
+            #video(style="height: 100%")
         div(class="body",v-show="getVideo()")
             .imgDiv
                 Spin#loading(fix)
                     Icon(type="ios-loading", size=18, class="demo-spin-icon-load")
-                img#preview(:src="'/api/workerlib/preview/courseware/video/'+this.playStore.list.id+'/'+this.page", class="img")
+                img#preview(:src="'/api/workerlib/preview/courseware/video/'+this.playStore.courseWareList.id+'/'+this.page", class="img")
 
             label(for="toggle")
                 v-touch(v-on:swipeleft="changeIndexRight()",v-on:swiperight="changeIndexLeft()",class="div")
@@ -22,7 +17,7 @@
             .right.animate(@click="changeIndexRight()")
                 Icon(type="ios-arrow-forward")
             #buttons
-                p(:style={"color": "#c3c3c3", "text-align": "center"}) 第{{this.page}}张幻灯片, 共{{this.playStore.list.pptPages}}张
+                p(:style={"color": "#c3c3c3", "text-align": "center"}) 第{{this.page}}张幻灯片, 共{{this.playStore.courseWareList.pptPages}}张
 
 
 
