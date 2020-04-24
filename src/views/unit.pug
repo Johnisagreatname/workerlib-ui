@@ -31,7 +31,7 @@
     .footer
         Page(:total="pageTotal",show-sizer,show-elevator,show-total,@on-page-size-change="onPageSizeChange",@on-change="onPageIndexChange",:page-size=20)
 
-    Modal(:value="addUnit",title="新增单位",@on-ok="ok()",@on-cancel="cancel()",width='70%',:loading = "loading")
+    Modal(:value="addUnit",title="新增单位",@on-ok="ok()",@on-cancel="cancel()",width='70%',:loading = "loading",transfer="false")
         .addBody
             //.divTwo
             //    .name
