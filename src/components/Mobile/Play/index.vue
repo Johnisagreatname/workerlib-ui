@@ -59,7 +59,6 @@
             localStorage.setItem('token', this.token)
             this.micromessenger = false;
             this.interval = setInterval(() => {
-                debugger
                 if(this.playStore.courseWareList && this.playStore.courseWareList.video.split('.')[1] == 'ogg' ||
                    this.playStore.courseWareList.video.split('.')[1] == 'mp4' ||
                    this.playStore.courseWareList.video.split('.')[1] == 'WebM'
@@ -137,7 +136,6 @@
         }
 
         getVideo(){
-            debugger
             if(this.playStore.courseWareList.video){
                 if(this.playStore.courseWareList.video.split('.')[1] == 'ppt' || this.playStore.courseWareList.video.split('.')[1] == 'pptx'){
                     return true;

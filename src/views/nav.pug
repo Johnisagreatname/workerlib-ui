@@ -1,7 +1,7 @@
 .layout
     Layout
-        Sider(:style="{height: '1080px'}",width=228)
-            Menu(active-name="项目管理",theme="light",width="auto",:open-names="['1']",:style="{color: '#fff'}")
+        Sider(:style="{height: '1080px'}",width=230)
+            Menu(active-name="人员管理",theme="light",width="auto",:style="{color: '#fff'}")
                 MenuItem(name="主页",:style="{marginTop: '240px'}",@click.native="clickMenu('homepage','主页','')")
                     span(class="top-angle",v-if="homepage")
                     span(class="bottom-angle",v-if="homepage")
@@ -14,13 +14,13 @@
                     img(src="~@/assets/css/images/项目管理蓝.png",v-if="projectManagement",:style="{marginLeft: '12px'}")
                     img(src="~@/assets/css/images/项目管理.png",v-else)
                     Item 项目管理
-                MenuItem(name="人员管理",@click.native="clickMenu('peopleManagement','人员管理','/nav/project')")
+                MenuItem(name="人员管理",@click.native="clickMenu('peopleManagement','人员管理','/nav/worker')")
                     span(class="top-angle",v-if="peopleManagement")
                     span(class="bottom-angle",v-if="peopleManagement")
                     img(src="~@/assets/css/images/人员管理蓝.png",v-if="peopleManagement",:style="{marginLeft: '12px'}")
                     img(src="~@/assets/css/images/人员管理.png",v-else)
                     Item 人员管理
-                MenuItem(name="培训管理",@click.native="clickMenu('trainingManagement','培训管理','/nav/project')")
+                MenuItem(name="培训管理",@click.native="clickMenu('trainingManagement','培训管理','/nav/unit')")
                     span(class="top-angle",v-if="trainingManagement")
                     span(class="bottom-angle",v-if="trainingManagement")
                     img(src="~@/assets/css/images/培训管理蓝.png",v-if="trainingManagement",:style="{marginLeft: '12px'}")
@@ -57,12 +57,23 @@
                     img(src="~@/assets/css/images/设置.png",v-else)
                     Item 设　 置
 
-        Layout(:style="{padding: '0 24px 24px'}")
-            p(:style="{marginTop: '20px',fontSize: '24px'}") 产业工人大数据平台
-            Breadcrumb(:style="{margin: '10px 0'}")
-                span 您当前的位置：
-                BreadcrumbItem(v-if="getMenuList()",v-for="item in getMenuList()") {{item}}
-            Content(:style="{padding: '24px', minHeight: '280px', background: '#fff',borderRadius: '40px'}")
+        Layout
+            Header(class="layout-header-bar")
+                div(:style="{height: '60px',lineHeight: '110px'}")
+                    span(:style="{fontSize: '24px'}") 产业工人大数据平台
+                Breadcrumb
+                    span 您当前的位置：
+                    BreadcrumbItem(v-if="getMenuList()",v-for="item in getMenuList()") {{item}}
+            div(:style="{height: '40px'}",v-if="peopleManagement")
+                div(class="switchMeun",@click="switchChecked('theirOwn')")
+                    div(class="switchNameBule",v-if="theirOwn") 自有人员
+                    div(class="switchBrBule",v-if="theirOwn")
+                    div(class="switchName",v-else) 自有人员
+                div(class="switchMeun",@click="switchChecked('exterior')")
+                    div(class="switchNameBule",v-if="exterior") 外部人员
+                    div(class="switchBrBule",v-if="exterior")
+                    div(class="switchName",v-else) 外部人员
+            Content(:style="{padding: '30px',margin: '24px 24px 24px 24px', minHeight: '280px', background: '#fff',borderRadius: '40px'}")
                 Content
                     router-view
 
