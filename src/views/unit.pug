@@ -1,22 +1,25 @@
 .body
     .topOne
-        //.divOne
-        //    span 项目名称：
+        .One(class="One")
+            span 人员评价管理
         //        Input( v-model="selectProjectName",clearable,style="width: 200px")
+        .divOne(class="Two")
+            span 已选条件
         .divOne
-            span 单位名称：
-                Input( v-model="selectUnitName",clearable,style="width: 200px")
-        //.divOne
+            Tag(type="dot" closable color="primary")
         //    span 在场状态：
         //        Select(v-model="selectStatus",clearable,filterable,style="width:200px")
         //            Option(v-for="item in getMenus()", :value="item.key",:key="item.key") {{item.value}}
         .search
-            Button(@click="search()") 搜索
+            Button(@click="search()" type="primary") 查询
+            Button(@click="search()" ) 重置
+
     .hr
     .button
-        Button(type="primary", ghost, icon="ios-add-circle-outline",@click="addUnit=!addUnit") 新增单位
-        Button(type="primary", ghost, icon="ios-log-in",@click="synchronization()",v-if="this.roleName=='IT管理员'") 同步单位
-        Button(type="primary", ghost, icon="ios-log-out",@click="this.store.upload") 导出信息
+        Button(type="primary", ghost, icon="ios-add-circle-outline",@click="addUnit=!addUnit") 新增评价
+        Button(type="primary", ghost, icon="ios-add-circle-outline",@click="addUnit=!addUnit") 查看统计
+        //Button(type="primary", ghost, icon="ios-log-in",@click="synchronization()",v-if="this.roleName=='IT管理员'") 同步单位
+        Button(type="primary", ghost, icon="ios-log-out",@click="upload()") 导出
         //Button(type="primary", ghost, icon="ios-add-circle-outline") 添加单位评价
 
     .bodyTwo
@@ -24,75 +27,116 @@
             Table(border,:columns="getColumns()", :data="getData()",
             @on-select="handleSelectRow",@on-select-all="handleSelectAll",
             @on-select-cancel="handleSelectRowCancel",@on-select-all-cancel="handleSelectAllCancel")
-                template(slot-scope="{row}",slot="worker_count")
-                    span(@click = "userCount(row.unit_name)") {{row.worker_count}}
-
-
+                template(slot-scope="{row,index}",slot="serialNumber")
+                    span {{index+(pageIndex-1) * pageSize +1}}
+                template(slot-scope="{row,index}",slot="action")
+                    Button(type="primary" style="margin-right: 5px" @click="show(index)" shape="circle") 详细操作
     .footer
         Page(:total="pageTotal",show-sizer,show-elevator,show-total,@on-page-size-change="onPageSizeChange",@on-change="onPageIndexChange",:page-size=20)
 
-    Modal(:value="addUnit",title="新增单位",@on-ok="ok()",@on-cancel="cancel()",width='70%',:loading = "loading")
+    Modal(:value="addUnit",title="新增评价",@on-ok="ok()",@on-cancel="cancel()",width='70%',:loading = "loading"  class="Modal" transfer="false")
+        p(slot="header")
+            span 新增评价
         .addBody
-            //.divTwo
-            //    .name
-            //        span 项目名称
-            //        span(:style={'color': 'red'}) *
-            //    .input
-            //        Select(clearable,filterable,style="width:345px",v-model="project_id")
-            //            Option(v-for="item in getProjectNameList()", :value="item.project_id",:key="item.project_id") {{item.project_name}}
             .divTwo
                 .name
-                    span 施工许可证
-                    span(:style={'color': 'red'}) *
+                    span 姓名
+                    span(:style={'color': 'red'})
                 .input
-                    Input(clearable,style="width: 345px",size=large,v-model="project_license")
+                    Input(clearable,style="width: 345px",size=large,v-model="project_license" disabled="disabled")
             .divTwo
                 .name
-                    span 参建单位名称
+                    span 选择项目
                     span(:style={'color': 'red'}) *
                 .input
                     Input(clearable,style="width: 345px",size=large,v-model="unit_name")
-
             .divTwo
                 .name
-                    span 参建单位编号
-                    span(:style={'color': 'red'}) *
+                    span 评价描述
+                    span(:style={'color': 'red'})
                 .input
-                    Input(clearable,style="width: 345px",size=large,v-model="unit_number")
+                    Input(clearable, type="textarea" :rows="2" style="width: 345px",size=large,v-model="unit_number" placeholder="默认评价..." )
+            .divTwo
+                .name
+                    span 添加图片
+                    span(:style={'color': 'red'})
+                .demo-upload-list(v-for="item in uploadList")
+                    template(v-if="item.status === 'finished'")
+                        img(:src="item.url")
+                        .demo-upload-list-cover
+                            Icon(type="ios-eye-outline" @click.native="handleView(item.name)")
+                            Icon(type="ios-eye-outline" @click.native="handleRemove(item)")
+                    template(v-else)
+                        progress(v-if="item.showProgress" :percent="item.percentage" hide-info)
+                Upload(class="upload",
+                     ref="upload"
+                    :show-upload-list="false"
+                    :default-file-list="defaultList"
+                    :on-success="handleSuccess"
+                    :format="['jpg','jpeg','png']"
+                    :max-size="2048"
+                    :on-format-error="handleFormatError"
+                    :on-exceeded-size="handleMaxSize"
+                    :before-upload="handleBeforeUpload"
+                    multiple
+                    type="drag"
+                    action="//jsonplaceholder.typicode.com/posts/"
+                    style="display: inline-block;width:58px;")
+                    div(style="width: 58px;height:58px;line-height: 58px;")
+                        Icon(type="ios-camera" size="20")
+                Modal(title="View Image" v-model="visible")
+                    img(:src="'https://o5wwk8baw.qnssl.com/' + imgName + '/large'" v-if="visible" style="width: 100%")
+            .rightBody
+                template
+                    .divThree
+                        .name
+                            span 态度
+                        Rate(v-model="value")
+                    .divThree
+                        .name
+                            span 技术
+                        Rate(v-model="value")
+                    .divThree
+                        .name
+                            span 专业
+                        Rate(v-model="value")
+        div(slot="footer")
+            Button(type="warning" size="large" long :loading="modal_loading" @click="del") 提交
+
             //.divTwo
             //    .name
             //        span 当前人数
             //        span(:style={'color': 'red'}) *
             //    .input
             //        Input(clearable,style="width: 345px",size=large,v-model="people_number")
-            .divTwo
-                .name
-                    span 入场日期
-                    span(:style={'color': 'red'}) *
-                .input
-                    template
-                        Row
-                            Col(span="12")
-                                DatePicker(v-model="entrance_time",type="date",placeholder="请选择",style="width: 345px")
-            .divTwo
-                .name
-                    span 负责人
-                    span(:style={'color': 'red'}) *
-                .input
-                    Input(clearable,style="width: 345px",size=large,v-model="principal")
-            .divTwo
-                .name
-                    span 在场状态
-                    span(:style={'color': 'red'}) *
-                .input
-                    Select(clearable,filterable,style="width:345px", v-model="status")
-                        Option(v-for="item in getMenus()", :value="item.key",:key="item.key") {{item.value}}
-            .divTwo
-                .name
-                    span 单位类型
-                    span(:style={'color': 'red'}) *
-                .input
-                    Select(clearable,filterable,style="width:345px", v-model="unit_type")
-                        Option(v-for="item in getType()", :value="item.value",:key="item.value") {{item.name}}
+            //.divTwo
+            //    .name
+            //        span 入场日期
+            //        span(:style={'color': 'red'}) *
+            //    .input
+            //        template
+            //            Row
+            //                Col(span="12")
+            //                    DatePicker(v-model="entrance_time",type="date",placeholder="请选择",style="width: 345px")
+            //.divTwo
+            //    .name
+            //        span 负责人
+            //        span(:style={'color': 'red'}) *
+            //    .input
+            //        Input(clearable,style="width: 345px",size=large,v-model="principal")
+            //.divTwo
+            //    .name
+            //        span 在场状态
+            //        span(:style={'color': 'red'}) *
+            //    .input
+            //        Select(clearable,filterable,style="width:345px", v-model="status")
+            //            Option(v-for="item in getMenus()", :value="item.key",:key="item.key") {{item.value}}
+            //.divTwo
+            //    .name
+            //        span 单位类型
+            //        span(:style={'color': 'red'}) *
+            //    .input
+            //        Select(clearable,filterable,style="width:345px", v-model="unit_type")
+            //            Option(v-for="item in getType()", :value="item.value",:key="item.value") {{item.name}}
 
 

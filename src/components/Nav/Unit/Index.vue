@@ -1,6 +1,7 @@
 <script lang="ts">
     import "@/assets/css/common.css";
     import UnitStore from '../../../store/modules/UnitStore';
+    import UnitStoreBack from "../../../store/modules/UnitStoreBack";
 	import WorkerStore from '../../../store/modules/WorkerStore';
     import { Component, Vue, Prop, Model} from 'vue-property-decorator';
     import { getModule } from 'vuex-module-decorators';
@@ -23,7 +24,6 @@
             }
         }
     })
-
     export default class Unit extends Vue {
         mounted() {
             this.store.search();
@@ -37,10 +37,51 @@
         private store: any;
         private workerStore: any;
         public roleName:any;
+        public columns12:Array<any>= [{
+            title: 'Name',
+            slot: 'name'
+        },
+            {
+                title: 'Age',
+                key: 'age'
+            },
+            {
+                title: 'Address',
+                key: 'address'
+            },
+            {
+                title: 'Action',
+                slot: 'action',
+                width: 150,
+                align: 'center'
+            }]
+
+
+        public data6:Array<any>=[{
+            name: 'John Brown',
+            age: 18,
+            address: 'New York No. 1 Lake Park'
+        },
+            {
+                name: 'Jim Green',
+                age: 24,
+                address: 'London No. 1 Lake Park'
+            },
+            {
+                name: 'Joe Black',
+                age: 30,
+                address: 'Sydney No. 1 Lake Park'
+            },
+            {
+                name: 'Jon Snow',
+                age: 26,
+                address: 'Ottawa No. 2 Lake Park'
+            }]
         constructor() {
             super();
             this.addUnit = false;
-            this.store = getModule(UnitStore);
+            this.store = getModule(UnitStoreBack);
+
 			this.workerStore = getModule(WorkerStore);
             this.roleName = JSON.parse(sessionStorage.getItem('loginInfo')).data.userGroupRoleModels[0].role.roleName;
         }
@@ -106,17 +147,24 @@
         getProjectNameList():any{
             return this.store.projectNameList;
         }
+
         getColumns() : any{
             return this.store.columns;
         }
+
         getData() : any{
-            for(let i = 0;i < this.store.unit.length;i++) {
-                if(this.store.uplodId.filter(a => a.unit_id == this.store.unit[i].unit_id).length > 0){
-                    this.$set(this.store.unit[i], '_checked', true)
-                }
-            }
+            // for(let i = 0;i < this.store.unit.length;i++) {
+            //     if(this.store.uplodId.filter(a => a.unit_id == this.store.unit[i].unit_id).length > 0){
+            //         this.$set(this.store.unit[i], '_checked', true)
+            //     }
+            // }
+
             return this.store.unit;
         }
+        upload(){
+            this.store.uploadPeople();
+        }
+
         messageWarningFn (text) {
             let alert: any = Message;
             alert.warning(text);
@@ -366,5 +414,5 @@
         }
 }
 </script>
-<style scoped src="@/styles/unit.css" />
+<style  src="@/styles/unit.css" />
 <template lang="pug" src="@/views/unit.pug" />
