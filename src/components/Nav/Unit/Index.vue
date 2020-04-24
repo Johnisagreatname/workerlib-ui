@@ -88,6 +88,17 @@
         loading = true;
         @Model('isCollapsed', { type: Boolean }) private isCollapsed !: boolean;
 
+
+
+        switchTo(){
+
+            this.store.switchPullDown();
+            if(this.store.pullDown){
+                //this.store.setUserPageSize(10)
+            }
+            //this.store.searchUserList();
+        }
+
         rowClassName (row, index) : string {
             if(index == 0) {
                 return 'table-header'
@@ -138,6 +149,13 @@
                     this.store.uplodId.splice(index, 1);
                 }
             }
+        }
+
+        set pullDown(data: boolean){
+            this.store.setPullDown(data);
+        }
+        get pullDown(): boolean{
+            return this.store.pullDown;
         }
 
         getType() : any {

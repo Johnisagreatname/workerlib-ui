@@ -48,7 +48,8 @@
 .ivu-table-header table thead tr th {
     background-color: #7a90fd !important;
     font-size: 18px !important;
-    color: #fff;
+    color: #ffffff;
+    text-align: center;
 }
 .ivu-table-body table tbody tr:nth-child(even) td {
     background-color: #f8f9fb !important;
@@ -58,7 +59,8 @@
 }
 .ivu-table-body table tbody tr td {
     height: 35px !important;
-    font-size: 16px !important;
+    font-size: 14px !important;
+    text-align: center;
 }
 .ivu-table-body table tbody tr:hover>td {
     background-color: #fdefc6 !important;

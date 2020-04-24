@@ -27,21 +27,41 @@
         }
     })
     export default class Nav extends Vue {
-        @Model('isCollapsed', { type: Boolean }) private isCollapsed !: boolean;
-        homepage = false;              //主页
-        projectManagement = true;     //项目管理
-        peopleManagement  = false;     //人员管理
-        trainingManagement  = false;   //培训管理
-        lecturerManagement  = false;   //讲师管理
-        comprehensiveAssessment  = false;   //综合评价
-        badEvaluation  = false;           //不良评价
-        skillAppraisal  = false;           //技能鉴定
-        setting  = false;           //设置
+        @Model('isCollapsed', { type: Boolean })
+        private isCollapsed !: boolean;
 
         private store: any;
+
+        private homepage: boolean;              //主页
+        private projectManagement = true;     //项目管理
+        private peopleManagement: boolean;     //人员管理
+        private trainingManagement: boolean;   //培训管理
+        private lecturerManagement: boolean;   //讲师管理
+        private comprehensiveAssessment: boolean;   //综合评价
+        private badEvaluation: boolean;           //不良评价
+        private skillAppraisal: boolean;           //技能鉴定
+        private setting: boolean;           //设置
+
+        private theirOwn: boolean;
+        private exterior: boolean;
+
+
         constructor() {
             super();
             this.store = getModule(NavStore)
+
+            this.homepage = false;              //主页
+            this.projectManagement = false;     //项目管理
+            this.peopleManagement  = true;     //人员管理
+            this.trainingManagement  = false;   //培训管理
+            this.lecturerManagement  = false;   //讲师管理
+            this.comprehensiveAssessment  = false;   //综合评价
+            this.badEvaluation  = false;           //不良评价
+            this.skillAppraisal  = false;           //技能鉴定
+            this.setting  = false;           //设置
+
+            this.theirOwn = true;
+            this.exterior = false;
         }
         mounted(){
         }
@@ -50,15 +70,24 @@
                 "comprehensiveAssessment","badEvaluation","skillAppraisal","setting"];
             for(let i = 0;i < menu.length; i++){
                 if(menu[i]==checked){
-                    debugger
                     this[checked] = true;
                     this.store.setMenuList(menuName);
                     this['$router'].push(path);
                 }else {
-                    this[`${menu[i]}`] = false
+                    this[`${menu[i]}`] = false;
                 }
             }
 
+        }
+        switchChecked(switchName){
+            let switchMenu = ["theirOwn","exterior"];
+            for(let i = 0;i < switchMenu.length; i++){
+                if(switchMenu[i]==switchName){
+                    this[switchName] = true;
+                }else {
+                    this[`${switchMenu[i]}`] = false;
+                }
+            }
         }
         getMenuList(){
             return this.store.menuList;

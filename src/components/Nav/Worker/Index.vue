@@ -22,609 +22,175 @@
     })
     export default class Worker extends Vue {
         @Model('isCollapsed', { type: Boolean }) private isCollapsed !: boolean;
-        loading = true;
-        private store: any;
-        private storeComm: any;
-        public addWorker: boolean;
-        public particulars: boolean;
-        public peopleIn: boolean;
-        public peopleInfo: boolean;
-        public onLeave: boolean;
-        public certificate: boolean;
 
-        public disabled:boolean;
-        public uploadData:boolean;
-        public onUpload:boolean;
-        public onUp:boolean;
-        public offLeave :boolean;
-        public sex: string;
-        public options!: any;
-        public optionsSex!: any;
-        public now: Date;
-        public year :any;
-        public date:any;
-        public roleName:any;
-        public workType:any;
+        private store: any;
+        private rowCount: number;
+
+
+        private checkedList : Array<any>;
+
         constructor() {
             super();
-            this.store = getModule(WorkerStore)
-            this.storeComm = getModule(CommentsStore)
-            this.addWorker = false;
-            this.uploadData = false;
-            this.onUpload = false;
-            this.onUp = false;
-            this.particulars = false;
-            this.certificate = false;
-            this.peopleIn = false;
-            this.peopleInfo = false;
-            this.onLeave = false;
-            this.offLeave =false;
-            this.workType = "";
-            this.roleName = JSON.parse(sessionStorage.getItem('loginInfo')).data.userGroupRoleModels[0].role.roleName;
+            this.store = getModule(WorkerStore);
+            this.rowCount = 0;
+            this.checkedList = [];
+
+
         }
         mounted() {
-            if(this.store.notIn){
-                if(this.store.notIn == true){
-                    this.store.searchNot();
-                    this.store.getProjectType();
-                    this.store.selectProject();
-                }
-            }else if(this.store.in){
-                if(this.store.in == true){
-                    this.store.searchIn();
-                    this.store.getProjectType();
-                    this.store.selectProject();
-                }
-            }else {
-                this.store.search();
-                this.store.getProjectType();
-                this.store.selectProject();
-            }
-        }
-        search(){
-            this.store.setPageIndex(1);
-            this.store.search();
-        }
-        changeIn(){
-            this.store.setNotIn(false);
-            this.store.search();
-        }
-        changeNot(){
-            this.store.setIn(false);
-            this.store.search();
-        }
-        peopleInCancel(){
-            this.peopleIn = false;
-        }
-        getPeopleInColumns(){
-            return this.store.columns;
-        }
-        getPeopleInData(){
-            return this.store.peopleInList;
-        }
-        info(workType){
-            this.store.setWorkType(workType);
-            this.store.searchPeoplesInfo();
-            this.peopleInfo = true;
-        }
-        peopleInfoCancel(){
-            this.peopleInfo = false;
-        }
-        getPeopleInfoColumns(){
-            return this.store.columnsInfo;
-        }
-        getPeopleInfoData(){
-            return this.store.peopleInfoList;
-        }
-        onPageSizeInChange(pageSize){
-            this.store.setPageInSize(pageSize);
-            this.store.setPageInIndex(1);
-            this.onPageIndexInChange(1);
-        }
-        onPageIndexInChange(pageIndex){
-            this.store.setPageInIndex(pageIndex);
-            this.store.searchPeoplesIn();
-        }
-        get totalRecords():number{
-            return this.store.pageInTotal;
-        }
-
-        set totalRecords(data:number){
-            this.store.setPageInTotal(data);
-        }
-        get getNotIn():boolean{
-            return this.store.notIn;
-        }
-        set getNotIn(data:boolean){
-            this.store.setNotIn(data);
-        }
-
-        get getIn():boolean{
-            return this.store.in;
-        }
-        set getIn(data:boolean){
-            this.store.setIn(data);
-        }
-        getCommentSparticularsList():any{
-            return this.storeComm.commentSparticularsList;
-        }
-        handleSuccessPhoto (res, file) {
-            this.store.setPhoto(res.file);
-            let alert: any = Message;
-            alert.success('上传成功！');
-        }
-        handleSuccessUpdatePhoto (res, file) {
-            this.store.setUpdatePhoto(res.file);
-            let alert: any = Message;
-            alert.success('上传成功！');
-        }
-        handleFormatError (file) {
-            let alert: any = Message;
-            alert.error(file.name + ' 文件格式错误！请上传jpg、jpeg、png格式文件！');
-        }
-        handleSuccessExcel (res, file) {
-            if(res.status == 0){
-                let alert: any = Message;
-                alert.success('上传成功！');
-                this.store.search();
-            }
-        }
-        inup(){
-            this.store.inupdate();
-
-        }
-        handleFormatErrorExcel (file) {
-            let alert: any = Message;
-            alert.error(file.name + ' 文件格式错误！xls、xlsx格式文件！');
-        }
-        handleSuccessIdCardfront (res, file) {
-            this.store.setIdCardfront(res.file);
-            let alert: any = Message;
-            alert.success('上传成功！');
-        }
-        handleSuccessIdCardReverse (res, file) {
-            this.store.setIdCardReverse(res.file);
-            let alert: any = Message;
-            alert.success('上传成功！');
-        }
-        handleSuccessCertificate (res, file) {
-            this.store.setCertificate(res.file);
-            let alert: any = Message;
-            alert.success('上传成功！');
-        }
-        getPeopleList():any{
-            return this.store.peoples;
-        }
-        selectUnit(){
-            this.store.selectUnit();
-        }
-        getUnitList():any{
-            return this.store.unitList;
-        }
-        getProjectList():any{
-            return this.store.projectList;
-        }
-        getInvolvedProjectList():any{
-            return this.store.involvedProjectInfo;
-        }
-        getCultivateList():any{
-            return this.store.cultivateList;
-        }
-        getDateFormat (d: number) : string {
-            let date = new Date(d);
-            return date.getFullYear() + "-" + (date.getMonth()+1) + "-" + date.getDate();
-        }
-
-        viewData(id,idNum) {
-            this.particulars=!this.particulars;
-            this.store.setInfoId(id);
-            this.store.setInfoIdNumber(idNum);
-
-            this.store.searchInfo();
-            this.store.searchInvolvedProject();
-            this.store.selectCultivate();
-            this.store.selectCheckWorkce();
-            this.store.selectCheckWorkceMonth();
-            this.store.selectSalary();
-            this.store.selectComments();
-            this.storeComm.setPunishmentsId(id);
-            this.storeComm.searchCommentSparticulars();
-        }
-        checkLeave() {
-            this.onLeave=!this.onLeave;
-        }
-        peoplesIn(){
-            this.store.searchPeoplesIn();
-            this.peopleIn = true;
-        }
-        onUploadHead(){
-            this.onUpload = true;
-        }
-        okUpdateUpload(){
-            this.store.updateHead();
-            this.onUpload = false;
-            this.particulars = false;
-        }
-        cancelUpdateUpload(){
-            this.store.setUpdatePhoto(null);
-            this.onUpload = false;
-        }
-        getMenus() : any {
-            if(this.options) return this.options;
-            this.options = [
-                {value: '在场', key: 1 },
-                {value: '离场', key: 2 }
-
-            ];
-            return this.options;
-        }
-        getSex() : any {
-            if(this.optionsSex) return this.optionsSex;
-            this.optionsSex = [
-                {value: '男', key: 1 },
-                {value: '女', key: 2 }
-
-            ];
-            return this.optionsSex;
-        }
-        getType(){
-            return this.store.projectType
-        }
-        //获取性别
-        checkSex(idNumber): boolean {
-            if(!idNumber) return;
-            this.sex = idNumber.substring(16,17);
-            if(this.sex=="1"||this.sex=="3"||this.sex=="5"||this.sex=="7"||this.sex=="9"){
-                return true;
-            }else {
-                return false;
-            }
-        }
-        //获取年龄
-        getAge(idNumber): number{
-            if(!idNumber) return;
-            this.now = new Date();
-            this.year = this.now.getTime();
-            this.date = new Date(idNumber.substring(6,10)+","+idNumber.substring(10,12)+","+idNumber.substring(12,14)).getTime();
-            // return Math.floor((this.year)/(1000*60*60*24));
-            return Math.floor((this.year-this.date)/(1000*60*60*24*31*12));
-        }
-
-        messageWarningFn (text) {
-            let alert: any = Message;
-            alert.warning(text);
-            setTimeout(() => {
-                this.loading = false;
-                this.$nextTick(() => {
-                    this.loading = true;
-                })
-            }, 500)
-        }
-        okUpload():any{
-            this.uploadData = false;
-        }
-        cancelUpload():any{
-            this.uploadData = false;
-        }
-
-        okUp():any{
-            this.store.setCheck(this.store.checkeds.filter(x => x.id).map(x => x.id));
-            this.store.upload();
-            this.store.successUpload();
-            this.onUp = false;
-        }
-        cancelUp():any{
-            this.onUp = false;
-        }
-        ok() : any{
-            if(!this.store.userName){
-                this.messageWarningFn('请输入姓名！');
-                return;
-            }
-            const regIdCard = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
-            if (!this.store.card) {
-                this.messageWarningFn('请输入身份证号！');
-                return;
-            }else if(!regIdCard.test(this.store.card)){
-                this.messageWarningFn('身份证号不正确！');
-                return;
-            }
-            const regIdPhone = /^1[3456789]\d{9}$/;
-            if (!this.store.phone) {
-                this.messageWarningFn('请输入手机号码！');
-                return;
-            }else if(!regIdPhone.test(this.store.phone)){
-                this.messageWarningFn("手机号码有误，请重填");
-                return;
-            }
-            if(!this.store.type || this.store.type.length<=0){
-                this.messageWarningFn('请选择工种！');
-                return;
-            }
-            this.store.insertArchives();
-            this.addWorker = false;
-        }
-        cancel():any {
-            this.addWorker = false;
-        }
-        okLeave() : any{
-            if(this.store.checkeds.filter(x => x.leave=== 1).map(a=>a.leave)[0] == 1) {
-                this.store.setCheck(this.store.checkeds.filter(x => x.eafId).map(x => x.eafId));
-                this.store.setOnLeave(2);
-                this.store.update();
-            }else {
-                this.store.setCheck(this.store.checkeds.filter(x => x.eafId).map(x => x.eafId));
-                this.store.setOnLeave(1);
-                this.store.update();
-            }
-            this.onLeave = false;
-        }
-        cancelLeave():any {
-            this.onLeave = false;
-        }
-        upload():any{
-            this.onUp = true;
-        }
-        particularsOk() : any{
-            this.particulars = false;
-        }
-        particularsCancel():any {
-            this.particulars = false;
-        }
-        certificateOpen():any {
-            this.particulars = false;
-            this.certificate=true;
-        }
-        certificateOk() : any{
-            this.certificate = false;
-            this.particulars = true;
-        }
-        certificateCancel():any {
-            this.certificate = false;
-            this.particulars = true;
-        }
-        onCheck(id: number,name:string,leave:number): void {
-            var itemTrue = {};
-            if(this.store.checkeds.findIndex(x => x.id == id) > -1) {
-                let index = this.store.checkeds.findIndex(x => x.id == id);
-                this.store.checkeds.splice(index, 1);
-                return;
-            }
-            itemTrue['id'] = id;
-            itemTrue['name'] = name;
-            itemTrue['leave'] = leave;
-            this.store.setChecked(itemTrue);
-        }
-        isdisabledFn():any{
-
-            let disabledTrue = this.store.checkeds.findIndex(x => x.leave== 1);  //在场
-            let disabledFalse = this.store.checkeds.findIndex(x => x.leave== 2); //离场
-            if(disabledTrue > -1  && disabledFalse > -1 || disabledTrue <0 && disabledFalse<0){   //同时选中禁用
-                this.disabled = true;
-            }else {
-                if(disabledTrue < 0  && disabledFalse> -1){
-                    this.offLeave = true;
-                }else {
-                    this.offLeave = false;
-                }
-                this.disabled = false;
-            }
-            return this.disabled;
-        }
-        isChecked(id): boolean {
-            if(this.store.checkeds.find(x => x.id == id)){
-                return true;
-            }
-            return false;
-        }
-        onPageSizeChange(pageSize){
-            this.store.setPageSize(pageSize);
-            this.store.setPageIndex(1);
-            this.onPageIndexChange(1);
+           this.store.searchUserList();     //人员列表
+           this.store.searchProjectList();  //项目列表
+           this.store.searchWorkTypeList();  //工种列表
+        }
+        getUserColumns(){
+            return this.store.userColumns;
+        }
+        getUserDate(){
+            return this.store.userList;
         }
         onPageIndexChange(pageIndex){
-            this.store.setPageIndex(pageIndex);
-            this.store.search();
-        }
-        onInPageSizeChange(pageSize){
-            this.store.setInPageIndex(pageSize);
-            this.store.setInPageIndex(1);
-            this.onInPageIndexChange(1);
-        }
-        onInPageIndexChange(pageIndex){
-            this.store.setInPageIndex(pageIndex);
-            this.store.searchInvolvedProject();
+            this.store.setUserPageIndex(pageIndex);
+            this.store.searchUserList();
         }
 
-        set infoId(data:number){
-            this.store.setInfoId(data);
+        set selectProjectId(data: number){
+            this.store.setSelectProjectId(data);
         }
-        get infoId():number{
-            return this.store.infoId;
-        }
-        set userName(data:string){
-            this.store.setUserName(data);
-        }
-        get userName():string{
-            return this.store.userName;
+        get selectProjectId(): number{
+            return this.store.selectProjectId;
         }
 
-        set card(data:string){
-            this.store.setCard(data);
-        }
-        get card():string{
-            return this.store.card;
-        }
-
-        set phone(data:number){
-            this.store.setPhone(data);
-        }
-        get phone():number{
-            return this.store.phone;
-        }
-
-        set type(data:string){
-            this.store.setType(data);
-        }
-        get type():string{
-            if(!this.store.type) {
-                return '';
-            }
-            return this.store.type.toString().split(",");
-        }
-
-        set project(data:string){
-            this.store.setProject(data);
-        }
-        get project():string{
-            return this.store.project;
-        }
-
-        set projectId(data:string){
-            this.store.setProject(this.store.projectList.filter(x => x.id == data)[0].project_name);
-            this.store.setProjectId(data);
-        }
-        get projectId():string{
-            return this.store.projectId;
-        }
-        set unitId(data:number){
-            this.store.setUnitId(data);
-        }
-        get unitId():number{
-            return this.store.unitId;
-        }
-        set unit(data:string){
-            this.store.setUnit(data);
-        }
-        get unit():string{
-            return this.store.unit;
-        }
-
-        set animal(data:string){
-            this.store.setAnimal(data);
-        }
-        get animal():string{
-            return this.store.animal;
-        }
-
-        set startTime(data:Date){
-            this.store.setStartTime(data);
-        }
-        get startTime():Date{
-            return this.store.startTime;
-        }
-
-        set endTime(data:string){
-            this.store.setEndTime(data);
-        }
-        get endTime():string{
-            return this.store.endTime;
-        }
-
-        set pageTotal(data:number){
-            this.store.setPageToatl(data);
-        }
-        get pageTotal():number{
-            return this.store.pageTotal;
-        }
-
-        set inPageTotal(data:number){
-            this.store.setInPageTotal(data);
-        }
-        get inPageTotal():number{
-            return this.store.inPageTotal;
-        }
-
-        set selectProjectName(data:string){
-            this.store.setSelectProjectName(data);
-        }
-        get selectProjectName():string{
-            return this.store.selectProjectName;
-        }
-        set selectContractors(data:string){
-            this.store.setSelectContractors(data);
-        }
-        get selectContractors():string{
-            return this.store.selectContractors;
-        }
-        set selectUserName(data:string){
+        set selectUserName(data: string){
             this.store.setSelectUserName(data);
         }
-        get selectUserName():string{
+        get selectUserName(): string{
             return this.store.selectUserName;
         }
-        set selectType(data:string){
-            this.store.setSelectType(data);
+
+        set selectUnitId(data:number){
+            this.store.setSelectUnitId(data);
         }
-        get selectType():string{
-            return this.store.selectType;
+        get selectUnitId():number{
+            return this.store.selectUnitId;
         }
-        set selectStatus(data:number){
-            this.store.setSelectStatus(data);
-        }
-        get selectStatus():number{
-            return this.store.selectStatus;
-		}
-        set selectSex(data:number){
+
+        set selectSex(data: string){
             this.store.setSelectSex(data);
         }
-        get selectSex():number{
+        get selectSex(): string{
             return this.store.selectSex;
         }
-        set selectAge1(data:any){
-            this.store.setSelectAge1(data);
+
+        set selectWorkType(data: string){
+            this.store.setSelectWorkType(data);
         }
-        get selectAge1():any{
-            return this.store.selectAge1;
-        }
-        set selectAge2(data:any){
-            this.store.setSelectAge2(data);
-        }
-        get selectAge2():any{
-            return this.store.selectAge2;
-       }
-        set photo(data:string){
-            this.store.setPhoto(data);
-        }
-        get photo():string{
-            return this.store.photo;
+        get selectWorkType(): string{
+            return this.store.selectWorkType;
         }
 
-        set idCardfront(data:string){
-            this.store.setIdCardfront(data);
+        set selectStatus(data: string){
+            this.store.setSelectStatus(data);
         }
-        get idCardfront():string{
-            return this.store.idCardfront;
-        }
-
-        set idCardReverse(data:string){
-            this.store.setIdCardReverse(data);
-        }
-        get idCardReverse():string{
-            return this.store.idCardReverse;
+        get selectStatus(): string{
+            return this.store.selectStatus;
         }
 
-        set certificates(data:string){
-            this.store.setCertificate(data);
+        set selectMinAge(data:number){
+            this.store.setSelectMinAge(data);
         }
-        get certificates():string{
-            return this.store.certificate;
-        }
-
-        set grade(data:string){
-            this.store.setGrade(data);
-        }
-        get grade():string{
-            return this.store.grade;
+        get selectMinAge():number{
+            return this.store.selectMinAge;
         }
 
-        // @Watch("particulars")
-        // particularsWatch(x: boolean) {
-        //
-        //     if (x) return;
-        //
-        //     this.store.setPeopleInfo(null);
+        set selectMaxAge(data:number){
+            this.store.setSelectMaxAge(data);
+        }
+        get selectMaxAge():number{
+            return this.store.selectMaxAge;
+        }
+
+        set selectEafUserStatus(data:number){
+            this.store.setSelectEafUserStatus(data);
+        }
+        get selectEafUserStatus():number{
+            return this.store.selectEafUserStatus;
+        }
+
+
+        set selectUserId(data:number){
+            this.store.setSelectUserId(data);
+        }
+        get selectUserId():number{
+            return this.store.selectUserId;
+        }
+
+        set userPageSize(data:number){
+            this.store.setUserPageSize(data);
+        }
+        get userPageSize():number{
+            return this.store.userPageSize;
+        }
+
+        set userPageIndex(data:number){
+            this.store.setUserPageIndex(data);
+        }
+        get userPageIndex():number{
+            return this.store.userPageIndex;
+        }
+
+        set userPageTotal(data:number){
+            this.store.setUserPageTotal(data);
+        }
+        get userPageTotal():number{
+            return this.store.userPageTotal;
+        }
+
+        set pullDown(data: boolean){
+            this.store.setPullDown(data);
+        }
+        get pullDown(): boolean{
+            return this.store.pullDown;
+        }
+
+        getProjectList(){
+            return this.store.projectList;
+        }
+        getWorkTypeList(){
+            return this.store.workTypeList;
+        }
+        getStatusList(){
+            let statusList = [{"statusName":"在场","statusValue":1},{"statusName":"离场","statusValue":2}]
+            return statusList;
+        }
+        getProjectName(){
+            let projectName = this.store.projectList.filter(a => a.projectId == this.store.selectProjectId).map(b => b.projectName)[0];
+            return projectName;
+        }
+
+        switchTo(){
+            this.store.switchPullDown();
+            if(this.store.pullDown){
+                this.store.setUserPageSize(10)
+            }
+            this.store.searchUserList();
+        }
+        clearProject(){
+            this.store.setSelectProjectId(null);
+        }
+        // clearWorkType(){
+        //     let index = this.checkedList.findIndex(a => a.value == "workType");
+        //     if(index > -1) {
+        //         this.checkedList.splice(index, 1);
+        //     }
         // }
+        // clearStatus(){
+        //     let index = this.checkedList.findIndex(a => a.value == "status");
+        //     if(index > -1) {
+        //         this.checkedList.splice(index, 1);
+        //     }
+        // }
+
+
     }
 </script>
 <style scoped src="@/styles/worker.css" />

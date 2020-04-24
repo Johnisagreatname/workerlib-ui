@@ -139,6 +139,7 @@ export default class UnitStore extends VuexModule {
     public uplodId:Array<any>;
     public conditionList:Array<any>;
 
+    private pullDown: boolean;
     constructor(e) {
         super(e);
         //分页
@@ -152,6 +153,8 @@ export default class UnitStore extends VuexModule {
         this.unit = [];
         //获取项目列表
         this.projectNameList = [];
+
+        this.pullDown = false;
 
         this.id=null;
         this.project_id=null;
@@ -282,7 +285,14 @@ export default class UnitStore extends VuexModule {
         });
     }
 
-
+    @Mutation
+    private setPullDown(data : any){
+        this.pullDown = data;
+    }
+    @Mutation
+    private switchPullDown(){
+        this.pullDown = !this.pullDown;
+    }
 
 
     @Action

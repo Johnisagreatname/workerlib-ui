@@ -17,7 +17,7 @@ import {Watch} from "vue-property-decorator";
     constructor(e) {
         super(e);
         this.menuList=[];
-        this.menuList.push("主页");
+        this.menuList.push("人员管理");
     }
 
     @Mutation

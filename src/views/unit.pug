@@ -1,20 +1,93 @@
 .body
-    .topOne
-        .One(class="One")
-            span 人员评价管理
-        //        Input( v-model="selectProjectName",clearable,style="width: 200px")
-        .divOne(class="Two")
-            span 已选条件
-        .divOne
-            Tag(type="dot" closable color="primary")
-        //    span 在场状态：
-        //        Select(v-model="selectStatus",clearable,filterable,style="width:200px")
-        //            Option(v-for="item in getMenus()", :value="item.key",:key="item.key") {{item.value}}
-        .search
-            Button(@click="search()" type="primary") 查询
-            Button(@click="search()" ) 重置
+    div
+        p(:style="{fontSize: '16px',fontWeight: 'bold'}") 人员管理
 
-    .hr
+        div(class="selectedList")
+            span(:style="{fontSize: '16px',float: 'left',marginRight: '10px',paddingTop: '14px',color: '#789fef'}") 已选条件
+            div(class="selected",v-if="selectProjectId") {{getProjectName()}}
+                Icon(type="ios-backspace-outline",@click="clearProject()")
+            div(class="selected",v-if="selectWorkType") {{selectWorkType}}
+                Icon(type="ios-backspace-outline")
+            div(class="selected",v-if="selectStatus") {{selectStatus}}
+
+        div(class="select",v-if="pullDown == false")
+            div(class="divSelect")
+                div(class="selectTitle") 所属公司
+                div(class="selectValue")
+                    Col(style="padding-right:10px")
+                        Select(filterable,clearable)
+
+
+                            //Option(v-for="item in cityList" :value="item.value" :key="item.value") {{ item.label }}
+
+
+
+
+            //div(class="divSelect")
+            //    div(class="selectTitle") 项目名称
+            //    div(class="selectValue")
+            //        Col(style="padding-right:10px")
+            //            Select(filterable,clearable,v-model="selectProjectId")
+            //                Option(v-for="item in getProjectList()",:value="item.projectId",:key="item.projectId") {{ item.projectName}}
+            //div(class="divSelectMin")
+            //    div(class="selectTitleMin") 工种
+            //    div(class="selectValueMin")
+            //        Col(style="padding-right:10px")
+            //            Select(filterable,clearable,v-model="selectWorkType")
+            //                Option(v-for="item in getWorkTypeList()",:value="item.workTypeName",:key="item.workTypeName") {{ item.workTypeName}}
+            //div(class="divSelectMin")
+            //    div(class="selectTitleMin") 状态
+            //    div(class="selectValueMin")
+            //        Col(style="padding-right:10px")
+            //            Select(filterable,clearable,v-model="selectStatus")
+            //                Option(v-for="item in getStatusList()",:value="item.statusName",:key="item.statusName") {{ item.statusName}}
+
+        div(class="selectedPullDown",v-else)
+            //div(class="divSelect")
+            //    div(class="selectTitle") 所属公司
+            //    div(class="selectValue")
+            //        Col(style="padding-right:10px")
+            //            Select(filterable,clearable)
+            //                //Option(v-for="item in cityList" :value="item.value" :key="item.value") {{ item.label }}
+            //div(class="divSelect")
+            //    div(class="selectTitle") 项目名称
+            //    div(class="selectValue")
+            //        Col(style="padding-right:10px")
+            //            Select(filterable,clearable,v-model="selectProjectId")
+            //                Option(v-for="item in getProjectList()",:value="item.projectId",:key="item.projectId") {{ item.projectName}}
+            //div(class="divSelectMin")
+            //    div(class="selectTitleMin") 工种
+            //    div(class="selectValueMin")
+            //        Col(style="padding-right:10px")
+            //            Select(filterable,clearable,v-model="selectWorkType")
+            //                Option(v-for="item in getWorkTypeList()",:value="item.workTypeName",:key="item.workTypeName") {{ item.workTypeName}}
+            //div(class="divSelectMin")
+            //    div(class="selectTitleMin") 状态
+            //    div(class="selectValueMin")
+            //        Col(style="padding-right:10px")
+            //            Select(filterable,clearable,v-model="selectStatus")
+            //                Option(v-for="item in getStatusList()",:value="item.statusName",:key="item.statusName") {{ item.statusName}}
+        div(class="pullDown",v-if="pullDown == false")
+            img(src="~@/assets/css/images/下拉.png",@click="switchTo()")
+        div(class="pullDown",v-else)
+            img(src="~@/assets/css/images/上拉.png",@click="switchTo()")
+
+
+    //.topOne
+    //    .One(class="One")
+    //        span 人员评价管理
+    //    //        Input( v-model="selectProjectName",clearable,style="width: 200px")
+    //    .divOne(class="Two")
+    //        span 已选条件
+    //    .divOne
+    //        Tag(type="dot" closable color="primary")
+    //    //    span 在场状态：
+    //    //        Select(v-model="selectStatus",clearable,filterable,style="width:200px")
+    //    //            Option(v-for="item in getMenus()", :value="item.key",:key="item.key") {{item.value}}
+    //    .search
+    //        Button(@click="search()" type="primary") 查询
+    //        Button(@click="search()" ) 重置
+
     .button
         Button(type="primary", ghost, icon="ios-add-circle-outline",@click="addUnit=!addUnit") 新增评价
         Button(type="primary", ghost, icon="ios-add-circle-outline",@click="addUnit=!addUnit") 查看统计
@@ -30,14 +103,18 @@
                 template(slot-scope="{row,index}",slot="serialNumber")
                     span {{index+(pageIndex-1) * pageSize +1}}
                 template(slot-scope="{row,index}",slot="action")
-                    Button(type="primary" style="margin-right: 5px" @click="show(index)" shape="circle") 详细操作
+                    //Button(type="primary" style="margin-right: 5px" @click="show(index)" shape="circle") 详细操作
+                    div(class="operation") 详细操作
     .footer
         Page(:total="pageTotal",show-sizer,show-elevator,show-total,@on-page-size-change="onPageSizeChange",@on-change="onPageIndexChange",:page-size=20)
-
-    Modal(:value="addUnit",title="新增评价",@on-ok="ok()",@on-cancel="cancel()",width='70%',:loading = "loading"  class="Modal" transfer="false")
-        p(slot="header")
-            span 新增评价
         .addBody
+            //.divTwo
+            //    .name
+            //        span 项目名称
+            //        span(:style={'color': 'red'}) *
+            //    .input
+            //        Select(clearable,filterable,style="width:345px",v-model="project_id")
+            //            Option(v-for="item in getProjectNameList()", :value="item.project_id",:key="item.project_id") {{item.project_name}}
             .divTwo
                 .name
                     span 姓名

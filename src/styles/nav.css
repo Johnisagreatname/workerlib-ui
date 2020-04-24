@@ -5,6 +5,7 @@
     border-radius: 4px;
     overflow: hidden;
 }
+
 .layout-logo{
     width: 100px;
     height: 30px;
@@ -67,4 +68,37 @@
 .ivu-menu-item img{
     margin: 0px 24px;
     vertical-align: top;
+}
+.layout-header-bar{
+    background: #fff;
+    height: 110px;
+    box-shadow: 1px 3px 4px rgba(0, 0, 0, 0.08);
+}
+.switchMeun{
+    width: 120px;
+    height: 60px;
+    margin-left: 24px;
+    cursor: pointer;
+    float: left;
+}
+.switchNameBule{
+    line-height: 70px;
+    height: 48px;
+    text-align: center;
+    color: #789dff;
+    font-size: 16px;
+}
+.switchBrBule{
+    margin-left: auto;
+    margin-right: auto;
+    height: 3px;
+    width: 90px;
+    background-color: #789dff;
+}
+.switchName{
+    line-height: 70px;
+    height: 48px;
+    text-align: center;
+    color: #000000;
+    font-size: 16px;
 }
