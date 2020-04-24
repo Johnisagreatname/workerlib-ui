@@ -92,3 +92,44 @@
 .pullDown img{
     cursor: pointer;
 }
+.inquire{
+    width: 76px;
+    height: 36px;
+    background-image: linear-gradient(to right, #60b0fe , #5a88fa);
+    float: right;
+    border-radius: 20px;
+}
+.inquire{
+    width: 76px;
+    height: 36px;
+    background-image: linear-gradient(to right, #60b0fe , #5a88fa);
+    color: #ffffff;
+    float: right;
+    border-radius: 20px;
+    margin-right: 20px;
+    font-size: 16px;
+    text-align: center;
+    padding-top: 6px;
+}
+.reset{
+    width: 76px;
+    height: 36px;
+    border: 1px solid #99a8b8;
+    color: #99a8b8;
+    float: right;
+    font-size: 16px;
+    text-align: center;
+    padding-top: 6px;
+    border-radius: 20px;
+}
+.condition{
+    width: 84%;
+    height: 50px;
+    float: left;
+}
+.selectButton{
+    width: 16%;
+    height: 50px;
+    float: left;
+    padding-top: 8px;
+}

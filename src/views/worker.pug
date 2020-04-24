@@ -2,21 +2,18 @@
    div
       p(:style="{fontSize: '16px',fontWeight: 'bold'}") 人员管理
 
-      div(class="selectedList",v-if="pullDown == false")
-         span(:style="{fontSize: '16px',float: 'left',marginRight: '10px',paddingTop: '14px',color: '#789fef'}") 已选条件
-         div(class="selected",v-if="selectProjectId") {{getProjectName()}}
-            Icon(type="ios-backspace-outline",@click="clearProject()")
-         div(class="selected",v-if="selectWorkType") {{selectWorkType}}
-            Icon(type="ios-backspace-outline")
-         div(class="selected",v-if="selectStatus") {{selectStatus}}
-
-      div(class="selectedList",v-else)
-         span(:style="{fontSize: '16px',float: 'left',marginRight: '10px',paddingTop: '14px',color: '#789fef'}") 已选条件
-         div(class="selected",v-if="selectProjectId") {{getProjectName()}}
-            Icon(type="ios-backspace-outline")
-         div(class="selected",v-if="selectWorkType") {{selectWorkType}}
-            Icon(type="ios-backspace-outline")
-         div(class="selected",v-if="selectStatus") {{selectStatus}}
+      div(class="selectedList")
+         div(class="condition")
+            span(:style="{fontSize: '16px',float: 'left',marginRight: '10px',paddingTop: '14px',color: '#789fef'}") 已选条件
+            div(class="selected",v-if="selectProjectId") {{getProjectName()}}
+               Icon(type="ios-backspace-outline",@click="clearProject()")
+            div(class="selected",v-if="selectWorkType") {{selectWorkType}}
+               Icon(type="ios-backspace-outline")
+            div(class="selected",v-if="selectStatus") {{selectStatus}}
+               Icon(type="ios-backspace-outline")
+         div(class="selectButton")
+            div(class="reset") 重置
+            div(class="inquire") 查询
 
 
       div(class="select",v-if="pullDown == false")
