@@ -16,7 +16,7 @@
             div(class="inquire") 查询
 
 
-      div(class="select",v-if="pullDown == false")
+      div(class="select")
          div(class="divSelect")
             div(class="selectTitle") 所属公司
             div(class="selectValue")
@@ -41,25 +41,9 @@
                Col(style="padding-right:10px")
                   Select(filterable,clearable,v-model="selectStatus")
                      Option(v-for="item in getStatusList()",:value="item.statusName",:key="item.statusName") {{ item.statusName}}
-      div(class="selectedPullDown",v-else)
-         div(class="divSelect")
-            div(class="selectTitle") 所属公司
-            div(class="selectValue")
-               Col(style="padding-right:10px")
-                  Select(filterable,clearable)
-                     //Option(v-for="item in cityList" :value="item.value" :key="item.value") {{ item.label }}
-         div(class="divSelect")
-            div(class="selectTitle") 项目名称
-            div(class="selectValue")
-               Col(style="padding-right:10px")
-                  Select(filterable,clearable,v-model="selectProjectId")
-                     Option(v-for="item in getProjectList()",:value="item.projectId",:key="item.projectId") {{ item.projectName}}
-         div(class="divSelectMin")
-            div(class="selectTitleMin") 工种
-            div(class="selectValueMin")
-               Col(style="padding-right:10px")
-                  Select(filterable,clearable,v-model="selectWorkType")
-                     Option(v-for="item in getWorkTypeList()",:value="item.workTypeName",:key="item.workTypeName") {{ item.workTypeName}}
+
+      div(class="selectedPullDown",v-if="pullDown")
+
          div(class="divSelectMin")
             div(class="selectTitleMin") 状态
             div(class="selectValueMin")
