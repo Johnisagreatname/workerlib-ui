@@ -10,6 +10,10 @@
             Icon(type="ios-backspace-outline")
          div(class="selected",v-if="selectStatus") {{selectStatus}}
 
+         div(class="selectButton")
+            div(class="reset") 重置
+            div(class="inquire") 查询
+
       div(class="select",v-if="pullDown == false")
          div(class="divSelect")
             div(class="selectTitle") 所属公司
@@ -35,7 +39,6 @@
                Col(style="padding-right:10px")
                   Select(filterable,clearable,v-model="selectStatus")
                      Option(v-for="item in getStatusList()",:value="item.statusName",:key="item.statusName") {{ item.statusName}}
-
       div(class="selectedPullDown",v-else)
          div(class="divSelect")
             div(class="selectTitle") 所属公司

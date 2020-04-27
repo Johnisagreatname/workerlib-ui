@@ -170,7 +170,9 @@
         switchTo(){
             this.store.switchPullDown();
             if(this.store.pullDown){
-                this.store.setUserPageSize(10)
+                this.store.setUserPageSize(10);
+            }else {
+                this.store.setUserPageSize(15);
             }
             this.store.searchUserList();
         }
