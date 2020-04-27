@@ -74,35 +74,35 @@
                     div(class="switchName",v-else) 外部人员
                     div(class="switchBrBule",v-if="style==='exterior'")
             div(:style="{height: '40px'}",v-else-if="type==='account'")
-                div(class="switchMeun",@click="switchChecked('account')")
+                div(class="switchMeun",@click="switchMode('account')")
                     div(class="switchNameBule",v-if="style==='account'") 账号
                     div(class="switchBrBule",v-if="style==='account'")
                     div(class="switchName",v-else) 账号
-                div(class="switchMeun",@click="switchChecked('workclass')")
+                div(class="switchMeun",@click="switchMode('workclass')")
                     div(class="switchNameBule",v-if="style==='workclass'") 工种
                     div(class="switchBrBule",v-if="style==='workclass'")
                     div(class="switchName",v-else) 工种
-                div(class="switchMeun",@click="switchChecked('commentType')")
+                div(class="switchMeun",@click="switchMode('commentType')")
                     div(class="switchNameBule",v-if="style==='commentType'") 工人评价
                     div(class="switchBrBule",v-if="style==='commentType'")
                     div(class="switchName",v-else) 工人评价
-                div(class="switchMeun",@click="switchChecked('grade')")
+                div(class="switchMeun",@click="switchMode('grade')")
                     div(class="switchNameBule",v-if="style==='grade'") 评定等级
                     div(class="switchBrBule",v-if="style==='grade'")
                     div(class="switchName",v-else) 评定等级
-                div(class="switchMeun",@click="switchChecked('rate')")
+                div(class="switchMeun",@click="switchMode('rate')")
                     div(class="switchNameBule",v-if="style==='rate'") 评定级别
                     div(class="switchBrBule",v-if="style==='rate'")
                     div(class="switchName",v-else) 评定级别
-                div(class="switchMeun",@click="switchChecked('course')")
+                div(class="switchMeun",@click="switchMode('course')")
                     div(class="switchNameBule",v-if="style==='course'") 课件类型
                     div(class="switchBrBule",v-if="style==='course'")
                     div(class="switchName",v-else) 课件类型
-                div(class="switchMeun",@click="switchChecked('punishment')")
+                div(class="switchMeun",@click="switchMode('punishment')")
                     div(class="switchNameBule",v-if="style==='punishment'") 处罚
                     div(class="switchBrBule",v-if="style==='punishment'")
                     div(class="switchName",v-else) 处罚
-                div(class="switchMeun",@click="switchChecked('indexVideo')")
+                div(class="switchMeun",@click="switchMode('indexVideo')")
                     div(class="switchNameBule",v-if="style==='indexVideo'") 首页设置
                     div(class="switchBrBule",v-if="style==='indexVideo'")
                     div(class="switchName",v-else) 首页设置

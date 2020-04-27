@@ -1,5 +1,5 @@
 <script lang="ts">
-    import "@/assets/css/common.css";
+    import  "@/assets/css/common.css";
     import WorkerStore from '../../../store/modules/WorkerStore';
     import CommentsStore from '../../../store/modules/CommentsStore';
     import { Component, Vue, Prop, Model, Watch} from 'vue-property-decorator';
