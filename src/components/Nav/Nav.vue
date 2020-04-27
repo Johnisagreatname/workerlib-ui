@@ -89,7 +89,7 @@
         switchChecked(switchName){
             let switchMenu = ["peopleManagement","exterior"];
 
-            
+
             for(let i = 0;i < switchMenu.length; i++){
                 if(switchMenu[i]==switchName){
                     // JSON.stringify(sessionStorage.setItem("style",switchName));
