@@ -4,6 +4,9 @@
     import {Component, Vue, Prop, Model, Watch} from 'vue-property-decorator';
     import { getModule } from 'vuex-module-decorators';
 
+
+    import WorkerStore from '../../store/modules/WorkerStore';
+
     @Component({
         data() {
             return {
@@ -31,6 +34,7 @@
         private isCollapsed !: boolean;
 
         private store: any;
+        private workerStore: any;
 
         private homepage: boolean;              //主页
         private projectManagement = true;     //项目管理
@@ -42,13 +46,13 @@
         private skillAppraisal: boolean;           //技能鉴定
         private setting: boolean;           //设置
 
-        private theirOwn: boolean;
-        private exterior: boolean;
+        private style: string;
 
 
         constructor() {
             super();
             this.store = getModule(NavStore)
+            this.workerStore = getModule(WorkerStore)
 
             this.homepage = false;              //主页
             this.projectManagement = false;     //项目管理
@@ -60,8 +64,7 @@
             this.skillAppraisal  = false;           //技能鉴定
             this.setting  = false;           //设置
 
-            this.theirOwn = true;
-            this.exterior = false;
+            this.style = null;
         }
         mounted(){
         }
@@ -80,12 +83,18 @@
 
         }
         switchChecked(switchName){
+            if(switchName == 'theirOwn'){
+                this.workerStore.setSelectEafUserStatus(1);
+                this.workerStore.searchUserList();
+            }else if(switchName == 'exterior'){
+                this.workerStore.setSelectEafUserStatus(2);
+                this.workerStore.searchUserList();
+            }
+
             let switchMenu = ["theirOwn","exterior"];
             for(let i = 0;i < switchMenu.length; i++){
                 if(switchMenu[i]==switchName){
-                    this[switchName] = true;
-                }else {
-                    this[`${switchMenu[i]}`] = false;
+                    this.style = switchName;
                 }
             }
         }
