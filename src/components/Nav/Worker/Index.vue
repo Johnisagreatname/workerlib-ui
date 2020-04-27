@@ -41,6 +41,7 @@
            this.store.searchUserList();     //人员列表
            this.store.searchProjectList();  //项目列表
            this.store.searchWorkTypeList();  //工种列表
+           this.store.searchUnitList();  //参建单位列表
         }
         getUserColumns(){
             return this.store.userColumns;
@@ -52,6 +53,7 @@
             this.store.setUserPageIndex(pageIndex);
             this.store.searchUserList();
         }
+
 
         set selectProjectId(data: number){
             this.store.setSelectProjectId(data);
@@ -155,6 +157,9 @@
         getProjectList(){
             return this.store.projectList;
         }
+        getUnitList(){
+            return this.store.unitList;
+        }
         getWorkTypeList(){
             return this.store.workTypeList;
         }
@@ -166,30 +171,60 @@
             let projectName = this.store.projectList.filter(a => a.projectId == this.store.selectProjectId).map(b => b.projectName)[0];
             return projectName;
         }
+        getUnitName(){
+            debugger
+            let unitName = this.store.unitList.filter(a => a.unitId == this.store.selectUnitId).map(b => b.unitName)[0];
+            return unitName;
+        }
+        searchUserList(){
+            this.store.searchUserList();
+        }
         switchTo(){
             this.store.switchPullDown();
             if(this.store.pullDown){
-                this.store.setUserPageSize(10);
+                this.store.setUserPageSize(12);
             }else {
                 this.store.setUserPageSize(15);
             }
             this.store.searchUserList();
         }
+        reset(){
+            this.store.setSelectProjectId(null);
+            this.store.setSelectUserName(null);
+            this.store.setSelectUnitId(null);
+            this.store.setSelectSex(null);
+            this.store.setSelectWorkType(null);
+            this.store.setSelectStatus(null);
+            this.store.setSelectMinAge(null);
+            this.store.setSelectMaxAge(null);
+            this.store.setSelectEafUserStatus(null);
+            this.store.setSelectUserId(null);
+        }
         clearProject(){
             this.store.setSelectProjectId(null);
         }
-        // clearWorkType(){
-        //     let index = this.checkedList.findIndex(a => a.value == "workType");
-        //     if(index > -1) {
-        //         this.checkedList.splice(index, 1);
-        //     }
-        // }
-        // clearStatus(){
-        //     let index = this.checkedList.findIndex(a => a.value == "status");
-        //     if(index > -1) {
-        //         this.checkedList.splice(index, 1);
-        //     }
-        // }
+        clearUnit(){
+            this.store.setSelectUnitId(null);
+        }
+        clearWorkType(){
+            this.store.setSelectWorkType(null);
+        }
+        clearStatus(){
+            this.store.setSelectStatus(null);
+        }
+        clearMinAge(){
+            this.store.setSelectMinAge(null);
+        }
+        clearMaxAge(){
+            this.store.setSelectMaxAge(null);
+        }
+        clearSex(){
+            this.store.setSelectSex(null);
+        }
+        clearUserName(){
+            this.store.setSelectUserName(null);
+        }
+
 
 
     }

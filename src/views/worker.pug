@@ -5,24 +5,41 @@
       div(class="selectedList")
          div(class="condition")
             span(:style="{fontSize: '16px',float: 'left',marginRight: '10px',paddingTop: '14px',color: '#789fef'}") 已选条件
+            div(class="selected",v-if="selectUserName") {{selectUserName()}}
+               Icon(type="ios-backspace-outline",@click="clearUserName()")
+
             div(class="selected",v-if="selectProjectId") {{getProjectName()}}
                Icon(type="ios-backspace-outline",@click="clearProject()")
+
+            div(class="selected",v-if="selectUnitId") {{getUnitName}}
+               Icon(type="ios-backspace-outline",@click="clearUnit()")
+
             div(class="selected",v-if="selectWorkType") {{selectWorkType}}
-               Icon(type="ios-backspace-outline")
+               Icon(type="ios-backspace-outline",@click="clearWorkType()")
+
             div(class="selected",v-if="selectStatus") {{selectStatus}}
-               Icon(type="ios-backspace-outline")
+               Icon(type="ios-backspace-outline",@click="clearStatus()")
+
+            div(class="selected",v-if="selectMinAge") {{selectMinAge}}
+               Icon(type="ios-backspace-outline",@click="clearMinAge()")
+
+            div(class="selected",v-if="selectMaxAge") {{selectMaxAge}}
+               Icon(type="ios-backspace-outline",@click="clearMaxAge()")
+
+            div(class="selected",v-if="selectSex") {{selectSex}}
+               Icon(type="ios-backspace-outline",@click="clearSex()")
+
          div(class="selectButton")
-            div(class="reset") 重置
-            div(class="inquire") 查询
+            div(class="reset",@click="reset()") 重置
+            div(class="inquire",@click="searchUserList()") 查询
 
 
-      div(class="select",v-if="pullDown == false")
+      div(class="select")
          div(class="divSelect")
             div(class="selectTitle") 所属公司
             div(class="selectValue")
                Col(style="padding-right:10px")
                   Select(filterable,clearable)
-                     //Option(v-for="item in cityList" :value="item.value" :key="item.value") {{ item.label }}
          div(class="divSelect")
             div(class="selectTitle") 项目名称
             div(class="selectValue")
@@ -41,31 +58,38 @@
                Col(style="padding-right:10px")
                   Select(filterable,clearable,v-model="selectStatus")
                      Option(v-for="item in getStatusList()",:value="item.statusName",:key="item.statusName") {{ item.statusName}}
-      div(class="selectedPullDown",v-else)
-         div(class="divSelect")
-            div(class="selectTitle") 所属公司
-            div(class="selectValue")
-               Col(style="padding-right:10px")
-                  Select(filterable,clearable)
-                     //Option(v-for="item in cityList" :value="item.value" :key="item.value") {{ item.label }}
-         div(class="divSelect")
-            div(class="selectTitle") 项目名称
-            div(class="selectValue")
-               Col(style="padding-right:10px")
-                  Select(filterable,clearable,v-model="selectProjectId")
-                     Option(v-for="item in getProjectList()",:value="item.projectId",:key="item.projectId") {{ item.projectName}}
-         div(class="divSelectMin")
-            div(class="selectTitleMin") 工种
-            div(class="selectValueMin")
-               Col(style="padding-right:10px")
-                  Select(filterable,clearable,v-model="selectWorkType")
-                     Option(v-for="item in getWorkTypeList()",:value="item.workTypeName",:key="item.workTypeName") {{ item.workTypeName}}
-         div(class="divSelectMin")
-            div(class="selectTitleMin") 状态
-            div(class="selectValueMin")
-               Col(style="padding-right:10px")
-                  Select(filterable,clearable,v-model="selectStatus")
-                     Option(v-for="item in getStatusList()",:value="item.statusName",:key="item.statusName") {{ item.statusName}}
+
+      div(class="selectedPullDown",v-if="pullDown")
+         div(class="selectDiv")
+            div(class="divSelectMin")
+               div(class="selectTitleMin") 证书
+               div(class="selectValueMin")
+                  Col(style="padding-right:10px")
+                     Select(filterable,clearable,v-model="selectStatus")
+                        Option(v-for="item in getStatusList()",:value="item.statusName",:key="item.statusName") {{ item.statusName}}
+            div(class="divSelect")
+               div(class="selectTitle") 参建单位
+               div(class="selectValue")
+                  Col(style="padding-right:10px")
+                     Select(filterable,clearable,v-model="selectUnitId")
+                        Option(v-for="item in getUnitList()",:value="item.unitId",:key="item.unitId") {{ item.unitName}}
+            div(class="divSelect")
+               div(class="selectTitle") 姓名
+               div(class="selectValue")
+                  Input(v-model="selectUserName",clearable,placeholder="请输入姓名")
+            div(class="divSelectAge")
+               div(class="selectTitle") 年龄
+               div(class="selectValueAge")
+                  InputNumber(:max="200",:min="1",v-model="selectMinAge")
+                  span 　-　
+                  InputNumber(:max="200",:min="1",v-model="selectMaxAge")
+            div(class="divSelectSex")
+               div(class="selectTitle") 性别
+               div(class="selectTitleSexBule",v-model="selectSex",v-if="selectSex == '男' ") 男
+               div(class="selectTitleSex",v-else) 男
+               div(class="selectTitleSexBule",v-model="selectSex",v-if="selectSex == '男' ") 女
+               div(class="selectTitleSex",v-else) 女
+
       div(class="pullDown",v-if="pullDown == false")
          img(src="~@/assets/css/images/下拉.png",@click="switchTo()")
       div(class="pullDown",v-else)
@@ -82,8 +106,10 @@
       Table(border,ref="selection",:columns="getUserColumns()",:data="getUserDate()")
          template(slot-scope="{row, index}",slot="serialNumber")
             span {{index + (userPageIndex-1) * userPageSize + 1}}
-         template(slot-scope="{row, index}",slot="company")
          template(slot-scope="{row, index}",slot="operation")
             div(class="operation") 详细操作
-      Page(:total="userPageTotal",size="small",@on-change="onPageIndexChange")
+   div(class="page")
+      span 共{{userPageTotal}}人
+      Page(size="small",@on-change="onPageIndexChange",show-elevator,:total="userPageTotal")
+
 

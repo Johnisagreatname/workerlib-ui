@@ -265,7 +265,6 @@ export default class WorkerStore extends VuexModule {
     // 人员列表
     @Action
     public getUserListParams() : any{
-
         if(this.selectProjectId){
             let item ={};
             item["name"]="projectId";
@@ -303,7 +302,7 @@ export default class WorkerStore extends VuexModule {
         }
         if(this.selectStatus){
             let item ={};
-            item["name"]="status";
+            item["name"]="leave";
             item["value"]=this.selectStatus;
             item["algorithm"] = "EQ"
             this.userConditionList.push(item);
@@ -325,7 +324,7 @@ export default class WorkerStore extends VuexModule {
         if(this.selectEafUserStatus){
             let item ={};
             item["name"]="eafUserStatus";
-            item["value"]=this.selectEafUserStatus;
+            item["value"]=this.selectEafUserStatus-1;
             item["algorithm"] = "EQ"
             this.userConditionList.push(item);
         }
@@ -376,7 +375,7 @@ export default class WorkerStore extends VuexModule {
     }
     @Action
     public async searchUserListCount() {
-        await request.post('/api/workerlib/project/count',await this.getProjectListParams()).then((total)=>{
+        await request.post('/api/workerlib/projectuser/count',await this.getUserListParams()).then((total)=>{
             if(!total){
                 return;
             }
@@ -389,6 +388,7 @@ export default class WorkerStore extends VuexModule {
     @Mutation
     private successUserList(data){
         this.userList = data.data;
+
     }
     public userColumns = [
         {
@@ -427,7 +427,7 @@ export default class WorkerStore extends VuexModule {
             }
         },
         {
-            title: '项目',
+            title: '所属项目',
             key: 'projectName',
             render: (h, params) => {
                 return h('div', [
@@ -448,7 +448,7 @@ export default class WorkerStore extends VuexModule {
             }
         },
         {
-            title: '分包单位',
+            title: '所属单位',
             key: 'unitName',
             render: (h, params) => {
                 return h('div', [
@@ -469,8 +469,25 @@ export default class WorkerStore extends VuexModule {
             }
         },
         {
-            title: '所在单位',
-            slot: 'company'
+            title: '所属上级公司',
+            key: 'parentName',
+            render: (h, params) => {
+                return h('div', [
+                    h('span', {
+                        style: {
+                            display: 'inline-block',
+                            width: '100%',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            whiteSpace: 'nowrap',
+                            cursor: 'pointer'
+                        },
+                        domProps: {
+                            title: params.row.parentName
+                        }
+                    }, params.row.parentName)
+                ])
+            }
         },
         {
             title: '人员状态',
@@ -535,6 +552,7 @@ export default class WorkerStore extends VuexModule {
     @Mutation
     private setUserPageTotal(data : any){
         this.userPageTotal = data;
+        this.userConditionList = new Array<any>();
     }
     @Mutation
     private setPullDown(data : any){
