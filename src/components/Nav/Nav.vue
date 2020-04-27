@@ -44,8 +44,8 @@
 
         private theirOwn: boolean;
         private exterior: boolean;
-
-
+        private type:string;
+        private style:string;
         constructor() {
             super();
             this.store = getModule(NavStore)
@@ -59,36 +59,44 @@
             this.badEvaluation  = false;           //不良评价
             this.skillAppraisal  = false;           //技能鉴定
             this.setting  = false;           //设置
-
+            this.type=sessionStorage.getItem("type");
             this.theirOwn = true;
             this.exterior = false;
+            this.style=sessionStorage.getItem("style");
+            console.log(typeof this.style)
         }
         mounted(){
+            //this.type=this['$route'].path.split("/")[this['$route'].path.split("/").length-1]
         }
         clickMenu(checked,menuName,path){
             let menu = ["homepage","projectManagement","peopleManagement","trainingManagement","lecturerManagement",
-                "comprehensiveAssessment","badEvaluation","skillAppraisal","setting"];
+                "comprehensiveAssessment","badEvaluation","skillAppraisal","account","workclass","commentType","grade","rate","course","punishment","indexVideo"];
             for(let i = 0;i < menu.length; i++){
                 if(menu[i]==checked){
                     this[checked] = true;
                     this.store.setMenuList(menuName);
+                    JSON.stringify(sessionStorage.setItem("type",checked));
+                    JSON.stringify(sessionStorage.setItem("style",checked));
+                    this.type=checked;
+                    this.style = checked;
                     this['$router'].push(path);
                 }else {
                     this[`${menu[i]}`] = false;
                 }
             }
-
         }
+
         switchChecked(switchName){
-            let switchMenu = ["theirOwn","exterior"];
+            let switchMenu = ["peopleManagement","exterior","account","workclass","commentType","grade","rate","course","punishment","indexVideo"];
             for(let i = 0;i < switchMenu.length; i++){
                 if(switchMenu[i]==switchName){
-                    this[switchName] = true;
-                }else {
-                    this[`${switchMenu[i]}`] = false;
+                    JSON.stringify(sessionStorage.setItem("style",switchName));
+                    this.style = switchName;
+                    this['$router'].push(switchName);
                 }
             }
         }
+
         getMenuList(){
             return this.store.menuList;
         }

@@ -466,17 +466,17 @@ export default class AccountStore extends VuexModule {
         {
             title: '用户名',
             key: 'username',
-            sortable: true
+            // sortable: false
         },
         {
             title: '创建日期',
             key: 'createOn',
-            sortable: true
+            // sortable: false
         },
         {
             title: '操作',
             slot: 'operation',
-            sortable: true
+            // sortable: false
         }
     ];
 
