@@ -18,16 +18,28 @@ export default class LecturerStore extends VuexModule {
     private user:string;
     private passWord:string;
     private userId:number;
-
+    private lecturer:number;
+    private lecturerPageTotal : number;
+    private lecturerConditionList:Array<any>;
     constructor(e) {
         super(e)
         this.lecturerInfo = {};
         this.lecturers = [];
         this.selectType = 1;
         this.user = null;
+        this.lecturer=0;
         this.passWord = null;
         this.userId = null;
+        this.lecturerPageTotal = 0;
+        this.lecturerConditionList = [];
     }
+    //set
+    @Mutation
+    private setLecturerPageTotal(data : any){
+        this.lecturerPageTotal = data;
+        this.lecturerConditionList = new Array<any>();
+    }
+
 
     // 项目列表
     @Action
@@ -40,6 +52,30 @@ export default class LecturerStore extends VuexModule {
             "keywords" : [],
             "selectList": []
         };
+    }
+    @Action
+    public getUpdateParams(id?:number,userid?:number): any{
+        let item : number;
+
+        if (id){
+            item=id;
+        }else {
+            item = null
+        }
+        let params:any={
+            "id":item,
+            "name":this.lecturerInfo.name,
+            "curriculum":this.lecturerInfo.curriculum,
+            "type":this.lecturerInfo.type,
+            "photo":this.lecturerInfo.photo,
+            "personalreesume":this.lecturerInfo.personalreesume,
+        }
+        if (userid){
+            params.userid=userid;
+        }
+        return{
+            params
+        }
     }
 
     @Action
@@ -168,17 +204,34 @@ export default class LecturerStore extends VuexModule {
             alert.warning(e.message || e)
         });
     }
+
+    //分页接口
     @Action
-    public async searchUserListCount() {
+    public async searchLecturerCount() {
         await request.post('/api/workerlib/lecturer/count',await this.getLecturerListParams()).then((total)=>{
             if(!total){
                 return;
             }
-            // this.setUserPageTotal(total.data)
+             this.setLecturerPageTotal(total.data)
         }).catch((e)=>{
             MessageUtils.warning(e);
         });
     }
+    //修改讲师
+    @Action
+    public async updateLecturerCount() {
+        await request.put('/api/workerlib/lecturer/'+this.lecturer,await this.getLecturerListParams()).then((total)=>{
+            if(!total){
+                return;
+            }
+            this.setLecturerPageTotal(total.data)
+        }).catch((e)=>{
+            MessageUtils.warning(e);
+        });
+    }
+
+
+
     @Mutation
     private success(data: any) {
         this.lecturers = data.data;
