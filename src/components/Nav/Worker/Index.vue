@@ -175,6 +175,7 @@
             return projectName;
         }
         getUnitName(){
+            
             let unitName = this.store.unitList.filter(a => a.unitId == this.store.selectUnitId).map(b => b.unitName)[0];
             return unitName;
         }

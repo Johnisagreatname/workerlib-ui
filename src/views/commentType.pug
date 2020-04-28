@@ -1,16 +1,32 @@
 .body
-    .topOne
-        .divOne
-            span 评价类型：
-                Input(clearable,style="width: 200px" ,v-model="selectName")
-        .divOne
-            span
-        .divOne
-            span
-        .divOne
-            span
-        .divOne
-            Button(@click="this.store.search") 搜索
+    //.topOne
+    //    .divOne
+    //        span 评价类型：
+    //            Input(clearable,style="width: 200px" ,v-model="selectName")
+    //    .divOne
+    //        span
+    //    .divOne
+    //        span
+    //    .divOne
+    //        span
+    //    .divOne
+    //        Button(@click="this.store.search") 搜索
+    div
+        p(:style="{fontSize: '16px',fontWeight: 'bold'}") 工人评价
+
+        div(class="selectedList")
+            span(:style="{fontSize: '16px',float: 'left',marginRight: '10px',paddingTop: '14px',color: '#789fef'}") 已选条件
+
+            div(class="selectButton")
+                div(class="reset") 重置
+                div(class="inquire") 查询
+        div(class="select")
+            div(class="divSelect")
+                div(class="selectTitle") 评价类型
+                div(class="selectValue")
+                    Col(style="padding-right:10px")
+                        Input(clearable,style="width: 200px" ,v-model="selectName")
+
     .hr
     .button
         Button(type="primary", ghost, icon="ios-add-circle-outline",@click="addCommentType=!addCommentType") 添加类型

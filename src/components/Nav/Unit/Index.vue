@@ -36,15 +36,66 @@
         private store: any;
         private workerStore: any;
         public roleName:any;
+        public columns12:Array<any>= [{
+            title: 'Name',
+            slot: 'name'
+        },
+            {
+                title: 'Age',
+                key: 'age'
+            },
+            {
+                title: 'Address',
+                key: 'address'
+            },
+            {
+                title: 'Action',
+                slot: 'action',
+                width: 150,
+                align: 'center'
+            }]
+
+
+        public data6:Array<any>=[{
+            name: 'John Brown',
+            age: 18,
+            address: 'New York No. 1 Lake Park'
+        },
+            {
+                name: 'Jim Green',
+                age: 24,
+                address: 'London No. 1 Lake Park'
+            },
+            {
+                name: 'Joe Black',
+                age: 30,
+                address: 'Sydney No. 1 Lake Park'
+            },
+            {
+                name: 'Jon Snow',
+                age: 26,
+                address: 'Ottawa No. 2 Lake Park'
+            }]
         constructor() {
             super();
             this.addUnit = false;
-            this.store = getModule(UnitStore);
+
 			this.workerStore = getModule(WorkerStore);
             this.roleName = JSON.parse(sessionStorage.getItem('loginInfo')).data.userGroupRoleModels[0].role.roleName;
         }
         loading = true;
         @Model('isCollapsed', { type: Boolean }) private isCollapsed !: boolean;
+
+
+
+        switchTo(){
+
+            this.store.switchPullDown();
+            if(this.store.pullDown){
+                //this.store.setUserPageSize(10)
+            }
+            //this.store.searchUserList();
+        }
 
         rowClassName (row, index) : string {
             if(index == 0) {
@@ -98,6 +149,13 @@
             }
         }
 
+        set pullDown(data: boolean){
+            this.store.setPullDown(data);
+        }
+        get pullDown(): boolean{
+            return this.store.pullDown;
+        }
+
         getType() : any {
             return this.store.unitType;
         }
@@ -105,17 +163,18 @@
         getProjectNameList():any{
             return this.store.projectNameList;
         }
+
         getColumns() : any{
             return this.store.columns;
         }
+
         getData() : any{
-            for(let i = 0;i < this.store.unit.length;i++) {
-                if(this.store.uplodId.filter(a => a.unit_id == this.store.unit[i].unit_id).length > 0){
-                    this.$set(this.store.unit[i], '_checked', true)
-                }
-            }
             return this.store.unit;
         }
+        upload(){
+            this.store.uploadPeople();
+        }
+
         messageWarningFn (text) {
             let alert: any = Message;
             alert.warning(text);
@@ -365,5 +424,5 @@
         }
 }
 </script>
-<style scoped src="@/styles/unit.css" />
+<style  src="@/styles/unit.css" />
 <template lang="pug" src="@/views/unit.pug" />

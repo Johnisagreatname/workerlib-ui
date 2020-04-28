@@ -1,18 +1,84 @@
 .body
-    .topOne
-        .divOne
-            span 工种名称：
-                Input(clearable,style="width: 200px" ,v-model="selectName")
-        .divOne
-            span 是否加入统计：
-                Select(v-model="selectIsCount" style="width:200px",clearable)
-                    Option(v-for="item in isOK()" :value="item.value" :key="item.value") {{ item.name }}
-        .divOne
-            span 是否显示：
-                Select(v-model="selectIsShow" style="width:200px",clearable)
-                    Option(v-for="item in isOK()" :value="item.value" :key="item.value") {{ item.name }}
-        .search
-            Button(@click="this.store.search") 搜索
+    //.topOne
+    //    .divOne
+    //        span 工种名称：
+    //            Input(clearable,style="width: 200px" ,v-model="selectName")
+    //    .divOne
+    //        span 是否加入统计：
+    //            Select(v-model="selectIsCount" style="width:200px",clearable)
+    //                Option(v-for="item in isOK()" :value="item.value" :key="item.value") {{ item.name }}
+    //    .divOne
+    //        span 是否显示：
+    //            Select(v-model="selectIsShow" style="width:200px",clearable)
+    //                Option(v-for="item in isOK()" :value="item.value" :key="item.value") {{ item.name }}
+    div
+        p(:style="{fontSize: '16px',fontWeight: 'bold'}") 工种设置
+
+        div(class="selectedList")
+            span(:style="{fontSize: '16px',float: 'left',marginRight: '10px',paddingTop: '14px',color: '#789fef'}") 已选条件
+            div(class="selected",v-if="selectProjectId") {{getProjectName()}}
+                Icon(type="ios-backspace-outline",@click="clearProject()")
+            div(class="selected",v-if="selectWorkType") {{selectWorkType}}
+                Icon(type="ios-backspace-outline")
+            div(class="selected",v-if="selectStatus") {{selectStatus}}
+
+            div(class="selectButton")
+                div(class="reset") 重置
+                div(class="inquire") 查询
+        div(class="select",v-if="pullDown == false")
+            div(class="divSelect")
+                div(class="selectTitle") 所属公司
+                div(class="selectValue")
+                    Col(style="padding-right:10px")
+                        Select(filterable,clearable)
+                            //Option(v-for="item in cityList" :value="item.value" :key="item.value") {{ item.label }}
+            div(class="divSelect")
+                div(class="selectTitle") 项目名称
+                div(class="selectValue")
+                    Col(style="padding-right:10px")
+                        Select(filterable,clearable,v-model="selectProjectId")
+                            Option(v-for="item in getProjectList()",:value="item.projectId",:key="item.projectId") {{ item.projectName}}
+            div(class="divSelectMin")
+                div(class="selectTitleMin") 工种
+                div(class="selectValueMin")
+                    Col(style="padding-right:10px")
+                        Select(filterable,clearable,v-model="selectWorkType")
+                            Option(v-for="item in getWorkTypeList()",:value="item.workTypeName",:key="item.workTypeName") {{ item.workTypeName}}
+            div(class="divSelectMin")
+                div(class="selectTitleMin") 状态
+                div(class="selectValueMin")
+                    Col(style="padding-right:10px")
+                        Select(filterable,clearable,v-model="selectStatus")
+                            Option(v-for="item in getStatusList()",:value="item.statusName",:key="item.statusName") {{ item.statusName}}
+        div(class="selectedPullDown",v-else)
+            div(class="divSelect")
+                div(class="selectTitle") 所属公司
+                div(class="selectValue")
+                    Col(style="padding-right:10px")
+                        Select(filterable,clearable)
+                            //Option(v-for="item in cityList" :value="item.value" :key="item.value") {{ item.label }}
+            div(class="divSelect")
+                div(class="selectTitle") 项目名称
+                div(class="selectValue")
+                    Col(style="padding-right:10px")
+                        Select(filterable,clearable,v-model="selectProjectId")
+                            Option(v-for="item in getProjectList()",:value="item.projectId",:key="item.projectId") {{ item.projectName}}
+            div(class="divSelectMin")
+                div(class="selectTitleMin") 工种
+                div(class="selectValueMin")
+                    Col(style="padding-right:10px")
+                        Select(filterable,clearable,v-model="selectWorkType")
+                            Option(v-for="item in getWorkTypeList()",:value="item.workTypeName",:key="item.workTypeName") {{ item.workTypeName}}
+            div(class="divSelectMin")
+                div(class="selectTitleMin") 状态
+                div(class="selectValueMin")
+                    Col(style="padding-right:10px")
+                        Select(filterable,clearable,v-model="selectStatus")
+                            Option(v-for="item in getStatusList()",:value="item.statusName",:key="item.statusName") {{ item.statusName}}
+        div(class="pullDown",v-if="pullDown == false")
+            img(src="~@/assets/css/images/下拉.png",@click="switchTo()")
+        div(class="pullDown",v-else)
+            img(src="~@/assets/css/images/上拉.png",@click="switchTo()")
     .hr
     .button
         Button(type="primary", ghost, icon="ios-add-circle-outline",@click="addCommentType=!addCommentType") 添加工种

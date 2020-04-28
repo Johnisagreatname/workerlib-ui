@@ -139,6 +139,7 @@ export default class UnitStore extends VuexModule {
     public uplodId:Array<any>;
     public conditionList:Array<any>;
 
+    private pullDown: boolean;
     constructor(e) {
         super(e);
         //分页
@@ -152,6 +153,8 @@ export default class UnitStore extends VuexModule {
         this.unit = [];
         //获取项目列表
         this.projectNameList = [];
+
+        this.pullDown = false;
 
         this.id=null;
         this.project_id=null;
@@ -212,6 +215,7 @@ export default class UnitStore extends VuexModule {
             "groupList" : [],
 
             "keywords" : [],
+
             "selectList": []
         };
     }
@@ -254,6 +258,7 @@ export default class UnitStore extends VuexModule {
             alert.warning(e.message || e)
         });
     }
+
     @Action
     public async search() {
         await request.post('/api/workerlib/unitview',await this.getParams()).then((data)=>{
@@ -276,10 +281,20 @@ export default class UnitStore extends VuexModule {
             if(!e.message) {
                 return;
             }
-
             alert.warning(e.message || e)
         });
     }
+
+    @Mutation
+    private setPullDown(data : any){
+        this.pullDown = data;
+    }
+    @Mutation
+    private switchPullDown(){
+        this.pullDown = !this.pullDown;
+    }
+
+
     @Action
     public async upload() {
         let alert: any = Message;
@@ -329,6 +344,8 @@ export default class UnitStore extends VuexModule {
             alert.warning(e.message || e)
         });
     }
+
+
     @Action
     public async insertUnit() {
         await request.put('/api/workerlib/unit', {
@@ -402,6 +419,8 @@ export default class UnitStore extends VuexModule {
             MessageUtils.warning(e);
         });
     }
+
+
     @Action
     public added(data: any) {
         if(data.status == 0) {
@@ -442,9 +461,9 @@ export default class UnitStore extends VuexModule {
             align: 'center'
         },
         {
-            title: '参建单位编号',
+            title: '序号',
             key: 'unit_number',
-            sortable: true,
+            sortable: false,
             render: (h, params) => {
                 return h('div', [
                     h('span', {
@@ -463,9 +482,9 @@ export default class UnitStore extends VuexModule {
             }
         },
         {
-            title: '参建单位名称',
-            key: 'unit_name',
-            sortable: true,
+            title: '姓名',
+            key: 'unit_number',
+            sortable: false,
             render: (h, params) => {
                 return h('div', [
                     h('span', {
@@ -477,32 +496,154 @@ export default class UnitStore extends VuexModule {
                             whiteSpace: 'nowrap'
                         },
                         domProps: {
-                            title: params.row.unit_name
+                            title: params.row.unit_number
                         }
-                    }, params.row.unit_name)
+                    }, params.row.unit_number)
                 ])
             }
         },
         {
-            title: '当前人数',
-            slot: 'worker_count',
-            sortable: true
+            title: '所属项目',
+            key: 'unit_number',
+            sortable: false,
+            render: (h, params) => {
+                return h('div', [
+                    h('span', {
+                        style: {
+                            display: 'inline-block',
+                            width: '100%',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            whiteSpace: 'nowrap'
+                        },
+                        domProps: {
+                            title: params.row.unit_number
+                        }
+                    }, params.row.unit_number)
+                ])
+            }
         },
-        // {
-        //     title: '单位类型',
-        //     key: 'unit_type',
-        //     sortable: true
-        // },
-        // {
-        //     title: '入场日期',
-        //     key: 'entrance_time',
-        //     sortable: true
-        // },
         {
-            title: '法人代表',
-            key: 'principal',
-            sortable: true
+            title: '所属单位',
+            key: 'unit_number',
+            sortable: false,
+            render: (h, params) => {
+                return h('div', [
+                    h('span', {
+                        style: {
+                            display: 'inline-block',
+                            width: '100%',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            whiteSpace: 'nowrap'
+                        },
+                        domProps: {
+                            title: params.row.unit_number
+                        }
+                    }, params.row.unit_number)
+                ])
+            }
+        },
+        {
+            title: '班组',
+            key: 'unit_number',
+            sortable: false,
+            render: (h, params) => {
+                return h('div', [
+                    h('span', {
+                        style: {
+                            display: 'inline-block',
+                            width: '100%',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            whiteSpace: 'nowrap'
+                        },
+                        domProps: {
+                            title: params.row.unit_number
+                        }
+                    }, params.row.unit_number)
+                ])
+            }
+        },
+        {
+            title: '人员状态',
+            key: 'unit_number',
+            sortable: false,
+            render: (h, params) => {
+                return h('div', [
+                    h('span', {
+                        style: {
+                            display: 'inline-block',
+                            width: '100%',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            whiteSpace: 'nowrap'
+                        },
+                        domProps: {
+                            title: params.row.unit_number
+                        }
+                    }, params.row.unit_number)
+                ])
+            }
+        },
+        {
+            title: '评分',
+            key: 'unit_number',
+            sortable: false,
+            render: (h, params) => {
+                return h('div', [
+                    h('span', {
+                        style: {
+                            display: 'inline-block',
+                            width: '100%',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            whiteSpace: 'nowrap'
+                        },
+                        domProps: {
+                            title: params.row.unit_number
+                        }
+                    }, params.row.unit_number)
+                ])
+            }
+        },
+        {
+            title: '评分类型',
+            key: 'worker_count',
+            sortable: false,
+            render: (h, params) => {
+                return h('div', [
+                    h('span', {
+                        style: {
+                            display: 'inline-block',
+                            width: '100%',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            whiteSpace: 'nowrap'
+                        },
+                        domProps: {
+                            title: params.row.unit_number
+                        }
+                    }, params.row.unit_number)
+                ])
+            }
+        },
+        {
+            title: '操作',
+            slot: 'action',
+            width: 150,
+            align: 'center'
         }
+        // {
+        //     title: '当前人数',
+        //     slot: 'worker_count',
+        //     sortable: true
+        // },
+        // {
+        //     title: '法人代表',
+        //     key: 'principal',
+        //     sortable: true
+        // }
     ];
 
 

@@ -45,9 +45,11 @@
         private badEvaluation: boolean;           //不良评价
         private skillAppraisal: boolean;           //技能鉴定
         private setting: boolean;           //设置
+        private type: string;           //设置
 
-        private style: string;
 
+
+        private styleClass: string;
 
         constructor() {
             super();
@@ -63,10 +65,11 @@
             this.badEvaluation  = false;           //不良评价
             this.skillAppraisal  = false;           //技能鉴定
             this.setting  = false;           //设置
-
-            this.style = null;
+            this.type=null;
+            this.styleClass = null;
         }
         mounted(){
+
         }
         clickMenu(checked,menuName,path){
             let menu = ["homepage","projectManagement","peopleManagement","trainingManagement","lecturerManagement",
@@ -80,24 +83,35 @@
                     this[`${menu[i]}`] = false;
                 }
             }
+        }
+
+        switchChecked(switchName) {
+            this.styleClass = switchName;
+                if (switchName == 'theirOwn') {
+                    this.workerStore.setSelectEafUserStatus(1);
+                    this.workerStore.searchUserList();
+                } else if (switchName == 'exterior') {
+                    this.workerStore.setSelectEafUserStatus(2);
+                    this.workerStore.searchUserList();
+                }else{
+                    this['$router'].push(switchName);
+                }
 
         }
-        switchChecked(switchName){
-            if(switchName == 'theirOwn'){
-                this.workerStore.setSelectEafUserStatus(1);
-                this.workerStore.searchUserList();
-            }else if(switchName == 'exterior'){
-                this.workerStore.setSelectEafUserStatus(2);
-                this.workerStore.searchUserList();
-            }else{
-                let switchMenu = ["theirOwn","exterior"];
-                for(let i = 0;i < switchMenu.length; i++){
-                    if(switchMenu[i]==switchName){
-                        this.style = switchName;
-                    }
-                }
-            }
+
+        switchMode(switchName){
+            // debugger
+            // let switchMenu = ["account","workclass","commentType","grade","rate","course","punishment","indexVideo"];
+            // for(let i = 0;i < switchMenu.length; i++){
+            //     if(switchMenu[i]==switchName){
+            //
+            //         this.style = switchName;
+            //
+            //     }
+            // }
         }
+
+
         getMenuList(){
             return this.store.menuList;
         }
@@ -105,6 +119,7 @@
     }
 
 </script>
+
 
 <style scoped src="@/styles/nav.css" />
 <template lang="pug" src="@/views/nav.pug" />
