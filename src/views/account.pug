@@ -34,11 +34,11 @@
                     Col(style="padding-right:10px")
                         Input(clearable,style="width: 200px",v-model="name")
 
-        div(class="pullDown",v-if="pullDown == false")
-            img(src="~@/assets/css/images/下拉.png",@click="switchTo()")
-        div(class="pullDown",v-else)
-            img(src="~@/assets/css/images/上拉.png",@click="switchTo()")
-    //.hr
+        //div(class="pullDown",v-if="pullDown == false")
+        //    img(src="~@/assets/css/images/下拉.png",@click="switchTo()")
+        //div(class="pullDown",v-else)
+        //    img(src="~@/assets/css/images/上拉.png",@click="switchTo()")
+    .hr
     .button
         Button(type="primary", ghost, icon="ios-add-circle-outline",@click="addProject=!addProject") 新增用户
     .bodyTwo

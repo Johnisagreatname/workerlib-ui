@@ -323,17 +323,17 @@ export default class PunishmentStore extends VuexModule {
         {
             title: '序号',
             key: 'value',
-            sortable: true
+            // sortable: true
         },
         {
             title: '处罚类型',
             key: 'name',
-            sortable: true
+            // sortable: true
         },
         {
             title: '详细操作',
             slot: 'operation',
-            sortable: true
+            // sortable: true
         }
     ];
 
