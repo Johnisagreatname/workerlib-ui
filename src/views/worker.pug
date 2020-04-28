@@ -5,13 +5,13 @@
       div(class="selectedList")
          div(class="condition")
             span(:style="{fontSize: '16px',float: 'left',marginRight: '10px',paddingTop: '14px',color: '#789fef'}") 已选条件
-            div(class="selected",v-if="selectUserName") {{selectUserName()}}
+            div(class="selected",v-if="selectUserName") {{selectUserName}}
                Icon(type="ios-backspace-outline",@click="clearUserName()")
 
             div(class="selected",v-if="selectProjectId") {{getProjectName()}}
                Icon(type="ios-backspace-outline",@click="clearProject()")
 
-            div(class="selected",v-if="selectUnitId") {{getUnitName}}
+            div(class="selected",v-if="selectUnitId") {{getUnitName()}}
                Icon(type="ios-backspace-outline",@click="clearUnit()")
 
             div(class="selected",v-if="selectWorkType") {{selectWorkType}}
@@ -86,9 +86,9 @@
             div(class="divSelectSex")
                div(class="selectTitle") 性别
                div(class="selectTitleSexBule",v-model="selectSex",v-if="selectSex == '男' ") 男
-               div(class="selectTitleSex",v-else) 男
-               div(class="selectTitleSexBule",v-model="selectSex",v-if="selectSex == '男' ") 女
-               div(class="selectTitleSex",v-else) 女
+               div(class="selectTitleSex",v-else,@click="checked('男')") 男
+               div(class="selectTitleSexBule",v-model="selectSex",v-if="selectSex == '女' ") 女
+               div(class="selectTitleSex",v-else,@click="checked('女')") 女
 
       div(class="pullDown",v-if="pullDown == false")
          img(src="~@/assets/css/images/下拉.png",@click="switchTo()")
@@ -97,19 +97,25 @@
 
 
    div(class="button")
-      Button(type="primary",ghost,icon="ios-people-outline") 新增
-      Button(type="primary",ghost,icon="ios-people-outline") 导出
-      Button(type="primary",ghost,icon="ios-people-outline") 导入薪资
-      Button(type="primary",ghost,icon="ios-people-outline") 统计工种
-      Button(type="primary",ghost,icon="ios-people-outline") 筛重
+      Button(type="primary",ghost,icon="ios-add-circle-outline",@click="addWorker()") 新增
+      Button(type="primary",ghost,icon="ios-cloud-upload-outline") 导出
+      Button(type="primary",ghost,icon="ios-cloud-download-outline") 导入薪资
+      Button(type="primary",ghost,icon="ios-desktop-outline") 统计工种
+      Button(type="primary",ghost,icon="ios-sync") 筛重
    div
       Table(border,ref="selection",:columns="getUserColumns()",:data="getUserDate()")
          template(slot-scope="{row, index}",slot="serialNumber")
             span {{index + (userPageIndex-1) * userPageSize + 1}}
          template(slot-scope="{row, index}",slot="operation")
-            div(class="operation") 详细操作
+            div(class="operation",@click="checkedAddUser()") 详细操作
    div(class="page")
       span 共{{userPageTotal}}人
       Page(size="small",@on-change="onPageIndexChange",show-elevator,:total="userPageTotal")
+
+   Modal(v-model="addUser",title="人员详情",@on-ok="ok",@on-cancel="cancel",width='60%')
+      Tabs(value="name1")
+         TabPane(label="标签一" name="name1") 标签一的内容
+         TabPane(label="标签二" name="name2") 标签二的内容
+         TabPane(label="标签三" name="name3") 标签三的内容
 
 

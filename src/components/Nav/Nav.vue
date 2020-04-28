@@ -89,12 +89,12 @@
             }else if(switchName == 'exterior'){
                 this.workerStore.setSelectEafUserStatus(2);
                 this.workerStore.searchUserList();
-            }
-
-            let switchMenu = ["theirOwn","exterior"];
-            for(let i = 0;i < switchMenu.length; i++){
-                if(switchMenu[i]==switchName){
-                    this.style = switchName;
+            }else{
+                let switchMenu = ["theirOwn","exterior"];
+                for(let i = 0;i < switchMenu.length; i++){
+                    if(switchMenu[i]==switchName){
+                        this.style = switchName;
+                    }
                 }
             }
         }
