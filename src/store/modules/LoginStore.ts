@@ -16,8 +16,11 @@ export default class LoginStore extends VuexModule {
     public username:String = 'CYGRADMIN'; //state
     public password:String = '';
     public roleName:any;
+
     constructor(e) {
         super(e)
+        sessionStorage.setItem("type","homePage")
+        sessionStorage.setItem("style","homePage")
     }
     @Action({ commit: 'success' })
     public async login() {

@@ -3,6 +3,12 @@
       p(:style="{fontSize: '16px',fontWeight: 'bold'}") 人员管理
 
       div(class="selectedList")
+         span(:style="{fontSize: '16px',float: 'left',marginRight: '10px',paddingTop: '14px',color: '#789fef'}") 已选条件
+         div(class="selected",v-if="selectProjectId") {{getProjectName()}}
+            Icon(type="ios-backspace-outline",@click="clearProject()")
+         div(class="selected",v-if="selectWorkType") {{selectWorkType}}
+            Icon(type="ios-backspace-outline")
+         div(class="selected",v-if="selectStatus") {{selectStatus}}
          div(class="condition")
             span(:style="{fontSize: '16px',float: 'left',marginRight: '10px',paddingTop: '14px',color: '#789fef'}") 已选条件
             div(class="selected",v-if="selectUserName") {{selectUserName()}}
@@ -29,12 +35,41 @@
             div(class="selected",v-if="selectSex") {{selectSex}}
                Icon(type="ios-backspace-outline",@click="clearSex()")
 
+
          div(class="selectButton")
             div(class="reset",@click="reset()") 重置
             div(class="inquire",@click="searchUserList()") 查询
 
 
       div(class="select")
+         div(class="divSelect")
+            div(class="selectTitle") 所属公司
+            div(class="selectValue")
+               Col(style="padding-right:10px")
+                  Select(filterable,clearable)
+                     //Option(v-for="item in cityList" :value="item.value" :key="item.value") {{ item.label }}
+         div(class="divSelect")
+            div(class="selectTitle") 项目名称
+            div(class="selectValue")
+               Col(style="padding-right:10px")
+                  Select(filterable,clearable,v-model="selectProjectId")
+                     Option(v-for="item in getProjectList()",:value="item.projectId",:key="item.projectId") {{ item.projectName}}
+         div(class="divSelectMin")
+            div(class="selectTitleMin") 工种
+            div(class="selectValueMin")
+               Col(style="padding-right:10px")
+                  Select(filterable,clearable,v-model="selectWorkType")
+                     Option(v-for="item in getWorkTypeList()",:value="item.workTypeName",:key="item.workTypeName") {{ item.workTypeName}}
+         div(class="divSelectMin")
+            div(class="selectTitleMin") 状态
+            div(class="selectValueMin")
+               Col(style="padding-right:10px")
+                  Select(filterable,clearable,v-model="selectStatus")
+                     Option(v-for="item in getStatusList()",:value="item.statusName",:key="item.statusName") {{ item.statusName}}
+      div(class="selectedPullDown")
+
+      div(class="select")
+
          div(class="divSelect")
             div(class="selectTitle") 所属公司
             div(class="selectValue")

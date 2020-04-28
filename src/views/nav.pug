@@ -50,7 +50,7 @@
                     img(src="~@/assets/css/images/技能鉴定蓝.png",v-if="skillAppraisal",:style="{marginLeft: '12px'}")
                     img(src="~@/assets/css/images/技能鉴定.png",v-else)
                     Item 技能鉴定
-                MenuItem(name="设置",@click.native="clickMenu('setting','设置','/nav/project')")
+                MenuItem(name="设置",@click.native="clickMenu('account','设置','/nav/account')")
                     span(class="top-angle",v-if="setting")
                     span(class="bottom-angle",v-if="setting")
                     img(src="~@/assets/css/images/设置蓝.png",v-if="setting",:style="{marginLeft: '12px'}")
@@ -64,6 +64,7 @@
                 Breadcrumb
                     span 您当前的位置：
                     BreadcrumbItem(v-if="getMenuList()",v-for="item in getMenuList()") {{item}}
+
             div(:style="{height: '40px'}",v-if="peopleManagement")
                 div(class="switchMeun",@click="switchChecked('theirOwn')")
                     div(class="switchNameBule",v-if="style =='theirOwn' ") 自有人员
@@ -72,7 +73,41 @@
                 div(class="switchMeun",@click="switchChecked('exterior')")
                     div(class="switchNameBule",v-if="style =='exterior' ") 外部人员
                     div(class="switchBrBule",v-if="style == 'exterior'")
-                    div(class="switchName",v-else) 外部人员
+
+            div(:style="{height: '40px'}",v-else-if="type==='account'")
+                div(class="switchMeun",@click="switchMode('account')")
+                    div(class="switchNameBule",v-if="style==='account'") 账号
+                    div(class="switchBrBule",v-if="style==='account'")
+                    div(class="switchName",v-else) 账号
+                div(class="switchMeun",@click="switchMode('workclass')")
+                    div(class="switchNameBule",v-if="style==='workclass'") 工种
+                    div(class="switchBrBule",v-if="style==='workclass'")
+                    div(class="switchName",v-else) 工种
+                div(class="switchMeun",@click="switchMode('commentType')")
+                    div(class="switchNameBule",v-if="style==='commentType'") 工人评价
+                    div(class="switchBrBule",v-if="style==='commentType'")
+                    div(class="switchName",v-else) 工人评价
+                div(class="switchMeun",@click="switchMode('grade')")
+                    div(class="switchNameBule",v-if="style==='grade'") 评定等级
+                    div(class="switchBrBule",v-if="style==='grade'")
+                    div(class="switchName",v-else) 评定等级
+                div(class="switchMeun",@click="switchMode('rate')")
+                    div(class="switchNameBule",v-if="style==='rate'") 评定级别
+                    div(class="switchBrBule",v-if="style==='rate'")
+                    div(class="switchName",v-else) 评定级别
+                div(class="switchMeun",@click="switchMode('course')")
+                    div(class="switchNameBule",v-if="style==='course'") 课件类型
+                    div(class="switchBrBule",v-if="style==='course'")
+                    div(class="switchName",v-else) 课件类型
+                div(class="switchMeun",@click="switchMode('punishment')")
+                    div(class="switchNameBule",v-if="style==='punishment'") 处罚
+                    div(class="switchBrBule",v-if="style==='punishment'")
+                    div(class="switchName",v-else) 处罚
+                div(class="switchMeun",@click="switchMode('indexVideo')")
+                    div(class="switchNameBule",v-if="style==='indexVideo'") 首页设置
+                    div(class="switchBrBule",v-if="style==='indexVideo'")
+                    div(class="switchName",v-else) 首页设置
+
             Content(:style="{padding: '30px',margin: '24px 24px 24px 24px', minHeight: '280px', background: '#fff',borderRadius: '40px',maxHeight: '860px'}")
                 Content
                     router-view

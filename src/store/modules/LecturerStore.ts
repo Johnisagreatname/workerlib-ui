@@ -2,6 +2,7 @@ import { Module, VuexModule, Mutation, Action } from 'vuex-module-decorators';
 import store from "../index";
 import request from "../../common/HttpClient";
 import {Message} from "iview";
+import MessageUtils from "../../common/MessageUtils";
 
 @Module({
     namespaced: true,
@@ -26,6 +27,19 @@ export default class LecturerStore extends VuexModule {
         this.user = null;
         this.passWord = null;
         this.userId = null;
+    }
+
+    // 项目列表
+    @Action
+    public getLecturerListParams() : any {
+        return {
+            "pageInfo" : {},
+            "conditionList":[],
+            "sortList": [],
+            "groupList" : [],
+            "keywords" : [],
+            "selectList": []
+        };
     }
 
     @Action
@@ -152,6 +166,17 @@ export default class LecturerStore extends VuexModule {
             }
 
             alert.warning(e.message || e)
+        });
+    }
+    @Action
+    public async searchUserListCount() {
+        await request.post('/api/workerlib/lecturer/count',await this.getLecturerListParams()).then((total)=>{
+            if(!total){
+                return;
+            }
+            // this.setUserPageTotal(total.data)
+        }).catch((e)=>{
+            MessageUtils.warning(e);
         });
     }
     @Mutation
