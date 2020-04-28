@@ -64,15 +64,16 @@
                 Breadcrumb
                     span 您当前的位置：
                     BreadcrumbItem(v-if="getMenuList()",v-for="item in getMenuList()") {{item}}
-            div(:style="{height: '40px'}",v-if="type==='peopleManagement'")
-                div(class="switchMeun",@click="switchChecked('peopleManagement')")
-                    div(class="switchNameBule",v-if="style==='peopleManagement'") 自有人员
-                    div(class="switchBrBule",v-if="style==='peopleManagement'")
+
+            div(:style="{height: '40px'}",v-if="peopleManagement")
+                div(class="switchMeun",@click="switchChecked('theirOwn')")
+                    div(class="switchNameBule",v-if="style =='theirOwn' ") 自有人员
+                    div(class="switchBrBule",v-if="style =='theirOwn' ")
                     div(class="switchName",v-else) 自有人员
                 div(class="switchMeun",@click="switchChecked('exterior')")
-                    div(class="switchNameBule",v-if="style==='exterior'") 外部人员
-                    div(class="switchName",v-else) 外部人员
-                    div(class="switchBrBule",v-if="style==='exterior'")
+                    div(class="switchNameBule",v-if="style =='exterior' ") 外部人员
+                    div(class="switchBrBule",v-if="style == 'exterior'")
+
             div(:style="{height: '40px'}",v-else-if="type==='account'")
                 div(class="switchMeun",@click="switchMode('account')")
                     div(class="switchNameBule",v-if="style==='account'") 账号
