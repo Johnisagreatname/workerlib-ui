@@ -113,6 +113,15 @@
       Page(size="small",@on-change="onPageIndexChange",show-elevator,:total="userPageTotal")
 
    Modal(v-model="addUser",title="人员详情",@on-ok="ok",@on-cancel="cancel",width='60%')
+      Tabs(value="name1")
+         TabPane(label="人员基本信息" name="人员基本信息") 标签一的内容
+         TabPane(label="综合评价与不良评价" name="综合评价与不良评价") 标签二的内容
+         TabPane(label="证件管理" name="证件管理") 标签三的内容
+         TabPane(label="证书管理" name="证书管理") 标签三的内容
+         TabPane(label="培训记录" name="培训记录") 标签三的内容
+         TabPane(label="合同管理" name="合同管理") 标签三的内容
+         TabPane(label="考勤记录" name="考勤记录") 标签三的内容
+         TabPane(label="工资记录" name="工资记录") 标签三的内容
 
 
 
