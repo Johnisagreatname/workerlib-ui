@@ -51,6 +51,7 @@
       #certificate(class="charts")
     .big-box
       p.title 培训课件统计
+      span.total 课件总数123个
       #courseware(class="charts")
   .charts-wrap-two
     .big-box
@@ -58,7 +59,15 @@
       #workers(class="charts")
     .big-box
       p.title 培训统计
+      span.total 培训总人数123人
       #cultivate(class="charts")
     .big-box
       p.title 不良记录统计
-      #badness(class="charts")
+      Table(:tooltip="true" :row-class-name="rowClassName" :columns="columns" :data="$store.state.HomePageStore.tableData")
+        template(slot-scope="{ row, index }" slot="img")
+          img(:src="`/api/workerlib/preview/appraise_photo/photo/${row.photoId}`")
+      .button
+        .right
+          Icon(type="md-arrow-dropright")
+        .left
+          Icon(type="md-arrow-dropleft")
