@@ -1,5 +1,5 @@
 <script lang="ts">
-    import  "@/assets/css/common.css";
+    import "@/assets/css/common.css";
     import WorkerStore from '../../../store/modules/WorkerStore';
     import CommentsStore from '../../../store/modules/CommentsStore';
     import { Component, Vue, Prop, Model, Watch} from 'vue-property-decorator';
@@ -26,6 +26,8 @@
         private store: any;
         private rowCount: number;
 
+        private addUser: boolean;
+
 
         private checkedList : Array<any>;
 
@@ -34,6 +36,7 @@
             this.store = getModule(WorkerStore);
             this.rowCount = 0;
             this.checkedList = [];
+            this.addUser = false;
 
 
         }
@@ -172,7 +175,7 @@
             return projectName;
         }
         getUnitName(){
-            debugger
+            
             let unitName = this.store.unitList.filter(a => a.unitId == this.store.selectUnitId).map(b => b.unitName)[0];
             return unitName;
         }
@@ -224,8 +227,12 @@
         clearUserName(){
             this.store.setSelectUserName(null);
         }
-
-
+        checked(sex){
+            this.store.setSelectSex(sex);
+        }
+        checkedAddUser(){
+            this.addUser = !this.addUser;
+        }
 
     }
 </script>

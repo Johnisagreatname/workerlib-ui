@@ -1,7 +1,6 @@
 <script lang="ts">
     import "@/assets/css/common.css";
     import UnitStore from '../../../store/modules/UnitStore';
-    import UnitStoreBack from "../../../store/modules/UnitStoreBack";
 	import WorkerStore from '../../../store/modules/WorkerStore';
     import { Component, Vue, Prop, Model} from 'vue-property-decorator';
     import { getModule } from 'vuex-module-decorators';
@@ -80,7 +79,6 @@
         constructor() {
             super();
             this.addUnit = false;
-            this.store = getModule(UnitStoreBack);
 
 			this.workerStore = getModule(WorkerStore);
             this.roleName = JSON.parse(sessionStorage.getItem('loginInfo')).data.userGroupRoleModels[0].role.roleName;
@@ -171,12 +169,6 @@
         }
 
         getData() : any{
-            // for(let i = 0;i < this.store.unit.length;i++) {
-            //     if(this.store.uplodId.filter(a => a.unit_id == this.store.unit[i].unit_id).length > 0){
-            //         this.$set(this.store.unit[i], '_checked', true)
-            //     }
-            // }
-
             return this.store.unit;
         }
         upload(){
