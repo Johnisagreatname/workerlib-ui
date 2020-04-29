@@ -38,7 +38,7 @@
                     img(src="~@/assets/css/images/综合评价蓝.png",v-if="comprehensiveAssessment",:style="{marginLeft: '12px'}")
                     img(src="~@/assets/css/images/综合评价.png",v-else)
                     Item 综合评价
-                MenuItem(name="不良评价",@click.native="clickMenu('badEvaluation','不良评价','/nav/project')")
+                MenuItem(name="不良评价",@click.native="clickMenu('badEvaluation','不良评价','/nav/badList')")
                     span(class="top-angle",v-if="badEvaluation")
                     span(class="bottom-angle",v-if="badEvaluation")
                     img(src="~@/assets/css/images/不良评价蓝.png",v-if="badEvaluation",:style="{marginLeft: '12px'}")
