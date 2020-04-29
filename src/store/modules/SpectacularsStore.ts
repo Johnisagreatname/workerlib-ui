@@ -90,7 +90,7 @@ export default class SpectacularsStore extends VuexModule {
             alert.warning(e.message || e)
         });
     }
-    //查询
+    //查询数据
     @Action
     public async searchData(url:string,conName?:string,status?:string) {
         await request.post('/api/workerlib/'+url, await this.getUpdateParams(conName,status)).then((data)=>{
@@ -111,7 +111,6 @@ export default class SpectacularsStore extends VuexModule {
             alert.warning(e.message || e)
         });
     }
-
 
     //工种人数统计searchData(url:worktypenumber,conName:eafUserStatus,status:0或是1)0是自有,1是外部
     //技能工种评定统计searchData(url:grade)
