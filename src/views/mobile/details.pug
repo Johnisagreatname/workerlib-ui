@@ -1,191 +1,191 @@
-#home
-    view-box(ref="viewBox")
-        x-header(:left-options="{showBack: false}",style="background-color:#0E93FF;") 人员详情
-        div(class="div-bg",hidden=false)
-            flexbox
-                flexbox-item(span="100")
-                    img(class="img-header",:src="getUrl(this.store.personInfo)")
-                flexbox-item(span="150")
-                    flexbox(orient="vertical")
-                        flexbox-item
-                            div(class="flex-demo") {{this.store.personInfo.eafName}} | {{checkSex(this.store.personInfo.cwrIdnum)}} | {{getYear(this.store.personInfo.cwrIdnum)}}岁
-                        flexbox-item
-                            div(@click="clickIdNumModal()",class="flex-demo2") 查看详情
+//- #home
+//-     view-box(ref="viewBox")
+//-         x-header(:left-options="{showBack: false}",style="background-color:#0E93FF;") 人员详情
+//-         div(class="div-bg",hidden=false)
+//-             flexbox
+//-                 flexbox-item(span="100")
+//-                     img(class="img-header",:src="getUrl(this.store.personInfo)")
+//-                 flexbox-item(span="150")
+//-                     flexbox(orient="vertical")
+//-                         flexbox-item
+//-                             div(class="flex-demo") {{this.store.personInfo.eafName}} | {{checkSex(this.store.personInfo.cwrIdnum)}} | {{getYear(this.store.personInfo.cwrIdnum)}}岁
+//-                         flexbox-item
+//-                             div(@click="clickIdNumModal()",class="flex-demo2") 查看详情
 
-                flexbox-item(span="100")
-                    img(class="img-rq",:src="getCodeUrl(this.store.personInfo)")
-            group
-                cell(v-if="this.hidden == false",title='手机号码',
-                    :value = "replacePhone(this.store.personInfo.eafPhone)",
-                    is-link =false,
-                    style="cell-value-color:#0E93FF;")
-                    img(slot="icon",
-                        width="15",
-                        style="display:block;margin-right:10px;",
-                        src="~@/assets/css/images/phoneNumber.png")
-                cell(v-if="this.hidden == true",title='手机号码',
-                    :value = "this.store.personInfo.eafPhone",
-                    is-link =false,
-                    style="cell-value-color:#0E93FF;")
-                    img(slot="icon",
-                        width="15",
-                        style="display:block;margin-right:10px;",
-                        src="~@/assets/css/images/phoneNumber.png")
-                cell(v-if="this.hidden == false",title='身份证号',
-                    :value = "replaceID(this.store.personInfo.cwrIdnum)",
-                    is-link =false,
-                    style="@cell-value-color:#0E93FF")
-                    img(slot="icon",
-                        width="18",
-                        style="display:block;margin-right:10px;",
-                        src="~@/assets/css/images/idUnmber.png")
-                cell(v-if="this.hidden == true",title='身份证号',
-                    :value = "this.store.personInfo.cwrIdnum",
-                    is-link =false,
-                    style="@cell-value-color:#0E93FF")
-                    img(slot="icon",
-                        width="18",
-                        style="display:block;margin-right:10px;",
-                        src="~@/assets/css/images/idUnmber.png")
-                cell(title='工种',
-                    :value = "getWorkType(this.store.workType)",
-                    is-link =false)
-                    img(slot="icon",
-                        width="18",
-                        style="display:block;margin-right:10px;",
-                        src="~@/assets/css/images/workType.png")
-                cell(title='状态',
-                    :value = "getLeave()",
-                    is-link =false)
-                    img(slot="icon",
-                        width="18",
-                        style="display:block;margin-right:10px;",
-                        src="~@/assets/css/images/stauts.png")
-                //cell(title='是否班组长',
-                //    value = '否',
-                //    is-link =false)
-                //    img(slot="icon",
-                //        width="15",
-                //        style="display:block;margin-right:10px;",
-                //        src="~@/assets/css/images/grade.png")
-                cell(title='评定等级',
-                    :value = "getRate(this.store.rateInfo)",
-                    is-link =false)
-                    img(slot="icon",
-                        width="15",
-                        style="display:block;margin-right:10px;",
-                        src="~@/assets/css/images/grade.png")
-        div(class="div-bg",hidden=false)
-            div(class="text-title") 参与项目
-            divider
-            swiper(auto height="200px",
-                dots-position="center",:hidden="getProjectInfoList().length==0")
-                swiper-item(v-for ="item in getProjectInfoList()")
-                    flexbox
-                        flexbox-item(span="10")
-                            badge(class="badge-main")
-                        flexbox-item
-                            div(class="text-main") 项目名称
-                    div(class="text-gray-left") {{item.project_name}}
-                    divider
-                    flexbox
-                        flexbox-item(span="1")
-                            badge(class="badge-main")
-                        flexbox-item(span="100")
-                            div(class="text-main") 所在单位
-                        flexbox-item
-                            div(class="text-gray") {{item.unit_name}}
-                    divider
-                    flexbox
-                        flexbox-item(span="1")
-                            badge(class="badge-main")
-                        flexbox-item
-                            div(class="text-main") 进场时间
-                        flexbox-item
-                            div(class="text-blue") {{getDateFormat(item.cwrUserIn)}}
-                        flexbox-item(span="1")
-                            badge
-                        flexbox-item
-                            div(class="text-main") 退场时间
-                        flexbox-item
-                            div(class="text-blue") {{getDateFormat(item.cwrUserOut)}}
-        div(class="div-bg",v-if="this.hidden == true")
-            div(class="text-title") 参与培训
-            divider
-            flexbox(orient="horizontal",v-for="item in getCultivateList()")
-                flexbox-item(span="40")
-                    img(class="img-vedio",src="~@/assets/css/images/vedio.png",@click="goBack(item.id,item.cultivate_id,item.peoples)")
-                flexbox-item
-                    flexbox(orient="horizontal")
-                        flexbox(orient="vertical")
-                            flexbox-item
-                                div(class="text-main") {{item.courseware_brief}}
-                            flexbox-item
-                                div(class="text-red",v-if="item.whether == '是'") 必修
-                                div(class="text-blue",v-else) 选修
-                        flexbox(orient="vertical")
-                            flexbox-item
-                                div(class="text-main",v-if="item.whether") {{item.archivesStatus}}
-                                div(class="text-main",v-else) 待培训
-                            flexbox-item
-                                div(class="text-blue",v-if="item.startTime") 时间：{{(item.startTime || ' ').split(' ')[0]}}
-                                div(class="text-blue",v-else) {{new Date().split(' ')[0]}}
-        //div(class="div-bg")
-        //    div(class="text-title") 出勤记录
-        //    group
-        //        cell(title='本月出勤天数',
-        //            :value = "this.wstore.checkWorkceMonth.total",
-        //            is-link =false)
-        //            img(slot="icon",
-        //                width="20",
-        //                style="display:block;margin-right:5px;",
-        //                src="")
-        //        cell(title='总出勤天数',
-        //            :value = "this.wstore.checkWorkce",
-        //            is-link =false)
-        //            img(slot="icon",
-        //                width="20",
-        //                style="display:block;margin-right:5px;",
-        //                src="")
-        div(class="div-bg",v-if="this.hidden == true")
-            div(class="text-title") 工资明细
-            group
-                cell(title='总收入',
-                    :value = "this.wstore.salaryInfo.pay",
-                    is-link =false)
-                    img(slot="icon",
-                        width="20",
-                        style="display:block;margin-right:5px;",
-                        src="")
-                cell(title='总到账',
-                    :value = "this.wstore.salaryInfo.income",
-                    is-link =false)
-                    img(slot="icon",
-                        width="20",
-                        style="display:block;margin-right:5px;",
-                        src="")
-        div(class="div-bg",v-if="this.hidden == true")
-            div(class="text-title") 员工评价
-            divider
-            div(v-for="item in getCommentSparticularsList()")
-                flexbox
-                    flexbox-item
-                        div(:title="item.project_name",:style= {
-                            'display': 'inline-block',
-                            'width': '100%',
-                            'overflow': 'hidden',
-                            'textOverflow': 'ellipsis',
-                            'whiteSpace': 'nowrap',
-                            'padding-left': '20px'
-                            }) {{item.project_name}}
-                    flexbox-item
-                        div(class="flex-demo2") 综合评价
-                div(v-if="item.type == 1",:style={'color':'red','padding-left': '20px'}) {{item.description}}  {{item.username}}
-                div(v-else,:style={'color':'red','padding-left': '20px'}) {{item.punishment}}
-                div(v-if="item.type == 1",:style={'color':'red','padding-left': '20px'}) 处罚：{{item.punishment}}
-                div(v-else,:style={'color':'red','padding-left': '20px'}) {{item.description}}
-    Modal(v-model="idNumModal",title="请输入身份证号码",@on-ok="ok", @on-cancel="cancel" )
-        Input(v-model="getIdNUm")
+//-                 flexbox-item(span="100")
+//-                     img(class="img-rq",:src="getCodeUrl(this.store.personInfo)")
+//-             group
+//-                 cell(v-if="this.hidden == false",title='手机号码',
+//-                     :value = "replacePhone(this.store.personInfo.eafPhone)",
+//-                     is-link =false,
+//-                     style="cell-value-color:#0E93FF;")
+//-                     img(slot="icon",
+//-                         width="15",
+//-                         style="display:block;margin-right:10px;",
+//-                         src="~@/assets/css/images/phoneNumber.png")
+//-                 cell(v-if="this.hidden == true",title='手机号码',
+//-                     :value = "this.store.personInfo.eafPhone",
+//-                     is-link =false,
+//-                     style="cell-value-color:#0E93FF;")
+//-                     img(slot="icon",
+//-                         width="15",
+//-                         style="display:block;margin-right:10px;",
+//-                         src="~@/assets/css/images/phoneNumber.png")
+//-                 cell(v-if="this.hidden == false",title='身份证号',
+//-                     :value = "replaceID(this.store.personInfo.cwrIdnum)",
+//-                     is-link =false,
+//-                     style="@cell-value-color:#0E93FF")
+//-                     img(slot="icon",
+//-                         width="18",
+//-                         style="display:block;margin-right:10px;",
+//-                         src="~@/assets/css/images/idUnmber.png")
+//-                 cell(v-if="this.hidden == true",title='身份证号',
+//-                     :value = "this.store.personInfo.cwrIdnum",
+//-                     is-link =false,
+//-                     style="@cell-value-color:#0E93FF")
+//-                     img(slot="icon",
+//-                         width="18",
+//-                         style="display:block;margin-right:10px;",
+//-                         src="~@/assets/css/images/idUnmber.png")
+//-                 cell(title='工种',
+//-                     :value = "getWorkType(this.store.workType)",
+//-                     is-link =false)
+//-                     img(slot="icon",
+//-                         width="18",
+//-                         style="display:block;margin-right:10px;",
+//-                         src="~@/assets/css/images/workType.png")
+//-                 cell(title='状态',
+//-                     :value = "getLeave()",
+//-                     is-link =false)
+//-                     img(slot="icon",
+//-                         width="18",
+//-                         style="display:block;margin-right:10px;",
+//-                         src="~@/assets/css/images/stauts.png")
+//-                 //cell(title='是否班组长',
+//-                 //    value = '否',
+//-                 //    is-link =false)
+//-                 //    img(slot="icon",
+//-                 //        width="15",
+//-                 //        style="display:block;margin-right:10px;",
+//-                 //        src="~@/assets/css/images/grade.png")
+//-                 cell(title='评定等级',
+//-                     :value = "getRate(this.store.rateInfo)",
+//-                     is-link =false)
+//-                     img(slot="icon",
+//-                         width="15",
+//-                         style="display:block;margin-right:10px;",
+//-                         src="~@/assets/css/images/grade.png")
+//-         div(class="div-bg",hidden=false)
+//-             div(class="text-title") 参与项目
+//-             divider
+//-             swiper(auto height="200px",
+//-                 dots-position="center",:hidden="getProjectInfoList().length==0")
+//-                 swiper-item(v-for ="item in getProjectInfoList()")
+//-                     flexbox
+//-                         flexbox-item(span="10")
+//-                             badge(class="badge-main")
+//-                         flexbox-item
+//-                             div(class="text-main") 项目名称
+//-                     div(class="text-gray-left") {{item.project_name}}
+//-                     divider
+//-                     flexbox
+//-                         flexbox-item(span="1")
+//-                             badge(class="badge-main")
+//-                         flexbox-item(span="100")
+//-                             div(class="text-main") 所在单位
+//-                         flexbox-item
+//-                             div(class="text-gray") {{item.unit_name}}
+//-                     divider
+//-                     flexbox
+//-                         flexbox-item(span="1")
+//-                             badge(class="badge-main")
+//-                         flexbox-item
+//-                             div(class="text-main") 进场时间
+//-                         flexbox-item
+//-                             div(class="text-blue") {{getDateFormat(item.cwrUserIn)}}
+//-                         flexbox-item(span="1")
+//-                             badge
+//-                         flexbox-item
+//-                             div(class="text-main") 退场时间
+//-                         flexbox-item
+//-                             div(class="text-blue") {{getDateFormat(item.cwrUserOut)}}
+//-         div(class="div-bg",v-if="this.hidden == true")
+//-             div(class="text-title") 参与培训
+//-             divider
+//-             flexbox(orient="horizontal",v-for="item in getCultivateList()")
+//-                 flexbox-item(span="40")
+//-                     img(class="img-vedio",src="~@/assets/css/images/vedio.png",@click="goBack(item.id,item.cultivate_id,item.peoples)")
+//-                 flexbox-item
+//-                     flexbox(orient="horizontal")
+//-                         flexbox(orient="vertical")
+//-                             flexbox-item
+//-                                 div(class="text-main") {{item.courseware_brief}}
+//-                             flexbox-item
+//-                                 div(class="text-red",v-if="item.whether == '是'") 必修
+//-                                 div(class="text-blue",v-else) 选修
+//-                         flexbox(orient="vertical")
+//-                             flexbox-item
+//-                                 div(class="text-main",v-if="item.whether") {{item.archivesStatus}}
+//-                                 div(class="text-main",v-else) 待培训
+//-                             flexbox-item
+//-                                 div(class="text-blue",v-if="item.startTime") 时间：{{(item.startTime || ' ').split(' ')[0]}}
+//-                                 div(class="text-blue",v-else) {{new Date().split(' ')[0]}}
+//-         //div(class="div-bg")
+//-         //    div(class="text-title") 出勤记录
+//-         //    group
+//-         //        cell(title='本月出勤天数',
+//-         //            :value = "this.wstore.checkWorkceMonth.total",
+//-         //            is-link =false)
+//-         //            img(slot="icon",
+//-         //                width="20",
+//-         //                style="display:block;margin-right:5px;",
+//-         //                src="")
+//-         //        cell(title='总出勤天数',
+//-         //            :value = "this.wstore.checkWorkce",
+//-         //            is-link =false)
+//-         //            img(slot="icon",
+//-         //                width="20",
+//-         //                style="display:block;margin-right:5px;",
+//-         //                src="")
+//-         div(class="div-bg",v-if="this.hidden == true")
+//-             div(class="text-title") 工资明细
+//-             group
+//-                 cell(title='总收入',
+//-                     :value = "this.wstore.salaryInfo.pay",
+//-                     is-link =false)
+//-                     img(slot="icon",
+//-                         width="20",
+//-                         style="display:block;margin-right:5px;",
+//-                         src="")
+//-                 cell(title='总到账',
+//-                     :value = "this.wstore.salaryInfo.income",
+//-                     is-link =false)
+//-                     img(slot="icon",
+//-                         width="20",
+//-                         style="display:block;margin-right:5px;",
+//-                         src="")
+//-         div(class="div-bg",v-if="this.hidden == true")
+//-             div(class="text-title") 员工评价
+//-             divider
+//-             div(v-for="item in getCommentSparticularsList()")
+//-                 flexbox
+//-                     flexbox-item
+//-                         div(:title="item.project_name",:style= {
+//-                             'display': 'inline-block',
+//-                             'width': '100%',
+//-                             'overflow': 'hidden',
+//-                             'textOverflow': 'ellipsis',
+//-                             'whiteSpace': 'nowrap',
+//-                             'padding-left': '20px'
+//-                             }) {{item.project_name}}
+//-                     flexbox-item
+//-                         div(class="flex-demo2") 综合评价
+//-                 div(v-if="item.type == 1",:style={'color':'red','padding-left': '20px'}) {{item.description}}  {{item.username}}
+//-                 div(v-else,:style={'color':'red','padding-left': '20px'}) {{item.punishment}}
+//-                 div(v-if="item.type == 1",:style={'color':'red','padding-left': '20px'}) 处罚：{{item.punishment}}
+//-                 div(v-else,:style={'color':'red','padding-left': '20px'}) {{item.description}}
+//-     Modal(v-model="idNumModal",title="请输入身份证号码",@on-ok="ok", @on-cancel="cancel" )
+//-         Input(v-model="getIdNUm")
 
 
 

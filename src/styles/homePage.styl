@@ -1,4 +1,124 @@
 #home-page-wrap
   padding 25px 35px
   height 970px
-  box-sizing border-box
+  display flex
+  justify-content space-between
+  .people-wrap
+    width 800px
+    height 100%
+    display flex
+    flex-wrap wrap
+    align-content space-between
+    .top
+      width 100%
+      height 180px
+      display flex
+      justify-content space-between
+      .bgc
+        width 250px
+        height 180px
+        background-size 100%
+        background-repeat no-repeat
+        color #fff
+        position relative
+        .title
+          font-size 18px
+          font-weight 500
+          margin-top 15px
+          padding-left 20px
+        .num
+          font-size 64px
+          line-height 105px
+          display inline-block
+          width calc(100% - 10px)
+          margin-left 5px
+          text-align center
+          overflow hidden
+        span
+          position absolute
+          bottom 25px
+          right 20px
+          font-size 12px
+          cursor pointer
+      .blue
+        background-image url("~@/assets/css/images/homePage_blue.png")
+      .cambridge-blue
+        background-image url("~@/assets/css/images/homePage_cambridge_blue.png")
+      .green
+        background-image url("~@/assets/css/images/homePage_green.png")
+    .video-vrap
+      width 100%
+      height 445px
+      border-radius 20px
+    .bottom
+      width 100%
+      height 220px
+      display flex
+      justify-content space-between
+      .small-box
+        box-shadow 0px 2px 7px 0px rgba(225, 225, 225, 0.35)
+        border-radius 20px
+        width 250px
+        height 100%
+        background-color #fff
+        padding 0 10px
+        .title
+          margin 25px 0 0
+          font-size 18px
+          color #2f
+          padding-left 10px
+          font-weight 600
+        .num
+          font-size 64px
+          font-weight 500
+          text-align center
+          border-bottom 1px solid #cc
+          display inline-block
+          width 100%
+          height 100px
+          line-height 100px
+          overflow hidden
+          span
+            font-size 14px
+            vertical-align unset
+            padding-left 5px
+        .project
+          height 60px
+          font-size 14px
+          padding 0 10px
+          display flex
+          justify-content space-between
+          p
+            display flex
+            align-items center
+            color #85
+            width 95px
+            overflow hidden
+          .check
+            margin-left 10px
+            color #3165f6
+  .charts-wrap-one, .charts-wrap-two
+    width 380px
+    display flex
+    flex-wrap wrap
+    align-content space-between
+    .title
+      line-height 55px
+      padding-left 26px
+      font-size 18px
+      color #2f
+    .big-box
+      width 100%
+      height 290px
+      background-color #fff
+      box-shadow 0px 2px 7px 0px rgba(225, 225, 225, 0.35)
+      border-radius 20px
+      position relative
+      .charts
+        width 100%
+        height calc(100% - 55px)
+      /deep/.ivu-radio-group
+        position absolute
+        right 0
+        top 20px
+

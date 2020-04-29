@@ -1,2 +1,64 @@
 #home-page-wrap
   .people-wrap
+    .top
+      .bgc(class="blue")
+        p.title 工种总数(种)
+        p.num 123
+        span 查看详情
+      .bgc(class="cambridge-blue")
+        p.title 自有队伍人数(人)
+        p.num 123
+        span 查看详情
+      .bgc(class="green")
+        p.title 外部队伍人数(人)
+        p.num 123
+        span 查看详情
+    .video-vrap
+      video(width="100%" height="100%" src="")
+    .bottom
+      .small-box
+        p.title 在建工程总数
+        p.num 123
+          span 个
+        .project
+          p 开工：123
+          p.check 未开工：123
+      .small-box
+        p.title 在场工人数
+        p.num 123
+          span 人
+        .project
+          p 自有：123
+          p.check 外部：123
+      .small-box
+        p.title 离场工人数
+        p.num 123
+          span 人
+        .project
+          p 自有：123
+          p.check 外部：123
+  .charts-wrap-one
+    .big-box
+      p.title 工种人数统计
+      RadioGroup(v-model="jobsType", @on-change="getJobs")
+        Radio(label="own")
+          span 自有工人
+        Radio(label="epiboly")
+          span 劳务分包
+      #jobs(class="charts")
+    .big-box
+      p.title 执业证书统计
+      #certificate(class="charts")
+    .big-box
+      p.title 培训课件统计
+      #courseware(class="charts")
+  .charts-wrap-two
+    .big-box
+      p.title 自有工人技能工种评定统计
+      #workers(class="charts")
+    .big-box
+      p.title 培训统计
+      #cultivate(class="charts")
+    .big-box
+      p.title 不良记录统计
+      #badness(class="charts")
