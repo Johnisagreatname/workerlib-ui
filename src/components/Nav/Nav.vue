@@ -55,10 +55,9 @@
             super();
             this.store = getModule(NavStore)
             this.workerStore = getModule(WorkerStore)
-
             this.homepage = false;              //主页
             this.projectManagement = false;     //项目管理
-            this.peopleManagement  = true;     //人员管理
+            this.peopleManagement  = null;     //人员管理
             this.trainingManagement  = false;   //培训管理
             this.lecturerManagement  = false;   //讲师管理
             this.comprehensiveAssessment  = false;   //综合评价
@@ -123,4 +122,3 @@
 
 <style scoped src="@/styles/nav.css" />
 <template lang="pug" src="@/views/nav.pug" />
-

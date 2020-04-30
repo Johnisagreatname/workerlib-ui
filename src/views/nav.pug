@@ -38,7 +38,7 @@
                     img(src="~@/assets/css/images/综合评价蓝.png",v-if="comprehensiveAssessment",:style="{marginLeft: '12px'}")
                     img(src="~@/assets/css/images/综合评价.png",v-else)
                     Item 综合评价
-                MenuItem(name="不良评价",@click.native="clickMenu('badEvaluation','不良评价','/nav/project')")
+                MenuItem(name="不良评价",@click.native="clickMenu('badEvaluation','不良评价','/nav/badList')")
                     span(class="top-angle",v-if="badEvaluation")
                     span(class="bottom-angle",v-if="badEvaluation")
                     img(src="~@/assets/css/images/不良评价蓝.png",v-if="badEvaluation",:style="{marginLeft: '12px'}")
@@ -110,10 +110,10 @@
                     div(class="switchBrBule",v-if="styleClass==='indexVideo'")
                     div(class="switchName",v-else) 首页设置
 
-            //- Content
-            //-     Content
-            //-         router-view
-            Content(:style="{padding: '30px',margin: '24px 24px 24px 24px', minHeight: '280px', background: '#fff',borderRadius: '40px',maxHeight: '860px'}")
+            Content(v-if="!styleClass && !peopleManagement")
+                Content
+                    router-view
+            Content(v-else :style="{padding: '30px',margin: '24px 24px 24px 24px', minHeight: '280px', background: '#fff',borderRadius: '40px',maxHeight: '860px'}")
                 Content
                     router-view
 

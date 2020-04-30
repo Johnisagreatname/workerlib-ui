@@ -1,8 +1,8 @@
 <!--
  * @Date         : 2020-04-28 09:46:19
  * @LastEditors  : HaoJie
- * @LastEditTime : 2020-04-29 19:28:30
- * @FilePath     : \src\components\Nav\HomePage\Index.vue
+ * @LastEditTime : 2020-04-30 12:36:29
+ * @FilePath     : /src/components/Nav/HomePage/Index.vue
  -->
 <script lang="ts">
 import "@/assets/css/common.css";
@@ -104,11 +104,15 @@ export default class HomePage extends Vue {
     this.jobsType = "own";
   }
   mounted() {
+    this.getTotal();
     this.getJobs();
     this.getCertificate();
     this.getCourseware();
     this.getWorkers();
     this.getCultivate();
+  }
+  getTotal() {
+    this.store.getTotal()
   }
   async getJobs() {
     switch (this.jobsType) {

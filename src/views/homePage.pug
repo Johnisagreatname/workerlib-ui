@@ -3,36 +3,36 @@
     .top
       .bgc(class="blue")
         p.title 工种总数(种)
-        p.num 123
+        p.num {{$store.state.HomePageStore.typeOfWorkTotal}}
         span 查看详情
       .bgc(class="cambridge-blue")
         p.title 自有队伍人数(人)
-        p.num 123
+        p.num {{$store.state.HomePageStore.ownConstructionTeam}}
         span 查看详情
       .bgc(class="green")
         p.title 外部队伍人数(人)
-        p.num 123
+        p.num {{$store.state.HomePageStore.externalConstructionTeam}}
         span 查看详情
     .video-vrap
       video(width="100%" height="100%" src="")
     .bottom
       .small-box
         p.title 在建工程总数
-        p.num 123
+        p.num {{$store.state.HomePageStore.constructionProject}}
           span 个
         .project
-          p 开工：123
-          p.check 未开工：123
+          p 开工：{{$store.state.HomePageStore.onlineProject}}
+          p.check 未开工：{{$store.state.HomePageStore.offlineProject}}
       .small-box
         p.title 在场工人数
-        p.num 123
+        p.num {{$store.state.HomePageStore.onlineWorker}}
           span 人
         .project
           p 自有：123
           p.check 外部：123
       .small-box
         p.title 离场工人数
-        p.num 123
+        p.num {{$store.state.HomePageStore.offlineWorker}}
           span 人
         .project
           p 自有：123

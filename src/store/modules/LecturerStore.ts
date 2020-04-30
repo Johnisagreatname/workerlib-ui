@@ -18,6 +18,18 @@ export default class LecturerStore extends VuexModule {
     private user:string;
     private passWord:string;
     private userId:number;
+    private lecturer:number;
+    private lecturerPageTotal : number;
+    private lecturerConditionList:Array<any>;
+    private workTypeList:Array<any>; //工种列表
+    private CurriculumList:Array<any>//课程列表
+    //分页
+    private PageSize : number;
+    private PageIndex : number;
+    private PageTotal : number;
+
+    private ConditionList:Array<any>;
+    private selectCurriculum:string
 
     constructor(e) {
         super(e)
@@ -25,11 +37,31 @@ export default class LecturerStore extends VuexModule {
         this.lecturers = [];
         this.selectType = 1;
         this.user = null;
+        this.lecturer=0;
         this.passWord = null;
         this.userId = null;
+        this.lecturerPageTotal = 0;
+        this.lecturerConditionList = [];
+        this.workTypeList = [];
+        this.CurriculumList = [];
+        this.ConditionList = [];
+        this.selectCurriculum=null;
+        this.PageSize = 15;
+        this.PageIndex = 1;
+        this.PageTotal = 0;
+    }
+    //set
+    @Mutation
+    private setLecturerPageTotal(data : any){
+        this.lecturerPageTotal = data;
+        this.lecturerConditionList = new Array<any>();
+    }
+    @Mutation
+    private setSelectCurriculum(data : any){
+        this.selectCurriculum = data;
     }
 
-    // 项目列表
+    // 查询项目列表条件
     @Action
     public getLecturerListParams() : any {
         return {
@@ -41,7 +73,87 @@ export default class LecturerStore extends VuexModule {
             "selectList": []
         };
     }
+    //新增or修改参数
+    //第一个参数是讲师表的id（新增给空值，修改给具体的id）
+    //第二个参数是讲师表对应的用户userid（新增必须给具体值，修改时不用给参数）
+    @Action
+    public getUpdateParams(id?:number,userid?:number): any{
+        let item : number;
+        if (id){
+            item=id;
+        }else {
+            item = null
+        }
+        let params:any={
+            "id":item,
+            "name":this.lecturerInfo.name,
+            "curriculum":this.lecturerInfo.curriculum,
+            "type":this.lecturerInfo.type,
+            "photo":this.lecturerInfo.photo,
+            "personalreesume":this.lecturerInfo.personalreesume,
+        }
+        if (userid){
+            params.userid=userid;
+        }
+        return{
+            params
+        }
+    }
 
+    // 人员列表
+    @Action
+    public getUserListParams() : any{
+        if(this.selectCurriculum){
+            let item ={};
+            item["name"]="curriculum";
+            item["value"]=this.selectCurriculum;
+            item["algorithm"] = "EQ"
+            this.ConditionList.push(item);
+        }
+
+        return {
+            "pageInfo" : {
+                "pageIndex": this.PageSize,
+                "pageSize": this.PageIndex
+            },
+            "conditionList": this.ConditionList,
+            "sortList": [],
+            "groupList" : [],
+            "keywords" : [],
+            "selectList": []
+        }
+
+    }
+
+
+    //搜索
+    @Action
+    public async searchUserList(){
+        await request.post('/api/workerlib/projectuser',await this.getUserListParams()).then((data)=>{
+            if(!data){
+                return;
+            }
+            this.success(data);
+            this.searchLecturerCount();
+        }).catch((e)=>{
+            console.log(e)
+            let alert: any = Message;
+            if(!e) {
+                alert.warning('未知错误！')
+                return
+            }
+            if(e.response && e.response.data && e.response.data.message) {
+                alert.warning(e.response.data.message)
+                return
+            }
+            if(!e.message) {
+                return;
+            }
+            alert.warning(e.message || e)
+        });
+    }
+
+    //查询
     @Action
     public async search() {
         await request.post('/api/workerlib/lecturer', {
@@ -74,6 +186,7 @@ export default class LecturerStore extends VuexModule {
             alert.warning(e.message || e)
         });
     }
+    //新增用户
     @Action
     public async insertUser() {
         await request.put('/api/workerlib/user', {
@@ -104,6 +217,7 @@ export default class LecturerStore extends VuexModule {
             alert.warning(e.message || e)
         });
     }
+    //新增用户权限
     @Action
     public async insertUserGroupRole(id) {
         await request.put('/api/workerlib/usergrouprole',{
@@ -134,16 +248,10 @@ export default class LecturerStore extends VuexModule {
             alert.warning(e.message || e)
         });
     }
+    //新增讲师
     @Action
     public async insertLecturer(id) {
-        await request.put('/api/workerlib/lecturer', {
-            "name":this.lecturerInfo.name,
-            "curriculum":this.lecturerInfo.curriculum,
-            "type":this.lecturerInfo.type,
-            "photo":this.lecturerInfo.photo,
-			"personalreesume":this.lecturerInfo.personalreesume,
-            "userId":id
-        }).then((data)=>{
+        await request.put('/api/workerlib/lecturer', await this.getUpdateParams(null,id)).then((data)=>{
             if(!data){
                 return;
             }
@@ -168,17 +276,190 @@ export default class LecturerStore extends VuexModule {
             alert.warning(e.message || e)
         });
     }
+
+    //分页接口
     @Action
-    public async searchUserListCount() {
+    public async searchLecturerCount() {
         await request.post('/api/workerlib/lecturer/count',await this.getLecturerListParams()).then((total)=>{
             if(!total){
                 return;
             }
-            // this.setUserPageTotal(total.data)
+             this.setLecturerPageTotal(total.data)
         }).catch((e)=>{
             MessageUtils.warning(e);
         });
     }
+
+    //修改讲师,未完成
+    @Action
+    public async updateLecturerCount(lecturerId) {
+        await request.put('/api/workerlib/lecturer/'+lecturerId,await this.getUpdateParams(null,null)).then((total)=>{
+            if(!total){
+                return;
+            }
+            this.setLecturerPageTotal(total.data)
+        }).catch((e)=>{
+            MessageUtils.warning(e);
+        });
+    }
+
+    //批量删除讲师
+    //第一个参数url是要删除的表
+    //第二个参数要删除的id数组
+    @Action
+    public async delete(url:string,array:Array<number|string>) {
+        await request.post('/api/workerlib/'+url+'/delete',array).then((data)=>{
+            if(!data){
+                return;
+            }
+            this.added(data)
+        }).catch((e)=>{
+            console.log(e)
+            let alert: any = Message;
+            if(!e) {
+                alert.warning('未知错误！')
+                return
+            }
+            if(e.response && e.response.data && e.response.data.message) {
+                alert.warning(e.response.data.message)
+                return
+            }
+            if(!e.message) {
+                return;
+            }
+            alert.warning(e.message || e)
+        });
+    }
+    //查询类型,不合理
+    @Action
+    public async searchLecturerType() {
+        await request.post('/api/workerlib/lecturer',await this.getLecturerListParams()).then((total)=>{
+            if(!total){
+                return;
+            }
+            this.setLecturerPageTotal(total.data)
+        }).catch((e)=>{
+            MessageUtils.warning(e);
+        });
+    }
+    //课程列表
+    @Action
+    public getCurriculumListParams() : any {
+        return {
+            "pageInfo" : {},
+            "conditionList":[{
+                "name" : "category",
+                "value": "工种",
+                "algorithm": "EQ"
+            }],
+            "sortList": [],
+            "groupList" : [],
+            "keywords" : [],
+            "selectList": [
+                {"field": "name","alias":"workTypeName"},
+                {"field": "value","alias":"workTypeValue"}
+            ]
+        };
+    }
+    //课程
+    @Action
+    public async searchCurriculum() {
+        await request.post('/api/workerlib/lecturer',await this.getCurriculumListParams()).then((total)=>{
+            if(!total){
+                return;
+            }
+            this.successCurriculumList(total.data)
+        }).catch((e)=>{
+            MessageUtils.warning(e);
+        });
+    }
+    // 工种列表
+    @Action
+    public getWorkTypeListParams() : any {
+        return {
+            "pageInfo" : {},
+            "conditionList":[],
+            "sortList": [],
+            "groupList" : [],
+            "keywords" : [],
+            "selectList": [
+                {"field": "name","alias":"workTypeName"},
+                {"field": "value","alias":"workTypeValue"}
+            ]
+        };
+    }
+
+    //工种
+    @Action
+    public async searchWorkTypeList() {
+        await request.post('/api/workerlib/dictionaries',await this.getWorkTypeListParams()).then((data)=>{
+            if(!data){
+                return;
+            }
+            this.successWorkTypeList(data);
+        }).catch((e)=>{
+            console.log(e)
+            let alert: any = Message;
+            if(!e) {
+                alert.warning('未知错误！')
+                return
+            }
+            if(e.response && e.response.data && e.response.data.message) {
+                alert.warning(e.response.data.message)
+                return
+            }
+            if(!e.message) {
+                return;
+            }
+            alert.warning(e.message || e)
+        });
+    }
+    @Mutation
+    private successWorkTypeList(data){
+        this.workTypeList = data.data;
+    }
+    @Mutation
+    private successCurriculumList(data){
+        this.CurriculumList = data.data;
+    }
+
+    //导出
+    @Action
+    public async uploadPeople() {
+        let alert: any = Message;
+        await request.post('/api/workerlib/view_lecturer/export',{
+            "conditionList": [
+            ],
+            "keywords" : [],
+            "selectList": [
+                {"field": "name" ,"alias":"姓名"},
+                {"function": "type","alias":"类型" },
+                {"field": "personalreesume" ,"alias":"履历"},
+                {"field": "curriculum" ,"alias":"课程"},
+            ]
+        }).then((data)=>{
+            if(!data){
+                return;
+            }
+            alert.success('成功！');
+        }).catch((e)=>{
+            let alert: any = Message;
+            if(!e) {
+                alert.warning('未知错误！');
+                return
+            }
+            if(e.response && e.response.data && e.response.data.message) {
+                alert.warning(e.response.data.message)
+                return
+            }
+            if(!e.message) {
+                return;
+            }
+            alert.warning(e.message || e)
+        });
+    }
+
+
     @Mutation
     private success(data: any) {
         this.lecturers = data.data;
