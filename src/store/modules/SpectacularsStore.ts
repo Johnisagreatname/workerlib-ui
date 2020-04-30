@@ -14,6 +14,16 @@ import {AxiosRequestConfig} from "axios";
     name: "SpectacularsStore",
     store,
 })
+class Condition {
+    name : string;
+    value: any;
+    algorithm:string;
+    constructor(name:string,value:any) {
+        this.name=name;
+        this.value=value;
+        this.algorithm="EQ";
+    }
+}
 export default class SpectacularsStore extends VuexModule {
 
     private totalCategory:number;
@@ -21,8 +31,10 @@ export default class SpectacularsStore extends VuexModule {
     private anyTotal:number;
     private anyData:any;
     //分页
-    public pageIndex: number;
+    private pageIndex: number;
 
+    // private condition:object;
+    
     constructor(e){
         super(e);
         this.totalCategory=0;
@@ -38,15 +50,6 @@ export default class SpectacularsStore extends VuexModule {
     public setPageIndex(data: number) {
         this.pageIndex = data;
     }
-
-    //工种总数 searchCount(url:dictionaries,conName:category,status:工种)
-    //自有队伍人数 searchCount(url:Archives,conName:eafUserStatus,status:0)
-    //外部队伍人数 searchCount(url:Archives,conName:eafUserStatus,status:1)
-    //工程总数 searchCount(url:project)
-    //在建工程总数 searchCount(url:project,conName:status,status:2)
-    //未开工工程总数 searchCount(url:project,conName:status,status:1)
-    //在场工人数 searchCount(url:Archives,conName:leave,status:1)
-    //离场工人数 searchCount(url:Archives,conName:leave,status:2)
 
     //查询条件参数
     @Action
@@ -69,12 +72,50 @@ export default class SpectacularsStore extends VuexModule {
         }
     }
 
+    @Action
+    public getUpdateParams2(...obj:Object[]): any{
+        let params:any={
+            "pageInfo" : {},
+            "conditionList":[],
+            "sortList": [],
+            "groupList": [],
+            "keywords": [],
+            "selectList": []
+        }
+        if (obj){
+            params.conditionList.push(obj)
+        }
+        return{
+            params
+        }
+    }
+
+
+
+    //工种总数 searchCount(url:dictionaries,conName:category,status:工种)
+    //自有队伍人数 searchCount(url:Archives,conName:eafUserStatus,status:0)
+    //外部队伍人数 searchCount(url:Archives,conName:eafUserStatus,status:1)
+    //工程总数 searchCount(url:project)
+    //在建工程总数 searchCount(url:project,conName:status,status:2)
+    //未开工工程总数 searchCount(url:project,conName:status,status:1)
+    //在场工人数 searchCount(url:Archives,conName:leave,status:1)
+    //在场工人数自有 searchCount(url:Archives,conName:leave,status:1   )
+    //在场工人数外部 searchCount(url:Archives,conName:leave,status:1    )
+    //离场工人数 searchCount(url:Archives,conName:leave,status:2)
+    //离场工人数自有 searchCount(url:Archives,conName:leave,status:2   )
+    //离场工人数外部 searchCount(url:Archives,conName:leave,status:2   )
+
+
+
+    //调用例子 this.searchCount('Archives',new Condition("leave",1),new Condition("eafUserStatus",0))
+
     //查询条数
     @Action
-    public async searchCount(url:string,conName?:string,status?:string) {
-        await request.post('/api/workerlib/'+url+'/count', await this.getUpdateParams(conName,status)).then((data)=>{
+    public async searchCount(url:string,...obj:Condition[]) {
+        await request.post('/api/workerlib/'+url+'/count', await this.getUpdateParams2(obj)).then((data)=>{
             if(!data){
                 return;
+
             }
             this.anyTotal=data.data
         }).catch((e)=>{
@@ -90,10 +131,11 @@ export default class SpectacularsStore extends VuexModule {
             alert.warning(e.message || e)
         });
     }
+
     //查询数据
     @Action
-    public async searchData(url:string,conName?:string,status?:string) {
-        await request.post('/api/workerlib/'+url, await this.getUpdateParams(conName,status)).then((data)=>{
+    public async searchData(url:string,...obj:Condition[]) {
+        await request.post('/api/workerlib/'+url, await this.getUpdateParams2(obj)).then((data)=>{
             if(!data){
                 return;
             }
