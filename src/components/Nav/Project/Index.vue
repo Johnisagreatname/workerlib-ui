@@ -25,6 +25,10 @@
         private loading = false;
         public store: any;
 
+        private subCompanyList :Array<any>;
+        private showProject: boolean;
+        private addProject: boolean;
+
         messageWarningFn (text) {
             let alert: any = Message;
             alert.warning(text);
@@ -38,6 +42,9 @@
         constructor() {
             super();
             this.store = getModule(ProjectStore);
+            this.subCompanyList = [];
+            this.showProject = false;
+            this.addProject = false;
         }
         mounted() {
             this.store.getCompany("");
@@ -47,25 +54,82 @@
             return this.store.companyList;
         }
         loadData (item, callback) {
+            this.store.getCompany(item.id);
             setTimeout(() => {
-                const data = [
-                    {
-                        title: 'children',
-                        loading: false,
-                        children: []
-                    },
-                    {
-                        title: 'children',
-                        loading: false,
-                        children: []
-                    }
-                ];
-                callback(data);
-            }, 1000);
+                callback(this.store.subCompanyList);
+            }, 100);
+        }
+        set pullDown(data: boolean){
+            this.store.setPullDown(data);
+        }
+        get pullDown(): boolean{
+            return this.store.pullDown;
+        }
+        switchTo(){
+            this.store.switchPullDown();
+
+        }
+        treeChange(checkedList,checked){
+            if(checked.type=="project"){
+                this.showProject = true;
+                this.store.setSelectProjectName(checked.title);
+                this.store.getProjectParticulars();
+            }
+        }
+        clickAddProject(){
+            this.store.getCompanyList();
+            this.store.getUnitTypeList();
+            this.addProject = !this.addProject;
+        }
+        getCompanyList(){
+            return this.store.companyProjectList;
+        }
+        addProjectOk(){
+
+        }
+        addProjectCancel(){
+
+        }
+        getUnitTypeList(){
+            return this.store.unitTypeList;
         }
 
-
-
+        set insertPid(data: boolean){
+            this.store.setPullDown(data);
+        }
+        get insertPid(): boolean{
+            return this.store.pullDown;
+        }
+        set insertUnitName(data: boolean){
+            this.store.setPullDown(data);
+        }
+        get insertUnitName(): boolean{
+            return this.store.pullDown;
+        }
+        set insertProjectLicense(data: boolean){
+            this.store.setPullDown(data);
+        }
+        get insertProjectLicense(): boolean{
+            return this.store.pullDown;
+        }
+        set insertUnitType(data: boolean){
+            this.store.setPullDown(data);
+        }
+        get insertUnitType(): boolean{
+            return this.store.pullDown;
+        }
+        set insertPrincipal(data: boolean){
+            this.store.setPullDown(data);
+        }
+        get insertPrincipal(): boolean{
+            return this.store.pullDown;
+        }
+        set insertAddress(data: boolean){
+            this.store.setPullDown(data);
+        }
+        get insertAddress(): boolean{
+            return this.store.pullDown;
+        }
     }
 </script>
 <style scoped src="@/styles/project.css" />

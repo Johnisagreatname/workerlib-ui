@@ -106,6 +106,7 @@
       Table(border,ref="selection",:columns="getUserColumns()",:data="getUserDate()")
          template(slot-scope="{row, index}",slot="serialNumber")
             span {{index + (userPageIndex-1) * userPageSize + 1}}
+
          template(slot-scope="{row, index}",slot="operation")
             div(class="operation",@click="checkedAddUser()") 详细操作
    div(class="page")
