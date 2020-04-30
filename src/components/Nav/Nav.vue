@@ -87,7 +87,6 @@
 
         }
         clickMenu(checked,menuName,path){
-            debugger
             //一级菜单
             let menu = ["homepage","projectManagement","peopleManagement","trainingManagement","lecturerManagement",
                 "comprehensiveAssessment","badEvaluation","skillAppraisal","setting"];
@@ -133,8 +132,7 @@
         }
 
         switchMode(switchName){
-            // debugger
-            // let switchMenu = ["account","workclass","commentType","grade","rate","course","punishment","indexVideo"];
+            // let switchMenu = ["account",s"workclass","commentType","grade","rate","course","punishment","indexVideo"];
             // for(let i = 0;i < switchMenu.length; i++){
             //     if(switchMenu[i]==switchName){
             //

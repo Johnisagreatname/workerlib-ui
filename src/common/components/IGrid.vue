@@ -11,7 +11,6 @@
         }
         mounted() {
             this.buttons
-            debugger
         }
 
         @Prop({ default: [] }) columns: Array<any>;

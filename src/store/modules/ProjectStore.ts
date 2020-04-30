@@ -3,6 +3,7 @@ import store from "../index";
 import request from "../../common/HttpClient";
 import MessageUtils from "../../common/MessageUtils";
 import {Message} from "iview";
+import router from "../../router/.invoke/router";
 
 @Module({
     namespaced: true,
@@ -26,6 +27,7 @@ export default class ProjectStore extends VuexModule {
     private insertUnitType: number;
     private insertPrincipal: string;
     private insertAddress: string;
+    private insertBranchCompany: string;
     constructor(e) {
         super(e);
         this.companyList = [];
@@ -41,6 +43,7 @@ export default class ProjectStore extends VuexModule {
         this.insertUnitType = null;
         this.insertPrincipal = null;
         this.insertAddress = null;
+        this.insertBranchCompany = null;
     }
     @Action
     public async getCompany(id):Promise<any> {
@@ -63,7 +66,6 @@ export default class ProjectStore extends VuexModule {
             if(!data){
                 return;
             }
-
             this.successCompany({id, data});
         }).catch((e)=>{
             MessageUtils.warning(e);
@@ -151,7 +153,6 @@ export default class ProjectStore extends VuexModule {
             if(!data){
                 return;
             }
-
             this.successCompanyList(data);
         }).catch((e)=>{
             MessageUtils.warning(e);
@@ -195,6 +196,50 @@ export default class ProjectStore extends VuexModule {
             this.unitTypeList = data.data;
         }
     }
+    @Action
+    public async insertUnit() {
+        request.put('/api/workerlib/unit',{
+            "unit_id": "",
+            "unit_name": this.insertUnitName,
+            "unit_type": this.insertUnitType,
+            "principal": this.insertPrincipal,
+            "project_license": this.insertProjectLicense,
+            "address": this.insertAddress
+        }).then((data)=>{
+            if(!data){
+                return;
+            }
+            this.insertUnitCompany();
+        }).catch((e)=>{
+            MessageUtils.warning(e);
+        });
+    }
+    @Action
+    public getInsertUnitCompanyParams() : any {
+        debugger
+        if(this.insertPid){
+            this.setInsertBranchCompany("branchcompany");
+        }else{
+            this.setInsertBranchCompany("root");
+        }
+        return {
+            "o_org_name": this.insertUnitName,
+            "pid": this.insertPid,
+            "o_dept_type_no": this.insertBranchCompany
+        };
+    }
+    @Action
+    public async insertUnitCompany() {
+        let alert: any = Message;
+        request.put('/api/workerlib/company_hierarchy',this.getInsertUnitCompanyParams()).then((data)=>{
+            if(!data){
+                return;
+            }
+            alert.success("新增单位成功!")
+        }).catch((e)=>{
+            MessageUtils.warning(e);
+        });
+    }
 
 
     @Mutation
@@ -220,5 +265,9 @@ export default class ProjectStore extends VuexModule {
     @Mutation
     private setInsertAddress(data : any){
         this.insertAddress = data;
+    }
+    @Mutation
+    private setInsertBranchCompany (data : any){
+        this.insertBranchCompany  = data;
     }
 }
