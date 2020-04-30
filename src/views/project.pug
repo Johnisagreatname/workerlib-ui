@@ -18,6 +18,8 @@
         Button(type="primary", ghost, icon="ios-log-in",@click="this.store.synchronization",v-if="this.roleName=='IT管理员'") 同步项目
         Button(type="primary", ghost, icon="ios-log-out",@click="this.store.upload") 导出项目信息
         Button(type="primary", ghost, icon="ios-log-out",@click="this.store.uploadPeople") 导出项目人员信息
+    div
+        p(:style="{fontSize: '16px',fontWeight: 'bold'}") 项目管理
 
     .bodyTwo
         Table(border, ref="selection", :columns="getColumns()", :data="getData()",
@@ -38,6 +40,64 @@
                                 span 查看人员
     .footer
         Page(:total="totalRecords",show-sizer,show-elevator,show-total,@on-page-size-change="onPageSizeChange",@on-change="onPageIndexChange",:page-size=20)
+        //div(class="selectedList")
+        //    div(class="condition")
+        //        span(:style="{fontSize: '16px',float: 'left',marginRight: '10px',paddingTop: '14px',color: '#789fef'}") 已选条件
+        //    div(class="selectButton")
+        //        div(class="reset") 重置
+        //        div(class="inquire") 查询
+        //div(class="selectedPullDown",v-if="pullDown")
+        //    div(class="select")
+        //        div(class="divSelect")
+        //            div(class="selectTitle") 所属公司
+        //            div(class="selectValue")
+        //                Col(style="padding-right:10px")
+        //                    Select(filterable,clearable)
+        //div(class="pullDown",v-if="pullDown == false")
+        //    img(src="~@/assets/css/images/下拉.png",@click="switchTo()")
+        //div(class="pullDown",v-else)
+        //    img(src="~@/assets/css/images/上拉.png",@click="switchTo()")
+    div(class="button")
+        Button(type="primary",ghost,icon="ios-add-circle-outline",@click="clickAddProject()") 新增项目
+        Button(type="primary",ghost,icon="ios-add-circle-outline") 新增单位
+        Button(type="primary",ghost,icon="ios-trash-outline") 删除
+        Button(type="primary",ghost,icon="ios-cloud-upload-outline") 导出
+    div
+        div(class="projectLeft")
+            Tree(:data="getProjectList()",:load-data="loadData",@on-select-change="treeChange")
+        div(class="projectRight")
+            div(v-if="showProject",class="table7")
+                div
+                    div(class = "table4")
+                        div(class = "table5") 工程名称
+                        div(class = "table6",:title="this.store.projectParticulars.project_name") {{this.store.projectParticulars.project_name}}
+                    div(class = "table4")
+                        div(class = "table5") 工程简介
+                        div(class = "table6") {{this.store.projectParticulars.project_brief}}
+                div
+                    div(class = "table4")
+                        div(class = "table5") 施工许可证
+                        div(class = "table6") {{this.store.projectParticulars.builder_license}}
+                    div(class = "table4")
+                        div(class = "table5") 项目监督编号
+                        div(class = "table6") {{this.store.projectParticulars.project_supervision}}
+                div
+                    div(class = "table4")
+                        div(class = "table5") 开工时间
+                        div(class = "table6") {{this.store.projectParticulars.start_time}}
+                    div(class = "table4")
+                        div(class = "table5") 竣工时间
+                        div(class = "table6") {{this.store.projectParticulars.end_time}}
+                div
+                    div(class = "table4")
+                        div(class = "table5") 项目地址
+                        div(class = "table6") {{this.store.projectParticulars.project_address}}
+                    div(class = "table4")
+                        div(class = "table5") 状态
+                        div(class = "table6",v-if="this.store.projectParticulars.status == 1") 待开工
+                        div(class = "table6",v-if="this.store.projectParticulars.status == 2") 开工
+                        div(class = "table6",v-if="this.store.projectParticulars.status == 3") 停工
+                        div(class = "table6",v-if="this.store.projectParticulars.status == 4") 完工
 
     Modal(:value="addProject",title="新增项目",@on-ok="ok()",@on-cancel="cancel()",width='70%',:loading = "loading")
         .addBody
@@ -122,12 +182,46 @@
                 @on-select-cancel="handleSelectRowCancelPeople",
                 @on-select-all="handleSelectAllPeople",
                 @on-select-all-cancel="handleSelectAllCancelPeople")
+    Modal(v-model="addProject",title="新增单位",@on-ok="addProjectOk",@on-cancel="addProjectCancel",width='60%',:transfer="false")
+        div(class="modelBody")
+            div
+                div(class = "modelBody1")
+                    div(class = "modelBody2") 所属上级
+                    div(class = "modelBody3")
+                        div(class="selectValue")
+                            Col
+                                Select(filterable,clearable)
+                                    Option(v-for="item in getCompanyList()",:value="item.id",:key="item.id") {{ item.title}}
 
                     template(slot-scope="{row, index}",slot="workType")
                         Select(clearable,filterable,@on-change="selectChange",v-if="row.workType!=null")
                             Option(v-for="item in getUserWorkTypeMenus(row.workType)", :value="item.name+'_'+row.eafId",:key="item.name") {{item.name}}
                         Select(clearable,filterable,v-else,disabled,value="无")
+                div(class = "modelBody1")
+                    div(class = "modelBody2") 单位名称
+                    div(class = "modelBody3")
+                        div(class="selectValue")
+                            Input(clearable,placeholder="请输入单位名称")
+            div
+                div(class = "modelBody1")
+                    div(class = "modelBody2") 信用代码
+                    div(class = "modelBody3")
+                        div(class="selectValue")
+                            Input(clearable,placeholder="请输入施工许可证")
 
+                div(class = "modelBody1")
+                    div(class = "modelBody2") 单位类型
+                    div(class = "modelBody3")
+                        div(class="selectValue")
+                            Col
+                                Select(filterable,clearable)
+                                    Option(v-for="item in getUnitTypeList()",:value="item.id",:key="item.id") {{ item.name}}
+            div
+                div(class = "modelBody1")
+                    div(class = "modelBody2") 法人代表
+                    div(class = "modelBody3")
+                        div(class="selectValue")
+                            Input(clearable,placeholder="请输入法人代表")
 
                 Page(:total="pageInTotal",show-elevator,show-total,
                 @on-page-size-change="onPageSizeInChange",@on-change="onPageIndexInChange",:style={
@@ -152,5 +246,27 @@
         .divL
             .divCheck(v-for="item in this.noProjectPeople")
                 p {{item.eafName}}
+                div(class = "modelBody1")
+                    div(class = "modelBody2") 单位地址
+                    div(class = "modelBody3")
+                        div(class="selectValue")
+                            Input(clearable,placeholder="请输入单位地址")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
