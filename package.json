@@ -96,7 +96,7 @@
     "webpack-dev-server": "^3.8.2",
     "webpack-hot-middleware": "^2.18.0",
     "webpack-merge": "^4.1.0",
-    "yarn": "^1.22.0"
+    "yarn": "^1.22.4"
   },
   "config": {
     "forge": "./config/forge.config.js"
