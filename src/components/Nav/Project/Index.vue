@@ -27,7 +27,9 @@
 
         private subCompanyList :Array<any>;
         private showProject: boolean;
+        private addUnit: boolean;
         private addProject: boolean;
+        private deleteCompany: boolean;
 
         messageWarningFn (text) {
             let alert: any = Message;
@@ -44,10 +46,13 @@
             this.store = getModule(ProjectStore);
             this.subCompanyList = [];
             this.showProject = false;
+            this.addUnit = false;
             this.addProject = false;
+            this.deleteCompany = false;
         }
         mounted() {
             this.store.getCompany("");
+            this.store.getCompanyList();
 
         }
         getProjectList(){
@@ -70,21 +75,22 @@
 
         }
         treeChange(checkedList,checked){
+            this.store.setUploadPid(checked.id);
+            this.store.setDeleteCompanyId(checked.id);
             if(checked.type=="project"){
                 this.showProject = true;
                 this.store.setSelectProjectName(checked.title);
                 this.store.getProjectParticulars();
             }
         }
-        clickAddProject(){
-            this.store.getCompanyList();
+        clickAddUnit(){
             this.store.getUnitTypeList();
-            this.addProject = !this.addProject;
+            this.addUnit = true;
         }
         getCompanyList(){
             return this.store.companyProjectList;
         }
-        addProjectOk(){
+        addUnitOk(){
             if(!this.store.insertUnitName){
                 this.messageWarningFn("请输入单位名称！");
                 return;
@@ -93,62 +99,180 @@
                 this.messageWarningFn("请选择单位类型！");
                 return;
             }
-            if(!this.store.insertProjectLicense){
+            if(!this.store.insertUnitProjectLicense){
                 this.messageWarningFn("请输入信用代码！");
                 return;
             }
-            if(!this.store.insertPrincipal){
+            if(!this.store.insertUnitPrincipal){
                 this.messageWarningFn("请输入法人代表！");
                 return;
             }
-            if(!this.store.insertAddress){
+            if(!this.store.insertUnitAddress){
                 this.messageWarningFn("请输入单位地址！");
                 return;
             }
             this.store.insertUnit();
         }
-        addProjectCancel(){
-
+        addUnitCancel(){
+            this.addUnit = false;
         }
         getUnitTypeList(){
             return this.store.unitTypeList;
         }
 
-        set insertPid(data: boolean){
+        set insertPid(data: string){
             this.store.setInsertPid(data);
         }
-        get insertPid(): boolean{
+        get insertPid(): string{
             return this.store.insertPid;
         }
-        set insertUnitName(data: boolean){
+        set insertUnitName(data: string){
             this.store.setInsertUnitName(data);
         }
-        get insertUnitName(): boolean{
+        get insertUnitName(): string{
             return this.store.insertUnitName;
         }
-        set insertProjectLicense(data: boolean){
-            this.store.setInsertProjectLicense(data);
+        set insertUnitLicense(data: string){
+            this.store.setInsertUnitLicense(data);
         }
-        get insertProjectLicense(): boolean{
-            return this.store.insertProjectLicense;
+        get insertUnitLicense(): string{
+            return this.store.insertUnitLicense;
         }
-        set insertUnitType(data: boolean){
+        set insertUnitType(data: number){
             this.store.setInsertUnitType(data);
         }
-        get insertUnitType(): boolean{
+        get insertUnitType(): number{
             return this.store.insertUnitType;
         }
-        set insertPrincipal(data: boolean){
-            this.store.setInsertPrincipal(data);
+        set insertUnitPrincipal(data: string){
+            this.store.setInsertUnitPrincipal(data);
         }
-        get insertPrincipal(): boolean{
-            return this.store.insertPrincipal;
+        get insertUnitPrincipal(): string{
+            return this.store.insertUnitPrincipal;
         }
-        set insertAddress(data: boolean){
-            this.store.setInsertAddress(data);
+        set insertUnitAddress(data: string){
+            this.store.setInsertUnitAddress(data);
         }
-        get insertAddress(): boolean{
-            return this.store.insertAddress;
+        get insertUnitAddress(): string{
+            return this.store.insertUnitAddress;
+        }
+        clickAddProject(){
+            this.store.getProjectStatusList();
+            this.addProject = true;
+        }
+        addProjectOk(){
+            if(!this.store.insertProjectName){
+                this.messageWarningFn("请输入工程名称！");
+                return;
+            }
+            if(!this.store.insertProjectBrief){
+                this.messageWarningFn("请输入工程简称！");
+                return;
+            }
+            if(!this.store.insertProjectBuilderLicense){
+                this.messageWarningFn("请输入施工许可证！");
+                return;
+            }
+            if(!this.store.insertProjectStatus){
+                this.messageWarningFn("请选择状态！");
+                return;
+            }
+            if(!this.store.insertProjectStartTime){
+                this.messageWarningFn("请选择开工时间！");
+                return;
+            }
+            if(!this.store.insertProjectEndTime){
+                this.messageWarningFn("请选择合同竣工时间！");
+                return;
+            }
+            if(!this.store.insertProjectAddress){
+                this.messageWarningFn("请输入工程地址！");
+                return;
+            }
+            this.store.insertProject();
+        }
+        addProjectCancel(){
+            this.addProject = false;
+        }
+        getProjectStatusList(){
+            return this.store.projectStatusList;
+        }
+
+        set insertProjectPid(data: string){
+            this.store.setInsertProjectPid(data);
+        }
+        get insertProjectPid(): string{
+            return this.store.insertProjectPid;
+        }
+        set insertProjectName(data: string){
+            this.store.setInsertProjectName(data);
+        }
+        get insertProjectName(): string{
+            return this.store.insertProjectName;
+        }
+        set insertProjectBrief(data: string){
+            this.store.setInsertProjectBrief(data);
+        }
+        get insertProjectBrief(): string{
+            return this.store.insertProjectBrief;
+        }
+        set insertProjectStatus(data: string){
+            this.store.setInsertProjectStatus(data);
+        }
+        get insertProjectStatus(): string{
+            return this.store.insertProjectStatus;
+        }
+        set insertProjectBuilderLicense(data: string){
+            this.store.setInsertProjectBuilderLicense(data);
+        }
+        get insertProjectBuilderLicense(): string{
+            return this.store.insertProjectBuilderLicense;
+        }
+
+        set insertProjectAddress(data: string){
+            this.store.setInsertProjectAddress(data);
+        }
+        get insertProjectAddress(): string{
+            return this.store.insertProjectAddress;
+        }
+
+        set insertProjectStartTime(data: Date){
+            this.store.setInsertProjectStartTime(data);
+        }
+        get insertProjectStartTime(): Date{
+            return this.store.insertProjectAddress;
+        }
+        set insertProjectEndTime(data: Date){
+            this.store.setInsertProjectEndTime(data);
+        }
+        get insertProjectEndTime(): Date{
+            return this.store.insertProjectEndTime;
+        }
+        clickUploadProjectCompany(){
+            debugger
+            if(!this.store.uploadPid){
+                let alert: any = Message;
+                alert.warning("请选择要导出的数据！");
+            }else{
+                this.store.uploadProjectCompany();
+            }
+
+        }
+        clickDeleteProjectCompany(){
+            debugger
+            if(!this.store.deleteCompanyId){
+                let alert: any = Message;
+                alert.warning("请选择要删除的数据！");
+            }else{
+                this.deleteCompany = true;
+            }
+        }
+        deleteCompanyOk(){
+            this.store.deleteProjectCompanyId();
+        }
+        deleteCompanyCancel(){
+            debugger
+            this.deleteCompany = false;
         }
     }
 </script>

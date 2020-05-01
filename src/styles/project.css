@@ -232,6 +232,9 @@
 .modelBody{
     height: 230px;
 }
+.modelBodyTwo{
+    height: 300px;
+}
 .modelBody1{
     width: 50%;
     float: left;
