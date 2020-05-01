@@ -1,109 +1,39 @@
 .body
-    template
-        Tabs(value="内部讲师",@on-click="toggle")
-            TabPane(label="内部讲师",name="内部讲师",icon="ios-paper-outline")
-                .button
-                    Button(type="primary", ghost, icon="ios-add-circle-outline",@click="addLecturer=!addLecturer") 新增讲师
-                div(v-for="(item, index) in getLecturer()", :key="index")
-                    .lecturer
-                        .divY
-                            .img
-                                img(:src="'/api/workerlib/preview/lecturer/photo/'+item.id",:style={
-                                    'width': '100%', 'height': '100%'
-                                })
-                        .divY
-                            p(:style={'font-weight': 'bold', 'font-size': '18px'}) {{item.name}}
-                            p 课程：{{item.curriculum}}
-                            p 培训履历：
-                                a(@click="info(item.personalreesume)") 查看详情
-                            p(v-if="item.evaluate == null ") 培训评价: 无
-                            p(v-else) 培训评价: {{item.evaluate}}
-                            p(v-if="item.type == 1 ") 讲师类型：
-                                span(:style={'color': '#f78d0f'}) 内部
-                            p(v-else) 讲师类型：
-                                span(:style={'color': '#1597ff'}) 外部
+    div
+        p(:style="{fontSize: '16px',fontWeight: 'bold'}") 讲师档案
 
-            TabPane(label="外部讲师",name="外部讲师",icon="ios-paper-outline")
-                .button
-                    Button(type="primary", ghost, icon="ios-add-circle-outline",@click="addLecturer=!addLecturer") 新增讲师
-                    //Button(type="primary", ghost, icon="ios-log-in") 导入老师
-                    //Button(type="primary", ghost, icon="ios-log-out") 导出老师
-                div(v-for="(item, index) in getLecturer()", :key="index")
-                    .lecturer
-                        .divY
-                            .img
+        div(class="selectedList")
+            div(class="condition")
+                span(:style="{fontSize: '16px',float: 'left',marginRight: '10px',paddingTop: '14px',color: '#789fef'}") 已选条件
+                div(class="selected",v-if="courseTitle") {{courseTitle}}
+                    Icon(type="ios-backspace-outline",@click="clearCourseTitle()")
 
-                                img(:src="'/api/workerlib/preview/lecturer/photo/'+item.id",:style={
-                                    'width': '100%','height': '100%' })
-                        .divY
-                            p(:style={'font-weight': 'bold', 'font-size': '18px'}) {{item.name}}
-                            p 课程：{{item.curriculum}}
-                            p 培训履历：
-                                a(@click="info(item.personalreesume)") 查看详情
-                            p(v-if="item.evaluate == null ") 培训评价: 无
-                            p(v-else) 培训评价: {{item.evaluate}}
-                            p(v-if="item.type == 1 ") 讲师类型：
-                                span(:style={'color': '#f78d0f'}) 内部
-                            p(v-else) 讲师类型：
-                                span(:style={'color': '#1597ff'}) 外部
-            .footer
-                span 共{{getLecturer().length}}条记录
-
-    Modal(:value="addLecturer",title="新增人员",@on-ok="ok()",@on-cancel="cancel()",width='70%',:loading="loading")
-        Tabs( value="name1")
-            TabPane(label="基本信息" name="name1")
-                .addBody
-                    .divTwo
-                        .name
-                            span 账号
-                            span(:style={'color': 'red'}) *
-                        .input
-                            Input(clearable,style="width: 345px",size=large,v-model="user")
-                    .divTwo
-                        .name
-                            span 密码
-                            span(:style={'color': 'red'}) *
-                        .input
-                            Input(clearable,style="width: 345px",size=large,v-model="passWord")
-                    .divTwo
-                        .name
-                            span 姓名
-                            span(:style={'color': 'red'}) *
-                        .input
-                            Input(clearable,style="width: 345px",size=large,v-model="userName")
-                    .divTwo
-                        .name
-                            span 课程
-                            span(:style={'color': 'red'}) *
-                        .input
-                            Input(clearable,style="width: 345px",size=large,v-model="curriculum")
-                    .divTwo
-                        .name
-                            span 讲师类型
-                            span(:style={'color': 'red'}) *
-                        .input
-                            Select(filterable,clearable,style="width:345px",v-model="type")
-                                Option(v-for="item in getType()", :value="item.key", :key="item.key") {{item.value}}
-                    .divTwo
-                        .name 上传照片
-                        .input
-                            Upload(multiple,type="drag",action="/api/workerlib/lecturer/photo/upload",
-                            :on-success="handleSuccessPhoto",:format="['jpg','jpeg','png']",:on-format-error="handleFormatError",
-                            :style={
-                                'width': '30%',
-                                'margin-top': '3%'
-                            })
-                                div(style="padding: 20px 0")
-                                    Icon(type="ios-add" size="52" style="color: #3399ff")
-                                    p 点击上传
-            TabPane( label="个人履历" name="name2")
-                .input
-                    Input(v-model="personalreesume",type="textarea",placeholder="请输入您的履历"
-                    :rows="15",
-                    :style={
-                       'height': '300px',
-                       'margin-left': '15%',
-                        'margin-top': '4%'
-                   })
-    Modal(:value="selectInfo",title="培训履历",@on-ok="okSelectInfo()",@on-cancel="cancelSelectInfo()",width='70%')
-        span {{this.personalreesumes}}
+            div(class="selectButton")
+                div(class="reset",@click="reset()") 重置
+                div(class="inquire",@click="searchUserList()") 查询
+        div(class="select")
+            div(class="divSelect")
+                div(class="selectTitle") 课程名称
+                div(class="selectValue")
+                    Input(v-model="selectUserName",clearable,placeholder="请输入课程名称")
+        div(class="pullDown",v-if="pullDown == false")
+            img(src="~@/assets/css/images/下拉.png",@click="switchTo()")
+        div(class="pullDown",v-else)
+            img(src="~@/assets/css/images/上拉.png",@click="switchTo()")
+        div(class="button")
+            Button(type="primary",ghost,icon="ios-add-circle-outline") 新增讲师
+            Button(type="primary",ghost,icon="ios-create-outline") 修改讲师
+            Button(type="primary",ghost,icon="ios-trash-outline") 删除讲师
+            Button(type="primary",ghost,icon="ios-cloud-upload-outline") 导出
+        div
+            div(class="div1")
+                div(class="div2")
+                    div
+                    div
+                    div
+                div(class="div3")
+                    div(class="div4")
+                    div(class="div5")
+                        div
+                        div
+                        div

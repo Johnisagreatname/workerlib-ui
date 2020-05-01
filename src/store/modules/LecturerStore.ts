@@ -31,6 +31,8 @@ export default class LecturerStore extends VuexModule {
     private ConditionList:Array<any>;
     private selectCurriculum:string
 
+    private pullDown: boolean;
+
     constructor(e) {
         super(e)
         this.lecturerInfo = {};
@@ -49,6 +51,7 @@ export default class LecturerStore extends VuexModule {
         this.PageSize = 15;
         this.PageIndex = 1;
         this.PageTotal = 0;
+        this.pullDown = false;
     }
     //set
     @Mutation
@@ -505,6 +508,11 @@ export default class LecturerStore extends VuexModule {
 	@Mutation
     public setPassWord(data:string){
         this.passWord=data;
+    }
+
+    @Mutation
+    private switchPullDown(){
+        this.pullDown = !this.pullDown;
     }
 }
 
