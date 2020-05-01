@@ -220,7 +220,7 @@ export default class LecturerStore extends VuexModule {
             MessageUtils.warning(e);
         });
     }
-    
+       
     //修改讲师
     @Action
     public async updateLecturerCount(lecturerId) {
