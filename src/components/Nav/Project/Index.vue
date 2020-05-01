@@ -57,7 +57,7 @@
             this.store.getCompany(item.id);
             setTimeout(() => {
                 callback(this.store.subCompanyList);
-            }, 100);
+            }, 1000);
         }
         set pullDown(data: boolean){
             this.store.setPullDown(data);
@@ -85,7 +85,27 @@
             return this.store.companyProjectList;
         }
         addProjectOk(){
-
+            if(!this.store.insertUnitName){
+                this.messageWarningFn("请输入单位名称！");
+                return;
+            }
+            if(!this.store.insertUnitType){
+                this.messageWarningFn("请选择单位类型！");
+                return;
+            }
+            if(!this.store.insertProjectLicense){
+                this.messageWarningFn("请输入信用代码！");
+                return;
+            }
+            if(!this.store.insertPrincipal){
+                this.messageWarningFn("请输入法人代表！");
+                return;
+            }
+            if(!this.store.insertAddress){
+                this.messageWarningFn("请输入单位地址！");
+                return;
+            }
+            this.store.insertUnit();
         }
         addProjectCancel(){
 
@@ -95,40 +115,40 @@
         }
 
         set insertPid(data: boolean){
-            this.store.setPullDown(data);
+            this.store.setInsertPid(data);
         }
         get insertPid(): boolean{
-            return this.store.pullDown;
+            return this.store.insertPid;
         }
         set insertUnitName(data: boolean){
-            this.store.setPullDown(data);
+            this.store.setInsertUnitName(data);
         }
         get insertUnitName(): boolean{
-            return this.store.pullDown;
+            return this.store.insertUnitName;
         }
         set insertProjectLicense(data: boolean){
-            this.store.setPullDown(data);
+            this.store.setInsertProjectLicense(data);
         }
         get insertProjectLicense(): boolean{
-            return this.store.pullDown;
+            return this.store.insertProjectLicense;
         }
         set insertUnitType(data: boolean){
-            this.store.setPullDown(data);
+            this.store.setInsertUnitType(data);
         }
         get insertUnitType(): boolean{
-            return this.store.pullDown;
+            return this.store.insertUnitType;
         }
         set insertPrincipal(data: boolean){
-            this.store.setPullDown(data);
+            this.store.setInsertPrincipal(data);
         }
         get insertPrincipal(): boolean{
-            return this.store.pullDown;
+            return this.store.insertPrincipal;
         }
         set insertAddress(data: boolean){
-            this.store.setPullDown(data);
+            this.store.setInsertAddress(data);
         }
         get insertAddress(): boolean{
-            return this.store.pullDown;
+            return this.store.insertAddress;
         }
     }
 </script>
