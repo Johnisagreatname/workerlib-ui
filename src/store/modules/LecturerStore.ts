@@ -234,7 +234,7 @@ export default class LecturerStore extends VuexModule {
             MessageUtils.warning(e);
         });
     }
-
+      
     //批量删除讲师
     //第二个参数要删除的id数组
     @Action
