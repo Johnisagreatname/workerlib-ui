@@ -167,3 +167,27 @@
     text-align: center;
     padding-left: 560px;
 }
+.div1{
+    width: 340px;
+    height: 214px;
+    background-color: antiquewhite;
+    float: left;
+}
+.div2{
+    height: 40px;
+}
+.div3{
+    height: 174px;
+    background-color: aqua;
+}
+.div4{
+    width: 125px;
+    background-color: #a2a2a2;
+    height: 100%;
+    float: left;
+}
+.div5{
+    width: 215px;
+    float: left;
+    height: 100%;
+}
