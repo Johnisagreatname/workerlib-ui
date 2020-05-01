@@ -74,27 +74,16 @@ export default class LecturerStore extends VuexModule {
         };
     }
     //新增or修改参数
-    //第一个参数是讲师表的id（新增给空值，修改给具体的id）
-    //第二个参数是讲师表对应的用户userid（新增必须给具体值，修改时不用给参数）
     @Action
-    public getUpdateParams(id?:number,userid?:number): any{
-        let item : number;
-        if (id){
-            item=id;
-        }else {
-            item = null
-        }
+    public getUpdateParams(): any{
         let params:any={
-            "id":item,
             "name":this.lecturerInfo.name,
             "curriculum":this.lecturerInfo.curriculum,
             "type":this.lecturerInfo.type,
             "photo":this.lecturerInfo.photo,
             "personalreesume":this.lecturerInfo.personalreesume,
         }
-        if (userid){
-            params.userid=userid;
-        }
+
         return{
             params
         }
@@ -172,6 +161,7 @@ export default class LecturerStore extends VuexModule {
                 return;
             }
             this.success(data)
+            this.searchLecturerCount()
         }).catch((e)=>{
             let alert: any = Message;
             if(!e) {
@@ -186,72 +176,11 @@ export default class LecturerStore extends VuexModule {
             alert.warning(e.message || e)
         });
     }
-    //新增用户
-    @Action
-    public async insertUser() {
-        await request.put('/api/workerlib/user', {
-            "username":this.user,
-            "password":this.passWord,
-        }).then((data)=>{
-            if(!data){
-                return;
-            }
-            this.insertUserGroupRole(data.data);
-        }).catch((e)=>{
-            console.log(e)
-            let alert: any = Message;
-            if(!e) {
-                alert.warning('未知错误！');
-                return;
-            }
 
-            if(e.response && e.response.data && e.response.data.message) {
-                alert.warning(e.response.data.message)
-                return
-            }
-
-            if(!e.message) {
-                return;
-            }
-
-            alert.warning(e.message || e)
-        });
-    }
-    //新增用户权限
-    @Action
-    public async insertUserGroupRole(id) {
-        await request.put('/api/workerlib/usergrouprole',{
-                "roleId":"2efb9883af714d85a76bfc7aba92feec",
-                "userId":id,
-                "userGroupRoleId":null,
-                "groupId":null
-            }
-        ).then((data)=>{
-            if(!data){
-                return;
-            }
-            this.insertLecturer(id);
-        }).catch((e)=>{
-            console.log(e)
-            let alert: any = Message;
-            if(!e) {
-                alert.warning('未知错误！');
-                return;
-            }
-            if(e.response && e.response.data && e.response.data.message) {
-                alert.warning(e.response.data.message)
-                return
-            }
-            if(!e.message) {
-                return;
-            }
-            alert.warning(e.message || e)
-        });
-    }
     //新增讲师
     @Action
-    public async insertLecturer(id) {
-        await request.put('/api/workerlib/lecturer', await this.getUpdateParams(null,id)).then((data)=>{
+    public async insertLecturer() {
+        await request.put('/api/workerlib/lecturer', await this.getUpdateParams()).then((data)=>{
             if(!data){
                 return;
             }
@@ -263,7 +192,6 @@ export default class LecturerStore extends VuexModule {
                 alert.warning('未知错误！');
                 return;
             }
-
             if(e.response && e.response.data && e.response.data.message) {
                 alert.warning(e.response.data.message)
                 return
@@ -290,25 +218,25 @@ export default class LecturerStore extends VuexModule {
         });
     }
 
-    //修改讲师,未完成
+    //修改讲师
     @Action
     public async updateLecturerCount(lecturerId) {
-        await request.put('/api/workerlib/lecturer/'+lecturerId,await this.getUpdateParams(null,null)).then((total)=>{
+        await request.put('/api/workerlib/lecturer/'+lecturerId,await this.getUpdateParams()).then((total)=>{
             if(!total){
                 return;
             }
-            this.setLecturerPageTotal(total.data)
+            this.added(total)
+            this.search()
         }).catch((e)=>{
             MessageUtils.warning(e);
         });
     }
 
     //批量删除讲师
-    //第一个参数url是要删除的表
     //第二个参数要删除的id数组
     @Action
-    public async delete(url:string,array:Array<number|string>) {
-        await request.post('/api/workerlib/'+url+'/delete',array).then((data)=>{
+    public async delete(array:Array<number>) {
+        await request.post('/api/workerlib/lecturer/delete',array).then((data)=>{
             if(!data){
                 return;
             }
@@ -330,34 +258,19 @@ export default class LecturerStore extends VuexModule {
             alert.warning(e.message || e)
         });
     }
-    //查询类型,不合理
-    @Action
-    public async searchLecturerType() {
-        await request.post('/api/workerlib/lecturer',await this.getLecturerListParams()).then((total)=>{
-            if(!total){
-                return;
-            }
-            this.setLecturerPageTotal(total.data)
-        }).catch((e)=>{
-            MessageUtils.warning(e);
-        });
-    }
+
     //课程列表
     @Action
     public getCurriculumListParams() : any {
         return {
             "pageInfo" : {},
-            "conditionList":[{
-                "name" : "category",
-                "value": "工种",
-                "algorithm": "EQ"
-            }],
+            "conditionList":[],
             "sortList": [],
             "groupList" : [],
             "keywords" : [],
             "selectList": [
-                {"field": "name","alias":"workTypeName"},
-                {"field": "value","alias":"workTypeValue"}
+                {"field": "id","alias":"id"},
+                {"field": "curriculum","alias":"workTypeValue"}
             ]
         };
     }
@@ -373,47 +286,7 @@ export default class LecturerStore extends VuexModule {
             MessageUtils.warning(e);
         });
     }
-    // 工种列表
-    @Action
-    public getWorkTypeListParams() : any {
-        return {
-            "pageInfo" : {},
-            "conditionList":[],
-            "sortList": [],
-            "groupList" : [],
-            "keywords" : [],
-            "selectList": [
-                {"field": "name","alias":"workTypeName"},
-                {"field": "value","alias":"workTypeValue"}
-            ]
-        };
-    }
 
-    //工种
-    @Action
-    public async searchWorkTypeList() {
-        await request.post('/api/workerlib/dictionaries',await this.getWorkTypeListParams()).then((data)=>{
-            if(!data){
-                return;
-            }
-            this.successWorkTypeList(data);
-        }).catch((e)=>{
-            console.log(e)
-            let alert: any = Message;
-            if(!e) {
-                alert.warning('未知错误！')
-                return
-            }
-            if(e.response && e.response.data && e.response.data.message) {
-                alert.warning(e.response.data.message)
-                return
-            }
-            if(!e.message) {
-                return;
-            }
-            alert.warning(e.message || e)
-        });
-    }
     @Mutation
     private successWorkTypeList(data){
         this.workTypeList = data.data;
@@ -433,7 +306,7 @@ export default class LecturerStore extends VuexModule {
             "keywords" : [],
             "selectList": [
                 {"field": "name" ,"alias":"姓名"},
-                {"function": "type","alias":"类型" },
+                {"field": "type","alias":"类型" },
                 {"field": "personalreesume" ,"alias":"履历"},
                 {"field": "curriculum" ,"alias":"课程"},
             ]
@@ -515,4 +388,7 @@ interface LecturerInfo {
     curriculum?:string;
     id?: number;
 	personalreesume?:string;
+}
+interface UpdateParams {
+    userid:number
 }
