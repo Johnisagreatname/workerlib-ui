@@ -32,7 +32,7 @@ export default class SpectacularsStore extends VuexModule {
     private anyData:any;
     //分页
     private pageIndex: number;
-
+    public pageTotal:number;
     // private condition:object;
     
     constructor(e){
@@ -43,6 +43,7 @@ export default class SpectacularsStore extends VuexModule {
         this.anyData=[];
         //分页
         this.pageIndex= 1;
+        this.pageTotal = 0;
     }
 
     //set
@@ -92,6 +93,18 @@ export default class SpectacularsStore extends VuexModule {
 
 
 
+    //在场工人数自有
+    //this.searchCount({ url: "Archives",variable: "",params:[{name:"leave",value:1},{name: "eafUserStatus",value: 0}]})
+    //在场工人数外部
+    //this.searchCount({ url: "Archives",variable: "",params:[{name:"leave",value:1},{name: "eafUserStatus",value: 1}]})
+    //离场工人数自有
+    //this.searchCount({ url: "Archives",variable: "",params:[{name:"leave",value:2},{name: "eafUserStatus",value: 0}]})
+    //离场工人数外部
+    //this.searchCount({ url: "Archives",variable: "",params:[{name:"leave",value:2},{name: "eafUserStatus",value: 1}]})
+
+
+
+    //离场工人数 searchCount(url:Archives,conName:leave,status:2)
     //工种总数 searchCount(url:dictionaries,conName:category,status:工种)
     //自有队伍人数 searchCount(url:Archives,conName:eafUserStatus,status:0)
     //外部队伍人数 searchCount(url:Archives,conName:eafUserStatus,status:1)
@@ -99,11 +112,6 @@ export default class SpectacularsStore extends VuexModule {
     //在建工程总数 searchCount(url:project,conName:status,status:2)
     //未开工工程总数 searchCount(url:project,conName:status,status:1)
     //在场工人数 searchCount(url:Archives,conName:leave,status:1)
-    //在场工人数自有 searchCount(url:Archives,conName:leave,status:1   )
-    //在场工人数外部 searchCount(url:Archives,conName:leave,status:1    )
-    //离场工人数 searchCount(url:Archives,conName:leave,status:2)
-    //离场工人数自有 searchCount(url:Archives,conName:leave,status:2   )
-    //离场工人数外部 searchCount(url:Archives,conName:leave,status:2   )
 
 
 
@@ -187,5 +195,37 @@ export default class SpectacularsStore extends VuexModule {
         }).catch((e)=>{
             MessageUtils.warning(e);
         });
+    }
+
+    @Action
+    public async count() {
+        await request.post('/api/workerlib/appraise_statistics/count', {
+            "pageInfo" : {
+                "pageIndex": this.pageIndex,
+                "pageSize": 4
+            },
+
+            "conditionList": [],
+
+            "sortList": [],
+
+            "groupList" : [],
+
+            "keywords" : [],
+
+            "selectList": []
+        }).then((total)=>{
+            if(!total){
+                return;
+            }
+            this.setPageTotal(total.data)
+        }).catch((e)=>{
+            MessageUtils.warning(e);
+        });
+    }
+    @Mutation
+    public setPageTotal(data: number) {
+
+        this.pageTotal = data;
     }
 }
