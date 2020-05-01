@@ -23,6 +23,14 @@
     })
     export default class Project extends Vue {
         private loading = false;
+        public store: any;
+
+        private subCompanyList :Array<any>;
+        private showProject: boolean;
+        private addUnit: boolean;
+        private addProject: boolean;
+        private deleteCompany: boolean;
+
         messageWarningFn (text) {
             let alert: any = Message;
             alert.warning(text);
@@ -35,159 +43,237 @@
         }
         constructor() {
             super();
-
+            this.store = getModule(ProjectStore);
+            this.subCompanyList = [];
+            this.showProject = false;
+            this.addUnit = false;
+            this.addProject = false;
+            this.deleteCompany = false;
         }
         mounted() {
+            this.store.getCompany("");
+            this.store.getCompanyList();
 
         }
-        public buttonProps={
-            type: 'default',
-            size: 'small',
+        getProjectList(){
+            return this.store.companyList;
         }
+        loadData (item, callback) {
+            this.store.getCompany(item.id);
+            setTimeout(() => {
+                callback(this.store.subCompanyList);
+            }, 1000);
+        }
+        set pullDown(data: boolean){
+            this.store.setPullDown(data);
+        }
+        get pullDown(): boolean{
+            return this.store.pullDown;
+        }
+        switchTo(){
+            this.store.switchPullDown();
 
-        public data5:Array<any> = [
-            {
-                title: 'parent 1',
-                expand: true,
-                render: (h, { root, node, data }) => {
-                    return h('span', {
-                        style: {
-                            display: 'inline-block',
-                            width: '100%'
-                        }
-                    }, [
-                        h('span', [
-                            h('Icon', {
-                                props: {
-                                    type: 'ios-folder-outline'
-                                },
-                                style: {
-                                    marginRight: '8px'
-                                }
-                            }),
-                            h('span', data.title)
-                        ]),
-                        h('span', {
-                            style: {
-                                display: 'inline-block',
-                                float: 'right',
-                                marginRight: '32px'
-                            }
-                        }, [
-                            h('Button', {
-                                props: Object.assign({}, this.buttonProps, {
-                                    icon: 'ios-add',
-                                    type: 'primary'
-                                }),
-                                style: {
-                                    width: '64px'
-                                },
-                                on: {
-                                    click: () => { this.append(data) }
-                                }
-                            })
-                        ])
-                    ]);
-                },
-                children: [
-                    {
-                        title: 'child 1-1',
-                        expand: true,
-                        children: [
-                            {
-                                title: 'leaf 1-1-1',
-                                expand: true
-                            },
-                            {
-                                title: 'leaf 1-1-2',
-                                expand: true
-                            }
-                        ]
-                    },
-                    {
-                        title: 'child 1-2',
-                        expand: true,
-                        children: [
-                            {
-                                title: 'leaf 1-2-1',
-                                expand: true
-                            },
-                            {
-                                title: 'leaf 1-2-1',
-                                expand: true
-                            }
-                        ]
-                    }
-                ]
+        }
+        treeChange(checkedList,checked){
+            this.store.setUploadPid(checked.id);
+            this.store.setDeleteCompanyId(checked.id);
+            if(checked.type=="project"){
+                this.showProject = true;
+                this.store.setSelectProjectName(checked.title);
+                this.store.getProjectParticulars();
             }
-        ]
-        append(data){
-            const children = data.children || [];
-            children.push({
-                title: 'appended node',
-                expand: true
-            });
-            this.$set(data, 'children', children);
+        }
+        clickAddUnit(){
+            this.store.getUnitTypeList();
+            this.addUnit = true;
+        }
+        getCompanyList(){
+            return this.store.companyProjectList;
+        }
+        addUnitOk(){
+            if(!this.store.insertUnitName){
+                this.messageWarningFn("请输入单位名称！");
+                return;
+            }
+            if(!this.store.insertUnitType){
+                this.messageWarningFn("请选择单位类型！");
+                return;
+            }
+            if(!this.store.insertUnitProjectLicense){
+                this.messageWarningFn("请输入信用代码！");
+                return;
+            }
+            if(!this.store.insertUnitPrincipal){
+                this.messageWarningFn("请输入法人代表！");
+                return;
+            }
+            if(!this.store.insertUnitAddress){
+                this.messageWarningFn("请输入单位地址！");
+                return;
+            }
+            this.store.insertUnit();
+        }
+        addUnitCancel(){
+            this.addUnit = false;
+        }
+        getUnitTypeList(){
+            return this.store.unitTypeList;
         }
 
-        remove (root, node, data) {
-            const parentKey = root.find(el => el === node).parent;
-            const parent = root.find(el => el.nodeKey === parentKey).node;
-            const index = parent.children.indexOf(data);
-            parent.children.splice(index, 1);
+        set insertPid(data: string){
+            this.store.setInsertPid(data);
+        }
+        get insertPid(): string{
+            return this.store.insertPid;
+        }
+        set insertUnitName(data: string){
+            this.store.setInsertUnitName(data);
+        }
+        get insertUnitName(): string{
+            return this.store.insertUnitName;
+        }
+        set insertUnitLicense(data: string){
+            this.store.setInsertUnitLicense(data);
+        }
+        get insertUnitLicense(): string{
+            return this.store.insertUnitLicense;
+        }
+        set insertUnitType(data: number){
+            this.store.setInsertUnitType(data);
+        }
+        get insertUnitType(): number{
+            return this.store.insertUnitType;
+        }
+        set insertUnitPrincipal(data: string){
+            this.store.setInsertUnitPrincipal(data);
+        }
+        get insertUnitPrincipal(): string{
+            return this.store.insertUnitPrincipal;
+        }
+        set insertUnitAddress(data: string){
+            this.store.setInsertUnitAddress(data);
+        }
+        get insertUnitAddress(): string{
+            return this.store.insertUnitAddress;
+        }
+        clickAddProject(){
+            this.store.getProjectStatusList();
+            this.addProject = true;
+        }
+        addProjectOk(){
+            if(!this.store.insertProjectName){
+                this.messageWarningFn("请输入工程名称！");
+                return;
+            }
+            if(!this.store.insertProjectBrief){
+                this.messageWarningFn("请输入工程简称！");
+                return;
+            }
+            if(!this.store.insertProjectBuilderLicense){
+                this.messageWarningFn("请输入施工许可证！");
+                return;
+            }
+            if(!this.store.insertProjectStatus){
+                this.messageWarningFn("请选择状态！");
+                return;
+            }
+            if(!this.store.insertProjectStartTime){
+                this.messageWarningFn("请选择开工时间！");
+                return;
+            }
+            if(!this.store.insertProjectEndTime){
+                this.messageWarningFn("请选择合同竣工时间！");
+                return;
+            }
+            if(!this.store.insertProjectAddress){
+                this.messageWarningFn("请输入工程地址！");
+                return;
+            }
+            this.store.insertProject();
+        }
+        addProjectCancel(){
+            this.addProject = false;
+        }
+        getProjectStatusList(){
+            return this.store.projectStatusList;
         }
 
-        renderContent (h, { root, node, data }) {
-            return h('span', {
-                style: {
-                    display: 'inline-block',
-                    width: '100%'
-                }
-            }, [
-                h('span', [
-                    h('Icon', {
-                        props: {
-                            type: 'ios-paper-outline'
-                        },
-                        style: {
-                            marginRight: '8px'
-                        }
-                    }),
-                    h('span', data.title)
-                ]),
-                h('span', {
-                    style: {
-                        display: 'inline-block',
-                        float: 'right',
-                        marginRight: '32px'
-                    }
-                }, [
-                    h('Button', {
-                        props: Object.assign({}, this.buttonProps, {
-                            icon: 'ios-add'
-                        }),
-                        style: {
-                            marginRight: '8px'
-                        },
-                        on: {
-                            click: () => { this.append(data) }
-                        }
-                    }),
-                    h('Button', {
-                        props: Object.assign({}, this.buttonProps, {
-                            icon: 'ios-remove'
-                        }),
-                        on: {
-                            click: () => { this.remove(root, node, data) }
-                        }
-                    })
-                ])
-            ]);
+        set insertProjectPid(data: string){
+            this.store.setInsertProjectPid(data);
+        }
+        get insertProjectPid(): string{
+            return this.store.insertProjectPid;
+        }
+        set insertProjectName(data: string){
+            this.store.setInsertProjectName(data);
+        }
+        get insertProjectName(): string{
+            return this.store.insertProjectName;
+        }
+        set insertProjectBrief(data: string){
+            this.store.setInsertProjectBrief(data);
+        }
+        get insertProjectBrief(): string{
+            return this.store.insertProjectBrief;
+        }
+        set insertProjectStatus(data: string){
+            this.store.setInsertProjectStatus(data);
+        }
+        get insertProjectStatus(): string{
+            return this.store.insertProjectStatus;
+        }
+        set insertProjectBuilderLicense(data: string){
+            this.store.setInsertProjectBuilderLicense(data);
+        }
+        get insertProjectBuilderLicense(): string{
+            return this.store.insertProjectBuilderLicense;
         }
 
+        set insertProjectAddress(data: string){
+            this.store.setInsertProjectAddress(data);
+        }
+        get insertProjectAddress(): string{
+            return this.store.insertProjectAddress;
+        }
 
+        set insertProjectStartTime(data: Date){
+            this.store.setInsertProjectStartTime(data);
+        }
+        get insertProjectStartTime(): Date{
+            return this.store.insertProjectAddress;
+        }
+        set insertProjectEndTime(data: Date){
+            this.store.setInsertProjectEndTime(data);
+        }
+        get insertProjectEndTime(): Date{
+            return this.store.insertProjectEndTime;
+        }
+        clickUploadProjectCompany(){
+            debugger
+            if(!this.store.uploadPid){
+                let alert: any = Message;
+                alert.warning("请选择要导出的数据！");
+            }else{
+                this.store.uploadProjectCompany();
+            }
 
-
+        }
+        clickDeleteProjectCompany(){
+            debugger
+            if(!this.store.deleteCompanyId){
+                let alert: any = Message;
+                alert.warning("请选择要删除的数据！");
+            }else{
+                this.deleteCompany = true;
+            }
+        }
+        deleteCompanyOk(){
+            this.store.deleteProjectCompanyId();
+        }
+        deleteCompanyCancel(){
+            debugger
+            this.deleteCompany = false;
+        }
     }
 </script>
 <style scoped src="@/styles/project.css" />
