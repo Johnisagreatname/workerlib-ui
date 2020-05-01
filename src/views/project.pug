@@ -1,9 +1,9 @@
 .body
     div(class="button")
         Button(type="primary",ghost,icon="ios-add-circle-outline",@click="clickAddProject()") 新增项目
-        Button(type="primary",ghost,icon="ios-add-circle-outline") 新增单位
-        Button(type="primary",ghost,icon="ios-trash-outline") 删除
-        Button(type="primary",ghost,icon="ios-cloud-upload-outline") 导出
+        Button(type="primary",ghost,icon="ios-add-circle-outline",@click="clickAddUnit()") 新增单位
+        Button(type="primary",ghost,icon="ios-trash-outline",@click="clickDeleteProjectCompany()") 删除
+        Button(type="primary",ghost,icon="ios-cloud-upload-outline",@click="clickUploadProjectCompany()") 导出
     div
         div(class="projectLeft")
             Tree(:data="getProjectList()",:load-data="loadData",@on-select-change="treeChange")
@@ -40,7 +40,7 @@
                         div(class = "table6",v-if="this.store.projectParticulars.status == 2") 开工
                         div(class = "table6",v-if="this.store.projectParticulars.status == 3") 停工
                         div(class = "table6",v-if="this.store.projectParticulars.status == 4") 完工
-    Modal(v-model="addProject",title="新增单位",@on-ok="addProjectOk",@on-cancel="addProjectCancel",width='60%',:transfer="false")
+    Modal(v-model="addUnit",title="新增单位",@on-ok="addUnitOk",@on-cancel="addUnitCancel",width='60%',:transfer="false")
         div(class="modelBody")
             div
                 div(class = "modelBody1")
@@ -60,7 +60,7 @@
                     div(class = "modelBody2") 信用代码
                     div(class = "modelBody3")
                         div(class="selectValue")
-                            Input(clearable,placeholder="请输入施工许可证",v-model="insertProjectLicense")
+                            Input(clearable,placeholder="请输入施工许可证",v-model="insertUnitLicense")
 
                 div(class = "modelBody1")
                     div(class = "modelBody2") 单位类型
@@ -74,32 +74,68 @@
                     div(class = "modelBody2") 法人代表
                     div(class = "modelBody3")
                         div(class="selectValue")
-                            Input(clearable,placeholder="请输入法人代表",v-model="insertPrincipal")
+                            Input(clearable,placeholder="请输入法人代表",v-model="insertUnitPrincipal")
 
                 div(class = "modelBody1")
                     div(class = "modelBody2") 单位地址
                     div(class = "modelBody3")
                         div(class="selectValue")
-                            Input(clearable,placeholder="请输入单位地址",v-model="insertAddress")
+                            Input(clearable,placeholder="请输入单位地址",v-model="insertUnitAddress")
+    Modal(v-model="addProject",title="新增项目",@on-ok="addProjectOk",@on-cancel="addProjectCancel",width='60%',:transfer="false")
+        div(class="modelBodyTwo")
+            div
+                div(class = "modelBody1")
+                    div(class = "modelBody2") 所属公司
+                    div(class = "modelBody3")
+                        div(class="selectValue")
+                            Col
+                                Select(filterable,clearable,v-model="insertProjectPid")
+                                    Option(v-for="item in getCompanyList()",:value="item.id",:key="item.id") {{ item.title}}
+                div(class = "modelBody1")
+                    div(class = "modelBody2") 工程名称
+                    div(class = "modelBody3")
+                        div(class="selectValue")
+                            Input(clearable,placeholder="请输入工程名称",v-model="insertProjectName")
+            div
+                div(class = "modelBody1")
+                    div(class = "modelBody2") 工程简称
+                    div(class = "modelBody3")
+                        div(class="selectValue")
+                            Input(clearable,placeholder="请输入工程简称",v-model="insertProjectBrief")
+                div(class = "modelBody1")
+                    div(class = "modelBody2") 状态
+                    div(class = "modelBody3")
+                        div(class="selectValue")
+                            Col
+                                Select(filterable,clearable,v-model="insertProjectStatus")
+                                    Option(v-for="item in getProjectStatusList()",:value="item.id",:key="item.id") {{ item.name}}
+            div
+                div(class = "modelBody1")
+                    div(class = "modelBody2") 施工许可证
+                    div(class = "modelBody3")
+                        div(class="selectValue")
+                            Input(clearable,placeholder="请输入施工许可证",v-model="insertProjectBuilderLicense")
 
+                div(class = "modelBody1")
+                    div(class = "modelBody2") 项目地址
+                    div(class = "modelBody3")
+                        div(class="selectValue")
+                            Input(clearable,placeholder="请输入单位地址",v-model="insertProjectAddress")
+            div
+                div(class = "modelBody1")
+                    div(class = "modelBody2") 开工时间
+                    div(class = "modelBody3")
+                        div(class="selectValue")
+                            Row
+                                Col(span="12")
+                                    DatePicker(v-model="insertProjectStartTime",type="date",placeholder="请选择")
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+                div(class = "modelBody1")
+                    div(class = "modelBody2") 合同竣工时间
+                    div(class = "modelBody3")
+                        div(class="selectValue")
+                            Row
+                                Col(span="12")
+                                    DatePicker(v-model="insertProjectEndTime",type="date",placeholder="请选择")
+    Modal(v-model="deleteCompany",title="删除",:styles="{top: '20px'}",@on-ok="deleteCompanyOk",@on-cancel="deleteCompanyCancel",:transfer="false")
+        p 确定删除吗？

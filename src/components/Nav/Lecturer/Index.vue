@@ -40,6 +40,24 @@
             this.personalreesumes = null;
             this.store = getModule(LecturerStore)
         }
+        switchTo(){
+            this.store.switchPullDown();
+        }
+        set pullDown(data: boolean){
+            this.store.setPullDown(data);
+        }
+        get pullDown(): boolean{
+            return this.store.pullDown;
+        }
+
+
+
+
+
+
+
+
+
         //获取讲师数据
         getLecturer() : any{
             return this.store.lecturers;
