@@ -1,59 +1,235 @@
+//- .layout
+//-     Layout
+//-         Sider(:style="{height: '1080px'}",width=230)
+//-             Menu(:active-name="menuName",theme="light",width="auto",:style="{color: '#fff'}")
+//-                 MenuItem(name="主页",:style="{marginTop: '240px'}",@click.native="clickMenu('homepage','主页','')")
+//-                     span(class="top-angle",v-if="homepage")
+//-                     span(class="bottom-angle",v-if="homepage")
+//-                     img(src="~@/assets/css/images/主页蓝.png",v-if="homepage",:style="{marginLeft: '12px'}")
+//-                     span(class="top-angle",v-if="type == 'homepage' ")
+//-                     span(class="bottom-angle",v-if="type == 'homepage' ")
+//-                     img(src="~@/assets/css/images/主页蓝.png",v-if="type == 'homepage' ",:style="{marginLeft: '12px'}")
+//-                     img(src="~@/assets/css/images/主页.png",v-else)
+//-                     Item 主　　页
+//-                 MenuItem(name="项目管理",@click.native="clickMenu('projectManagement','项目管理','/nav/project')")
+//-                     span(class="top-angle",v-if="projectManagement")
+//-                     span(class="bottom-angle",v-if="projectManagement")
+//-                     img(src="~@/assets/css/images/项目管理蓝.png",v-if="projectManagement",:style="{marginLeft: '12px'}")
+//-                     span(class="top-angle",v-if="type == 'projectManagement' ")
+//-                     span(class="bottom-angle",v-if="type == 'projectManagement' ")
+//-                     img(src="~@/assets/css/images/项目管理蓝.png",v-if="type == 'projectManagement' ",:style="{marginLeft: '12px'}")
+//-                     img(src="~@/assets/css/images/项目管理.png",v-else)
+//-                     Item 项目管理
+//-                 MenuItem(name="人员管理",@click.native="clickMenu('peopleManagement','人员管理','/nav/worker')")
+//-                     span(class="top-angle",v-if="peopleManagement")
+//-                     span(class="bottom-angle",v-if="peopleManagement")
+//-                     img(src="~@/assets/css/images/人员管理蓝.png",v-if="peopleManagement",:style="{marginLeft: '12px'}")
+//-                     span(class="top-angle",v-if="type == 'peopleManagement' ")
+//-                     span(class="bottom-angle",v-if="type == 'peopleManagement' ")
+//-                     img(src="~@/assets/css/images/人员管理蓝.png",v-if="type == 'peopleManagement' ",:style="{marginLeft: '12px'}")
+//-                     img(src="~@/assets/css/images/人员管理.png",v-else)
+//-                     Item 人员管理
+//-                 MenuItem(name="培训管理",@click.native="clickMenu('trainingManagement','培训管理','/nav/unit')")
+//-                     span(class="top-angle",v-if="trainingManagement")
+//-                     span(class="bottom-angle",v-if="trainingManagement")
+//-                     img(src="~@/assets/css/images/培训管理蓝.png",v-if="trainingManagement",:style="{marginLeft: '12px'}")
+//-                     span(class="top-angle",v-if="type == 'trainingManagement' ")
+//-                     span(class="bottom-angle",v-if="type == 'trainingManagement' ")
+//-                     img(src="~@/assets/css/images/培训管理蓝.png",v-if="type == 'trainingManagement'",:style="{marginLeft: '12px'}")
+//-                     img(src="~@/assets/css/images/培训管理.png",v-else)
+//-                     Item 培训管理
+//-                 MenuItem(name="讲师管理",@click.native="clickMenu('lecturerManagement','讲师管理','/nav/project')")
+//-                     span(class="top-angle",v-if="lecturerManagement")
+//-                     span(class="bottom-angle",v-if="lecturerManagement")
+//-                     img(src="~@/assets/css/images/讲师管理蓝.png",v-if="lecturerManagement",:style="{marginLeft: '12px'}")
+//-                     span(class="top-angle",v-if="type == 'lecturerManagement'")
+//-                     span(class="bottom-angle",v-if="type == 'lecturerManagement'")
+//-                     img(src="~@/assets/css/images/讲师管理蓝.png",v-if="type == 'lecturerManagement'",:style="{marginLeft: '12px'}")
+//-                     img(src="~@/assets/css/images/讲师管理.png",v-else)
+//-                     Item 讲师管理
+//-                 MenuItem(name="综合评价",@click.native="clickMenu('comprehensiveAssessment','综合评价','/nav/project')")
+//-                     span(class="top-angle",v-if="comprehensiveAssessment")
+//-                     span(class="bottom-angle",v-if="comprehensiveAssessment")
+//-                     img(src="~@/assets/css/images/综合评价蓝.png",v-if="comprehensiveAssessment",:style="{marginLeft: '12px'}")
+//-                     span(class="top-angle",v-if="type == 'comprehensiveAssessment'")
+//-                     span(class="bottom-angle",v-if="type == 'comprehensiveAssessment'")
+//-                     img(src="~@/assets/css/images/综合评价蓝.png",v-if="type == 'comprehensiveAssessment'",:style="{marginLeft: '12px'}")
+//-                     img(src="~@/assets/css/images/综合评价.png",v-else)
+//-                     Item 综合评价
+//-                 MenuItem(name="不良评价",@click.native="clickMenu('badEvaluation','不良评价','/nav/project')")
+//-                     span(class="top-angle",v-if="badEvaluation")
+//-                     span(class="bottom-angle",v-if="badEvaluation")
+//-                     img(src="~@/assets/css/images/不良评价蓝.png",v-if="badEvaluation",:style="{marginLeft: '12px'}")
+//-                     span(class="top-angle",v-if="type == 'badEvaluation'")
+//-                     span(class="bottom-angle",v-if="type == 'badEvaluation'")
+//-                     img(src="~@/assets/css/images/不良评价蓝.png",v-if="type == 'badEvaluation'",:style="{marginLeft: '12px'}")
+//-                     img(src="~@/assets/css/images/不良评价.png",v-else)
+//-                     Item 不良评价
+//-                 MenuItem(name="技能鉴定",@click.native="clickMenu('skillAppraisal','技能鉴定','/nav/project')")
+//-                     span(class="top-angle",v-if="skillAppraisal")
+//-                     span(class="bottom-angle",v-if="skillAppraisal")
+//-                     img(src="~@/assets/css/images/技能鉴定蓝.png",v-if="skillAppraisal",:style="{marginLeft: '12px'}")
+//-                     span(class="top-angle",v-if="type == 'skillAppraisal'")
+//-                     span(class="bottom-angle",v-if="type == 'skillAppraisal'")
+//-                     img(src="~@/assets/css/images/技能鉴定蓝.png",v-if="type == 'skillAppraisal'",:style="{marginLeft: '12px'}")
+//-                     img(src="~@/assets/css/images/技能鉴定.png",v-else)
+//-                     Item 技能鉴定
+//-                 MenuItem(name="设置",@click.native="clickMenu('setting','设置','/nav/account')")
+//-                     span(class="top-angle",v-if="setting")
+//-                     span(class="bottom-angle",v-if="setting")
+//-                     img(src="~@/assets/css/images/设置蓝.png",v-if="setting",:style="{marginLeft: '12px'}")
+//-                     span(class="top-angle",v-if="type == 'setting'")
+//-                     span(class="bottom-angle",v-if="type == 'setting'")
+//-                     img(src="~@/assets/css/images/设置蓝.png",v-if="type == 'setting'",:style="{marginLeft: '12px'}")
+//-                     img(src="~@/assets/css/images/设置.png",v-else)
+//-                     Item 设　 置
+
+//-         Layout
+//-             Header(class="layout-header-bar")
+//-                 div(:style="{height: '60px',lineHeight: '110px'}")
+//-                     span(:style="{fontSize: '24px'}") 产业工人大数据平台
+//-                 Breadcrumb
+//-                     span 您当前的位置：
+//-                     BreadcrumbItem(v-if="getMenuList()",v-for="item in getMenuList()") {{item}}
+//-                     //BreadcrumbItem(v-if="getMenuList()",v-for="item in getMenuList()") {{item}}
+
+//-             div(:style="{height: '40px'}",v-if="peopleManagement")
+//-             div(:style="{height: '40px'}",v-if="type === 'peopleManagement' ")
+//-                 div(class="switchMeun",@click="switchChecked('theirOwn')")
+//-                     div(class="switchNameBule",v-if="styleClass ==='theirOwn' ") 自有人员
+//-                     div(class="switchBrBule",v-if="styleClass ==='theirOwn' ")
+//-                     div(class="switchNameBule",v-if="style ==='theirOwn' ") 自有人员
+//-                     div(class="switchBrBule",v-if="style ==='theirOwn' ")
+//-                     div(class="switchName",v-else) 自有人员
+//-                 div(class="switchMeun",@click="switchChecked('exterior')")
+//-                     div(class="switchNameBule",v-if="styleClass ==='exterior' ") 外部人员
+//-                     div(class="switchBrBule",v-if="styleClass === 'exterior'")
+//-                     div(class="switchNameBule",v-if="style ==='exterior' ") 外部人员
+//-                     div(class="switchBrBule",v-if="style === 'exterior'")
+//-                     div(class="switchName",v-else) 外部人员
+
+
+//-             div(:style="{height: '40px'}",v-else-if="setting")
+//-             div(:style="{height: '40px'}",v-else-if="type==='setting'")
+
+//-                 div(class="switchMeun",@click="switchChecked('account')")
+//-                     div(class="switchNameBule",v-if="styleClass==='account'") 账号
+//-                     div(class="switchBrBule",v-if="styleClass==='account'")
+//-                     div(class="switchNameBule",v-if="style==='account'") 账号
+//-                     div(class="switchBrBule",v-if="style==='account'")
+//-                     div(class="switchName",v-else) 账号
+//-                 div(class="switchMeun",@click="switchChecked('workclass')")
+//-                     div(class="switchNameBule",v-if="styleClass==='workclass'") 工种
+//-                     div(class="switchBrBule",v-if="styleClass==='workclass'")
+//-                     div(class="switchNameBule",v-if="style==='workclass'") 工种
+//-                     div(class="switchBrBule",v-if="style==='workclass'")
+//-                     div(class="switchName",v-else) 工种
+//-                 div(class="switchMeun",@click="switchChecked('commentType')")
+//-                     div(class="switchNameBule",v-if="styleClass==='commentType'") 工人评价
+//-                     div(class="switchBrBule",v-if="styleClass==='commentType'")
+//-                     div(class="switchNameBule",v-if="style==='commentType'") 工人评价
+//-                     div(class="switchBrBule",v-if="style==='commentType'")
+//-                     div(class="switchName",v-else) 工人评价
+//-                 div(class="switchMeun",@click="switchChecked('grade')")
+//-                     div(class="switchNameBule",v-if="styleClass==='grade'") 评定等级
+//-                     div(class="switchBrBule",v-if="styleClass==='grade'")
+//-                     div(class="switchNameBule",v-if="style==='grade'") 评定等级
+//-                     div(class="switchBrBule",v-if="style==='grade'")
+//-                     div(class="switchName",v-else) 评定等级
+//-                 div(class="switchMeun",@click="switchChecked('rate')")
+//-                     div(class="switchNameBule",v-if="styleClass==='rate'") 评定级别
+//-                     div(class="switchBrBule",v-if="styleClass==='rate'")
+//-                     div(class="switchNameBule",v-if="style==='rate'") 评定级别
+//-                     div(class="switchBrBule",v-if="style==='rate'")
+//-                     div(class="switchName",v-else) 评定级别
+//-                 div(class="switchMeun",@click="switchChecked('course')")
+//-                     div(class="switchNameBule",v-if="styleClass==='course'") 课件类型
+//-                     div(class="switchBrBule",v-if="styleClass==='course'")
+//-                     div(class="switchNameBule",v-if="style==='course'") 课件类型
+//-                     div(class="switchBrBule",v-if="style==='course'")
+//-                     div(class="switchName",v-else) 课件类型
+//-                 div(class="switchMeun",@click="switchChecked('punishment')")
+//-                     div(class="switchNameBule",v-if="styleClass==='punishment'") 处罚
+//-                     div(class="switchBrBule",v-if="styleClass==='punishment'")
+//-                     div(class="switchNameBule",v-if="style==='punishment'") 处罚
+//-                     div(class="switchBrBule",v-if="style==='punishment'")
+//-                     div(class="switchName",v-else) 处罚
+//-                 div(class="switchMeun",@click="switchChecked('indexVideo')")
+//-                     div(class="switchNameBule",v-if="styleClass==='indexVideo'") 首页设置
+//-                     div(class="switchBrBule",v-if="styleClass==='indexVideo'")
+//-                     div(class="switchNameBule",v-if="style==='indexVideo'") 首页设置
+//-                     div(class="switchBrBule",v-if="style==='indexVideo'")
+//-                     div(class="switchName",v-else) 首页设置
+
+//-             Content(v-if="!styleClass && !peopleManagement")
+//-                 Content
+//-                     router-view
+//-             Content(v-else :style="{padding: '30px',margin: '24px 24px 24px 24px', minHeight: '280px', background: '#fff',borderRadius: '40px',maxHeight: '900px'}")
+//-                 Content
+//-                     router-view
+
+
+
+
+
+
+
 .layout
     Layout
         Sider(:style="{height: '1080px'}",width=230)
-            Menu(active-name="人员管理",theme="light",width="auto",:style="{color: '#fff'}")
+            Menu(:active-name="menuName",theme="light",width="auto",:style="{color: '#fff'}")
                 MenuItem(name="主页",:style="{marginTop: '240px'}",@click.native="clickMenu('homepage','主页','')")
-                    span(class="top-angle",v-if="homepage")
-                    span(class="bottom-angle",v-if="homepage")
-                    img(src="~@/assets/css/images/主页蓝.png",v-if="homepage",:style="{marginLeft: '12px'}")
+                    span(class="top-angle",v-if="type == 'homepage' ")
+                    span(class="bottom-angle",v-if="type == 'homepage' ")
+                    img(src="~@/assets/css/images/主页蓝.png",v-if="type == 'homepage' ",:style="{marginLeft: '12px'}")
                     img(src="~@/assets/css/images/主页.png",v-else)
                     Item 主　　页
                 MenuItem(name="项目管理",@click.native="clickMenu('projectManagement','项目管理','/nav/project')")
-                    span(class="top-angle",v-if="projectManagement")
-                    span(class="bottom-angle",v-if="projectManagement")
-                    img(src="~@/assets/css/images/项目管理蓝.png",v-if="projectManagement",:style="{marginLeft: '12px'}")
+                    span(class="top-angle",v-if="type == 'projectManagement' ")
+                    span(class="bottom-angle",v-if="type == 'projectManagement' ")
+                    img(src="~@/assets/css/images/项目管理蓝.png",v-if="type == 'projectManagement' ",:style="{marginLeft: '12px'}")
                     img(src="~@/assets/css/images/项目管理.png",v-else)
                     Item 项目管理
                 MenuItem(name="人员管理",@click.native="clickMenu('peopleManagement','人员管理','/nav/worker')")
-                    span(class="top-angle",v-if="peopleManagement")
-                    span(class="bottom-angle",v-if="peopleManagement")
-                    img(src="~@/assets/css/images/人员管理蓝.png",v-if="peopleManagement",:style="{marginLeft: '12px'}")
+                    span(class="top-angle",v-if="type == 'peopleManagement' ")
+                    span(class="bottom-angle",v-if="type == 'peopleManagement' ")
+                    img(src="~@/assets/css/images/人员管理蓝.png",v-if="type == 'peopleManagement' ",:style="{marginLeft: '12px'}")
                     img(src="~@/assets/css/images/人员管理.png",v-else)
                     Item 人员管理
                 MenuItem(name="培训管理",@click.native="clickMenu('trainingManagement','培训管理','/nav/unit')")
-                    span(class="top-angle",v-if="trainingManagement")
-                    span(class="bottom-angle",v-if="trainingManagement")
-                    img(src="~@/assets/css/images/培训管理蓝.png",v-if="trainingManagement",:style="{marginLeft: '12px'}")
+                    span(class="top-angle",v-if="type == 'trainingManagement' ")
+                    span(class="bottom-angle",v-if="type == 'trainingManagement' ")
+                    img(src="~@/assets/css/images/培训管理蓝.png",v-if="type == 'trainingManagement'",:style="{marginLeft: '12px'}")
                     img(src="~@/assets/css/images/培训管理.png",v-else)
                     Item 培训管理
                 MenuItem(name="讲师管理",@click.native="clickMenu('lecturerManagement','讲师管理','/nav/project')")
-                    span(class="top-angle",v-if="lecturerManagement")
-                    span(class="bottom-angle",v-if="lecturerManagement")
-                    img(src="~@/assets/css/images/讲师管理蓝.png",v-if="lecturerManagement",:style="{marginLeft: '12px'}")
+                    span(class="top-angle",v-if="type == 'lecturerManagement'")
+                    span(class="bottom-angle",v-if="type == 'lecturerManagement'")
+                    img(src="~@/assets/css/images/讲师管理蓝.png",v-if="type == 'lecturerManagement'",:style="{marginLeft: '12px'}")
                     img(src="~@/assets/css/images/讲师管理.png",v-else)
                     Item 讲师管理
                 MenuItem(name="综合评价",@click.native="clickMenu('comprehensiveAssessment','综合评价','/nav/project')")
-                    span(class="top-angle",v-if="comprehensiveAssessment")
-                    span(class="bottom-angle",v-if="comprehensiveAssessment")
-                    img(src="~@/assets/css/images/综合评价蓝.png",v-if="comprehensiveAssessment",:style="{marginLeft: '12px'}")
+                    span(class="top-angle",v-if="type == 'comprehensiveAssessment'")
+                    span(class="bottom-angle",v-if="type == 'comprehensiveAssessment'")
+                    img(src="~@/assets/css/images/综合评价蓝.png",v-if="type == 'comprehensiveAssessment'",:style="{marginLeft: '12px'}")
                     img(src="~@/assets/css/images/综合评价.png",v-else)
                     Item 综合评价
-                MenuItem(name="不良评价",@click.native="clickMenu('badEvaluation','不良评价','/nav/badList')")
-                    span(class="top-angle",v-if="badEvaluation")
-                    span(class="bottom-angle",v-if="badEvaluation")
-                    img(src="~@/assets/css/images/不良评价蓝.png",v-if="badEvaluation",:style="{marginLeft: '12px'}")
+                MenuItem(name="不良评价",@click.native="clickMenu('badEvaluation','不良评价','/nav/project')")
+                    span(class="top-angle",v-if="type == 'badEvaluation'")
+                    span(class="bottom-angle",v-if="type == 'badEvaluation'")
+                    img(src="~@/assets/css/images/不良评价蓝.png",v-if="type == 'badEvaluation'",:style="{marginLeft: '12px'}")
                     img(src="~@/assets/css/images/不良评价.png",v-else)
                     Item 不良评价
                 MenuItem(name="技能鉴定",@click.native="clickMenu('skillAppraisal','技能鉴定','/nav/project')")
-                    span(class="top-angle",v-if="skillAppraisal")
-                    span(class="bottom-angle",v-if="skillAppraisal")
-                    img(src="~@/assets/css/images/技能鉴定蓝.png",v-if="skillAppraisal",:style="{marginLeft: '12px'}")
+                    span(class="top-angle",v-if="type == 'skillAppraisal'")
+                    span(class="bottom-angle",v-if="type == 'skillAppraisal'")
+                    img(src="~@/assets/css/images/技能鉴定蓝.png",v-if="type == 'skillAppraisal'",:style="{marginLeft: '12px'}")
                     img(src="~@/assets/css/images/技能鉴定.png",v-else)
                     Item 技能鉴定
                 MenuItem(name="设置",@click.native="clickMenu('setting','设置','/nav/account')")
-                    span(class="top-angle",v-if="setting")
-                    span(class="bottom-angle",v-if="setting")
-                    img(src="~@/assets/css/images/设置蓝.png",v-if="setting",:style="{marginLeft: '12px'}")
+                    span(class="top-angle",v-if="type == 'setting'")
+                    span(class="bottom-angle",v-if="type == 'setting'")
+                    img(src="~@/assets/css/images/设置蓝.png",v-if="type == 'setting'",:style="{marginLeft: '12px'}")
                     img(src="~@/assets/css/images/设置.png",v-else)
                     Item 设　 置
 
@@ -63,58 +239,83 @@
                     span(:style="{fontSize: '24px'}") 产业工人大数据平台
                 Breadcrumb
                     span 您当前的位置：
-                    BreadcrumbItem(v-if="getMenuList()",v-for="item in getMenuList()") {{item}}
+                    //BreadcrumbItem(v-if="getMenuList()",v-for="item in getMenuList()") {{item}}
+                    //BreadcrumbItem(v-if="getMenuList()",v-for="item in getMenuList()") {{item}}
 
-            div(:style="{height: '40px'}",v-if="peopleManagement")
+            div(:style="{height: '40px'}",v-if="type === 'peopleManagement' ")
                 div(class="switchMeun",@click="switchChecked('theirOwn')")
                     div(class="switchNameBule",v-if="styleClass ==='theirOwn' ") 自有人员
                     div(class="switchBrBule",v-if="styleClass ==='theirOwn' ")
+                    div(class="switchNameBule",v-if="style ==='theirOwn' ") 自有人员
+                    div(class="switchBrBule",v-if="style ==='theirOwn' ")
                     div(class="switchName",v-else) 自有人员
                 div(class="switchMeun",@click="switchChecked('exterior')")
                     div(class="switchNameBule",v-if="styleClass ==='exterior' ") 外部人员
                     div(class="switchBrBule",v-if="styleClass === 'exterior'")
+                    div(class="switchNameBule",v-if="style ==='exterior' ") 外部人员
+                    div(class="switchBrBule",v-if="style === 'exterior'")
                     div(class="switchName",v-else) 外部人员
 
 
             div(:style="{height: '40px'}",v-else-if="setting")
+            div(:style="{height: '40px'}",v-else-if="type==='setting'")
+
                 div(class="switchMeun",@click="switchChecked('account')")
                     div(class="switchNameBule",v-if="styleClass==='account'") 账号
                     div(class="switchBrBule",v-if="styleClass==='account'")
+                    div(class="switchNameBule",v-if="style==='account'") 账号
+                    div(class="switchBrBule",v-if="style==='account'")
                     div(class="switchName",v-else) 账号
                 div(class="switchMeun",@click="switchChecked('workclass')")
                     div(class="switchNameBule",v-if="styleClass==='workclass'") 工种
                     div(class="switchBrBule",v-if="styleClass==='workclass'")
+                    div(class="switchNameBule",v-if="style==='workclass'") 工种
+                    div(class="switchBrBule",v-if="style==='workclass'")
                     div(class="switchName",v-else) 工种
                 div(class="switchMeun",@click="switchChecked('commentType')")
                     div(class="switchNameBule",v-if="styleClass==='commentType'") 工人评价
                     div(class="switchBrBule",v-if="styleClass==='commentType'")
+                    div(class="switchNameBule",v-if="style==='commentType'") 工人评价
+                    div(class="switchBrBule",v-if="style==='commentType'")
                     div(class="switchName",v-else) 工人评价
                 div(class="switchMeun",@click="switchChecked('grade')")
                     div(class="switchNameBule",v-if="styleClass==='grade'") 评定等级
                     div(class="switchBrBule",v-if="styleClass==='grade'")
+                    div(class="switchNameBule",v-if="style==='grade'") 评定等级
+                    div(class="switchBrBule",v-if="style==='grade'")
                     div(class="switchName",v-else) 评定等级
                 div(class="switchMeun",@click="switchChecked('rate')")
                     div(class="switchNameBule",v-if="styleClass==='rate'") 评定级别
                     div(class="switchBrBule",v-if="styleClass==='rate'")
+                    div(class="switchNameBule",v-if="style==='rate'") 评定级别
+                    div(class="switchBrBule",v-if="style==='rate'")
                     div(class="switchName",v-else) 评定级别
                 div(class="switchMeun",@click="switchChecked('course')")
                     div(class="switchNameBule",v-if="styleClass==='course'") 课件类型
                     div(class="switchBrBule",v-if="styleClass==='course'")
+                    div(class="switchNameBule",v-if="style==='course'") 课件类型
+                    div(class="switchBrBule",v-if="style==='course'")
                     div(class="switchName",v-else) 课件类型
                 div(class="switchMeun",@click="switchChecked('punishment')")
                     div(class="switchNameBule",v-if="styleClass==='punishment'") 处罚
                     div(class="switchBrBule",v-if="styleClass==='punishment'")
+                    div(class="switchNameBule",v-if="style==='punishment'") 处罚
+                    div(class="switchBrBule",v-if="style==='punishment'")
                     div(class="switchName",v-else) 处罚
                 div(class="switchMeun",@click="switchChecked('indexVideo')")
                     div(class="switchNameBule",v-if="styleClass==='indexVideo'") 首页设置
                     div(class="switchBrBule",v-if="styleClass==='indexVideo'")
+                    div(class="switchNameBule",v-if="style==='indexVideo'") 首页设置
+                    div(class="switchBrBule",v-if="style==='indexVideo'")
                     div(class="switchName",v-else) 首页设置
 
             Content(v-if="!styleClass && !peopleManagement")
                 Content
                     router-view
-            Content(v-else :style="{padding: '30px',margin: '24px 24px 24px 24px', minHeight: '280px', background: '#fff',borderRadius: '40px',maxHeight: '860px'}")
+            Content(v-else :style="{padding: '30px',margin: '24px 24px 24px 24px', minHeight: '280px', background: '#fff',borderRadius: '40px',maxHeight: '900px'}")
                 Content
                     router-view
+
+
 
 

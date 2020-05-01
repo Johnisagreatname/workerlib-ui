@@ -14,7 +14,11 @@
         p.num {{$store.state.HomePageStore.externalConstructionTeam}}
         span 查看详情
     .video-vrap
-      video(width="100%" height="100%" src="")
+      video(v-if="$store.state.HomePageStore.videoData.isOk" controls="controls",autoplay,muted ,loop,width="100%",height="100%")
+        source(:src="'/api/workerlib/play/indexVideo/file/'+ $store.state.HomePageStore.videoData.id")
+      Carousel(v-else autoplay v-model="value2" loop)
+        CarouselItem(v-for="item in $store.state.HomePageStore.iimageData" :key="imageData.id")
+            img(:src="'/api/workerlib/preview/indexVideo/file/'+ item.id" style="width: 100%; height: 100%")
     .bottom
       .small-box
         p.title 在建工程总数
@@ -28,15 +32,15 @@
         p.num {{$store.state.HomePageStore.onlineWorker}}
           span 人
         .project
-          p 自有：123
-          p.check 外部：123
+          p 自有：{{$store.state.HomePageStore.onlineWorkerOwn}}
+          p.check 外部：{{$store.state.HomePageStore.onlineWorkerExternal}}
       .small-box
         p.title 离场工人数
         p.num {{$store.state.HomePageStore.offlineWorker}}
           span 人
         .project
-          p 自有：123
-          p.check 外部：123
+          p 自有：{{$store.state.HomePageStore.offlineWorkerOwn}}
+          p.check 外部：{{$store.state.HomePageStore.offlineWorkerExternal}}
   .charts-wrap-one
     .big-box
       p.title 工种人数统计
@@ -51,7 +55,7 @@
       #certificate(class="charts")
     .big-box
       p.title 培训课件统计
-      span.total 课件总数123个
+      span.total 课件总数{{trainingCourseTolal}}个
       #courseware(class="charts")
   .charts-wrap-two
     .big-box
@@ -59,7 +63,7 @@
       #workers(class="charts")
     .big-box
       p.title 培训统计
-      span.total 培训总人数123人
+      span.total 培训总人数{{trainTotal}}人
       #cultivate(class="charts")
     .big-box
       p.title 不良记录统计
@@ -67,7 +71,7 @@
         template(slot-scope="{ row, index }" slot="img")
           img(:src="`/api/workerlib/preview/appraise_photo/photo/${row.photoId}`")
       .button
-        .right
+        .right(@click="store.index('+')")
           Icon(type="md-arrow-dropright")
-        .left
+        .left(@click="store.index('-')")
           Icon(type="md-arrow-dropleft")

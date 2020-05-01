@@ -1,7 +1,7 @@
 <!--
  * @Date         : 2020-04-28 09:46:19
  * @LastEditors  : HaoJie
- * @LastEditTime : 2020-04-30 12:36:29
+ * @LastEditTime : 2020-05-01 11:54:41
  * @FilePath     : /src/components/Nav/HomePage/Index.vue
  -->
 <script lang="ts">
@@ -98,6 +98,8 @@ export default class HomePage extends Vue {
       slot: "img"
     }
   ];
+  private trainingCourseTolal: number = 0;
+  private trainTotal: number = 0;
   constructor() {
     super();
     this.store = getModule(HomePageStore);
@@ -110,9 +112,16 @@ export default class HomePage extends Vue {
     this.getCourseware();
     this.getWorkers();
     this.getCultivate();
+    this.getVideo();
+    this.store.countAppraiseCount();
+    this.store.count();
+    this.store.imgs();
+  }
+  getVideo() {
+    this.store.getVideo();
   }
   getTotal() {
-    this.store.getTotal()
+    this.store.getTotal();
   }
   async getJobs() {
     switch (this.jobsType) {
@@ -131,10 +140,10 @@ export default class HomePage extends Vue {
     }
   }
   jobs(data: Array<Jobs> = [{ value: 0, name: "无数据", color: "#2f5ee4" }]) {
-    let color = data.map(a => a.color);
+    let color = data.map(a => (a.color ? a.color : "#2f5ee4"));
     let list = data.map(a => {
       return {
-        value: a.value,
+        value: a.value ? a.value : 0,
         name: a.name
       };
     });
@@ -171,10 +180,10 @@ export default class HomePage extends Vue {
   }
   certificate(
     data: Array<Certificate> = [
-      { name: "无数据", hasCertificate: 0, inexistence: 0 }
+      { string: "无数据", hasCertificate: 0, inexistence: 0 }
     ]
   ) {
-    let xAxisData = data.map(a => a.name);
+    let xAxisData = data.map(a => a.string);
     let hasCertificate = data.map(a => a.hasCertificate);
     let inexistence = data.map(a => a.inexistence);
     const certificate = document.getElementById("certificate");
@@ -197,7 +206,7 @@ export default class HomePage extends Vue {
       },
       grid: {
         top: 30,
-        bottom: 30,
+        bottom: 32,
         left: 50,
         right: 20
       },
@@ -214,6 +223,20 @@ export default class HomePage extends Vue {
         axisLabel: {
           textStyle: {
             color: "#747fa0"
+          },
+          formatter: function(params) {
+            var newParamsName = "";
+            var paramsNameNumber = params.length;
+            var provideNumber = 3;
+            var rowNumber = Math.ceil(paramsNameNumber / provideNumber);
+            for (let row = 0; row < rowNumber; row++) {
+              newParamsName +=
+                params.substring(
+                  row * provideNumber,
+                  (row + 1) * provideNumber
+                ) + "\n";
+            }
+            return newParamsName;
           }
         },
         splitLine: {
@@ -286,8 +309,15 @@ export default class HomePage extends Vue {
     });
   }
   courseware(data: Array<Courseware> = [{ name: "无数据", value: 0 }]) {
-    let yAxisData = data.map(a => a.name);
-    let list = data.map(a => a.value);
+    let yAxisData: Array<any> = [];
+    let list: Array<any> = [];
+    data.forEach(a => {
+      if (a.name) {
+        yAxisData.push(a.name);
+        list.push(a.value);
+      }
+      this.trainingCourseTolal += a.value;
+    });
     const courseware = document.getElementById("courseware");
     const chart: any = this["$echarts"].init(courseware);
     chart.setOption({
@@ -451,6 +481,9 @@ export default class HomePage extends Vue {
   cultivate(data: Array<Cultivate> = [{ name: "无数据", value: 0 }]) {
     let xAxisData = data.map(a => a.name);
     let list = data.map(a => a.value);
+    list.forEach(a => {
+      this.trainTotal += a;
+    });
     const cultivate = document.getElementById("cultivate");
     const chart: any = this["$echarts"].init(cultivate);
     chart.setOption({
@@ -551,7 +584,7 @@ interface Jobs {
   color: string;
 }
 interface Certificate {
-  name: string;
+  string: string;
   hasCertificate: number;
   inexistence: number;
 }

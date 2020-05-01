@@ -14,31 +14,35 @@ import { AxiosRequestConfig } from "axios";
   name: "SpectacularsStore",
   store,
 })
+class Condition {
+    name : string;
+    value: any;
+    algorithm:string;
+    constructor(name:string,value:any) {
+        this.name=name;
+        this.value=value;
+        this.algorithm="EQ";
+    }
+}
 export default class SpectacularsStore extends VuexModule {
-
-  private totalCategory: number;
-  private eafUserIn: number;
-  private anyTotal: number;
-  private anyData: any;
-  //分页
-  public pageIndex: number;
-
-  constructor(e) {
-    super(e);
-    this.totalCategory = 0;
-    this.eafUserIn = 0;
-    this.anyTotal = 0;
-    this.anyData = [];
+    private totalCategory:number;
+    private eafUserIn:number;
+    private anyTotal:number;
+    private anyData:any;
     //分页
-    this.pageIndex = 1;
-  }
+    private pageIndex: number;
 
-  //set
-  @Mutation
-  public setPageIndex(data: number) {
-    this.pageIndex = data;
-  }
-
+    // private condition:object;
+    
+    constructor(e){
+        super(e);
+        this.totalCategory=0;
+        this.eafUserIn=0;
+        this.anyTotal=0;
+        this.anyData=[];
+        //分页
+        this.pageIndex= 1;
+    }
   //工种总数 searchCount(url:dictionaries,conName:category,status:工种)
   //自有队伍人数 searchCount(url:Archives,conName:eafUserStatus,status:0)
   //外部队伍人数 searchCount(url:Archives,conName:eafUserStatus,status:1)
