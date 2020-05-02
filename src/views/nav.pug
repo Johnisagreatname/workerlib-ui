@@ -67,12 +67,12 @@
                     //BreadcrumbItem(v-if="getMenuList()",v-for="item in getMenuList()") {{item}}
             div(:style="{height: '40px'}",v-if="type === 'peopleManagement' ")
                 div(class="switchMeun",@click="switchChecked('theirOwn')")
-                    div(class="switchNameBule",v-if="style ==='theirOwn' ") 自有人员
-                    div(class="switchBrBule",v-if="style ==='theirOwn' ")
+                    div(class="switchNameBule",v-if="styleClass ==='theirOwn' ") 自有人员
+                    div(class="switchBrBule",v-if="styleClass ==='theirOwn' ")
                     div(class="switchName",v-else) 自有人员
                 div(class="switchMeun",@click="switchChecked('exterior')")
-                    div(class="switchNameBule",v-if="style ==='exterior' ") 外部人员
-                    div(class="switchBrBule",v-if="style === 'exterior'")
+                    div(class="switchNameBule",v-if="styleClass ==='exterior' ") 外部人员
+                    div(class="switchBrBule",v-if="styleClass === 'exterior'")
                     div(class="switchName",v-else) 外部人员
 
             div(:style="{height: '40px'}",v-if="type==='setting'")
@@ -111,15 +111,19 @@
 
 
             div(:style="{height: '40px'}",v-if="type === 'lecturerManagement' ")
-                div(class="switchMeun",@click="switchChecked('externalLecturer')")
-                    div(class="switchNameBule",v-if="style ==='externalLecturer' ") 外部讲师
-                    div(class="switchBrBule",v-if="style ==='externalLecturer' ")
-                    div(class="switchName",v-else) 外部讲师
                 div(class="switchMeun",@click="switchChecked('internalTrainer')")
-                    div(class="switchNameBule",v-if="style ==='internalTrainer' ") 内部讲师
-                    div(class="switchBrBule",v-if="style === 'internalTrainer'")
+                    div(class="switchNameBule",v-if="styleClass ==='internalTrainer' ") 内部讲师
+                    div(class="switchBrBule",v-if="styleClass === 'internalTrainer'")
                     div(class="switchName",v-else) 内部讲师
-            Content(:style="{padding: '30px',margin: '24px 24px 24px 24px', minHeight: '280px', background: '#fff',borderRadius: '40px',maxHeight: '900px'}")
+                div(class="switchMeun",@click="switchChecked('externalLecturer')")
+                    div(class="switchNameBule",v-if="styleClass ==='externalLecturer' ") 外部讲师
+                    div(class="switchBrBule",v-if="styleClass ==='externalLecturer' ")
+                    div(class="switchName",v-else) 外部讲师
+
+            Content(v-if="!styleClass && !peopleManagement")
+                Content
+                    router-view
+            Content(v-else :style="{padding: '30px',margin: '24px 24px 24px 24px', minHeight: '280px', background: '#fff',borderRadius: '40px',maxHeight: '900px'}")
                 Content
                     router-view
 

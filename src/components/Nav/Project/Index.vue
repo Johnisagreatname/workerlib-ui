@@ -22,7 +22,7 @@
         }
     })
     export default class Project extends Vue {
-        private loading = false;
+        loading = true;
         public store: any;
 
         private subCompanyList :Array<any>;
@@ -259,7 +259,6 @@
 
         }
         clickDeleteProjectCompany(){
-            debugger
             if(!this.store.deleteCompanyId){
                 let alert: any = Message;
                 alert.warning("请选择要删除的数据！");
@@ -269,9 +268,9 @@
         }
         deleteCompanyOk(){
             this.store.deleteProjectCompanyId();
+            this.deleteCompany = false;
         }
         deleteCompanyCancel(){
-            debugger
             this.deleteCompany = false;
         }
     }

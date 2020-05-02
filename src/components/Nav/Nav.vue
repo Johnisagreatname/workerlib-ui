@@ -26,7 +26,7 @@
 
 
         private type: string;           //设置
-        private style: string;
+        private styleClass: string;
         private menuName: string;
         private path: string;
 
@@ -42,7 +42,7 @@
 
             this.type = sessionStorage.getItem("type");
             this.menuName = sessionStorage.getItem("menuName");
-            this.style = sessionStorage.getItem("style");
+            this.styleClass = sessionStorage.getItem("style");
             this.path = sessionStorage.getItem("path");
 
 
@@ -51,7 +51,6 @@
 
         }
         clickMenu(checked,menuName,path){
-            debugger
             //一级菜单
             let menu = ["homepage","projectManagement","peopleManagement","trainingManagement","lecturerManagement",
                 "comprehensiveAssessment","badEvaluation","skillAppraisal","setting"];
@@ -74,7 +73,7 @@
 
         switchChecked(switchName) {
             //二级菜单
-            this.style = switchName;
+            this.styleClass = switchName;
             JSON.stringify(sessionStorage.setItem("style",switchName));
             if (switchName == 'theirOwn') {
                 this.workerStore.setSelectEafUserStatus(1);
@@ -82,12 +81,7 @@
             } else if (switchName == 'exterior') {
                 this.workerStore.setSelectEafUserStatus(2);
                 this.workerStore.searchUserList();
-            }else if(switchName == 'externalLecturer'){
-
-            }else if(switchName == 'internalTrainer'){
-
-            }
-            else{
+            }else{
                 //二级菜单路由跳转
                 JSON.stringify(sessionStorage.setItem("path",switchName));
 

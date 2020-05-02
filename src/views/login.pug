@@ -1,8 +1,13 @@
-.freamwork
-    .loginBox
-        .inputName
-            h3 请输入账号密码
-            Input(prefix="ios-contact", v-model="username")
-            Input(prefix="md-unlock",type="password", v-model="password", @keyup.enter.native="login")
-            Button(@click="login") 立即登录
-    footer
+#login
+  .login-box
+    p.name 智慧建筑工人信息平台
+    p.login 登陆
+      span /Sign in
+    .input-box
+      .input-wrap
+        Icon(type="md-person")
+        input(placeholder="用户名" v-model="username" @keyup.enter="$refs.password.focus()")
+      .input-wrap
+        Icon(type="ios-lock")
+        input(type="password" ref="password" placeholder="账户密码" v-model="password" @keyup.enter="login")
+      p.button(@click="login") 确定

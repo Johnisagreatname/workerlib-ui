@@ -167,18 +167,35 @@
     text-align: center;
     padding-left: 560px;
 }
+.div1Checked{
+    width: 340px;
+    height: 214px;
+    background-color: #eceffc;
+    float: left;
+    margin-right: 20px;
+    margin-bottom: 20px;
+    border: 1px solid #7a90fd;
+}
 .div1{
     width: 340px;
     height: 214px;
-    background-color: antiquewhite;
+    background-color: #eceffc;
     float: left;
+    margin-right: 20px;
+    margin-bottom: 20px;
+    border: 1px solid #abafc2;
 }
-.div2{
+.div2Checked{
     height: 40px;
     background-color: #7a90fd;
 }
+
+.div2{
+    height: 40px;
+    background-color: #abafc2;
+}
 .div3{
-    height: 174px;
+    height: 170px;
     background-color: #eceffc;
 }
 .div4{
@@ -187,7 +204,7 @@
     float: left;
 }
 .div5{
-    width: 215px;
+    width: 210px;
     float: left;
     height: 100%;
 }
@@ -196,10 +213,56 @@
     width: 10%;
     text-align: center;
     line-height: 40px;
+    float: left;
 }
 .div7{
     color: #ffffff;
+    float: left;
+    line-height: 40px;
 }
 .div8{
     height: 58px;
+    line-height: 58px;
+}
+.div9{
+    width: 30%;
+    font-size: 16px;
+    float: left;
+    padding-left: 10px;
+}
+.div10{
+    width: 70%;
+    float: left;
+    font-size: 16px;
+}
+.lecturerClass{
+    height: 560px;
+}
+.modelBody{
+     height: 230px;
+ }
+.divTwo{
+    line-height: 70px;
+    width: 80%;
+    height: 65px;
+    margin-left: 20%;
+    float: left;
+
+}
+.divTwo span{
+    font-size: 18px;
+}
+
+.name{
+    width: 22%;
+    float: left;
+    text-align: right;
+}
+.input{
+    width: 75%;
+    float: left;
+    margin-left: 2%;
+}
+.modelBody{
+    height:400px;
 }
