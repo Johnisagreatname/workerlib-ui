@@ -175,14 +175,14 @@
 }
 .div2{
     height: 40px;
+    background-color: #7a90fd;
 }
 .div3{
     height: 174px;
-    background-color: aqua;
+    background-color: #eceffc;
 }
 .div4{
     width: 125px;
-    background-color: #a2a2a2;
     height: 100%;
     float: left;
 }
@@ -196,4 +196,10 @@
     width: 10%;
     text-align: center;
     line-height: 40px;
+}
+.div7{
+    color: #ffffff;
+}
+.div8{
+    height: 58px;
 }

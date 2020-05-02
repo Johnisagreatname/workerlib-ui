@@ -49,7 +49,9 @@
         get pullDown(): boolean{
             return this.store.pullDown;
         }
+        getLectuerList(){
 
+        }
 
 
 

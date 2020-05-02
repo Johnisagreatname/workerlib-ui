@@ -26,14 +26,14 @@
             Button(type="primary",ghost,icon="ios-trash-outline") 删除讲师
             Button(type="primary",ghost,icon="ios-cloud-upload-outline") 导出
         div
-            div(class="div1")
+            div(class="div1",v-for="item in getLectuerList()")
                 div(class="div2")
                     div(class="div6")
                         Checkbox
-                    div
+                    div(class="div7")
                 div(class="div3")
                     div(class="div4")
                     div(class="div5")
-                        div
-                        div
-                        div
+                        div(class="div8")
+                        div(class="div8")
+                        div(class="div8")
