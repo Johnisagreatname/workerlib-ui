@@ -224,6 +224,7 @@ export default class ProjectStore extends VuexModule {
             }
 
             this.successUnitTypeList(data);
+
         }).catch((e)=>{
             MessageUtils.warning(e);
         });
@@ -269,7 +270,9 @@ export default class ProjectStore extends VuexModule {
             if(!data){
                 return;
             }
-            alert.success("新增单位成功!")
+
+            alert.success("新增单位成功!");
+            this.getCompanyList();
         }).catch((e)=>{
             MessageUtils.warning(e);
         });
@@ -371,7 +374,9 @@ export default class ProjectStore extends VuexModule {
             if(!data){
                 return;
             }
+
             alert.success("新增项目成功!")
+            this.getCompanyList();
         }).catch((e)=>{
             MessageUtils.warning(e);
         });
@@ -441,13 +446,15 @@ export default class ProjectStore extends VuexModule {
     }
     @Action
     public async deleteProjectCompanyId(){
-        debugger
         await request.delete('/api/workerlib/company_hierarchy/'+this.deleteCompanyId).then((data)=>{
             if(!data){
                 return;
             }
             if(data.status == 0){
+                let alert: any = Message;
+                alert.success("删除成功!");
                 this.setDeleteCompanyId(null);
+                this.getCompanyList();
             }
         }).catch((e)=>{
             MessageUtils.warning(e);
