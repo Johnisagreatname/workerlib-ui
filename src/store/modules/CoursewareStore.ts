@@ -53,6 +53,7 @@ export default class CoursewareStore extends VuexModule {
     public id:number;
     public cultivate_id:number;
     public in:boolean;
+    public course:string;
 
     constructor(e) {
         super(e)
@@ -62,7 +63,7 @@ export default class CoursewareStore extends VuexModule {
         this.pageIndex=1;
         this.pageSize= 10;
         this.pageTotal = 0;
-
+        this.course='';
         this.pageInIndex=1;
         this.pageInSize= 8;
         this.pageInTotal = -1;
@@ -116,6 +117,10 @@ export default class CoursewareStore extends VuexModule {
                 "name": "status",
                 "value": this.selectStatus,
                 "algorithm": "EQ"
+            },{
+                "name": "course",
+                "value": this.course,
+                "algorithm": "EQ"
             }
             ],
 
@@ -129,6 +134,68 @@ export default class CoursewareStore extends VuexModule {
             "selectList": []
         };
     }
+
+    //查询条件参数
+    @Action
+    public getSelectParams(list: Array<selectlParams> = null) {
+        return new Promise((res, rej) => {
+            let params: any = {
+                "pageInfo": {},
+                "conditionList": [],
+                "sortList": [],
+                "groupList": [],
+                "keywords": [],
+                "selectList": []
+            }
+            if (list) {
+                list.forEach((a, index) => {
+                    params.selectList.push(new Object())
+                    params.selectList[index].field = a.field;
+                    params.groupList.id=a.field;//group条件
+                })
+            }
+            res(params)
+        })
+    }
+
+    //调用例子
+    // @Action
+    // async getVideo() {await this.searchData({ url: "indexVideo", fieldName: "type" }).then(res => { this.changeVideoData(res.data)})}
+
+    //@Mutation
+    //   changeVideoData(data) {
+    //     this.videoData = data
+    //   }
+
+    //({url: "courseware",fieldName:"course"})所属类型
+    //({url: "courseware",fieldName:"type_work"})选择工种
+
+    //查询数据
+    @Action
+    public async searchData({ url, fieldName = ""}: SearchData): Promise<any> {
+        return new Promise(async (resolve, reject) => {
+            let params = fieldName  ? [{ field: fieldName}] : null
+            await request.post('/api/workerlib/' + url, await this.getSelectParams(params)).then((data) => {
+                if (!data) {
+                    return;
+                }
+                resolve(data.data)
+            }).catch((e) => {
+                let alert: any = Message;
+                if (!e) {
+                    alert.warning('未知错误！')
+                    return
+                }
+                if (e.response && e.response.data && e.response.data.message) {
+                    alert.warning(e.response.data.message)
+                    return
+                }
+                alert.warning(e.message || e)
+            });
+        })
+    }
+
+
     @Action
     public getPeopleParams() : any {
 
@@ -216,6 +283,7 @@ export default class CoursewareStore extends VuexModule {
             "keywords" : []
         };
     }
+
     @Action
     public async search() {
         await request.post('/api/workerlib/courseware',await this.getParams()).then((data)=>{
@@ -1097,4 +1165,12 @@ interface Cultivate {
     trainingTeacher?:string;
     trainingAddress?:string;
     status?:number;
+}
+
+interface SearchData {
+    url: string;
+    fieldName:string
+}
+interface selectlParams {
+    field: string;
 }
