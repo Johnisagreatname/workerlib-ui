@@ -87,6 +87,13 @@ export default class BadListStore extends VuexModule {
             item["algorithm"] = "EQ"
             conditionList.push(item);
         }
+
+
+
+
+
+
+        
         if(this.punishmentType){
             let item ={};
             item["name"]="punishment";
