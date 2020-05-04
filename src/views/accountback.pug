@@ -1,0 +1,83 @@
+.body
+    .topOne
+        .divOne
+            span 用户名：
+                Input(clearable,style="width: 200px",v-model="name")
+        .divOne
+            span
+        .divOne
+            span
+        .divOne
+            span
+        .divOne
+            Button(@click="search") 搜索
+    .hr
+    .button
+        Button(type="primary", ghost, icon="ios-add-circle-outline",@click="addProject=!addProject") 新增用户
+    .bodyTwo
+        Table(:row-class-name="rowClassName", border, ref="selection", :columns="getColumns()", :data="getData()")
+            template(slot-scope="{row, index }",slot="operation")
+                Dropdown(trigger="click")
+                    a(href="javascript:void(0)" :style={"font-size": "16px"})
+                        span 详细操作
+                        Icon(type="md-arrow-dropdown" )
+                    DropdownMenu(slot="list")
+                        DropdownItem
+                            Icon(type="ios-create-outline")
+                            span(@click="popupUpdUser(row.userId)") 修改密码
+                        DropdownItem
+                            Icon(type="ios-remove-circle-outline")
+                            span(@click="popupDelUser(row.userId)") 删除用户
+    .footer
+        Page(:total="getTotalRecords()",show-sizer,show-elevator,show-total,@on-page-size-change="onPageSizeChange",@on-change="onPageIndexChange")
+
+    Modal(:value="addProject",title="新增人员",@on-ok="ok()",@on-cancel="cancel()",width='70%',:loading="loading")
+        .addBody
+            .divTwo
+                .name
+                    span 用户名
+                    span(:style={'color': 'red'}) *
+                .input
+                    Input(clearable,style="width: 345px",size=large,v-model="username",placeholder="用户名用于登入")
+            .divTwo
+                .name
+                    span 密码
+                    span(:style={'color': 'red'}) *
+                .input
+                    Input(clearable,style="width: 345px",size=large,v-model="password",placeholder="请输入密码",type="password")
+            .divTwo
+                 .name
+                     span 角色
+                     span(:style={'color': 'red'}) *
+                 .input
+                    Select(filterable,v-model="moderole",@on-change="changeRole",clearable,style="width:345px")
+                        Option(v-for="item in getRoles()", :value="item.roleId", :key="item.roleId") {{item.roleName}}
+
+            #projectSelect(:style="this.getDispaly")
+                .divTwo
+                    .name
+                        span 项目名称
+                        span(:style={'color': 'red'}) *
+                    .input
+                        Select(filterable,v-model="modegroup",multiple,clearable,style="width:345px")
+                            Option(:value="0", :key="0")  全部
+                            Option(v-for="item in getGroup()", :value="item.groupId", :key="item.groupId") {{item.groupName}}
+            //.divTwo
+            //    .name
+            //        span 用户权限
+            //        span(:style={'color': 'red'}) *
+            //    .input
+            //        Input(clearable,style="width: 345px",size=large,v-model="builderLicense")
+    Modal(:value="updUser",title="修改密码",@on-ok="yes()",@on-cancel="cancelYes()",width='70%')
+        .addBody(:style={'height': '82px'})
+            .divTwo
+                .name
+                    span 新密码
+                    span(:style={'color': 'red'}) *
+                .input
+                    Input(clearable,style="width: 400px",size=large,v-model="password",placeholder="请输入密码")
+    Modal(:value="delUser",title="删除用户",@on-ok="deletes()",@on-cancel="cancelDeletes()",width='70%')
+        .addBody
+            .divTwo
+                .name
+                    span 确认删除改用户吗？
