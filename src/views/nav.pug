@@ -2,7 +2,7 @@
     Layout
         Sider(:style="{height: '1080px'}",width=230)
             Menu(:active-name="menuName",theme="light",width="auto",:style="{color: '#fff'}")
-                MenuItem(name="主页",:style="{marginTop: '240px'}",@click.native="clickMenu('homepage','主页','')")
+                MenuItem(name="主页",:style="{marginTop: '240px'}",@click.native="clickMenu('homepage','主页','homepage')")
                     span(class="top-angle",v-if="type == 'homepage' ")
                     span(class="bottom-angle",v-if="type == 'homepage' ")
                     img(src="~@/assets/css/images/主页蓝.png",v-if="type == 'homepage' ",:style="{marginLeft: '12px'}")
@@ -44,7 +44,7 @@
                     img(src="~@/assets/css/images/不良评价蓝.png",v-if="type == 'badEvaluation'",:style="{marginLeft: '12px'}")
                     img(src="~@/assets/css/images/不良评价.png",v-else)
                     Item 不良评价
-                MenuItem(name="技能鉴定",@click.native="clickMenu('skillAppraisal','技能鉴定','/nav/project')")
+                MenuItem(name="技能鉴定",@click.native="clickMenu('skillAppraisal','技能鉴定','/nav/checkEvaluate')")
                     span(class="top-angle",v-if="type == 'skillAppraisal'")
                     span(class="bottom-angle",v-if="type == 'skillAppraisal'")
                     img(src="~@/assets/css/images/技能鉴定蓝.png",v-if="type == 'skillAppraisal'",:style="{marginLeft: '12px'}")

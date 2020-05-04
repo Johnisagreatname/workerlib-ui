@@ -1,3 +1,9 @@
+/*
+ * @Date         : 2020-04-30 10:07:56
+ * @LastEditors  : HaoJie
+ * @LastEditTime : 2020-05-02 13:46:31
+ * @FilePath     : /package/webpack.watch.conf.js
+ */
 var path = require('path')
 var utils = require('./utils')
 var webpack = require('webpack')
@@ -45,7 +51,7 @@ var webpackConfig = merge(baseWebpackConfig, {
       'language' : 'typescript',
       'mode' : 'hash',
       'redirect': [{
-        redirect: '/spectaculars',
+        redirect: '/homePage',
         path: '/'
       }]
     }),
