@@ -57,7 +57,6 @@
 
         }
         clickMenu(checked,menuName,path){
-            debugger
             //一级菜单
             let menu = ["homepage","projectManagement","peopleManagement","trainingManagement","lecturerManagement",
                 "comprehensiveAssessment","badEvaluation","skillAppraisal","setting"];
