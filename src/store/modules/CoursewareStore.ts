@@ -112,7 +112,7 @@ export default class CoursewareStore extends VuexModule {
             let item ={};
             item["name"]="title";
             item["value"]=this.selectTitle;
-            item["algorithm"] = "LIKE"
+            item["algorithm"] = "EQ"
             this.conditionList.push(item);
         }
         if(this.selectTypeWork){
@@ -126,7 +126,7 @@ export default class CoursewareStore extends VuexModule {
             let item ={};
             item["name"]="status";
             item["value"]=this.selectStatus;
-            item["algorithm"] = "LIKE"
+            item["algorithm"] = "EQ"
             this.conditionList.push(item);
         }
         if(this.selectCourse){
@@ -723,7 +723,7 @@ export default class CoursewareStore extends VuexModule {
         }
         if(data.status == 0) {
             let alert: any = Message;
-            alert.warning("新建课程成功！");
+            alert.success("新建课程成功！");
         }
     }
     @Action

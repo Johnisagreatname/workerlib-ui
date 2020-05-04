@@ -32,13 +32,13 @@
                     img(src="~@/assets/css/images/讲师管理蓝.png",v-if="type == 'lecturerManagement'",:style="{marginLeft: '12px'}")
                     img(src="~@/assets/css/images/讲师管理.png",v-else)
                     Item 讲师管理
-                MenuItem(name="综合评价",@click.native="clickMenu('comprehensiveAssessment','综合评价','/nav/project')")
+                MenuItem(name="综合评价",@click.native="clickMenu('comprehensiveAssessment','综合评价','/nav/comments')")
                     span(class="top-angle",v-if="type == 'comprehensiveAssessment'")
                     span(class="bottom-angle",v-if="type == 'comprehensiveAssessment'")
                     img(src="~@/assets/css/images/综合评价蓝.png",v-if="type == 'comprehensiveAssessment'",:style="{marginLeft: '12px'}")
                     img(src="~@/assets/css/images/综合评价.png",v-else)
                     Item 综合评价
-                MenuItem(name="不良评价",@click.native="clickMenu('badEvaluation','不良评价','/nav/project')")
+                MenuItem(name="不良记录",@click.native="clickMenu('badEvaluation','不良记录','/nav/badComments')")
                     span(class="top-angle",v-if="type == 'badEvaluation'")
                     span(class="bottom-angle",v-if="type == 'badEvaluation'")
                     img(src="~@/assets/css/images/不良评价蓝.png",v-if="type == 'badEvaluation'",:style="{marginLeft: '12px'}")
@@ -134,7 +134,7 @@
                     div(class="switchName",v-else) 线下培训
 
 
-            Content(v-else :style="{padding: '30px',margin: '24px 24px 24px 24px', minHeight: '280px', background: '#fff',borderRadius: '40px',maxHeight: '900px'}")
+            Content(:style="{padding: '30px',margin: '24px 24px 24px 24px', minHeight: '280px', background: '#fff',borderRadius: '40px',maxHeight: '900px'}")
                 Content
                     router-view
 

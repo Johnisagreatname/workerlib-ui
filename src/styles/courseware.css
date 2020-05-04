@@ -271,7 +271,7 @@
     width: 300px;
     height: 234px;
     margin-bottom: 16px;
-    margin-right: 18PX;
+    margin-right: 12px;
     background-color: #f8f9fb;
     box-shadow: 3px 3px 3px 1px #d7d7d7;
 }
@@ -291,6 +291,11 @@
 }
 .div3{
     height: 44px;
+}
+.div33{
+    height: 44px;
+    text-align: center;
+    line-height: 44px;
 }
 .ellipse{
     display: block;
@@ -330,7 +335,6 @@
 }
 .divCourseWare1{
     width: 80%;
-    float: left;
     display: inline-block;
     overflow: hidden;
     textOverflow: ellipsis;
@@ -339,8 +343,123 @@
 }
 .divCourseWare2{
     width: 20%;
-    float: left;
+    float: right;
     text-align: right;
     font-size: 24px;
     padding-right: 10px;
+}
+.addBody1{
+    width: 100%;
+    height: 772px;
+}
+.top {
+    display: block;
+    width: 100%;
+    min-height: 70px;
+    float: right;
+}
+.addBody2{
+    width: 100%;
+    height: 460px;
+}
+.cdivOne{
+    display: block;
+    height: 70px;
+    width: 390px;
+    float: left;
+    margin-left:30px;
+}
+.cdivOne span {
+    line-height: 70px;
+    font-size: 18px;
+}
+.name2{
+    width: 30%;
+    float: left;
+    text-align: right;
+}
+.inputs{
+    float: left;
+    line-height: 65px;
+     margin-left: 2%;
+    height: 100%;
+    width: 64%;
+}
+.top3{
+    display: block;
+    width: 100%;
+    min-height: 100px;
+    float: right;
+    height: auto;
+}
+.left1{
+    width: 65%;
+    height: 610px;
+    border: 1px solid #b8b8b8;
+    margin-left: 2%;
+    float: left;
+    padding-top: 10px;
+}
+.left1 table{
+    width: 800px;
+    border-top: 1px solid #999;
+
+    border-left: 1px solid #999;
+
+    border-spacing: 0;
+    margin-left: auto;
+    margin-right: auto;
+}
+.left1 td{
+    text-align: center;
+}
+.left1 table th{
+    height: 50px;
+    background-color: #b3d4fc;
+    font-size: 14px;
+}
+.left1 tr th,.left1 tr td{
+    border-bottom: 1px solid #999;
+
+    border-right: 0px;
+}
+.right1{
+    width: 25%;
+    height: 610px;
+    border: 1px solid #b8b8b8;
+    margin-right: 2%;
+    float: right;
+}
+.rdiv{
+    display:  inline-block;
+    float: left;
+    width: 50px;
+    height: 70px;
+    margin-left: 10px;
+    text-align: center;
+    margin-top: 10px;
+    position: relative;
+}
+.rimg{
+    width: 50px;
+    height: 50px;
+}
+.rname{
+    width: 50px;
+    height: 20px;
+}
+.image-remove {
+    background-color: #0091fe;
+    color: #ececec;
+    font-size: 12px;
+    width: 15px;
+    height: 15px;
+    text-align: center;
+    border-radius: 100%;
+    transform: rotate(45deg);
+    cursor: pointer;
+    /* opacity: 0.5; */
+    top: 2px;
+    right: -2px;
+    position: absolute;
 }

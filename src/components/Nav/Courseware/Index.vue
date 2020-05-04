@@ -97,7 +97,12 @@
             this.store.searchPeople();
 
         }
-
+        clickAddCourseWare(){
+            this.addCourseware = true;
+        }
+        clickAddUpCourseWare(){
+            this.addUpCourseware = true;
+        }
         getColumns() : any{
             return this.store.columns;
         }
@@ -424,15 +429,7 @@
                 }
             }
         }
-        toggle(name){
-            if(name=="线上培训"){
-                this.store.setSelectStatus(1);
-                this.store.search();
-            }else {
-                this.store.setSelectStatus(2);
-                this.store.search();
-            }
-        }
+
         private options!: any;
         getMenus() : any {
             if(this.options) return this.options;
@@ -523,7 +520,12 @@
             this.store.setInPageIndex(pageIndex);
             this.store.searchPeople();
         }
-
+        reset(){
+            this.store.setSelectTitle(null);
+            this.store.setSelectTypeWork(null);
+            this.store.setSelectWhether(null);
+            this.store.setSelectCourse(null);
+        }
         set pageTotal(data:number){
             this.store.setPageToatl(data);
         }
@@ -536,6 +538,12 @@
         }
         get pageInTotal():number{
             return this.store.pageInTotal;
+        }
+        set selectStatus(data:number){
+            this.store.setSelectStatus(data);
+        }
+        get selectStatus():number{
+            return this.store.selectStatus;
         }
 
 
@@ -579,7 +587,7 @@
             return this.store.selectWhether;
         }
         clearWhethers(){
-            this.store.setWhethers(null);
+            this.store.setSelectWhether(null);
         }
         set title(data:string){
             this.store.setTitle(data);

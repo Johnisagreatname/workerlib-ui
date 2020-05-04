@@ -1,59 +1,84 @@
 .body
-    .divOne
-        span 姓名：
-            Input(clearable,style="width: 200px",v-model="selectName")
-    .search
-        Button(@click="search()") 搜索
-    .hr
-    .button
-        Button(type="primary", ghost, icon="ios-log-out",@click="commentsExport()") 导出
-    .hr
-    .people(v-for="(item, index) in getComments()", :value="item.eafId", @click="clickChecked(item.eafId)", :key="index")
-        .circle
-            img(:src="'/api/workerlib/preview/alluser/photo/'+item.id",:style={'width':'100%','height':'100%', 'border-radius': '50%'},v-if="item.photo")
-            img(:src="'http://113.105.121.93:1818'+item.cwrPhoto",:style={'width':'100%','height':'100%', 'border-radius': '50%'},v-else-if="item.cwrPhoto")
-            img(src="~@/assets/css/images/headerPicture.png",:style={'width':'100%','height':'100%', 'border-radius': '50%'},v-else)
-        .name
-            span {{item.eafName}}
-        .photos
-            div(:class="isChecked(item.eafId) ? 'pop' : 'pTop'")
-        Rate(disabled,:value="Number(item.synthesize)",allow-half)
-        span(:style={'color': '#f78803','margin-left':'70px','font-size':'18px'}) {{item.synthesize}}
-        .comment
-            .com 好评{{item.commGood}}
-            .com 中评{{item.commMiddle}}
-            .com 差评{{item.commBad}}
-        .y1
-            span(:style={
-                'color': '#000000', 'font-weight': 'bold', 'font-size': '15px'
-            }) 所属工种:
-        span(v-if="item.workType",:title="item.workType",:style={
-            'display': 'inline-block',
-            'width': '90%',
-            'overflow': 'hidden',
-            'textOverflow': 'ellipsis',
-            'whiteSpace': 'nowrap',
-            'margin-left': '14px',
-            'height': '48px'
-        }) {{item.workType}}
-        span(v-else,title="普工",:style={
-            'display': 'inline-block',
-            'width': '90%',
-            'overflow': 'hidden',
-            'textOverflow': 'ellipsis',
-            'whiteSpace': 'nowrap',
-            'margin-left': '14px',
-            'height': '48px'
-        }) 普工
-        .y2
-            Button(type="primary", ghost,@click="details(item.eafId)") 查看详情
-            Button(type="primary", ghost,@click="addCommtentlist(item.eafId)") 添加评价
+    div
+        p(:style="{fontSize: '16px',fontWeight: 'bold'}") 综合评价
 
-    .footer
-        Page(:total="this.store.totalRecords",show-sizer,show-elevator,show-total,
-        @on-page-size-change="onPageSizeChange",@on-change="onPageIndexChange")
+        div(class="selectedList")
+            div(class="condition")
+                span(:style="{fontSize: '16px',float: 'left',marginRight: '10px',paddingTop: '14px',color: '#789fef'}") 已选条件
+                div(class="selected",v-if="selectName") {{selectName}}
+                    Icon(type="ios-backspace-outline",@click="clearSelectName()")
+                div(class="selected",v-if="selectWorkType") {{selectWorkType}}
+                    Icon(type="ios-backspace-outline",@click="clearSelectWorkType()")
+            div(class="selectButton")
+                div(class="reset",@click="reset()") 重置
+                div(class="inquire",@click="search()") 查询
+        div(class="select")
+            div(class="divSelect")
+                div(class="selectTitle") 姓名
+                div(class="selectValue")
+                    Input(clearable,placeholder="请输入",v-model="selectName")
+            div(class="divSelect")
+                div(class="selectTitle") 选择工种
+                div(class="selectValue")
+                    Col(style="padding-right:10px")
+                        Select(filterable,clearable,v-model="selectWorkType")
+                            Option(v-for="item in getType()", :value="item.name", :key="item.name") {{item.name}}
 
-    Modal(:value="addCommtent",title="添加评价",@on-ok="ok()",@on-cancel="cancel()",width='70%',:loading = "loading")
+        div(class="pullDown",v-if="pullDown == false")
+            img(src="~@/assets/css/images/下拉.png",@click="switchTo()")
+        div(class="pullDown",v-else)
+            img(src="~@/assets/css/images/上拉.png",@click="switchTo()")
+
+    div(class="button")
+        Button(type="primary",ghost,icon="ios-log-out",@click="commentsExport()") 导出
+    div
+        div(v-for="(item, index) in getComments()", :value="item.eafId", @click="clickChecked(item.eafId)", :key="index",
+        :class="isChecked(item.eafId) ? 'peopleChecked' : 'people'")
+            .circle
+                img(:src="'/api/workerlib/preview/alluser/photo/'+item.id",:style={'width':'100%','height':'100%', 'border-radius': '50%'},v-if="item.photo")
+                img(:src="'http://113.105.121.93:1818'+item.cwrPhoto",:style={'width':'100%','height':'100%', 'border-radius': '50%'},v-else-if="item.cwrPhoto")
+                img(src="~@/assets/css/images/headerPicture.png",:style={'width':'100%','height':'100%', 'border-radius': '50%'},v-else)
+            .name
+                span {{item.eafName}}
+            .photos
+                div(:class="isChecked(item.eafId) ? 'pop' : 'pTop'")
+            Rate(disabled,:value="Number(item.synthesize)",allow-half)
+            span(:style={'color': '#f78803','margin-left':'70px','font-size':'18px'}) {{item.synthesize}}
+            .comment
+                .com 好评{{item.commGood}}
+                .com 中评{{item.commMiddle}}
+                .com 差评{{item.commBad}}
+            .y1
+                span(:style={
+                    'color': '#000000', 'font-weight': 'bold', 'font-size': '15px'
+                }) 所属工种:
+            span(v-if="item.workType",:title="item.workType",:style={
+                'display': 'inline-block',
+                'width': '90%',
+                'overflow': 'hidden',
+                'textOverflow': 'ellipsis',
+                'whiteSpace': 'nowrap',
+                'margin-left': '14px',
+                'height': '48px'
+            }) {{item.workType}}
+            span(v-else,title="普工",:style={
+                'display': 'inline-block',
+                'width': '90%',
+                'overflow': 'hidden',
+                'textOverflow': 'ellipsis',
+                'whiteSpace': 'nowrap',
+                'margin-left': '14px',
+                'height': '48px'
+            }) 普工
+            .y2
+                Button(type="primary", ghost,@click="details(item.eafId)") 查看详情
+                Button(type="primary", ghost,@click="addCommtentlist(item.eafId)") 添加评价
+
+        .footer
+            Page(:total="this.store.totalRecords",show-sizer,show-elevator,show-total,
+            @on-page-size-change="onPageSizeChange",@on-change="onPageIndexChange")
+
+    Modal(:value="addCommtent",title="添加评价",@on-ok="ok()",@on-cancel="cancel()",width='70%',:loading = "loading",:transfer="false")
      .maxBody
          Tabs(value="不良评价",@on-click="toggle")
              TabPane( label="不良评价",name="不良评价")
@@ -133,7 +158,7 @@
                         Rate(v-model="item.score")
 
 
-    Modal(:value="commtentcInfo",title="评价详情",@on-ok="okInfo()",@on-cancel="cancelInfo()",width='70%')
+    Modal(:value="commtentcInfo",title="评价详情",@on-ok="okInfo()",@on-cancel="cancelInfo()",width='60%',:transfer="false")
         .minBody
             .c1
                 .c2

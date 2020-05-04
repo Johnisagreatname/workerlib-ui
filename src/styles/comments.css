@@ -1,11 +1,4 @@
-.body{
-    display: inline-block;
-    min-height: 1080px;
-    height: auto;
-    width: 100%;
-    background-color: #ffffff;
-    color:#000000;
-}
+
 .topOne{
     display: block;
     height: 140px;
@@ -44,26 +37,28 @@
     height: 10px;
     float: right;
 }
-.button{
-    display: inline-block;
-    min-height: 70px;
-    height: auto;
-    width: 100%;
-}
-.button Button {
-    margin-left: 20px;
-    margin-top: 20px;
-}
 .people{
     display: inline-block;
-    width: 280px;
+    width: 290px;
     height: 300px;
-    margin-left: 45px;
-    margin-top: 20px;
+    margin-right: 16px;
+    margin-bottom: 16px;
     border: 1.5px solid #f8f9fb;
     box-shadow: 5px 5px 5px -1px #d7d7d7;
     background-color: #f8f9fb;
     position: relative;
+}
+.peopleChecked{
+    display: inline-block;
+    width: 290px;
+    height: 300px;
+    margin-right: 16px;
+    margin-bottom: 16px;
+    border: 1.5px solid #f8f9fb;
+    box-shadow: 5px 5px 5px -1px #d7d7d7;
+    background-color: #f8f9fb;
+    position: relative;
+    border: 1px solid #7a90fd;
 }
 .people:hover,.people:active {
     border: 1.5px solid #0090ff;
@@ -161,21 +156,21 @@
 .y2 button{
     width: 50%;
     height: 36px;
-    color: #0090ff;
+    color: #ffffff;
     text-align: center;
     line-height: 27px;
     border: 1px solid #e6f4ff;
     font-weight: bold;
     font-size: 13px;
-    background-color: transparent;
+    background-color: #789dff;
 }
 .y2 button:hover,.y2 button:active{
     color: #ffffff;
-    background-color: #0090ff;
+    background-color: #7a90fd;
 }
 
 .minBody{
-    width: 1180px;
+    width: 100%;
     height: auto;
     min-height: 500px;
     max-height: 500px;
@@ -333,19 +328,19 @@
     font-weight: bold;
 }
 .ulDiv li:nth-child(1){
-    background-color: #fbb869;
+    background-color: #b9c5ff;
 }
 .ulDiv li:nth-child(2){
-    background-color: #fbac4f;
+    background-color: #a6b5ff;
 }
 .ulDiv li:nth-child(3){
-    background-color: #f8a034;
+    background-color: #93a5ff;
 }
 .ulDiv li:nth-child(4){
-    background-color: #f8941c;
+    background-color: #869aff;
 }
 .ulDiv li:nth-child(5){
-    background-color: #f78803;
+    background-color: #7a90fd;
 }
 .c10{
     width: 1180px;
@@ -427,7 +422,7 @@
     display: block;
     height: 16px;
     width: 16px;
-    background-color: #c5e8ff;
+    background-color: #789dff;
     border-radius: 50%;
     position: absolute;
     top: 10px;
@@ -441,4 +436,173 @@
     position: absolute;
     top: 10px;
     right: 10px;
+}
+.body{
+    display: inline-block;
+    height: auto;
+    width: 100%;
+    background-color: #ffffff;
+    color:#000000;
+    border-radius: 0px 0px 5px 5px;
+}
+
+.button{
+    height: 56px;
+}
+.button button{
+    margin: 8px 14px 8px 0px
+}
+
+.operation{
+    width: 96px;
+    height: 24px;
+    background-color: #8095fd;
+    border-radius: 50px;
+    margin-left: auto;
+    margin-right: auto;
+    cursor: pointer;
+    color: #ffffff;
+}
+.select{
+    height: 44px;
+}
+.divSelect{
+    width: 360px;
+    float: left;
+}
+.divSelectAge{
+    width: 300px;
+    float: left;
+}
+.divSelectSex{
+    width: 200px;
+    float: left;
+}
+.divSelectMin{
+    width: 260px;
+    float: left;
+}
+.selectTitle{
+    width: 80px;
+    float: left;
+    text-align: right;
+    font-size: 16px;
+    line-height: 34px;
+    padding-right: 12px;
+}
+.selectTitleSex{
+    width: 40px;
+    float: left;
+    text-align: center;
+    font-size: 16px;
+    line-height: 34px;
+    cursor: pointer;
+}
+.selectTitleSexBule{
+    width: 40px;
+    float: left;
+    text-align: center;
+    font-size: 16px;
+    line-height: 34px;
+    color: #8095fd;
+}
+.selectTitleMin{
+    width: 50px;
+    float: left;
+    text-align: right;
+    font-size: 16px;
+    line-height: 34px;
+    padding-right: 12px;
+}
+.selectValue{
+    float: left;
+    width: 252px;
+}
+.selectValueAge{
+    float: left;
+    width: 200px;
+}
+.selectValueMin{
+    float: left;
+    width: 183px;
+}
+.selected{
+    height: 26px;
+    width: auto;
+    background-color: #789fef;
+    min-width: 56px;
+    float: left;
+    border-radius: 20px;
+    margin-top: 12px;
+    padding-left: 10px;
+    line-height: 26px;
+    margin-right: 16px;
+    color: #ffffff;
+}
+.selected .ivu-icon{
+    float: right;
+    padding-right: 10px;
+    font-size: 18px;
+    padding-top: 4px;
+
+}
+
+.selectedList{
+    height: 50px;
+}
+
+
+.selectedPullDown{
+    height: 30px;
+}
+.pullDown{
+    height: 50px;
+    padding-top: 20px;
+}
+.pullDown img{
+    cursor: pointer;
+}
+.inquire{
+    width: 76px;
+    height: 36px;
+    background-image: linear-gradient(to right, #60b0fe , #5a88fa);
+    color: #ffffff;
+    float: right;
+    border-radius: 20px;
+    margin-right: 20px;
+    font-size: 16px;
+    text-align: center;
+    padding-top: 6px;
+    cursor: pointer;
+}
+.reset{
+    width: 76px;
+    height: 36px;
+    border: 1px solid #99a8b8;
+    color: #99a8b8;
+    float: right;
+    font-size: 16px;
+    text-align: center;
+    padding-top: 6px;
+    border-radius: 20px;
+}
+.condition{
+    width: 84%;
+    height: 50px;
+    float: left;
+}
+.selectButton{
+    width: 16%;
+    height: 50px;
+    float: left;
+    padding-top: 8px;
+}
+.selectDiv{
+    height: 46px;
+}
+.page span{
+    float: left;
+    padding-top: 3px;
+    text-align: center;
+    padding-left: 560px;
 }

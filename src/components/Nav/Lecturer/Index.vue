@@ -127,6 +127,9 @@
             let alert: any = Message;
             alert.error(file.name + ' 文件格式错误！请上传jpg、jpeg、png格式文件！');
         }
+        reset(){
+            this.store.setSelectLecturerCurriculum(null);
+        }
         getType() : any {
             if(this.options) return this.options;
             this.options = [
