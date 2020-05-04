@@ -14,7 +14,7 @@
 
 <style>
 body {
-    /*min-width: 1920px;*/
-    /*overflow-x: auto;*/
+    min-width: 1920px;
+    overflow-x: auto;
 }
 </style>

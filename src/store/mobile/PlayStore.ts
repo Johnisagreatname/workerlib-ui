@@ -168,7 +168,6 @@ export default class PlayStore extends VuexModule {
             if(!data){
                 return;
             }
-            debugger
             if(data.data && data.data.length<=0) {
                 this.insertCultivateArchives();
             }else{

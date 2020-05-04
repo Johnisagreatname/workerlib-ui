@@ -140,7 +140,6 @@
                 if(this.playStore.courseWareList.video.split('.')[1] == 'ppt' || this.playStore.courseWareList.video.split('.')[1] == 'pptx'){
                     return true;
                 }else {
-                    debugger
                     this.$nextTick(() => {
                         var videoWrap = document.getElementById("video")
                         if (videoWrap.childNodes && videoWrap.childNodes.length) videoWrap.removeChild(videoWrap.childNodes[0])

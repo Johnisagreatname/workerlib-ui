@@ -10,3 +10,4 @@
 workspace.xml
 .invoke
 /**/.invoke
+/src/store/**/*.js
