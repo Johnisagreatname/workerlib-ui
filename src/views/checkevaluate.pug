@@ -3,46 +3,68 @@
   .checked
     p.title 已选条件
     template(v-for="(item, name) in searchCheckeds")
-      span(v-if="item && name !== 'time'")
-        span {{item}}
-        Icon(type="md-close" @click="clearSearch(item)")
-      span(v-else-if="item && name == 'time' && item[0]")
-        span {{item}}
-        Icon(type="md-close" @click="clearSearch(item)")
+      span(v-if="item && name !== 'time' && name !== 'project' && name !== 'company'") {{item}}
+        Icon(type="md-close" @click="clearSearch(name)")
+      span(v-else-if="item && name == 'time' && item[0]") {{getTime(item[0]) + "~" + getTime(item[1])}}
+        Icon(type="md-close" @click="clearSearch(name)")
+      span(v-else-if="item && name == 'project'") {{getNamwOfList(projectList, searchCheckeds.project)}}
+        Icon(type="md-close" @click="clearSearch(name)")
+      span(v-else-if="item && name == 'company'") {{getNamwOfList(companyList, searchCheckeds.company)}}
+        Icon(type="md-close" @click="clearSearch(name)")
     .search-wrap
       span.search(@click="search") 查询
       span(@click="resetSearch") 重置
   .input-wrap(:class="hiddden === 'hiddden' ? 'hiddden' : ''")
-    span.title 姓&emsp;&emsp; 名
+    span.title 姓&emsp;&emsp;名
       Input(v-model="searchCheckeds.name" placeholder="请输入" style="width: 200px;margin-left: 20px;")
     span(class="title margin") 所属项目
-      Input(v-model="searchCheckeds.project" placeholder="请输入" style="width: 200px;margin-left: 20px;")
+      Select(v-model="searchCheckeds.project" style="width:200px;margin-left: 20px;")
+        Option(v-for="item in projectList" :value="item.id" :key="item.id") {{item.name}}
     span(class="title margin") 所属单位
       Select(v-model="searchCheckeds.company" style="width:200px;margin-left: 20px;")
-        Option(v-for="item in companyList" :value="item.name" :key="item.id") {{item.name}}
-    span(class="title margin") 工&emsp;&emsp; 种
-      Select(v-model="searchCheckeds.typeWork" style="width:200px;margin-left: 20px;")
-        Option(v-for="item in typeWorkList" :value="item.id" :key="item.id") {{item.name}}
+        Option(v-for="item in companyList" :value="item.id" :key="item.id") {{item.name}}
+    span(class="title margin") 工&emsp;&emsp;种
+      Input(v-model="searchCheckeds.typeWork" placeholder="请输入" style="width: 200px;margin-left: 20px;")
     br
-    span.title 级&emsp;&emsp; 别
+    span.title 级&emsp;&emsp;别
       Select(v-model="searchCheckeds.grade" style="width:200px;margin-left: 20px;")
         Option(v-for="item in gradeList" :value="item.id" :key="item.id") {{item.name}}
-    span(class="title margin") 等&emsp;&emsp; 级
-      Select(v-model="searchCheckeds.class" style="width:200px;margin-left: 20px;")
+    span(class="title margin") 等&emsp;&emsp;级
+      Select(v-model="searchCheckeds.class" style="width:200px;margin-left: 20px;" :disabled="classDisabled")
         Option(v-for="item in classList" :value="item.id" :key="item.id") {{item.id}}
     span(class="title margin") 评级时间
-      DatePicker(type="daterange" show-week-numbers placement="bottom-end" placeholder="请选择" style="width: 200px" v-model="searchCheckeds.time")
-  .line(@click="showTable" :class="hiddden === 'hiddden' ? '' : 'all'")
-  .button
-    p
-      Icon(type="ios-add-circle-outline")
-      span 新增评级
-    p
-      Icon(type="md-list-box")
-      span 查看统计
-    p
-      Icon(type="md-share-alt")
-      span 导&emsp;&emsp; 出
-  .table-wrap
+      DatePicker(type="daterange" show-week-numbers placement="bottom-end" placeholder="请选择" style="width: 200px;margin-left: 20px;" v-model="searchCheckeds.time")
+  .line(@click="hiddden = hiddden === 'hiddden' ? 'all' : 'hiddden'" :class="hiddden === 'hiddden' ? '' : 'all'")
+  .table-wrap(:class="hiddden === 'hiddden' ? '' : 'table-hiddden'")
+    Table(:columns="columns" :data="$store.state.CheckEvaluateStore.tableData")
+      template(slot-scope="{ row, index }" slot="operation")
+        span.cli(@click="addRate(row.id)") 新增评级
+        span.cli(@click="details(row.id)") 查看详情
   .page
-    Page(:total="100" show-total show-elevator :page-size="pageSize" @on-change="pageChange")
+    Page(:total="$store.state.CheckEvaluateStore.total" show-total show-elevator :page-size="pageSize" @on-change="pageChange")
+  Modal(v-model="$store.state.CheckEvaluateStore.addDialog" title="新增评级" @on-cancel="store.clear" :transfer="false")
+    .row
+      p 姓&emsp;&emsp;名
+        span *
+      Input(v-model="$store.state.CheckEvaluateStore.addRateObject.name" size="large" placeholder="请选择" style="width: 300px" disabled)
+    .row
+      p 评定工种
+        span *
+      Input(v-model="$store.state.CheckEvaluateStore.addRateObject.workType" size="large" placeholder="请选择" style="width: 300px" disabled)
+    .row
+      p 评定级别
+        span *
+      Input(v-model="$store.state.CheckEvaluateStore.addRateObject.grade" size="large" placeholder="请选择" style="width: 300px")
+    .row
+      p 评定等级
+        span *
+      Input(v-model="$store.state.CheckEvaluateStore.addRateObject.class" size="large" placeholder="请选择" style="width: 300px")
+    .row
+      p 评定时间
+        span *
+      DatePicker(v-model="$store.state.CheckEvaluateStore.addRateObject.time" type="date" size="large" format="yyyy-MM-dd" placeholder="请选择" style="width: 300px")
+    .row
+      p 评价描述
+      Input(v-model="$store.state.CheckEvaluateStore.addRateObject.describe" type="textarea" size="large" placeholder="请输入" style="width: 300px")
+    div(slot="footer")
+      p(@click="store.submit") 提交

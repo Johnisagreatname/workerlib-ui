@@ -1,4 +1,10 @@
 /*
+ * @Date         : 2020-04-27 19:40:42
+ * @LastEditors  : HaoJie
+ * @LastEditTime : 2020-05-04 19:49:47
+ * @FilePath     : \src\store\index.ts
+ */
+/*
  *  Legopg Copyright (C) 2019 linlurui <rockylin@qq.com>
  *
  *  This program is free software: you can redistribute it and/or modify
