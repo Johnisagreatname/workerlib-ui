@@ -42,7 +42,7 @@ var webpackConfig = merge(baseWebpackConfig, {
             'language' : 'typescript',
             'mode' : 'hash',
             'redirect': [{
-                redirect: '/spectaculars',
+                redirect: '/homePage',
                 path: '/'
             }]
         }),

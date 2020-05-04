@@ -44,7 +44,7 @@
                     img(src="~@/assets/css/images/不良评价蓝.png",v-if="type == 'badEvaluation'",:style="{marginLeft: '12px'}")
                     img(src="~@/assets/css/images/不良评价.png",v-else)
                     Item 不良评价
-                MenuItem(name="技能鉴定",@click.native="clickMenu('skillAppraisal','技能鉴定','/nav/project')")
+                MenuItem(name="技能鉴定",@click.native="clickMenu('skillAppraisal','技能鉴定','/nav/checkEvaluate')")
                     span(class="top-angle",v-if="type == 'skillAppraisal'")
                     span(class="bottom-angle",v-if="type == 'skillAppraisal'")
                     img(src="~@/assets/css/images/技能鉴定蓝.png",v-if="type == 'skillAppraisal'",:style="{marginLeft: '12px'}")
