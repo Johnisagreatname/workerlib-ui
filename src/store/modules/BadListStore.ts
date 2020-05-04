@@ -100,7 +100,7 @@ export default class BadListStore extends VuexModule {
             item["value"]=this.startTime;
             item["algorithm"] = "GTEQ"
             conditionList.push(item);
-        }    
+        }
         if(this.endTime){
             let item ={};
             item["name"]="appraiseTime";
