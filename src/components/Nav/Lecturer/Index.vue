@@ -50,9 +50,6 @@
             this.addLecturer = false;
             this.updateLecturer = false;
             this.deleteLecturer = false;
-
-
-
             this.store = getModule(LecturerStore)
         }
         switchTo(){
@@ -139,6 +136,7 @@
             ];
             return this.options;
         }
+
 
         set insertLecturerName(data:string){
             this.store.setInsertLecturerName(data);

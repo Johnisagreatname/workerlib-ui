@@ -2,7 +2,7 @@
     Layout
         Sider(:style="{height: '1080px'}",width=230)
             Menu(:active-name="menuName",theme="light",width="auto",:style="{color: '#fff'}")
-                MenuItem(name="主页",:style="{marginTop: '240px'}",@click.native="clickMenu('homepage','主页','')")
+                MenuItem(name="主页",:style="{marginTop: '240px'}",@click.native="clickMenu('homepage','主页','homepage')")
                     span(class="top-angle",v-if="type == 'homepage' ")
                     span(class="bottom-angle",v-if="type == 'homepage' ")
                     img(src="~@/assets/css/images/主页蓝.png",v-if="type == 'homepage' ",:style="{marginLeft: '12px'}")
@@ -20,7 +20,7 @@
                     img(src="~@/assets/css/images/人员管理蓝.png",v-if="type == 'peopleManagement' ",:style="{marginLeft: '12px'}")
                     img(src="~@/assets/css/images/人员管理.png",v-else)
                     Item 人员管理
-                MenuItem(name="培训管理",@click.native="clickMenu('trainingManagement','培训管理','/nav/unit')")
+                MenuItem(name="培训管理",@click.native="clickMenu('trainingManagement','培训管理','/nav/courseware')")
                     span(class="top-angle",v-if="type == 'trainingManagement' ")
                     span(class="bottom-angle",v-if="type == 'trainingManagement' ")
                     img(src="~@/assets/css/images/培训管理蓝.png",v-if="type == 'trainingManagement'",:style="{marginLeft: '12px'}")
@@ -57,7 +57,11 @@
                     img(src="~@/assets/css/images/设置.png",v-else)
                     Item 设　 置
 
-        Layout
+        Layout(v-if="type=='homepage'")
+            Content
+                Content
+                    router-view
+        Layout(v-else)
             Header(class="layout-header-bar")
                 div(:style="{height: '60px',lineHeight: '110px'}")
                     span(:style="{fontSize: '24px'}") 产业工人大数据平台
@@ -110,7 +114,7 @@
                     div(class="switchName",v-else) 首页设置
 
 
-            div(:style="{height: '40px'}",v-if="type === 'lecturerManagement' ")
+            div(:style="{height: '40px'}",v-if="type === 'lecturerManagement'")
                 div(class="switchMeun",@click="switchChecked('internalTrainer')")
                     div(class="switchNameBule",v-if="styleClass ==='internalTrainer' ") 内部讲师
                     div(class="switchBrBule",v-if="styleClass === 'internalTrainer'")
@@ -119,10 +123,17 @@
                     div(class="switchNameBule",v-if="styleClass ==='externalLecturer' ") 外部讲师
                     div(class="switchBrBule",v-if="styleClass ==='externalLecturer' ")
                     div(class="switchName",v-else) 外部讲师
+            div(:style="{height: '40px'}",v-if="type === 'trainingManagement'")
+                div(class="switchMeun",@click="switchChecked('onlineTraining')")
+                    div(class="switchNameBule",v-if="styleClass ==='onlineTraining' ") 线上培训
+                    div(class="switchBrBule",v-if="styleClass === 'onlineTraining'")
+                    div(class="switchName",v-else) 线上培训
+                div(class="switchMeun",@click="switchChecked('offlineTraining')")
+                    div(class="switchNameBule",v-if="styleClass ==='offlineTraining' ") 线下培训
+                    div(class="switchBrBule",v-if="styleClass ==='offlineTraining' ")
+                    div(class="switchName",v-else) 线下培训
 
-            Content(v-if="!styleClass && !peopleManagement")
-                Content
-                    router-view
+
             Content(v-else :style="{padding: '30px',margin: '24px 24px 24px 24px', minHeight: '280px', background: '#fff',borderRadius: '40px',maxHeight: '900px'}")
                 Content
                     router-view
