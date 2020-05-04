@@ -178,7 +178,7 @@
     Layout
         Sider(:style="{height: '1080px'}",width=230)
             Menu(:active-name="menuName",theme="light",width="auto",:style="{color: '#fff'}")
-                MenuItem(name="主页",:style="{marginTop: '240px'}",@click.native="clickMenu('homepage','主页','')")
+                MenuItem(name="主页",:style="{marginTop: '240px'}",@click.native="clickMenu('homepage','主页','homepage')")
                     span(class="top-angle",v-if="type == 'homepage' ")
                     span(class="bottom-angle",v-if="type == 'homepage' ")
                     img(src="~@/assets/css/images/主页蓝.png",v-if="type == 'homepage' ",:style="{marginLeft: '12px'}")
@@ -220,7 +220,7 @@
                     img(src="~@/assets/css/images/不良评价蓝.png",v-if="type == 'badEvaluation'",:style="{marginLeft: '12px'}")
                     img(src="~@/assets/css/images/不良评价.png",v-else)
                     Item 不良评价
-                MenuItem(name="技能鉴定",@click.native="clickMenu('skillAppraisal','技能鉴定','/nav/project')")
+                MenuItem(name="技能鉴定",@click.native="clickMenu('skillAppraisal','技能鉴定','/nav/checkEvaluate')")
                     span(class="top-angle",v-if="type == 'skillAppraisal'")
                     span(class="bottom-angle",v-if="type == 'skillAppraisal'")
                     img(src="~@/assets/css/images/技能鉴定蓝.png",v-if="type == 'skillAppraisal'",:style="{marginLeft: '12px'}")
@@ -293,9 +293,13 @@
                     div(class="switchNameBule",v-if="style ==='internalTrainer' ") 内部讲师
                     div(class="switchBrBule",v-if="style === 'internalTrainer'")
                     div(class="switchName",v-else) 内部讲师
-            Content(v-if="!styleClass && !peopleManagement")
-                Content
-                    router-view
+            //- Content(v-if="!styleClass && !peopleManagement")
+            //-     Content
+            //-         router-view
+            //- Content(v-else :style="{padding: '30px',margin: '24px 24px 24px 24px', minHeight: '280px', background: '#fff',borderRadius: '40px',maxHeight: '900px'}")
+            //-     Content
+            //-         router-view
+
             Content(v-else :style="{padding: '30px',margin: '24px 24px 24px 24px', minHeight: '280px', background: '#fff',borderRadius: '40px',maxHeight: '900px'}")
                 Content
                     router-view
