@@ -1,124 +1,301 @@
 .body{
     display: inline-block;
-    min-height: 1080px;
     height: auto;
     width: 100%;
     background-color: #ffffff;
     color:#000000;
+    border-radius: 0px 0px 5px 5px;
 }
-.topOne{
-    display: block;
-    width: 100%;
-    height: 80px;
-    float: right;
+
+.button{
+    height: 56px;
 }
-.divOne{
-    display: block;
-    height: 70px;
+.button button{
+    margin: 8px 14px 8px 0px
+}
+
+.operation{
+    width: 96px;
+    height: 24px;
+    background-color: #8095fd;
+    border-radius: 50px;
+    margin-left: auto;
+    margin-right: auto;
+    cursor: pointer;
+    color: #ffffff;
+}
+.select{
+    height: 44px;
+}
+.divSelect{
     width: 360px;
     float: left;
-    margin-left:45px;
 }
-.divOne span {
-    line-height: 70px;
-    font-size: 18px;
-    float: right;
+.divSelectAge{
+    width: 300px;
+    float: left;
 }
-.divOne Button{
-    line-height: 30px;
-    font-size: 18px;
-    float: right;
-    height: 40px;
-    width: 165px;
-    margin-top: 13px;
-    background-color: #ffe100;
-    color:#ffffff;
+.divSelectSex{
+    width: 200px;
+    float: left;
 }
-.hr{
-    display: inline-block;
-    background-color: #f7f7f7;
-    width: 100%;
-    height: auto;
-    height: 10px;
-    float: right;
+.divSelectMin{
+    width: 260px;
+    float: left;
 }
-.button{
-    display: inline-block;
-    min-height: 70px;
-    height: auto;
-    width: 100%;
+.selectTitle{
+    width: 80px;
+    float: left;
+    text-align: right;
+    font-size: 16px;
+    line-height: 34px;
+    padding-right: 12px;
 }
-.button Button {
-    margin-left: 20px;
-    margin-top: 20px;
-
+.selectTitleSex{
+    width: 40px;
+    float: left;
+    text-align: center;
+    font-size: 16px;
+    line-height: 34px;
+    cursor: pointer;
 }
-.courseware{
-    display: inline-block;
-    width: 22.5%;
-    min-height: 315px;
-    margin-bottom: 40px;
-    margin-left: 2%;
-    background-color: #f8f9fb;
-    border: 2px solid transparent;
-    box-shadow: 3px 3px 3px 1px #d7d7d7;
+.selectTitleSexBule{
+    width: 40px;
+    float: left;
+    text-align: center;
+    font-size: 16px;
+    line-height: 34px;
+    color: #8095fd;
 }
-.courseware:hover{
-    background-color: #ffffff;
-    border: 2px solid #0090ff;
-    box-shadow: 3px 3px 3px 1px #cce9ff
+.selectTitleMin{
+    width: 50px;
+    float: left;
+    text-align: right;
+    font-size: 16px;
+    line-height: 34px;
+    padding-right: 12px;
 }
-
-.butt{
-    width: 30%;
-    height: 40px;
-    margin-left: 5%;
-    color:#ffffff;
-    background-color: #0090ff;
+.selectValue{
+    float: left;
+    width: 252px;
 }
-.butt1{
-    width: 30%;
-    height: 40px;
-    margin-top: 20px;
+.selectValueAge{
+    float: left;
+    width: 200px;
+}
+.selectValueMin{
+    float: left;
+    width: 183px;
+}
+.selected{
+    height: 26px;
+    width: auto;
+    background-color: #789fef;
+    min-width: 56px;
+    float: left;
+    border-radius: 20px;
+    margin-top: 12px;
+    padding-left: 10px;
+    line-height: 26px;
+    margin-right: 16px;
     color: #ffffff;
-    background-color: #0090ff;
 }
-.courseware:hover .butt{
-    color:#0090ff;
-    background-color: #ffffff;
-    border: 1px solid #0090ff;
+.selected .ivu-icon{
+    float: right;
+    padding-right: 10px;
+    font-size: 18px;
+    padding-top: 4px;
+
 }
-.div1{
+
+.selectedList{
     height: 50px;
 }
 
-.div2{
-    height: 180px
+
+.selectedPullDown{
+    height: 30px;
 }
-.div3{
-    height: 37px;
+.pullDown{
+    height: 50px;
+    padding-top: 20px;
 }
-.div31{
-    height: 37px;
+.pullDown img{
+    cursor: pointer;
+}
+.inquire{
+    width: 76px;
+    height: 36px;
+    background-image: linear-gradient(to right, #60b0fe , #5a88fa);
+    color: #ffffff;
+    float: right;
+    border-radius: 20px;
+    margin-right: 20px;
+    font-size: 16px;
     text-align: center;
+    padding-top: 6px;
+    cursor: pointer;
 }
-.left{
-    height: 100%;
-    width: 50%;
+.reset{
+    width: 76px;
+    height: 36px;
+    border: 1px solid #99a8b8;
+    color: #99a8b8;
+    float: right;
+    font-size: 16px;
+    text-align: center;
+    padding-top: 6px;
+    border-radius: 20px;
+}
+.condition{
+    width: 84%;
+    height: 50px;
     float: left;
+}
+.selectButton{
+    width: 16%;
+    height: 50px;
+    float: left;
+    padding-top: 8px;
+}
+.selectDiv{
+    height: 46px;
+}
+.page span{
+    float: left;
+    padding-top: 3px;
+    text-align: center;
+    padding-left: 560px;
+}
+.div1Checked{
+    width: 340px;
+    height: 214px;
+    background-color: #eceffc;
+    float: left;
+    margin-right: 20px;
+    margin-bottom: 20px;
+    border: 1px solid #7a90fd;
+}
+.div1{
+    width: 340px;
+    height: 214px;
+    background-color: #eceffc;
+    float: left;
+    margin-right: 20px;
+    margin-bottom: 20px;
+    border: 1px solid #abafc2;
+}
+.div2Checked{
+    height: 40px;
+    background-color: #7a90fd;
 }
 
-.right
-{
+.div2{
+    height: 40px;
+    background-color: #abafc2;
+}
+.div3{
+    height: 170px;
+    background-color: #eceffc;
+}
+.div4{
+    width: 125px;
+    height: 100%;
+    float: left;
+}
+.div5{
+    width: 210px;
     float: left;
     height: 100%;
-    width: 50%;
 }
-.right span{
-    float: right;
-    margin-top: 5%;
+.div6{
+    height: 40px;
+    width: 10%;
+    text-align: center;
+    line-height: 40px;
+    float: left;
+}
+.div7{
+    color: #ffffff;
+    float: left;
+    line-height: 40px;
+}
+.div8{
+    height: 58px;
+    line-height: 58px;
+}
+.div9{
+    width: 30%;
+    font-size: 16px;
+    float: left;
+    padding-left: 10px;
+}
+.div10{
+    width: 70%;
+    float: left;
+    font-size: 16px;
+}
+.lecturerClass{
+    height: 560px;
+}
+.modelBody{
+    height: 230px;
+}
+.divTwo{
+    line-height: 70px;
+    width: 80%;
+    height: 65px;
+    margin-left: 20%;
+    float: left;
+
+}
+.divTwo span{
     font-size: 18px;
-    margin-right: 10%;
+}
+
+.name{
+    width: 22%;
+    float: left;
+    text-align: right;
+}
+.input{
+    width: 75%;
+    float: left;
+    margin-left: 2%;
+}
+.modelBody{
+    height:400px;
+}
+.courseware{
+    display: inline-block;
+    width: 300px;
+    height: 234px;
+    margin-bottom: 16px;
+    margin-right: 12px;
+    background-color: #f8f9fb;
+    box-shadow: 3px 3px 3px 1px #d7d7d7;
+}
+.divCourseWare{
+    height: 40px;
+    background-color: #7a90fd;
+    color: #ffffff;
+}
+.headPhotos{
+    width: 140px;
+    height: 140px;
+    float: left;
+    margin-left: 35%;
+}
+.div2{
+    height: 150px
+}
+.div3{
+    height: 44px;
+}
+.div33{
+    height: 44px;
+    text-align: center;
+    line-height: 44px;
 }
 .ellipse{
     display: block;
@@ -131,98 +308,59 @@
     background-color: #f78803;
     box-shadow: 1px 1px 2px 1px #fee5c7;
 }
-
-.ivu-dropdown{
-    display: inline-block;
-    margin-right: 2%;
-    float: right;
-
-}
-.divCheck{
-    border: 1px solid #2d8cf0;
-    float: left;
-    width: 50px;
-    text-align: center;
-    height: 20px;
-    border-radius: 10px;
-    margin-left: 5px;
-    margin-right: 5px;
-}
-.divL{
-    width: 100%;
-    height: 30px;
-    overflow-y: auto;
-}
-
-.headPhotos{
-    width: 140px;
-    height: 140px;
-    float: left;
-    margin-left: 35%;
-}
-.ivu-dropdown-menu{
-    min-width: 80px;
-}
-.cutOrange{
-    width: 50%;
+.left{
     height: 100%;
-    background-color: #f78803;
+    width: 20%;
+    float: left;
+    line-height: 44px;
+    text-align: center;
+}
+.right{
+    float: left;
+    height: 100%;
+    width: 30%;
+    text-align: center;
+    line-height: 44px;
+}
+.right span{
+    font-size: 18px;
+}
+.butt{
+    width: 50%;
+    height: 40px;
+    float: left;
     color: #ffffff;
-    padding: 10px;
     text-align: center;
-    float: left;
-    font-size: 18px;
+    line-height: 44px;
 }
-.cutGray{
-    width: 50%;
-    height: 100%;
-    background-color: #f7f7f7;
-    color: #000000;
-    padding: 10px;
-    text-align: center;
-    float: left;
-    font-size: 18px;
+.divCourseWare1{
+    width: 80%;
+    display: inline-block;
+    overflow: hidden;
+    textOverflow: ellipsis;
+    whiteSpace: nowrap;
+    cursor: pointer;
 }
-.cut{
-    height: 45px;
-    /* background-color: antiquewhite; */
-    /* margin-left: auto; */
-    /* margin-right: auto; */
-    margin-top: 45px;
-}
-.addBody{
-    width: 100%;
-    height: 410px;
-}
-.addBody2{
-    width: 100%;
-    height: 460px;
+.divCourseWare2{
+    width: 20%;
+    float: right;
+    text-align: right;
+    font-size: 24px;
+    padding-right: 10px;
 }
 .addBody1{
     width: 100%;
     height: 772px;
 }
-.divTwo{
-    line-height: 70px;
-    width: 80%;
-    height: 65px;
-    margin-left: 20%;
-    float: left;
-
-}
-.top{
+.top {
     display: block;
     width: 100%;
     min-height: 70px;
     float: right;
-    height: auto;
 }
-.top3{
-    display: block;
+.addBody2{
     width: 100%;
-    min-height: 100px;
-    float: right;
-    height: auto;
+    height: 460px;
 }
 .cdivOne{
     display: block;
@@ -231,38 +369,28 @@
     float: left;
     margin-left:30px;
 }
-.ccdivOne span {
-    width:1150px;
-    line-height: 70px;
-    font-size: 18px;
-}
 .cdivOne span {
     line-height: 70px;
     font-size: 18px;
 }
-.ccdivOne{
-    display: block;
-    min-height: 70px;
-    width: 100%;
+.name2{
+    width: 30%;
     float: left;
-    margin-left:60px;
+    text-align: right;
 }
-.search{
+.inputs{
+    float: left;
+    line-height: 65px;
+     margin-left: 2%;
+    height: 100%;
+    width: 64%;
+}
+.top3{
     display: block;
-    height: 70px;
-    width: 360px;
+    width: 100%;
+    min-height: 100px;
     float: right;
-    margin-right:55px;
-}
-.search Button{
-    line-height: 30px;
-    font-size: 18px;
-    float: right;
-    height: 40px;
-    width: 165px;
-    margin-top: 13px;
-    background-color: #ffe100;
-    color:#ffffff;
+    height: auto;
 }
 .left1{
     width: 65%;
@@ -283,7 +411,7 @@
     margin-right: auto;
 }
 .left1 td{
-   text-align: center;
+    text-align: center;
 }
 .left1 table th{
     height: 50px;
@@ -295,65 +423,12 @@
 
     border-right: 0px;
 }
-.circle{
-    display: block;
-    width: 50px;
-    height: 50px;
-    background-color: #ffffff;
-    border-radius: 50%;
-    float: left;
-    margin-top: 16px;
-    margin-left: 20px;
-}
 .right1{
     width: 25%;
     height: 610px;
     border: 1px solid #b8b8b8;
     margin-right: 2%;
     float: right;
-}
-.divTwo span{
-    font-size: 18px;
-}
-.name{
-    width: 180px;
-    float: left;
-    text-align: right;
-}
-.name2{
-    width: 110px;
-    float: left;
-    text-align: right;
-}
-.input{
-    float: left;
-    line-height: 65px;
-    margin-left: 20px;
-    height: 100%;
-}
-
-.ivu-btn.disabled, .ivu-btn.disabled.active, .ivu-btn.disabled:active, .ivu-btn.disabled:focus,
-.ivu-btn.disabled:hover, .ivu-btn[disabled], .ivu-btn[disabled].active, .ivu-btn[disabled]:active,
-.ivu-btn[disabled]:focus, .ivu-btn[disabled]:hover, fieldset[disabled] .ivu-btn, fieldset[disabled],
-.ivu-btn:active, fieldset[disabled] .ivu-btn:focus, fieldset[disabled] .ivu-btn:hover{
-    color: #ffffff !important;
-    background-color: #0693ff !important;
-    border-color: #0693ff !important;
-}
-.footer{
-    position: fixed;
-    /* left: 0px; */
-    bottom: 0px;
-    width: 90%;
-    height: 35px;
-    background-color: #e6e6e6;
-    z-index: 1;
-    float: right;
-}
-
-.footer ul {
-    text-align: center;
-    width: 100%;
 }
 .rdiv{
     display:  inline-block;
@@ -388,4 +463,3 @@
     right: -2px;
     position: absolute;
 }
-#courseware{    margin-top: 10px;}

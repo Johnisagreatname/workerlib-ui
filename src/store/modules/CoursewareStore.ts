@@ -18,6 +18,7 @@ export default class CoursewareStore extends VuexModule {
     public addCultivateArchivesList:Array<any>;
     public peopleConditionList:Array<any>;
     public teacherList:Array<any>;
+    public conditionList:Array<any>;
 
 
     public projectType: Array<ProjectType>;
@@ -38,6 +39,8 @@ export default class CoursewareStore extends VuexModule {
 
     public selectTitle:string;
     public selectTypeWork:string;
+    public selectWhether:string;
+    public selectCourse:string;
     public selectStatus:number;
 
 
@@ -53,23 +56,27 @@ export default class CoursewareStore extends VuexModule {
     public id:number;
     public cultivate_id:number;
     public in:boolean;
-    public course:string;
+
+    private pullDown: boolean;
 
     constructor(e) {
-        super(e)
+        super(e);
+        this.pullDown = false;
+
         this.in = false;
         this.checkeds =  new Array();
         this.checkAllGroup =  new Array();
         this.pageIndex=1;
         this.pageSize= 10;
         this.pageTotal = 0;
-        this.course='';
+
         this.pageInIndex=1;
         this.pageInSize= 8;
         this.pageInTotal = -1;
 
         this.cultivateArchivesList = [];
         this.addCultivateArchivesList = [];
+        this.conditionList = [];
 
         this.peopleConditionList = [];
         this.page = {};
@@ -83,6 +90,8 @@ export default class CoursewareStore extends VuexModule {
 
         this.selectTitle = "";
         this.selectTypeWork = "";
+        this.selectWhether = "";
+        this.selectCourse = "";
         this.selectStatus = 1;
         this.id = null;
         this.cultivate_id = null;
@@ -99,30 +108,48 @@ export default class CoursewareStore extends VuexModule {
     }
     @Action
     public getParams() : any {
+        if(this.selectTitle){
+            let item ={};
+            item["name"]="title";
+            item["value"]=this.selectTitle;
+            item["algorithm"] = "EQ"
+            this.conditionList.push(item);
+        }
+        if(this.selectTypeWork){
+            let item ={};
+            item["name"]="type_work";
+            item["value"]=this.selectTypeWork;
+            item["algorithm"] = "LIKE"
+            this.conditionList.push(item);
+        }
+        if(this.selectStatus){
+            let item ={};
+            item["name"]="status";
+            item["value"]=this.selectStatus;
+            item["algorithm"] = "EQ"
+            this.conditionList.push(item);
+        }
+        if(this.selectCourse){
+            let item ={};
+            item["name"]="course";
+            item["value"]=this.selectCourse;
+            item["algorithm"] = "LIKE"
+            this.conditionList.push(item);
+        }
+        if(this.selectWhether){
+            let item ={};
+            item["name"]="whether";
+            item["value"]=this.selectWhether;
+            item["algorithm"] = "LIKE"
+            this.conditionList.push(item);
+        }
         return {
             "pageInfo" : {
                 "pageIndex": this.pageIndex,
                 "pageSize": this.pageSize
             },
 
-            "conditionList": [{
-                "name": "title",
-                "value": this.selectTitle,
-                "algorithm": "LIKE"
-            },{
-                "name": "type_work",
-                "value": this.selectTypeWork,
-                "algorithm": "LIKE"
-            },{
-                "name": "status",
-                "value": this.selectStatus,
-                "algorithm": "EQ"
-            },{
-                "name": "course",
-                "value": this.course,
-                "algorithm": "EQ"
-            }
-            ],
+            "conditionList": this.conditionList,
 
             "sortList": [ ],
 
@@ -134,68 +161,6 @@ export default class CoursewareStore extends VuexModule {
             "selectList": []
         };
     }
-
-    //查询条件参数
-    @Action
-    public getSelectParams(list: Array<selectlParams> = null) {
-        return new Promise((res, rej) => {
-            let params: any = {
-                "pageInfo": {},
-                "conditionList": [],
-                "sortList": [],
-                "groupList": [],
-                "keywords": [],
-                "selectList": []
-            }
-            if (list) {
-                list.forEach((a, index) => {
-                    params.selectList.push(new Object())
-                    params.selectList[index].field = a.field;
-                    params.groupList.id=a.field;//group条件
-                })
-            }
-            res(params)
-        })
-    }
-
-    //调用例子
-    // @Action
-    // async getVideo() {await this.searchData({ url: "indexVideo", fieldName: "type" }).then(res => { this.changeVideoData(res.data)})}
-
-    //@Mutation
-    //   changeVideoData(data) {
-    //     this.videoData = data
-    //   }
-
-    //({url: "courseware",fieldName:"course"})所属类型
-    //({url: "courseware",fieldName:"type_work"})选择工种
-
-    //查询数据
-    @Action
-    public async searchData({ url, fieldName = ""}: SearchData): Promise<any> {
-        return new Promise(async (resolve, reject) => {
-            let params = fieldName  ? [{ field: fieldName}] : null
-            await request.post('/api/workerlib/' + url, await this.getSelectParams(params)).then((data) => {
-                if (!data) {
-                    return;
-                }
-                resolve(data.data)
-            }).catch((e) => {
-                let alert: any = Message;
-                if (!e) {
-                    alert.warning('未知错误！')
-                    return
-                }
-                if (e.response && e.response.data && e.response.data.message) {
-                    alert.warning(e.response.data.message)
-                    return
-                }
-                alert.warning(e.message || e)
-            });
-        })
-    }
-
-
     @Action
     public getPeopleParams() : any {
 
@@ -283,7 +248,6 @@ export default class CoursewareStore extends VuexModule {
             "keywords" : []
         };
     }
-
     @Action
     public async search() {
         await request.post('/api/workerlib/courseware',await this.getParams()).then((data)=>{
@@ -759,7 +723,7 @@ export default class CoursewareStore extends VuexModule {
         }
         if(data.status == 0) {
             let alert: any = Message;
-            alert.warning("新建课程成功！");
+            alert.success("新建课程成功！");
         }
     }
     @Action
@@ -882,6 +846,7 @@ export default class CoursewareStore extends VuexModule {
     @Mutation
     public setPageTotal(data: number) {
         this.pageTotal = data;
+        this.conditionList = new Array<any>();
     }
     @Mutation
     public setPageIndex(data: number) {
@@ -923,6 +888,14 @@ export default class CoursewareStore extends VuexModule {
     @Mutation
     public setSelectTypeWork(data: string) {
         this.selectTypeWork = data;
+    }
+    @Mutation
+    public setSelectWhether(data: string) {
+        this.selectWhether = data;
+    }
+    @Mutation
+    public setSelectCourse(data: string) {
+        this.selectCourse = data;
     }
     @Mutation
     public setEditId(data:number){
@@ -1120,6 +1093,15 @@ export default class CoursewareStore extends VuexModule {
         this.cultivateArchivesList.push(data);
     }
 
+    @Mutation
+    private setPullDown(data : any){
+        this.pullDown = data;
+    }
+    @Mutation
+    private switchPullDown(){
+        this.pullDown = !this.pullDown;
+    }
+
 }
 
 
@@ -1127,10 +1109,6 @@ interface ProjectType {
     value?: string;
     name?: string;
 }
-// interface Pages {
-//     pageIndex?: number;
-//     pageSize?: number;
-// }
 interface CourseWareInfo {
     id?:number;
     title?:string;
@@ -1165,12 +1143,4 @@ interface Cultivate {
     trainingTeacher?:string;
     trainingAddress?:string;
     status?:number;
-}
-
-interface SearchData {
-    url: string;
-    fieldName:string
-}
-interface selectlParams {
-    field: string;
 }

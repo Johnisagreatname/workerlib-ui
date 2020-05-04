@@ -48,6 +48,7 @@
 
         mounted() {
             this.store.search();
+            this.store.getProjectType();
             this.store.commentType();
             this.appraiseList = null;
         }
@@ -61,6 +62,19 @@
                     this.loading = true;
                 })
             }, 1000)
+        }
+        switchTo(){
+            this.store.switchPullDown();
+        }
+        reset(){
+            this.store.setSelectWorkType(null);
+            this.store.setSelectName(null);
+        }
+        set pullDown(data: boolean){
+            this.store.setPullDown(data);
+        }
+        get pullDown(): boolean{
+            return this.store.pullDown;
         }
         search(){
             this.store.setPageIndex(1);
@@ -180,7 +194,6 @@
             if(this.store.check.filter(x => x==id).length>0){
                 return true;
             }
-
             return false;
         }
         commentsExport() :any{
@@ -196,14 +209,18 @@
         cancelInfo():any {
             this.commtentcInfo = false;
         }
-
+        getType(){
+            return this.store.projectType.filter(x => x.category === "工种");
+        }
         get selectName():string{
             return this.store.selectName;
         }
         set selectName(data:string){
             this.store.setSelectName(data);
         }
-
+        clearSelectName(){
+            this.store.setSelectName(null);
+        }
         get insertType():number{
             return this.store.insertType;
         }
@@ -221,6 +238,7 @@
         get insertDescription():string{
             return this.store.insertDescription;
         }
+
         set insertDescription(data:string){
             this.store.setInsertDescription(data);
         }
@@ -244,6 +262,35 @@
         }
         set insertAppraiseTime(data:Date){
             this.store.setInsertAppraiseTime(data);
+        }
+
+
+        set commGood(data:Date){
+            this.store.setCommGood(data);
+        }
+        get commGood():Date{
+            return this.store.commGood;
+        }
+        set commMiddle(data:Date){
+            this.store.setCommMiddle(data);
+        }
+        get commMiddle():Date{
+            return this.store.commMiddle;
+        }
+        set commBad(data:Date){
+            this.store.setCommBad(data);
+        }
+        get commBad():Date{
+            return this.store.commBad;
+        }
+        set selectWorkType(data:Date){
+            this.store.setSelectWorkType(data);
+        }
+        get selectWorkType():Date{
+            return this.store.selectWorkType;
+        }
+        clearSelectWorkType(){
+            this.store.setSelectWorkType(null);
         }
 
 

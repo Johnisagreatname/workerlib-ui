@@ -50,9 +50,6 @@
             this.addLecturer = false;
             this.updateLecturer = false;
             this.deleteLecturer = false;
-
-
-
             this.store = getModule(LecturerStore)
         }
         switchTo(){
@@ -130,6 +127,9 @@
             let alert: any = Message;
             alert.error(file.name + ' 文件格式错误！请上传jpg、jpeg、png格式文件！');
         }
+        reset(){
+            this.store.setSelectLecturerCurriculum(null);
+        }
         getType() : any {
             if(this.options) return this.options;
             this.options = [
@@ -139,6 +139,7 @@
             ];
             return this.options;
         }
+
 
         set insertLecturerName(data:string){
             this.store.setInsertLecturerName(data);

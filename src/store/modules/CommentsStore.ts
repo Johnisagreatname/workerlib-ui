@@ -17,6 +17,7 @@ export default class CommentsStore extends VuexModule {
 
         //----------------------
         this.appraiseList = [];
+        this.projectType = [];
         this.insertScoreList = [];
         this.insertPhotoList = [];
         this.punishments = [];
@@ -24,6 +25,7 @@ export default class CommentsStore extends VuexModule {
         this.check = [];
         this.commentSparticularsList = [];
         this.selectName = null;
+        this.selectWorkType = null;
         this.selectEafId = null;
         this.selectComments = [];
         this.projectList = [];
@@ -37,11 +39,17 @@ export default class CommentsStore extends VuexModule {
         this.insertPhoto = [];
         this.insertAppraiseTime = null;
         this.punishmentsId = null;
+        this.pullDown = false;
+
+        this.commGood = null;
+        this.commMiddle = null;
+        this.commBad = null;
     }
 
 
     //------------------------------
     public selectName:string;
+    public selectWorkType:string;
     public selectEafId:string;
     public insertProject:string;
     public insertDescription:string;
@@ -62,12 +70,25 @@ export default class CommentsStore extends VuexModule {
     public insertPhotoList:Array<any>;
     public insertScoreList:Array<any>;
     public check : Array<any>;
+    public projectType : Array<any>;
+    private pullDown: boolean;
+
+    private commGood: string;
+    private commMiddle: string;
+    private commBad: string;
     @Action
     public getParams() : any {
         if(this.selectName){
             let item = {};
             item["name"] = "eafName";
             item["value"] = this.selectName;
+            item["algorithm"] = "LIKE";
+            this.selectComments.push(item);
+        }
+        if(this.selectWorkType){
+            let item = {};
+            item["name"] = "workType";
+            item["value"] = this.selectWorkType;
             item["algorithm"] = "LIKE";
             this.selectComments.push(item);
         }
@@ -471,7 +492,30 @@ export default class CommentsStore extends VuexModule {
             alert.warning(e.message || e)
         });
     }
+    @Action
+    public async getProjectType(){
+        await request.post('/api/workerlib/dictionaries', {
+            "pageInfo" : {},
+            "conditionList": [{
+                "name": "category",
+                "value": "工种",
+                "algorithm": "EQ"
+            }],
+            "sortList": [],
 
+            "groupList" : [],
+
+            "keywords" : [],
+            "selectList": []
+        }).then((data)=>{
+            if(!data){
+                return;
+            }
+            this.successType(data);
+        }).catch((e)=>{
+            MessageUtils.warning(e);
+        });
+    }
 
 
 
@@ -593,5 +637,33 @@ export default class CommentsStore extends VuexModule {
     @Mutation
     private successUpload() {
         this.check = new  Array<any>();
+    }
+    @Mutation
+    private setCommGood(data : any){
+        this.commGood = data;
+    }
+    @Mutation
+    private setCommMiddle(data : any){
+        this.commMiddle = data;
+    }
+    @Mutation
+    private setCommBad(data : any){
+        this.commBad = data;
+    }
+    @Mutation
+    private setSelectWorkType(data : any){
+        this.selectWorkType = data;
+    }
+    @Mutation
+    private setPullDown(data : any){
+        this.pullDown = data;
+    }
+    @Mutation
+    private switchPullDown(){
+        this.pullDown = !this.pullDown;
+    }
+    @Mutation
+    public successType(data: any) {
+        this.projectType = data.data;
     }
 }

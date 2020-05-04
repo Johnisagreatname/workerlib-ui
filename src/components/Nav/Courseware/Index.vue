@@ -68,10 +68,20 @@
             this.store = getModule(CoursewareStore)
 
         }
+        switchTo(){
+            this.store.switchPullDown();
+        }
+        set pullDown(data: boolean){
+            this.store.setPullDown(data);
+        }
+        get pullDown(): boolean{
+            return this.store.pullDown;
+        }
+
         rowClass(row, index) {
             return "rowClasses"
         }
-        searchs(){
+        searchUserList(){
             this.store.setPageIndex(1);
             this.store.search();
         }
@@ -86,6 +96,12 @@
             }
             this.store.searchPeople();
 
+        }
+        clickAddCourseWare(){
+            this.addCourseware = true;
+        }
+        clickAddUpCourseWare(){
+            this.addUpCourseware = true;
         }
         getColumns() : any{
             return this.store.columns;
@@ -413,15 +429,7 @@
                 }
             }
         }
-        toggle(name){
-            if(name=="线上培训"){
-                this.store.setSelectStatus(1);
-                this.store.search();
-            }else {
-                this.store.setSelectStatus(2);
-                this.store.search();
-            }
-        }
+
         private options!: any;
         getMenus() : any {
             if(this.options) return this.options;
@@ -437,6 +445,16 @@
         }
         getCType(){
             return this.store.projectType.filter(x => x.category === "课程类型");
+        }
+        private isOptions!: any;
+        getIsType() : any {
+            if(this.isOptions) return this.isOptions;
+            this.isOptions = [
+                {value: '是', key: 1 },
+                {value: '否', key: 2 }
+
+            ];
+            return this.options;
         }
         change(name){
             this.id= name.split('_')[1];
@@ -502,7 +520,12 @@
             this.store.setInPageIndex(pageIndex);
             this.store.searchPeople();
         }
-
+        reset(){
+            this.store.setSelectTitle(null);
+            this.store.setSelectTypeWork(null);
+            this.store.setSelectWhether(null);
+            this.store.setSelectCourse(null);
+        }
         set pageTotal(data:number){
             this.store.setPageToatl(data);
         }
@@ -516,6 +539,12 @@
         get pageInTotal():number{
             return this.store.pageInTotal;
         }
+        set selectStatus(data:number){
+            this.store.setSelectStatus(data);
+        }
+        get selectStatus():number{
+            return this.store.selectStatus;
+        }
 
 
         set selectTypeWork(data:string){
@@ -524,21 +553,42 @@
         get selectTypeWork():string{
             return this.store.selectTypeWork;
         }
-
+        clearSelectTypeWork(){
+            this.store.setSelectTypeWork(null);
+        }
+        set selectCourse(data:string){
+            this.store.setSelectCourse(data);
+        }
+        get selectCourse():string{
+            return this.store.selectCourse;
+        }
+        clearSelectCourse(){
+            this.store.setSelectCourse(null);
+        }
         set selectTitle(data:string){
             this.store.setSelectTitle(data);
         }
         get selectTitle():string{
             return this.store.selectTitle;
         }
-
+        clearSelectTitle(){
+            this.store.setSelectTitle(null);
+        }
         set status(data:number){
             this.store.setStatus(data);
         }
         get status():number{
             return this.store.courseWare.status;
         }
-
+        set selectWhether(data: string){
+            this.store.setSelectWhether(data);
+        }
+        get selectWhether(): string{
+            return this.store.selectWhether;
+        }
+        clearWhethers(){
+            this.store.setSelectWhether(null);
+        }
         set title(data:string){
             this.store.setTitle(data);
         }

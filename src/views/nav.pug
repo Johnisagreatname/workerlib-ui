@@ -20,7 +20,7 @@
                     img(src="~@/assets/css/images/人员管理蓝.png",v-if="type == 'peopleManagement' ",:style="{marginLeft: '12px'}")
                     img(src="~@/assets/css/images/人员管理.png",v-else)
                     Item 人员管理
-                MenuItem(name="培训管理",@click.native="clickMenu('trainingManagement','培训管理','/nav/unit')")
+                MenuItem(name="培训管理",@click.native="clickMenu('trainingManagement','培训管理','/nav/courseware')")
                     span(class="top-angle",v-if="type == 'trainingManagement' ")
                     span(class="bottom-angle",v-if="type == 'trainingManagement' ")
                     img(src="~@/assets/css/images/培训管理蓝.png",v-if="type == 'trainingManagement'",:style="{marginLeft: '12px'}")
@@ -32,13 +32,13 @@
                     img(src="~@/assets/css/images/讲师管理蓝.png",v-if="type == 'lecturerManagement'",:style="{marginLeft: '12px'}")
                     img(src="~@/assets/css/images/讲师管理.png",v-else)
                     Item 讲师管理
-                MenuItem(name="综合评价",@click.native="clickMenu('comprehensiveAssessment','综合评价','/nav/project')")
+                MenuItem(name="综合评价",@click.native="clickMenu('comprehensiveAssessment','综合评价','/nav/comments')")
                     span(class="top-angle",v-if="type == 'comprehensiveAssessment'")
                     span(class="bottom-angle",v-if="type == 'comprehensiveAssessment'")
                     img(src="~@/assets/css/images/综合评价蓝.png",v-if="type == 'comprehensiveAssessment'",:style="{marginLeft: '12px'}")
                     img(src="~@/assets/css/images/综合评价.png",v-else)
                     Item 综合评价
-                MenuItem(name="不良评价",@click.native="clickMenu('badEvaluation','不良评价','/nav/project')")
+                MenuItem(name="不良记录",@click.native="clickMenu('badEvaluation','不良记录','/nav/badComments')")
                     span(class="top-angle",v-if="type == 'badEvaluation'")
                     span(class="bottom-angle",v-if="type == 'badEvaluation'")
                     img(src="~@/assets/css/images/不良评价蓝.png",v-if="type == 'badEvaluation'",:style="{marginLeft: '12px'}")
@@ -57,7 +57,11 @@
                     img(src="~@/assets/css/images/设置.png",v-else)
                     Item 设　 置
 
-        Layout
+        Layout(v-if="type=='homepage'")
+            Content
+                Content
+                    router-view
+        Layout(v-else)
             Header(class="layout-header-bar")
                 div(:style="{height: '60px',lineHeight: '110px'}")
                     span(:style="{fontSize: '24px'}") 产业工人大数据平台
@@ -110,7 +114,7 @@
                     div(class="switchName",v-else) 首页设置
 
 
-            div(:style="{height: '40px'}",v-if="type === 'lecturerManagement' ")
+            div(:style="{height: '40px'}",v-if="type === 'lecturerManagement'")
                 div(class="switchMeun",@click="switchChecked('internalTrainer')")
                     div(class="switchNameBule",v-if="styleClass ==='internalTrainer' ") 内部讲师
                     div(class="switchBrBule",v-if="styleClass === 'internalTrainer'")
@@ -119,11 +123,18 @@
                     div(class="switchNameBule",v-if="styleClass ==='externalLecturer' ") 外部讲师
                     div(class="switchBrBule",v-if="styleClass ==='externalLecturer' ")
                     div(class="switchName",v-else) 外部讲师
+            div(:style="{height: '40px'}",v-if="type === 'trainingManagement'")
+                div(class="switchMeun",@click="switchChecked('onlineTraining')")
+                    div(class="switchNameBule",v-if="styleClass ==='onlineTraining' ") 线上培训
+                    div(class="switchBrBule",v-if="styleClass === 'onlineTraining'")
+                    div(class="switchName",v-else) 线上培训
+                div(class="switchMeun",@click="switchChecked('offlineTraining')")
+                    div(class="switchNameBule",v-if="styleClass ==='offlineTraining' ") 线下培训
+                    div(class="switchBrBule",v-if="styleClass ==='offlineTraining' ")
+                    div(class="switchName",v-else) 线下培训
 
-            Content(v-if="!styleClass && !peopleManagement")
-                Content
-                    router-view
-            Content(v-else :style="{padding: '30px',margin: '24px 24px 24px 24px', minHeight: '280px', background: '#fff',borderRadius: '40px',maxHeight: '900px'}")
+
+            Content(:style="{padding: '30px',margin: '24px 24px 24px 24px', minHeight: '280px', background: '#fff',borderRadius: '40px',maxHeight: '900px'}")
                 Content
                     router-view
 

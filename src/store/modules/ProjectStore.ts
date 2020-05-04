@@ -107,6 +107,7 @@ export default class ProjectStore extends VuexModule {
     }
     @Mutation
     private successCompany({id, data}){
+
         this.subCompanyList = new Array<any>();
          for(let i = 0;i<data.data.length;i++){
             let c = {};
@@ -120,6 +121,7 @@ export default class ProjectStore extends VuexModule {
             if(id){
                 this.subCompanyList.push(c)
             }else{
+                this.companyList = new Array<any>();
                 this.companyList.push(c);
             }
 
