@@ -1,7 +1,7 @@
 <!--
  * @Date         : 2020-05-04 10:26:23
  * @LastEditors  : HaoJie
- * @LastEditTime : 2020-05-04 20:05:01
+ * @LastEditTime : 2020-05-05 08:57:49
  * @FilePath     : \src\components\Nav\BadList\Index.vue
  -->
 <script lang="ts">
@@ -23,7 +23,7 @@ export default class BadList extends Vue {
     this.store = getModule(CommentsStore);
     this.store.search();
   }
-
+ 
   mounted() {}
 
   public columns = [

@@ -2,7 +2,7 @@ import { Mutation } from "vuex-module-decorators";
 /*
  * @Date         : 2020-05-04 19:33:13
  * @LastEditors  : HaoJie
- * @LastEditTime : 2020-05-04 19:42:57
+ * @LastEditTime : 2020-05-05 16:16:47
  * @FilePath     : \src\common\MyStore.ts
  */
 import { VuexModule } from "vuex-module-decorators";
@@ -13,6 +13,18 @@ export default class MyStore extends VuexModule {
   }
   @Mutation
   set({ key, value }) {
-    this[key] = value;
+    if (!key.includes(".")) {
+      this[key] = value;
+    } else {
+      let obj = this;
+      let arr = key.split(".");
+      arr.forEach((item, index) => {
+        key = item;
+        if (index !== arr.length - 1) {
+          obj = obj[key];
+        }
+      });
+      obj[key] = value;
+    }
   }
 }

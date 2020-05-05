@@ -1,7 +1,7 @@
 <!--
  * @Date         : 2020-05-02 14:47:34
  * @LastEditors  : HaoJie
- * @LastEditTime : 2020-05-04 20:03:46
+ * @LastEditTime : 2020-05-05 16:44:47
  * @FilePath     : \src\components\Nav\CheckEvaluate\Index.vue
  -->
 <script lang="ts">
@@ -14,26 +14,6 @@ import { Message } from "iview";
 @Component({})
 export default class CheckEvaluate extends Vue {
   public store: any;
-  public projectList: Array<List> = [
-    {
-      id: 1,
-      name: "项目A"
-    },
-    {
-      id: 2,
-      name: "项目B"
-    }
-  ];
-  public companyList: Array<List> = [
-    {
-      id: 1,
-      name: "单位A"
-    },
-    {
-      id: 2,
-      name: "单位B"
-    }
-  ];
   public gradeList: Array<any> = [
     {
       id: "初级",
@@ -51,17 +31,17 @@ export default class CheckEvaluate extends Vue {
   public classList: Array<any> = [{ id: 1 }, { id: 2 }];
   public hiddden: string = "hiddden";
   public pageSize: number = 15;
-  public pageNum: number = 1;
   public searchCheckeds: SearchList = {
-    name: null,
-    project: null,
-    company: null,
-    typeWork: null,
+    eafName: null,
+    rateWorkType: null,
     grade: null,
-    class: null,
-    time: null
+    rank: null,
+    modifyBy: null,
+    project: null,
+    company: null
   };
   public classDisabled: boolean = true;
+  public projectDisabled: boolean = true;
   public columns = [
     {
       title: "姓名",
@@ -184,9 +164,130 @@ export default class CheckEvaluate extends Vue {
       sortable: true
     }
   ];
+  public columnsDialog = [
+    {
+      title: "姓名",
+      key: "eafName",
+      sortable: true
+    },
+    {
+      title: "所属项目",
+      key: "project",
+      sortable: true,
+      render: (h, params) => {
+        return h("div", [
+          h(
+            "span",
+            {
+              style: {
+                display: "inline-block",
+                width: "100%",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                whiteSpace: "nowrap"
+              },
+              domProps: {
+                title: params.row.rateWorkType
+              }
+            },
+            params.row.rateWorkType
+          )
+        ]);
+      }
+    },
+    {
+      title: "所属单位",
+      key: "company",
+      sortable: true,
+      render: (h, params) => {
+        return h("div", [
+          h(
+            "span",
+            {
+              style: {
+                display: "inline-block",
+                width: "100%",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                whiteSpace: "nowrap"
+              },
+              domProps: {
+                title: params.row.rateWorkType
+              }
+            },
+            params.row.rateWorkType
+          )
+        ]);
+      }
+    },
+    {
+      title: "工种",
+      key: "rateWorkType",
+      sortable: true,
+      render: (h, params) => {
+        return h("div", [
+          h(
+            "span",
+            {
+              style: {
+                display: "inline-block",
+                width: "100%",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                whiteSpace: "nowrap"
+              },
+              domProps: {
+                title: params.row.rateWorkType
+              }
+            },
+            params.row.rateWorkType
+          )
+        ]);
+      }
+    },
+    {
+      title: "等级",
+      key: "grade",
+      sortable: true
+    },
+    {
+      title: "级别",
+      key: "rank",
+      sortable: true
+    },
+    {
+      title: "评定时间",
+      key: "modifyBy",
+      sortable: true,
+      render: (h, params) => {
+        return h("div", [
+          h(
+            "span",
+            {
+              style: {
+                display: "inline-block",
+                width: "100%",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                whiteSpace: "nowrap"
+              },
+              domProps: {
+                title: params.row.modifyBy
+              }
+            },
+            params.row.modifyBy
+          )
+        ]);
+      }
+    }
+  ];
+  public classDisabledDialog: boolean = false;
   constructor() {
     super();
     this.store = getModule(CheckEvaluateStore);
+  }
+  mounted() {
+    this.search();
   }
   clearSearch(name) {
     Object.keys(this.searchCheckeds).forEach(a => {
@@ -199,11 +300,11 @@ export default class CheckEvaluate extends Vue {
     });
   }
   search() {
-    debugger;
+    this.store.search(this.searchCheckeds);
   }
   pageChange(val: number) {
-    this.pageNum = val;
-    // 发table请求
+    this["$store"].state.CheckEvaluateStore.pageNum = val;
+    this.search();
   }
   getTime(date) {
     let year = date.getFullYear();
@@ -221,43 +322,53 @@ export default class CheckEvaluate extends Vue {
     } else {
       this.classDisabled = true;
     }
-    this.searchCheckeds.class = null;
+    this.searchCheckeds.rank = null;
   }
-  getNamwOfList(list, id) {
+  get computedStoreAddRateObjectGrade(): string {
+    return this["$store"].state.CheckEvaluateStore.addRateObject.grade;
+  }
+  @Watch("computedStoreAddRateObjectGrade")
+  onChanges(val, old) {
+    if (val === "中级" || val === "高级") {
+      this.classDisabledDialog = false;
+    } else {
+      this.classDisabledDialog = true;
+    }
+    this["$store"].state.CheckEvaluateStore.addRateObject.rank = null;
+  }
+  @Watch("searchCheckeds.company")
+  searchProject(val, old) {
+    if (val === 0 || val) {
+      this.projectDisabled = false;
+    } else {
+      this.projectDisabled = true;
+    }
+    this.searchCheckeds.project = null;
+  }
+  addRate(row) {
+    this.store.addRate(row);
+  }
+  details(row) {
+    this.store.details(row);
+  }
+  getNameOfList(list, id) {
     let name: string;
     list.forEach(a => {
-      if (a.id == id) name = a.name;
+      if (a.id == id) {
+        name = a.name;
+      }
     });
     return name;
   }
-  addRate(id) {
-    this["$store"].state.CheckEvaluateStore.addDialog = true
-  }
-  details(id) {
-    debugger
-  }
 }
 interface SearchList {
-  name: string;
-  project: string;
-  company: string;
-  typeWork: string;
+  eafName: string;
+  rateWorkType: string;
   grade: string;
-  class: string;
-  time: string;
-}
-interface List {
-  id: number;
-  name: string;
-}
-interface AddRate {
-  id: number
-  name: string
-  workType: string
-  grade: string
-  class: string
-  time: string
-  describe: string
+  rank: string;
+  modifyBy: string;
+  project?: string;
+  company: string;
 }
 </script>
 <style lang="stylus" src="@/styles/checkEvaluate.styl" />
