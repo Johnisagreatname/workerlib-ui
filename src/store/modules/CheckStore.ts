@@ -111,7 +111,7 @@ export default class CheckStore extends VuexModule {
             });
         })
     }
-
+           
     //工种类型
     @Action
     async getType() {
