@@ -7,9 +7,9 @@
         Icon(type="md-close" @click="clearSearch(name)")
       span(v-else-if="item && name == 'modifyBy' && item[0]") {{getTime(item[0]) + "~" + getTime(item[1])}}
         Icon(type="md-close" @click="clearSearch(name)")
-      span(v-else-if="item && name == 'project'") {{getNameOfList($store.state.CheckEvaluateStore.projectList, searchCheckeds.project)}}
+      span(v-else-if="item && name == 'company'") {{getNameOfList($store.state.WorkerStore.unitList, searchCheckeds.company)}}
         Icon(type="md-close" @click="clearSearch(name)")
-      span(v-else-if="item && name == 'company'") {{getNameOfList($store.state.CheckEvaluateStore.companyList, searchCheckeds.company)}}
+      span(v-else-if="item && name == 'project'") {{getNameOfList($store.state.WorkerStore.projectList, searchCheckeds.project)}}
         Icon(type="md-close" @click="clearSearch(name)")
     .search-wrap
       span.search(@click="search") 查询
@@ -29,11 +29,11 @@
     span.title 评级时间
       DatePicker(type="daterange" show-week-numbers placement="bottom-end" placeholder="请选择" style="width: 200px;margin-left: 20px;" v-model="searchCheckeds.modifyBy")
     span(class="title margin") 所属单位
-      Select(v-model="searchCheckeds.company" style="width:200px;margin-left: 20px;")
-        Option(v-for="item in $store.state.CheckEvaluateStore.companyList" :value="item.id" :key="item.id") {{item.name}}
+      Select(v-model="searchCheckeds.company" style="width:200px;margin-left: 20px;" filterable)
+        Option(v-for="item in $store.state.WorkerStore.unitList" :value="item.unitId" :key="item.unitId") {{item.unitName}}
     span(class="title margin") 所属项目
-      Select(v-model="searchCheckeds.project" style="width:200px;margin-left: 20px;" :disabled="projectDisabled")
-        Option(v-for="item in $store.state.CheckEvaluateStore.projectList" :value="item.id" :key="item.id") {{item.name}}
+      Select(v-model="searchCheckeds.project" style="width:200px;margin-left: 20px;" filterable)
+        Option(v-for="item in $store.state.WorkerStore.projectList" :value="item.projectId" :key="item.projectId") {{item.projectName}}
   .line(@click="hiddden = hiddden === 'hiddden' ? 'all' : 'hiddden'" :class="hiddden === 'hiddden' ? '' : 'all'")
   .table-wrap(:class="hiddden === 'hiddden' ? '' : 'table-hiddden'")
     Table(:columns="columns" :data="$store.state.CheckEvaluateStore.tableData")

@@ -1,12 +1,13 @@
 <!--
  * @Date         : 2020-05-02 14:47:34
  * @LastEditors  : HaoJie
- * @LastEditTime : 2020-05-05 16:44:47
+ * @LastEditTime : 2020-05-05 19:01:40
  * @FilePath     : \src\components\Nav\CheckEvaluate\Index.vue
  -->
 <script lang="ts">
 import "@/assets/css/common.css";
 import CheckEvaluateStore from "../../../store/modules/CheckEvaluateStore";
+import WorkerStore from "../../../store/modules/WorkerStore";
 import { Component, Vue, Prop, Model, Watch } from "vue-property-decorator";
 import { getModule } from "vuex-module-decorators";
 import { Message } from "iview";
@@ -14,6 +15,7 @@ import { Message } from "iview";
 @Component({})
 export default class CheckEvaluate extends Vue {
   public store: any;
+  public workerStore: any;
   public gradeList: Array<any> = [
     {
       id: "初级",
@@ -37,11 +39,10 @@ export default class CheckEvaluate extends Vue {
     grade: null,
     rank: null,
     modifyBy: null,
+    company: null,
     project: null,
-    company: null
   };
   public classDisabled: boolean = true;
-  public projectDisabled: boolean = true;
   public columns = [
     {
       title: "姓名",
@@ -285,9 +286,12 @@ export default class CheckEvaluate extends Vue {
   constructor() {
     super();
     this.store = getModule(CheckEvaluateStore);
+    this.workerStore = getModule(WorkerStore);
   }
   mounted() {
     this.search();
+    this.workerStore.searchProjectList()
+    this.workerStore.searchUnitList()
   }
   clearSearch(name) {
     Object.keys(this.searchCheckeds).forEach(a => {
@@ -336,15 +340,6 @@ export default class CheckEvaluate extends Vue {
     }
     this["$store"].state.CheckEvaluateStore.addRateObject.rank = null;
   }
-  @Watch("searchCheckeds.company")
-  searchProject(val, old) {
-    if (val === 0 || val) {
-      this.projectDisabled = false;
-    } else {
-      this.projectDisabled = true;
-    }
-    this.searchCheckeds.project = null;
-  }
   addRate(row) {
     this.store.addRate(row);
   }
@@ -354,8 +349,10 @@ export default class CheckEvaluate extends Vue {
   getNameOfList(list, id) {
     let name: string;
     list.forEach(a => {
-      if (a.id == id) {
-        name = a.name;
+      if (a.unitId && a.unitId == id) {
+        name = a.unitName;
+      } else if (a.projectId && a.projectId == id) {
+        name = a.projectName;
       }
     });
     return name;

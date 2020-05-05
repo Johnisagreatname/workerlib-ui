@@ -193,26 +193,6 @@ export default class CheckEvaluateStore extends MyStore {
     company: null,
     project: null,
   };
-  public projectList: Array<List> = [
-    {
-      id: 1,
-      name: "项目A",
-    },
-    {
-      id: 2,
-      name: "项目B",
-    },
-  ];
-  public companyList: Array<List> = [
-    {
-      id: 1,
-      name: "单位A",
-    },
-    {
-      id: 2,
-      name: "单位B",
-    },
-  ];
   public examineDialog: boolean = false;
   public examineTableData: Array<Examine> = [
     {
@@ -329,10 +309,6 @@ interface SearchList {
   endTime: string;
   company: string;
   project?: string;
-}
-interface List {
-  id: number;
-  name: string;
 }
 interface Examine {
   eafName: string;
