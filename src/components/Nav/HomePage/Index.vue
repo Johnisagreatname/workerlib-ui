@@ -1,8 +1,8 @@
 <!--
  * @Date         : 2020-04-28 09:46:19
  * @LastEditors  : HaoJie
- * @LastEditTime : 2020-05-01 11:54:41
- * @FilePath     : /src/components/Nav/HomePage/Index.vue
+ * @LastEditTime : 2020-05-04 15:21:06
+ * @FilePath     : \src\components\Nav\HomePage\Index.vue
  -->
 <script lang="ts">
 import "@/assets/css/common.css";
@@ -298,7 +298,7 @@ export default class HomePage extends Vue {
           stack: "one",
           data: inexistence,
           color: "#ccc",
-          barMaxWidth: 40,
+          barMaxWidth: 20,
           itemStyle: {
             normal: {
               barBorderRadius: [5, 5, 0, 0]
@@ -350,7 +350,7 @@ export default class HomePage extends Vue {
         {
           data: list,
           type: "bar",
-          barMaxWidth: 40,
+          barMaxWidth: 20,
           color: new this["$echarts"].graphic.LinearGradient(0, 0, 1, 1, [
             {
               offset: 0,
@@ -380,9 +380,9 @@ export default class HomePage extends Vue {
       this.courseware(res);
     });
   }
-  workers(data: Array<Workers> = [{ name: "无数据", value: 0 }]) {
+  workers(data: Array<any> = [{ name: "无数据", value: 0 }]) {
     let xAxisData = data.map(a => a.name);
-    let list = data.map(a => a.value);
+    let list = data.map(a => a.total);
     const workers = document.getElementById("workers");
     const chart: any = this["$echarts"].init(workers);
     chart.setOption({

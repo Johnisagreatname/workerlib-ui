@@ -148,6 +148,6 @@ Table(border,ref="selection",:columns="this.getColumns()",:data="this.data", :he
         Dropdown(v-if="buttons && buttons.length > 1", class="operation")
             Button(type="primary") 详细操作
                 Icon(type="ios-arrow-down")
-            DropdownMenu(slot="list", v-for="(item, i) in this.options")
+            DropdownMenu(slot="list", v-for="(item) in buttons")
                 DropdownItem(@click="item.action") {{item.text}}
 </template>

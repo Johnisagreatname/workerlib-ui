@@ -262,15 +262,10 @@ export default class HomePageStore extends VuexModule {
         "pageIndex": this.pageIndex,
         "pageSize": 4
       },
-
       "conditionList": [],
-
       "sortList": [],
-
       "groupList": [],
-
       "keywords": [],
-
       "selectList": []
     }).then((total) => {
       if (!total) {
