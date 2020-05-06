@@ -63,7 +63,8 @@
     text-align: center;
 }
 .ivu-table-body table tbody tr:hover>td {
-    background-color: #fdefc6 !important;
+    background-color: #789dff !important;
+    color: #ffffff;
 }
 button i {
     font-size: 18px;
