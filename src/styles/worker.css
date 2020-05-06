@@ -167,3 +167,62 @@
     text-align: center;
     padding-left: 560px;
 }
+
+.userInfo{
+    height: 500px;
+}
+.userInfoLeft{
+    width: 770px;
+    float: left;
+}
+.userInfoRight{
+    width: 150px;
+    float: left;
+}
+.userInfoLine{
+    height: 70px;
+}
+.userInfoHr{
+    height: 1px;
+    background-color: #ffffff;
+}
+.userInfo1{
+    width: 50%;
+    height: 100%;
+    float: left;
+}
+.userInfo2{
+    width: 30%;
+    background-color: #7a90fd;
+    height: 100%;
+    float: left;
+    color: #ffffff;
+    text-align: center;
+    line-height: 70px;
+    font-size: 16px;
+}
+.userInfo3{
+    width: 70%;
+    height: 100%;
+    float: left;
+    font-size: 16px;
+    text-align: center;
+    line-height: 70px;
+}
+.userInfo3B{
+    width: 70%;
+    height: 100%;
+    float: left;
+    background-color: #e9efff;
+    font-size: 16px;
+    text-align: center;
+    line-height: 70px;
+}
+.userInfoPhoto{
+    height: 50%;
+    padding: 4px;
+}
+.zs{
+    width: 50%;
+    float: left;
+}

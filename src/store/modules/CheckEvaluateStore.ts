@@ -563,7 +563,7 @@ export default class CheckEvaluateStore extends VuexModule {
                 return;
             }
             let alert: any = Message;
-            alert.warning('成功！');
+            alert.success('成功！');
             this.search();
         }).catch((e)=>{
             console.log(e)
@@ -740,7 +740,7 @@ export default class CheckEvaluateStore extends VuexModule {
             this.insertTeamUserList = new Array<any>();
             this.cultivateArchivesList = new Array<any>();
             let alert: any = Message;
-            alert.warning("创建团体评价成功！");
+            alert.success("创建团体评价成功！");
         }
     }
     @Mutation

@@ -426,7 +426,7 @@ export default class UnitStore extends VuexModule {
         if(data.status == 0) {
             this.search();
             let alert: any = Message;
-            alert.warning('成功！');
+            alert.success('成功！');
         }
     }
     @Action

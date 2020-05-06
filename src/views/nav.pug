@@ -38,12 +38,12 @@
                     img(src="~@/assets/css/images/综合评价蓝.png",v-if="type == 'comprehensiveAssessment'",:style="{marginLeft: '12px'}")
                     img(src="~@/assets/css/images/综合评价.png",v-else)
                     Item 综合评价
-                MenuItem(name="不良记录",@click.native="clickMenu('badEvaluation','不良记录','/nav/badComments')")
+                MenuItem(name="不良记录",@click.native="clickMenu('badEvaluation','不良记录','/nav/badList')")
                     span(class="top-angle",v-if="type == 'badEvaluation'")
                     span(class="bottom-angle",v-if="type == 'badEvaluation'")
                     img(src="~@/assets/css/images/不良评价蓝.png",v-if="type == 'badEvaluation'",:style="{marginLeft: '12px'}")
                     img(src="~@/assets/css/images/不良评价.png",v-else)
-                    Item 不良评价
+                    Item 不良记录
                 MenuItem(name="技能鉴定",@click.native="clickMenu('skillAppraisal','技能鉴定','/nav/checkEvaluate')")
                     span(class="top-angle",v-if="type == 'skillAppraisal'")
                     span(class="bottom-angle",v-if="type == 'skillAppraisal'")

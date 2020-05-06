@@ -163,17 +163,26 @@
         set selectName(data: string) {
             this.store.setSelectName(data);
         }
+        clearSelectName(){
+            this.store.setSelectName(null);
+        }
         get selectIsCount(): number {
             return this.store.selectIsCount;
         }
         set selectIsCount(data: number) {
             this.store.setSelectIsCount(data);
         }
+        clearSelectIsCount(){
+            this.store.setSelectIsCount(null);
+        }
         get selectIsShow(): number {
             return this.store.selectIsShow;
         }
         set selectIsShow(data: number) {
             this.store.setSelectIsShow(data);
+        }
+        clearSelectIsShow(){
+            this.store.setSelectIsShow(null);
         }
         get addName(): string {
             return this.store.addName;

@@ -108,21 +108,228 @@
             span {{index + (userPageIndex-1) * userPageSize + 1}}
 
          template(slot-scope="{row, index}",slot="operation")
-            div(class="operation",@click="checkedAddUser()") 详细操作
+            div(class="operation",@click="viewData(row.userId,row.IdNum)") 详细操作
    div(class="page")
       span 共{{userPageTotal}}人
       Page(size="small",@on-change="onPageIndexChange",show-elevator,:total="userPageTotal")
 
-   Modal(v-model="addUser",title="人员详情",@on-ok="ok",@on-cancel="cancel",width='60%')
-      Tabs(value="name1")
-         TabPane(label="人员基本信息" name="人员基本信息") 标签一的内容
-         TabPane(label="综合评价与不良评价" name="综合评价与不良评价") 标签二的内容
-         TabPane(label="证件管理" name="证件管理") 标签三的内容
-         TabPane(label="证书管理" name="证书管理") 标签三的内容
-         TabPane(label="培训记录" name="培训记录") 标签三的内容
-         TabPane(label="合同管理" name="合同管理") 标签三的内容
-         TabPane(label="考勤记录" name="考勤记录") 标签三的内容
-         TabPane(label="工资记录" name="工资记录") 标签三的内容
+
+   Modal(:value="particulars",title="人员详情",@on-ok="particularsOk()",@on-cancel="particularsCancel()",width='50%',:transfer="false")
+      Tabs(value="人员基本信息")
+         TabPane(label="人员基本信息" name="人员基本信息")
+            div(class="userInfo")
+               div(class="userInfoLeft")
+                  div(class="userInfoLine")
+                     div(class="userInfo1")
+                        div(class="userInfo2") 姓名
+                        div(class="userInfo3") {{this.store.userInfo.userName}}
+                     div(class="userInfo1")
+                        div(class="userInfo2") 工号
+                        div(class="userInfo3")  暂无
+                  div(class="userInfoHr")
+                  div(class="userInfoLine")
+                     div(class="userInfo1")
+                        div(class="userInfo2") 证件号
+                        div(class="userInfo3B") {{this.store.userInfo.IdNum}}
+                     div(class="userInfo1")
+                        div(class="userInfo2") 手机号
+                        div(class="userInfo3B") {{this.store.userInfo.phone}}
+                  div(class="userInfoHr")
+                  div(class="userInfoLine")
+                     div(class="userInfo1")
+                        div(class="userInfo2") 籍贯
+                        div(class="userInfo3")  {{this.store.userInfo.nativePlace}}
+                     div(class="userInfo1")
+                        div(class="userInfo2") 出生日期
+                        div(class="userInfo3") {{this.store.userInfo.birth}}
+                  div(class="userInfoHr")
+                  div(class="userInfoLine")
+                     div(class="userInfo1")
+                        div(class="userInfo2") 性别
+                        div(class="userInfo3B") {{this.store.userInfo.sex}}
+                     div(class="userInfo1")
+                        div(class="userInfo2") 民族
+                        div(class="userInfo3B") 暂无
+                  div(class="userInfoHr")
+                  div(class="userInfoLine")
+                     div(class="userInfo1")
+                        div(class="userInfo2") 年龄
+                        div(class="userInfo3") {{this.store.userInfo.age}}
+                     div(class="userInfo1")
+                        div(class="userInfo2") 人员状态
+                        div(class="userInfo3") {{this.store.userInfo.leave}}
+                  div(class="userInfoHr")
+                  div(class="userInfoLine")
+                     div(class="userInfo1")
+                        div(class="userInfo2") 工种
+                        div(class="userInfo3B") {{this.store.userInfo.workType}}
+                     div(class="userInfo1")
+                        div(class="userInfo2") 身份证地址
+                        div(class="userInfo3B") 暂无
+               div(class="userInfoRight")
+                  div(class="userInfoPhoto")
+                     img(:src="'/api/workerlib/preview/archives/photo/'+this.store.userInfo.id",:style={
+                         'width': '100%', 'height': '100%',
+                         'border-radius': '50%'
+                     },v-if="this.store.userInfo.photo")
+                     img(src="~@/assets/css/images/headerPicture.png",:style={
+                         'width': '100%',
+                         'height': '100%',
+                         'border-radius': '50%'
+                     },v-else)
+                  div(class="userInfoPhoto")
+         TabPane(label="综合评价与不良记录" name="综合评价与不良记录")
+         TabPane(label="证件管理" name="证件管理")
+            div(class="userInfo")
+               div(class="zs")
+                  img(:src="'/api/workerlib/preview/archives/id_card_front/'+this.store.userInfo.id",:style={
+                      'width': '100%', 'height': '100%',
+                      'border-radius': '50%'
+                  })
+               div(class="zs")
+                  img(:src="'/api/workerlib/preview/archives/id_card_reverse/'+this.store.userInfo.id",:style={
+                      'width': '100%', 'height': '100%',
+                      'border-radius': '50%'
+                  })
+         TabPane(label="证书管理" name="证书管理")
+         TabPane(label="培训记录" name="培训记录")
+         TabPane(label="合同管理" name="合同管理")
+         TabPane(label="考勤记录" name="考勤记录")
+         TabPane(label="工资记录" name="工资记录")
+   Modal(title="修改头像",v-model="onUpload",@on-ok="okUpdateUpload()",@on-cancel="cancelUpdateUpload()",:transfer="false")
+      .addBodyHead
+         .uploadButtom
+            Upload(multiple,type="drag",action="/api/workerlib/alluser/photo/upload",
+            :on-success="handleSuccessUpdatePhoto",:format="['jpg','jpeg','png']",:on-format-error="handleFormatError")
+               div(style="padding: 20px 0")
+                  Icon(type="ios-add" size="52" style="color: #3399ff")
+                  p 点击上传
+                  p(v-if="this.store.updatePhoto") 已上传:
+                     span(:style="{'color':'#2d8cf0'}") {{this.store.updatePhoto}}
+   Modal(:value="addUser",title="新增人员",@on-ok="okAddUser()",@on-cancel="cancelAddUser()",width='70%',:loading="loading",:transfer="false")
+      .addBody
+         .left
+            h2(:style={'text-ag': '18px', 'text-align': 'center'}) 基本信息
+            .divTwo
+               .name
+                  span 姓名
+                  span(:style={'color': 'red'}) *
+               .input
+                  Input(clearable,style="width: 345px",size=large,v-model="insertUserName")
+            .divTwo
+               .name
+                  span 所属项目
+                  span(:style={'color': 'red'}) *
+               .input
+                  Col(style="padding-right:10px")
+                     Select(filterable,clearable,v-model="insertProjectId")
+                        Option(v-for="item in getProjectList()",:value="item.projectId",:key="item.projectId") {{ item.projectName}}
+            .divTwo
+               .name
+                  span 所属单位
+                  span(:style={'color': 'red'}) *
+               .input
+                  Col(style="padding-right:10px")
+                     Select(filterable,clearable,v-model="insertUnitId")
+                        Option(v-for="item in getUnitList()",:value="item.unitId",:key="item.unitId") {{ item.unitName}}
+            .divTwo
+               .name
+                  span 工种
+                  span(:style={'color': 'red'}) *
+               .input
+                  Col(style="padding-right:10px")
+                     Select(filterable,clearable,v-model="insertWorkType")
+                        Option(v-for="item in getWorkTypeList()",:value="item.workTypeName",:key="item.workTypeName") {{ item.workTypeName}}
+            .divTwo
+               .name
+                  span 身份证号
+                  span(:style={'color': 'red'}) *
+               .input
+                  Input(clearable,style="width: 345px",size=large,v-model="insertIdNum")
+            .divTwo
+               .name
+                  span 手机号码
+                  span(:style={'color': 'red'}) *
+               .input
+                  Input(clearable,style="width: 345px",size=large,v-model="insertPhone")
+            .divTwo
+               .name
+                  span 进场时间
+                  span(:style={'color': 'red'}) *
+               .input
+                  DatePicker(type="daterange",show-week-numbers,placement="bottom-end",placeholder="请选择",
+                  style="width: 200px" v-model="insertStartTime")
+            .divTwo
+               .name
+                  span 合同竣工时间
+                  span(:style={'color': 'red'}) *
+               .input
+                  DatePicker(type="daterange",show-week-numbers,placement="bottom-end",placeholder="请选择",
+                  style="width: 200px" v-model="insertEndTime")
+
+         .right
+            h2(:style={'text-ag': '18px', 'text-align': 'center'}) 证件信息
+            .box
+               .boxLeft
+                  span 上传头像：
+               .boxRight
+                  Upload(multiple,type="drag",action="/api/workerlib/alluser/photo/upload",
+                  :on-success="handleSuccessPhoto",:format="['jpg','jpeg','png']",:on-format-error="handleFormatError",:style={
+                      'width': '30%',
+                      'margin-top': '10%'
+                  })
+                     div(style="padding: 20px 0")
+                        Icon(type="ios-add" size="52" style="color: #3399ff")
+                        p 点击上传
+            .box
+               .boxLeft
+                  span 上传身份证：
+               .boxRight
+                  Upload(multiple,type="drag",action="/api/workerlib/alluser/id_card_front/upload",
+                  :on-success="handleSuccessIdCardfront",:format="['jpg','jpeg','png']",:on-format-error="handleFormatError",:style={
+                      'width': '179px',
+                      'height': '120px',
+                      'float': 'left',
+                      'margin-right': '20px',
+                      'margin-top': '50px'
+                  })
+                     .divY
+                        Icon(size="52" style="color: #3399ff")
+                        p(:style={'color': '#ffffff', 'margin-top': '43px'}) 上传身份证正面
+                  Upload(multiple,type="drag",action="/api/workerlib/alluser/id_card_reverse/upload",
+                  :on-success="handleSuccessIdCardReverse",:format="['jpg','jpeg','png']",:on-format-error="handleFormatError",:style={
+                      'width': '179px',
+                      'height': '120px',
+                      'float': 'left',
+                      'margin-right': '20px',
+                      'margin-top': '50px'
+                  })
+                     .divU
+                        Icon(size="52" style="color: #3399ff")
+                        p(:style={'color': '#ffffff', 'margin-top': '43px'})  上传身份证反面
+            .box
+               .boxLeft
+                  span 上传证书：
+               .boxRight
+                  Upload(multiple,type="drag",action="/api/workerlib/worktype/certificate/upload",
+                  :on-success="handleSuccessCertificate",:format="['jpg','jpeg','png']",:on-format-error="handleFormatError",:style={
+                      'width': '40%',
+                      'margin-top': '10%'
+                  })
+                     div(style="padding: 20px 0")
+                        Icon(type="ios-add" size="52" style="color: #3399ff")
+                        p 点击上传
+               .boxLeft
+                  span 上传合同
+               .boxRight
+                  Upload(multiple,type="drag",action="/api/workerlib/worktype/certificate/upload",
+                  :on-success="handleSuccessContract",:format="['jpg','jpeg','png']",:on-format-error="handleFormatError",:style={
+                      'width': '40%',
+                      'margin-top': '10%'
+                  })
+                     div(style="padding: 20px 0")
+                        Icon(type="ios-add" size="52" style="color: #3399ff")
+                        p 点击上传
 
 
 

@@ -350,8 +350,8 @@ export default class ProjectStore extends VuexModule {
             "project_brief": this.insertProjectBrief,
             "builder_license": this.insertProjectBuilderLicense,
             "status": this.insertProjectStatus,
-            "start_time": this.insertProjectStartTime.getFullYear()+ "-" +(this.insertProjectStartTime.getMonth()+1)+ "-" +this.insertProjectStartTime.getDay(),
-            "end_time": this.insertProjectEndTime.getFullYear()+ "-" +(this.insertProjectEndTime.getMonth()+1)+ "-" +this.insertProjectEndTime.getDay(),
+            "start_time": this.insertProjectStartTime.getFullYear()+ "-" +(this.insertProjectStartTime.getMonth()+1)+ "-" +this.insertProjectStartTime.getDate(),
+            "end_time": this.insertProjectEndTime.getFullYear()+ "-" +(this.insertProjectEndTime.getMonth()+1)+ "-" +this.insertProjectEndTime.getDate(),
             "project_address": this.insertProjectAddress
         }).then((data)=>{
             if(!data){

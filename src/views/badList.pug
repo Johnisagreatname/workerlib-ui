@@ -1,0 +1,85 @@
+.body
+   div
+      p(:style="{fontSize: '16px',fontWeight: 'bold'}") 不良记录
+
+      div(class="selectedList")
+         div(class="condition")
+            span(:style="{fontSize: '16px',float: 'left',marginRight: '10px',paddingTop: '14px',color: '#789fef'}") 已选条件
+            div(class="selected",v-if="name") {{name}}
+               Icon(type="ios-backspace-outline",@click="clearName()")
+
+            div(class="selected",v-if="projectName") {{projectName}}
+               Icon(type="ios-backspace-outline",@click="clearProjectName()")
+
+            div(class="selected",v-if="workType") {{workType}}
+               Icon(type="ios-backspace-outline",@click="clearWorkType()")
+
+            div(class="selected",v-if="punishmentType") {{punishmentType}}
+               Icon(type="ios-backspace-outline",@click="clearPunishmentType()")
+
+            div(class="selected",v-if="startTime") {{startTime.getFullYear()+"-"+(startTime.getMonth()+1)+"-"+startTime.getDate()}}
+               Icon(type="ios-backspace-outline",@click="clearStartTime()")
+
+            div(class="selected",v-if="endTime") {{endTime.getFullYear()+"-"+(endTime.getMonth()+1)+"-"+endTime.getDate()}}
+               Icon(type="ios-backspace-outline",@click="clearEndTime()")
+
+         div(class="selectButton")
+            div(class="reset",@click="reset()") 重置
+            div(class="inquire",@click="countAppraiseCount()") 查询
+
+
+      div(class="select")
+         div(class="divSelectMin")
+            div(class="selectTitleMin") 姓名
+            div(class="selectValueMin")
+               Input(v-model="name",clearable,placeholder="请输入姓名")
+         div(class="divSelect")
+            div(class="selectTitle") 项目名称
+            div(class="selectValue")
+               Col(style="padding-right:10px")
+                  Select(filterable,clearable,v-model="projectName")
+                     Option(v-for="item in getProjectList()",:value="item.projectName",:key="item.projectId") {{ item.projectName}}
+         div(class="divSelectMin")
+            div(class="selectTitleMin") 工种
+            div(class="selectValueMin")
+               Col(style="padding-right:10px")
+                  Select(filterable,clearable,v-model="workType")
+                     Option(v-for="item in getWorkTypeList()",:value="item.name",:key="item.name") {{ item.name}}
+         div(class="divSelectMin")
+            div(class="selectTitleMin") 处罚
+            div(class="selectValueMin")
+               Col(style="padding-right:10px")
+                  Select(filterable,clearable,v-model="punishmentType")
+                     Option(v-for="item in getPunishmentList()",:value="item.name",:key="item.name") {{ item.name}}
+      div(class="selectedPullDown",v-if="pullDown")
+         div(class="selectDiv")
+            div(class="divSelect")
+               div(class="selectTitle") 处罚时间
+               div(class="selectValue")
+                  Row
+                     Col(span="12")
+                        DatePicker(type="date",placeholder="请选择",v-model="startTime")
+                     Col(span="12")
+                        DatePicker(type="date",placeholder="请选择",v-model="endTime")
+
+      div(class="pullDown",v-if="pullDown == false")
+         img(src="~@/assets/css/images/下拉.png",@click="switchTo()")
+      div(class="pullDown",v-else)
+         img(src="~@/assets/css/images/上拉.png",@click="switchTo()")
+
+
+   div(class="button")
+      Button(type="primary",ghost,icon="ios-cloud-upload-outline",@click="clickUpload()") 导出
+   div
+      Table(border,ref="selection",:columns="getColumns()",:data="getData()",
+      @on-select="handleSelectRow",@on-select-all="handleSelectAll",
+      @on-select-cancel="handleSelectRowCancel",@on-select-all-cancel="handleSelectAllCancel")
+         template(slot-scope="{row, index}",slot="serialNumber")
+            span {{index + (pageIndex-1) * pageSize + 1}}
+   div(class="page")
+      span 共{{pageTotal}}人
+      Page(size="small",@on-change="onPageIndexChange",show-elevator,:total="pageTotal")
+
+
+
+
