@@ -187,10 +187,10 @@ export default class CheckEvaluate extends Vue {
                 whiteSpace: "nowrap"
               },
               domProps: {
-                title: params.row.rateWorkType
+                title: params.row.project
               }
             },
-            params.row.rateWorkType
+            params.row.project
           )
         ]);
       }
@@ -212,10 +212,10 @@ export default class CheckEvaluate extends Vue {
                 whiteSpace: "nowrap"
               },
               domProps: {
-                title: params.row.rateWorkType
+                title: params.row.company
               }
             },
-            params.row.rateWorkType
+            params.row.company
           )
         ]);
       }

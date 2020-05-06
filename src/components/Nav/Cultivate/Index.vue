@@ -29,9 +29,11 @@
             return '';
         }
         mounted() {
-            this.store.getStudyType();
-            this.store.setSelectStatus(2);
+            //this.store.getStudyType();
+            //this.store.setSelectStatus(2);
             this.store.search();
+            this.store.getCourseType();
+            this.store.getWorkType();
         }
         loading = true;
         private store: any;
@@ -41,6 +43,16 @@
         public onDelete:boolean;
         public checkAllGroup :Array<any>;
         public uploadData:boolean;
+
+        public courseName:string = "";
+
+        public examineDialog: boolean = false;
+        public selectSataus : string = '';
+        public selectStudy : string = '';
+        public selectType : string = '';
+        public selectWork : string = '';
+        public selectWorkType : string = '';
+
         constructor() {
             super();
             this.store = getModule(CultivateStore);
@@ -86,6 +98,173 @@
         getDataInfo() : any{
             return this.store.cultivateArchives;
         }
+        set pullDown(data: boolean){
+            this.store.setPullDown(data);
+        }
+        get pullDown(): boolean{
+            return this.store.pullDown;
+        }
+
+        searchUserList(){
+            this.store.search();
+        }
+
+        clearItem(data:string){
+            this['$store'].state.CultivateStore[data]=null;
+        }
+
+        switchTo(){
+            this.store.switchPullDown();
+            if(this.store.pullDown){
+                this.store.setUserPageSize(12);
+            }else {
+                this.store.setUserPageSize(15);
+            }
+            this.store.searchUserList();
+        }
+        getStatusList(){
+            let statusList = [{"statusName":"线上","statusValue":1},{"statusName":"线下","statusValue":2}]
+            return statusList;
+        }
+        getStudyList(){
+            let statusList = [{"statusName":"是","statusValue":1},{"statusName":"否","statusValue":2}]
+            return statusList;
+        }
+        getTypeList(){
+            let typeList = this.store.studyType;
+            return typeList;
+        }
+        getWorkTypeList(){
+            let typeList = this.store.workType;
+            return typeList;
+        }
+        click(){
+            console.log(this.examineDialog)
+            this.examineDialog=!this.examineDialog;
+        }
+        public columnsDialog = [
+            {
+                type: 'selection',
+                width: 60,
+                align: 'center'
+            },
+            {
+                title:'序号',
+                slot:'num',
+                sortable: true
+            },
+            {
+                title: "姓名",
+                key: "eafName",
+                sortable: true
+            },
+            {
+                title: "工种",
+                key: "project",
+                sortable: true,
+                render: (h, params) => {
+                    return h("div", [
+                        h(
+                            "span",
+                            {
+                                style: {
+                                    display: "inline-block",
+                                    width: "100%",
+                                    overflow: "hidden",
+                                    textOverflow: "ellipsis",
+                                    whiteSpace: "nowrap"
+                                },
+                                domProps: {
+                                    title: params.row.rateWorkType
+                                }
+                            },
+                            params.row.rateWorkType
+                        )
+                    ]);
+                }
+            },
+            {
+                title: "地点",
+                key: "company",
+                sortable: true,
+                render: (h, params) => {
+                    return h("div", [
+                        h(
+                            "span",
+                            {
+                                style: {
+                                    display: "inline-block",
+                                    width: "100%",
+                                    overflow: "hidden",
+                                    textOverflow: "ellipsis",
+                                    whiteSpace: "nowrap"
+                                },
+                                domProps: {
+                                    title: params.row.rateWorkType
+                                }
+                            },
+                            params.row.rateWorkType
+                        )
+                    ]);
+                }
+            },
+            {
+                title: "培训时长",
+                key: "rateWorkType",
+                sortable: true,
+                render: (h, params) => {
+                    return h("div", [
+                        h(
+                            "span",
+                            {
+                                style: {
+                                    display: "inline-block",
+                                    width: "100%",
+                                    overflow: "hidden",
+                                    textOverflow: "ellipsis",
+                                    whiteSpace: "nowrap"
+                                },
+                                domProps: {
+                                    title: params.row.rateWorkType
+                                }
+                            },
+                            params.row.rateWorkType
+                        )
+                    ]);
+                }
+            },
+            {
+                title: "状态",
+                key: "grade",
+                sortable: true
+            },
+            {
+                title: "培训时间",
+                key: "modifyBy",
+                sortable: true,
+                render: (h, params) => {
+                    return h("div", [
+                        h(
+                            "span",
+                            {
+                                style: {
+                                    display: "inline-block",
+                                    width: "100%",
+                                    overflow: "hidden",
+                                    textOverflow: "ellipsis",
+                                    whiteSpace: "nowrap"
+                                },
+                                domProps: {
+                                    title: params.row.modifyBy
+                                }
+                            },
+                            params.row.modifyBy
+                        )
+                    ]);
+                }
+            }
+        ];
+
         deleteCultivate(){
             this.onDelete = true;
         }
@@ -312,6 +491,11 @@
         }
         get courseNum():number{
             return this.store.courseNum;
+        }
+
+        get CourseType():Array<any>{
+            console.log(this.store.studyType)
+            return this.store.studyType;
         }
     }
 </script>

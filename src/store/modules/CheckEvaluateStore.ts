@@ -248,12 +248,14 @@ export default class CheckEvaluateStore extends MyStore {
   constructor(e) {
     super(e);
   }
+
   @Action
   clear() {
     Object.keys(this.addRateObject).forEach((a) => {
       this.addRateObject[a] = null;
     });
   }
+
   @Action
   submit() {
     // 提交

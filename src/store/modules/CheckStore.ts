@@ -70,7 +70,7 @@ export default class CheckStore extends VuexModule {
                 "keywords": [],
                 "selectList": [
                     {
-                        "field": "name"
+                        "field": "work_type"
                     }
                 ]
             }
@@ -269,6 +269,7 @@ export default class CheckStore extends VuexModule {
                 {"field": "grade"},
                 {"field": "rank"},
                 {"field": "evaluateTime"},
+                {"field": "createOn"},
             ]
 
         }).then((total) => {
@@ -309,6 +310,7 @@ export default class CheckStore extends VuexModule {
                 {"field": "grade"},
                 {"field": "rank"},
                 {"field": "evaluateTime"},
+                {"field": "createOn"},
             ]
 
         }).then((total) => {
@@ -338,14 +340,8 @@ export default class CheckStore extends VuexModule {
 
     //新增
     @Action
-    public async insertUpCultivate() {
-        await request.put('/api/workerlib/user_rate', {
-            "userId":this.AddRate.id,
-            "rateWorkType":this.AddRate.rateWorkType,
-            "grade":this.AddRate.grade,
-            "rank":this.AddRate.rank,
-            "evaluateTime":this.AddRate.modifyBy
-        }).then((data)=>{
+    public async insertUpCultivate(array:Array<DetailData>) {
+        await request.put('/api/workerlib/user_rate', array).then((data)=>{
             let alert: any = Message;
             if(!data){
                 return;

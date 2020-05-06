@@ -53,7 +53,6 @@ export default class HomePageStore extends VuexModule {
     this.searchCount({ url: "Archives", variable: "onlineWorkerExternal", params: [{ name: "leave", value: 1 }, { name: "eafUserStatus", value: 1 }] })
     this.searchCount({ url: "Archives", variable: "offlineWorkerOwn", params: [{ name: "leave", value: 2 }, { name: "eafUserStatus", value: 0 }] })
     this.searchCount({ url: "Archives", variable: "offlineWorkerExternal", params: [{ name: "leave", value: 2 }, { name: "eafUserStatus", value: 1 }] })
-
   }
   @Action
   async getVideo() {

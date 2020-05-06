@@ -3,7 +3,7 @@
     import LecturerStore from '../../../store/modules/LecturerStore';
     import AccountStore from '../../../store/modules/AccountStore';
     import { Component, Vue, Prop, Model} from 'vue-property-decorator';
-    import { getModule } from 'vuex-module-decorators';
+    import {getModule, Mutation} from 'vuex-module-decorators';
     import { Message } from 'iview';
 
     @Component({
@@ -29,6 +29,7 @@
         public addLecturer: boolean;
         public updateLecturer: boolean;
         public deleteLecturer: boolean;
+
         loading = true;
         private options!: any;
 
@@ -175,7 +176,10 @@
                 return;
             }
             this.updateLecturer = true;
+            //写个方法去查询
+            this.store.searchLecturer(this.store.updateLecturerId);
         }
+
         updateLecturerCancel(){
             this.updateLecturer = false;
         }
@@ -205,7 +209,6 @@
             let alert: any = Message;
             alert.error(file.name + ' 文件格式错误！请上传jpg、jpeg、png格式文件！');
         }
-
         set updateLecturerId(data:string){
             this.store.setUpdateLecturerId(data);
         }
@@ -215,21 +218,37 @@
         set updateLecturerName(data:string){
             this.store.setUpdateLecturerName(data);
         }
+        //
         get updateLecturerName():string{
-            return this.store.updateLecturerName;
+            return this.store.lecturerName;
         }
+
+
+
+        //
+
+
         set updateLecturerType(data:string){
             this.store.setUpdateLecturerType(data);
         }
+
+
+        //
         get updateLecturerType():string{
-            return this.store.updateLecturerType;
+            return this.store.lecturerType;
         }
+        //
+
         set updateLecturerCurriculum(data:string){
             this.store.setUpdateLecturerCurriculum(data);
         }
+
+        //
         get updateLecturerCurriculum():string{
-            return this.store.updateLecturerCurriculum;
+            return this.store.lecturerCurriculum;
         }
+        //
+
         set updateLecturerPersonalreesume(data:number){
             this.store.setUpdateLecturerPersonalreesume(data);
         }

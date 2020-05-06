@@ -32,6 +32,12 @@ export default class LecturerStore extends VuexModule {
     private insertLecturerPersonalreesume: string;
     private insertLecturerPhoto: string;
 
+
+    private lecturerName:string;
+    private lecturerCurriculum:string;
+    private lecturerType:number;
+
+
     private updateLecturerId: string;
     private updateLecturerName: string;
     private updateLecturerCurriculum: string;
@@ -50,6 +56,9 @@ export default class LecturerStore extends VuexModule {
         this.lecturerPageSize = 8;
         this.lecturerPageIndex = 1;
         this.lecturerPageTotal = 0;
+        this.lecturerName='';
+        this.lecturerCurriculum='';
+        this.lecturerType=0;
 
         this.checkedId = 0;
         this.insertLecturerName = null;
@@ -111,6 +120,52 @@ export default class LecturerStore extends VuexModule {
             MessageUtils.warning(e);
         });
     }
+
+    //查询单条数据
+    @Action
+    public async searchLecturer(id) {
+        await request.post('/api/workerlib/lecturer',{
+            "pageInfo" : {},
+            "conditionList": {
+                "name":"id",
+                "value": id,
+                "algorithm": "EQ",
+            },
+            "sortList": [],
+            "groupList": [],
+            "keywords": [],
+            "selectList": []
+        }).then((data)=>{
+            if(!data){
+                return;
+            }
+            this.setLecturerName(data);
+            this.setLecturerCurriculum(data);
+            this.setLecturerType(data);
+
+        }).catch((e)=>{
+            MessageUtils.warning(e);
+        });
+    }
+
+    @Mutation
+    private setLecturerName(data : any){
+        console.log(data.data[0].name)
+        this.lecturerName = data.data[0].name;
+    }
+
+    @Mutation
+    private setLecturerCurriculum(data : any){
+        console.log(data.data[0].name)
+        this.lecturerCurriculum = data.data[0].curriculum;
+    }
+
+    @Mutation
+    private setLecturerType(data : any){
+        console.log(data.data[0].name)
+        this.lecturerType = data.data[0].type;
+    }
+
     @Action
     public async searchLecturerListCount() {
         await request.post('/api/workerlib/lecturer/count',await this.getLecturerListParams()).then((total)=>{
@@ -264,8 +319,8 @@ export default class LecturerStore extends VuexModule {
         this.updateLecturerPersonalreesume=data;
     }
     @Mutation
-    public setUpdateLecturerPhoto(data:string){
-        this.updateLecturerPhoto=data;
+    public setUpdateLecturerPhoto(data:any){
+        this.updateLecturerPhoto=data.data[0].photo;
     }
 
     //批量删除讲师

@@ -563,7 +563,7 @@ export default class WorkerStore extends VuexModule {
         this.pullDown = !this.pullDown;
     }
 
-    // 新增人员
+    // 新增人员`
     @Action
     public async insertUser(){
         await request.put('/api/workerlib/archives', {

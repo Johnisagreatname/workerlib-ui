@@ -12,10 +12,13 @@ import {Message} from "iview";
     store,
 })
 export default class CultivateStore extends VuexModule {
-    public studyType: Array<StudyType>;
+    public studyType: Array<any>;
+    public workType: Array<any>;
     public cultivate: Array<Cultivate>;
     public cultivateArchives: Array<CultivateArchives>;
 
+
+    // public examineDialog: boolean = false;
 
     public pageIndex: number;
     public pageSize: number;
@@ -34,23 +37,27 @@ export default class CultivateStore extends VuexModule {
     public insertCultivateVideo: Array<any>;
 
     public infoId:number;
-
+    public Status :number;
     public okCultivate:string;
     public selectCourseName:string;
     public selectTrainingTeacher:string;
-    public selectState:string;
+    public whether:string;
     public selectStartTime:Date;
-    public selectStatus:number;
+    public course:string;
     public selectUserName:string;
     public isOk:string;
 
     public viewId:number;
-
+    public title:string='';
+    public typeWork:string='';
     public insertFile:Array<any>;
+
+    private pullDown: boolean;
 
     constructor(e){
         super(e);
         this.studyType = [];
+        this.workType = [];
         this.cultivate = [];
         this.checkAllGroup = [];
         this.cultivateArchives = [];
@@ -68,12 +75,14 @@ export default class CultivateStore extends VuexModule {
         this.inPageIndex=1;
         this.inPageSize= 10;
         this.inPageTotal = 0;
-        this.selectStatus = 2;
+        this.course = '';
         this.viewId = null;
+        this.Status=null;
+        this.pullDown = false;
 
         this.selectCourseName = "";
         this.selectTrainingTeacher = "";
-        this.selectState = "";
+        this.whether = '';
         this.selectStartTime=null;
         this.selectUserName = "";
         this.isOk = "已完成";
@@ -82,21 +91,57 @@ export default class CultivateStore extends VuexModule {
         this.courseNum=null;
     }
 
+    public tableData: Array<TableData> = [
+        {
+            id: "sgjlsjl1232jlg34k3j",
+            eafName: "string",
+            rateWorkType: "string",
+            grade: "string",
+            rank: "string",
+            modifyBy: "string",
+            operation: "string",
+            project: "项目",
+            company: "公司",
+        },
+        {
+            id: "sgjlsjl1232jlg34k3j",
+            eafName: "string",
+            rateWorkType: "string",
+            grade: "string",
+            rank: "string",
+            modifyBy: "string",
+            operation: "string",
+            project: "项目",
+            company: "公司",
+        }
+    ];
+
+    @Mutation
+    private setPullDown(data : any){
+        this.pullDown = data;
+    }
+    @Mutation
+    private switchPullDown(){
+        this.pullDown = !this.pullDown;
+    }
+
+
+
     @Action
-    public async getStudyType(){
-        await request.post('/api/workerlib/dictionaries', {
+    public async getCourseType(){
+        await request.post('/api/workerlib/courseware', {
             "pageInfo" : {},
-            "conditionList": [{
-                "name": "category",
-                "value": ["课程状态"],
-                "algorithm": "EQ"
-            }],
+            "conditionList": [],
             "sortList": [],
-
-            "groupList" : [],
-
+            "groupList" : [
+                "course"
+            ],
             "keywords" : [],
-            "selectList": []
+            "selectList": [
+                {
+                    "field": "course",
+                }
+            ]
         }).then((data)=>{
             if(!data){
                 return;
@@ -108,39 +153,70 @@ export default class CultivateStore extends VuexModule {
     }
 
     @Action
+    public async getWorkType(){
+        await request.post('/api/workerlib/courseware', {
+            "pageInfo" : {},
+            "conditionList": [],
+            "sortList": [],
+            "groupList" : [
+                "type_work"
+            ],
+            "keywords" : [],
+            "selectList": [
+                {
+                    "field": "type_work",
+                }
+            ]
+        }).then((data)=>{
+            if(!data){
+                return;
+            }
+            this.successWork(data);
+        }).catch((e)=>{
+            MessageUtils.warning(e);
+        });
+    }
+
+
+    @Action
     public getParams() : any {
-        if(this.selectCourseName){
+        //是否必学 whether
+        if(this.whether){
             let item ={};
-            item["name"]="course_name";
-            item["value"]=this.selectCourseName;
-            item["algorithm"] = "LIKE"
-            this.cList.push(item);
-        }
-        if(this.selectTrainingTeacher){
-            let item ={};
-            item["name"]="trainingTeacher";
-            item["value"]=this.selectTrainingTeacher;
-            item["algorithm"] = "LIKE"
-            this.cList.push(item);
-        }
-        if(this.selectState){
-            let item ={};
-            item["name"]="state";
-            item["value"]=this.selectState;
-            item["algorithm"] = "LIKE"
-            this.cList.push(item);
-        }
-        if(this.selectStartTime){
-            let item ={};
-            item["name"]="startTime";
-            item["value"]=this.selectStartTime != null ?this.selectStartTime.getFullYear() + "-" + (this.selectStartTime.getMonth()+1) + "-" + this.selectStartTime.getDate():null;
+            item["name"]="w.whether";
+            item["value"]=this.whether;
             item["algorithm"] = "EQ"
             this.cList.push(item);
         }
-        if(this.selectStatus){
+        //线上线下 status
+        if(this.Status){
             let item ={};
             item["name"]="c.status";
-            item["value"]=this.selectStatus;
+            item["value"]=this.Status;
+            item["algorithm"] = "EQ"
+            this.cList.push(item);
+        }
+        //所属类型
+        if(this.course){
+            let item ={};
+            item["name"]="w.course";
+            item["value"]=this.course;
+            item["algorithm"] = "EQ"
+            this.cList.push(item);
+        }
+        //搜索课程
+        if(this.title){
+            let item ={};
+            item["name"]="w.title";
+            item["value"]=this.title;
+            item["algorithm"] = "LIKE"
+            this.cList.push(item);
+        }
+        //选择工种
+        if(this.typeWork){
+            let item ={};
+            item["name"]="w.type_work";
+            item["value"]=this.typeWork;
             item["algorithm"] = "EQ"
             this.cList.push(item);
         }
@@ -157,8 +233,15 @@ export default class CultivateStore extends VuexModule {
                     "name": "c.createBy",
                     "value": "u.id",
                     "algorithm": "EQ"
-                },{
-
+                }]
+            },{
+                "tablename": "courseware",
+                "alias": "w",
+                "joinMode": "Left",
+                "onList": [{
+                    "name": "c.course_id",
+                    "value": "w.id",
+                    "algorithm": "EQ"
                 }]
             }
             ],
@@ -381,6 +464,31 @@ export default class CultivateStore extends VuexModule {
             alert.warning(e.message || e)
         });
     }
+
+    @Action
+    public async insertData() {
+        await request.put('/api/workerlib/cultivate_video',this.insertCultivateVideo).then((data)=>{
+            if(!data){
+                return;
+            }
+            this.successInsertVideoInfo(data);
+        }).catch((e)=>{
+            let alert: any = Message;
+            if(!e) {
+                alert.warning('未知错误！')
+                return
+            }
+            if(e.response && e.response.data && e.response.data.message) {
+                alert.warning(e.response.data.message)
+                return
+            }
+            if(!e.message) {
+                return;
+            }
+            alert.warning(e.message || e)
+        });
+    }
+
     @Action
     public async insertVideoInfo() {
         await request.put('/api/workerlib/cultivate_video',this.insertCultivateVideo).then((data)=>{
@@ -404,6 +512,8 @@ export default class CultivateStore extends VuexModule {
             alert.warning(e.message || e)
         });
     }
+
+
     @Action
     public async UpdateCultivate() {
         await request.put('/api/workerlib/cultivate/'+this.viewId,{
@@ -483,10 +593,19 @@ export default class CultivateStore extends VuexModule {
 
         }
     }
+
+
     @Mutation
     public successType(data: any) {
         this.studyType = data.data;
     }
+
+    @Mutation
+    public successWork(data: any) {
+        this.workType = data.data;
+    }
+
+
     @Mutation
     public success(data: any) {
         this.cList = new Array<any>();
@@ -526,6 +645,12 @@ export default class CultivateStore extends VuexModule {
     public setOkCourseNum(data: number) {
         this.courseNum = data;
     }
+
+    @Mutation
+    public getCourseNum() {
+        return  this.studyType ;
+    }
+
     @Mutation
     public setPageIndex(data: number) {
         this.pageIndex = data;
@@ -556,10 +681,7 @@ export default class CultivateStore extends VuexModule {
     public setIsOk(data: string) {
         this.isOk = data;
     }
-    @Mutation
-    public setSelectState(data: string) {
-        this.selectState = data;
-    }
+
     @Mutation
     public setSelectTrainingTeacher(data: string) {
         this.selectTrainingTeacher = data;
@@ -594,7 +716,7 @@ export default class CultivateStore extends VuexModule {
     }
     @Mutation
     public setSelectStatus(data: number) {
-        this.selectStatus = data;
+        this.Status = data;
     }
     @Mutation
     public setViewId(data: number) {
@@ -610,6 +732,7 @@ export default class CultivateStore extends VuexModule {
     }
 
 
+
     public columns = [
         {
             type: 'selection',
@@ -620,27 +743,6 @@ export default class CultivateStore extends VuexModule {
             title:'序号',
             slot:'num',
             sortable: true
-        },
-        {
-            title: '课程简介',
-            key: 'courseware_brief',
-            sortable: true,
-            render: (h, params) => {
-                return h('div', [
-                    h('span', {
-                        style: {
-                            display: 'inline-block',
-                            width: '100%',
-                            overflow: 'hidden',
-                            textOverflow: 'ellipsis',
-                            whiteSpace: 'nowrap'
-                        },
-                        domProps: {
-                            title: params.row.courseware_brief
-                        }
-                    }, params.row.courseware_brief)
-                ])
-            }
         },
         {
             title: '培训课程',
@@ -665,7 +767,7 @@ export default class CultivateStore extends VuexModule {
         },
         {
             title: '开始培训时间',
-            slot: 'startTime',
+            key: 'startTime',
             sortable: true
         },
         {
@@ -674,15 +776,30 @@ export default class CultivateStore extends VuexModule {
             sortable: true
         },
         {
+            title: '讲师',
+            key: 'trainingTeacher',
+            sortable: true
+        },
+        {
+            title: '培训地点',
+            key: 'trainingAddress',
+            sortable: true
+        },
+        {
+            title: '任务状态',
+            key: 'state',
+            sortable: true
+        },
+        {
             title: '发起人',
             key: 'username',
             sortable: true
         },
-        {
-            title: '操作',
-            slot: 'operation',
-            sortable: true
-        }
+        // {
+        //     title: '操作',
+        //     slot: 'operation',
+        //     sortable: true
+        // }
     ];
     public columnsUp = [
         {
@@ -777,11 +894,11 @@ export default class CultivateStore extends VuexModule {
             key: 'username',
             sortable: true
         } ,
-        {
-            title: '操作',
-            slot: 'operation',
-            sortable: true
-        }
+        // {
+        //     title: '操作',
+        //     slot: 'operation',
+        //     sortable: true
+        // }
     ];
     public getColumnsInfo = [
         {
@@ -834,7 +951,8 @@ interface Cultivate {
     startTime?:Date;
     peoples?:number;
     state?:string;
-    mark?:string;
+    trainingTeacher?:string;
+    trainingAddress?:string;
     username?:string;
 }
 interface CultivateArchives {
@@ -846,4 +964,15 @@ interface CultivateArchives {
     id_number?:string;
     project?:string;
     title?:string;
+}
+interface TableData {
+    id: string;
+    eafName: string;
+    rateWorkType: string;
+    grade: string;
+    rank: string;
+    modifyBy: string;
+    operation: string;
+    project: string;
+    company: string;
 }
