@@ -88,7 +88,7 @@
                     div(class = "modelBody3")
                         div(class="selectValue")
                             Input(clearable,placeholder="请输入单位地址",v-model="insertUnitAddress")
-    Modal(v-model="addProject",title="新增项目",@on-ok="addProjectOk",@on-cancel="addProjectCancel",width='60%',
+    Modal(v-model="$store.state.ProjectStore.dialog",title="新增项目",@on-ok="addProjectOk",@on-cancel="addProjectCancel",width='60%',
     :transfer="false",:loading="loading")
         div(class="modelBodyTwo")
             div

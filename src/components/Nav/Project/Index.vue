@@ -157,10 +157,11 @@
             return this.store.insertUnitAddress;
         }
         clickAddProject(){
+            this["$store"].state.ProjectStore.dialog = true
             this.store.getProjectStatusList();
             this.addProject = true;
         }
-        addProjectOk(){
+        async addProjectOk(){
             if(!this.store.insertProjectName){
                 this.messageWarningFn("请输入工程名称！");
                 return;
@@ -249,7 +250,6 @@
             return this.store.insertProjectEndTime;
         }
         clickUploadProjectCompany(){
-            debugger
             if(!this.store.uploadPid){
                 let alert: any = Message;
                 alert.warning("请选择要导出的数据！");
