@@ -1,8 +1,8 @@
 /*
  * @Date         : 2020-04-30 10:07:56
  * @LastEditors  : HaoJie
- * @LastEditTime : 2020-05-01 16:15:09
- * @FilePath     : /src/store/modules/LoginStore.ts
+ * @LastEditTime : 2020-05-07 02:56:45
+ * @FilePath     : \src\store\modules\LoginStore.ts
  */
 import { Module, VuexModule, Mutation, Action } from 'vuex-module-decorators';
 import store from "../index";
@@ -25,8 +25,6 @@ export default class LoginStore extends VuexModule {
 
   constructor(e) {
     super(e)
-    sessionStorage.setItem("type", "homePage")
-    sessionStorage.setItem("style", "homePage")
   }
   @Action({ commit: 'success' })
   public async login() {
@@ -38,14 +36,20 @@ export default class LoginStore extends VuexModule {
         sessionStorage.setItem('loginInfo', JSON.stringify(data));
         this.roleName = JSON.parse(sessionStorage.getItem('loginInfo')).data.userGroupRoleModels[0].role.roleName;
         if (this.roleName && this.roleName == '讲师') {
+          sessionStorage.setItem("type", "lecturerManagement");
+          sessionStorage.setItem("menuName", "讲师管理");
           router.push({ path: '/nav/lecturer' })
         } else if (this.roleName && this.roleName == '外部监理') {
+          sessionStorage.setItem("type", "comprehensiveAssessment");
+          sessionStorage.setItem("menuName", "综合评价");
           router.push({ path: '/nav/comments' })
         } else if (this.roleName && this.roleName == '工人') {
           router.push({ path: '/login' })
           let alert: any = Message;
           alert.warning('工人禁止登录！')
         } else {
+          sessionStorage.setItem("type", "homepage");
+          sessionStorage.setItem("menuName", "主页");
           router.push({ path: '/nav/homePage' })
         }
 

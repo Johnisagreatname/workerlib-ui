@@ -102,3 +102,13 @@
     color: #000000;
     font-size: 16px;
 }
+.ivu-layout-header .right {
+    float: right;
+    font-size: 16px;
+    margin-left: 10px;
+    line-height: 1;
+    cursor: pointer;
+}
+.ivu-layout-header .right i {
+    vertical-align: text-bottom;
+}
