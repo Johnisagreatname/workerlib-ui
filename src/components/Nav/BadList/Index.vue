@@ -166,9 +166,6 @@
                 }
             }
         }
-        clickUpload(){
-            this.store.upload();
-        }
     }
 </script>
 <style scoped src="@/styles/badList.css" />

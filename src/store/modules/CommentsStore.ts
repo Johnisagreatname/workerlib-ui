@@ -320,7 +320,8 @@ export default class CommentsStore extends VuexModule {
             "type": this.insertType,
             "description":this.insertDescription,
             "archives_id":this.selectEafId,
-            "project_name":this.insertProject,
+            "project_id":this.insertProject,
+            "project_name":this.projectList.filter(a => a.project_id == this.insertProject).map(b => b.project_name)[0],
             "appraise_time":this.insertAppraiseTime.getFullYear()+"-"+(this.insertAppraiseTime.getMonth()+1)+"-"+this.insertAppraiseTime.getDate(),
             "punishment":this.insertPunishment
         }).then((data)=>{
@@ -357,7 +358,8 @@ export default class CommentsStore extends VuexModule {
             "type": this.insertType,
             "description":this.insertDescription,
             "archives_id":this.selectEafId,
-            "project_name":this.insertProject
+            "project_name":this.projectList.filter(a => a.project_id == this.insertProject).map(b => b.project_name)[0],
+            "project_id":this.insertProject
         }).then((data)=>{
             if(!data){
                 return;

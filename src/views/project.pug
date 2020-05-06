@@ -40,6 +40,7 @@
                         div(class = "table6",v-if="this.store.projectParticulars.status == 2") 开工
                         div(class = "table6",v-if="this.store.projectParticulars.status == 3") 停工
                         div(class = "table6",v-if="this.store.projectParticulars.status == 4") 完工
+                        div(class = "table6",v-else) 暂无
     Modal(v-model="addUnit",title="新增单位",@on-ok="addUnitOk",@on-cancel="addUnitCancel",width='60%',:transfer="false",
     :loading="loading")
         div(class="modelBody")

@@ -232,6 +232,7 @@
             return this.store.insertProject;
         }
         set insertProject(data:string){
+            debugger
             this.store.setInsertProject(data);
         }
 

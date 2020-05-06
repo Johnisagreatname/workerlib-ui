@@ -101,7 +101,6 @@
             }else if(switchName == 'offlineTraining'){
                 this.coursewareStore.setSelectStatus(2);
                 this.coursewareStore.search();
-
             }else{
                 //二级菜单路由跳转
                 JSON.stringify(sessionStorage.setItem("path",switchName));

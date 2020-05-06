@@ -2,6 +2,7 @@
     import "@/assets/css/common.css";
     import WorkerStore from '../../../store/modules/WorkerStore';
     import CommentsStore from '../../../store/modules/CommentsStore';
+    import ProjectStore from '../../../store/modules/ProjectStore';
     import { Component, Vue, Prop, Model, Watch} from 'vue-property-decorator';
     import { getModule } from 'vuex-module-decorators';
     import { Message } from 'iview';
@@ -24,6 +25,7 @@
         @Model('isCollapsed', { type: Boolean }) private isCollapsed !: boolean;
         loading = true;
         private store: any;
+        private projectStore: any;
 
         private addUser: boolean;
         public particulars: boolean;
@@ -37,15 +39,31 @@
         public date:any;
 
         public onUpload:boolean;
+        public onUploadIdCardFront:boolean;
+        public onUploadIdCardReverse:boolean;
+        public onUploadCertificate:boolean;
+
+        public importSalary:boolean;
+        public statisticalWork:boolean;
+        public statisticalWorkInfo:boolean;
+        public repeatPersonnel:boolean;
 
         constructor() {
             super();
             this.store = getModule(WorkerStore);
-            this.storeComm = getModule(CommentsStore)
+            this.storeComm = getModule(CommentsStore);
+            this.projectStore = getModule(ProjectStore);
             this.checkedList = [];
             this.addUser = false;
             this.particulars = false;
             this.onUpload = false;
+            this.onUploadIdCardFront = false;
+            this.onUploadIdCardReverse = false;
+            this.onUploadCertificate = false;
+            this.importSalary = false;
+            this.statisticalWork = false;
+            this.statisticalWorkInfo = false;
+            this.repeatPersonnel = false;
 
         }
         mounted() {
@@ -54,6 +72,9 @@
 
            this.store.searchWorkTypeList();  //工种列表
            this.store.searchUnitList();  //参建单位列表
+
+            this.projectStore.getCompany("");
+            this.projectStore.getCompanyList();
         }
         getUserColumns(){
             return this.store.userColumns;
@@ -75,11 +96,20 @@
             this.store.setUpdatePhoto(null);
             this.onUpload = false;
         }
+        getCompanyList(){
+            return this.projectStore.companyProjectList;
+        }
+        set selectParentName(data: string){
+            this.store.setSelectParentName(data);
+        }
+        get selectParentName(): string{
+            return this.store.selectParentName;
+        }
 
-        set selectProjectId(data: number){
+        set selectProjectId(data: string){
             this.store.setSelectProjectId(data);
         }
-        get selectProjectId(): number{
+        get selectProjectId(): string{
             return this.store.selectProjectId;
         }
 
@@ -222,6 +252,9 @@
             this.store.setSelectEafUserStatus(null);
             this.store.setSelectUserId(null);
         }
+        clearSelectParentName(){
+            this.store.setSelectParentName(null);
+        }
         clearProject(){
             this.store.setSelectProjectId(null);
         }
@@ -256,6 +289,7 @@
             this.particulars=!this.particulars;
             this.store.setSelectUserId(id);
             this.store.searchUserInfo();
+            this.store.getEvaluateList();
 
 
             // this.store.setInfoId(id);
@@ -365,6 +399,7 @@
         }
         okAddUser(){
             this.addUser = false;
+            this.store.insertUser();
         }
         cancelAddUser(){
             this.addUser = false;
@@ -422,7 +457,147 @@
         get insertIdNum():string{
             return this.store.insertIdNum;
         }
+        handleSuccessUploadIdCardFront (res, file) {
+            this.store.setAmendIdCardFront(res.file);
+        }
+        uploadIdCardFront(){
+            this.onUploadIdCardFront = true;
+        }
+        okUploadIdCardFront(){
+            this.store.updateIdCardFront();
+            this.onUploadIdCardFront = false;
+            this.particulars = false;
+        }
+        cancelUploadIdCardFront(){
+            this.onUploadIdCardFront = false;
+        }
+        handleSuccessUploadIdCardReverse (res, file) {
+            this.store.setAmendIdCardReverse(res.file);
+        }
+        uploadIdCardReverse(){
+            this.onUploadIdCardReverse = true;
+        }
 
+        okUploadIdCardReverse(){
+            this.onUploadIdCardReverse = false;
+            this.particulars = false;
+            this.store.updateIdCardReverse();
+
+        }
+        cancelUploadIdCardReverse(){
+            this.onUploadIdCardReverse = false;
+        }
+
+        handleSuccessUploadCertificate (res, file) {
+            this.store.setAmendCertificate(res.file);
+        }
+        //导出
+        uploadCertificate(){
+            this.onUploadCertificate = true;
+        }
+        okUploadCertificate(){
+            this.particulars = false;
+            this.onUploadCertificate = false;
+            this.store.updateCertificate();
+        }
+        cancelUploadCertificate(){
+            this.onUploadCertificate = false;
+        }
+        handleSelectRow(selection, row) {
+            let item = {};
+            item["id"] = row.id;
+            this.store.setUploadIdList(item);
+
+        }
+        handleSelectRowCancel(selection,row){
+            for(let i = 0;i < this.store.userList.length;i++) {
+                if(this.store.tableData.filter(a => a.id == row.id ).length > 0){
+                    this.$set(this.store.userList[i], '_checked', false)
+                }
+            }
+            let index =  this.store.uploadIdList.findIndex(x => x.id == row.id);
+            this.store.uploadIdList.splice(index, 1);
+        }
+        handleSelectAll(selection) {
+            for(let i= 0;i<selection.length;i++){
+                let item = {};
+                let row = selection[i];
+                let index =  this.store.uploadIdList.findIndex(x => x.id == row.id);
+                if(index > -1){
+                    continue;
+                }
+                item["id"] = row.id;
+                this.store.setUploadIdList(item);
+            }
+        }
+        handleSelectAllCancel(selection){
+            for(let i = 0;i < this.store.userList.length;i++) {
+                if(this.store.uploadIdList.findIndex(x => x.id == this.store.userList[i].id) > -1){
+                    let index =  this.store.uploadIdList.findIndex(x => x.id == this.store.userList[i].id);
+                    this.$set(this.store.userList[i], '_checked', false);
+                    this.store.uploadIdList.splice(index, 1);
+                }
+            }
+        }
+        uploadWorker(){
+            this.store.uploadUser();
+        }
+        //导入薪资
+        clickImportSalary(){
+            this.importSalary = true;
+        }
+        okImportSalary(){
+            this.importSalary = false;
+        }
+        cancelImportSalary(){
+            this.importSalary = false;
+        }
+        handleSuccessExcel (res, file) {
+            if(res.status == 0){
+                let alert: any = Message;
+                alert.success('上传成功！');
+                this.store.search();
+            }
+        }
+        handleFormatErrorExcel (file) {
+            let alert: any = Message;
+            alert.error(file.name + ' 文件格式错误！xls、xlsx格式文件！');
+        }
+
+        //统计工种
+        clickStatisticalWork(){
+            this.statisticalWork = true;
+            this.store.statisticalWork();
+        }
+        cancelstatisticalWork(){
+            this.statisticalWork = false;
+        }
+        clickSelectStatisticalWork(){
+            this.store.statisticalWork();
+        }
+        set selectStatisticalWorkType(data:string){
+            this.store.setSelectStatisticalWorkType(data);
+        }
+        get selectStatisticalWorkType():string{
+            return this.store.selectStatisticalWorkType;
+        }
+        clickStatisticalWorkInfo(workType){
+            this.statisticalWorkInfo = true;
+            this.store.setSelectWorkTypeInfo(workType);
+            this.store.statisticalWorkInfo();
+        }
+        cancelStatisticalWorkInfo(){
+            this.statisticalWorkInfo = false;
+        }
+
+        //筛重
+        clickRepeatPersonnel(){
+            this.repeatPersonnel = true;
+            this.store.getRepeatPersonnelList();
+        }
+        cancelRepeatPersonnel(){
+            this.repeatPersonnel = false;
+        }
     }
 </script>
 <style scoped src="@/styles/worker.css" />

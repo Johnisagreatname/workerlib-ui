@@ -172,12 +172,13 @@
     height: 500px;
 }
 .userInfoLeft{
-    width: 770px;
+    width: 80%;
     float: left;
 }
 .userInfoRight{
-    width: 150px;
+    width: 20%;
     float: left;
+    padding: 10px;
 }
 .userInfoLine{
     height: 70px;
@@ -225,4 +226,548 @@
 .zs{
     width: 50%;
     float: left;
+    padding: 30px;
+    height: 100%;
+}
+.topOne{
+    display: block;
+    width: 100%;
+    height: auto;
+    float: right;
+}
+.divOne{
+    display: block;
+    height: 70px;
+    width: 290px;
+    float: left;
+    margin-left:45px;
+}
+.or{
+    width: 100%;
+    height: 506px;
+    overflow: auto;
+}
+.divOne2{
+    display: block;
+    height: 70px;
+    width: 100px;
+    float: left;
+    margin-left:45px;
+    line-height: 70px;
+}
+.search{
+    display: block;
+    height: 70px;
+    width: 360px;
+    float: right;
+    margin-right:55px;
+
+}
+.search Button{
+    line-height: 30px;
+    font-size: 18px;
+    float: right;
+    height: 40px;
+    width: 165px;
+    margin-top: 13px;
+    background-color: #ffe100;
+    color:#ffffff;
+}
+.divTwo{
+    line-height: 70px;
+    width: 80%;
+    height: 70px;
+    margin-left: 10%;
+    float: left;
+
+}
+.divTwo span{
+    font-size: 18px;
+}
+.divOne span {
+    line-height: 70px;
+    font-size: 18px;
+    float: right;
+}
+.name{
+    width: 26%;
+    float: left;
+    text-align: right;
+}
+.input{
+    width: 64%;
+    float: left;
+    margin-left: 2%;
+}
+
+.hr{
+    display: inline-block;
+    background-color: #f7f7f7;
+    width: 100%;
+    height: auto;
+    height: 10px;
+    float: right;
+}
+
+.people{
+    display: inline-block;
+    width: 395px;
+    height: 285px;
+    background-image: url('~@/assets/css/images/border.png');
+    background-repeat: no-repeat;
+    margin-left: 20px;
+    margin-bottom: 20px;
+}
+.people:hover{
+    background-image: url('~@/assets/css/images/border2.png');
+    background-repeat: no-repeat;
+}
+.people-selected{
+    display: inline-block;
+    width: 395px;
+    height: 285px;
+    background-image: url('~@/assets/css/images/border2.png');
+    background-repeat: no-repeat;
+    margin-left: 20px;
+    margin-bottom: 20px;
+}
+
+.divY{
+    padding: 20px 0px;
+    background-image: url('~@/assets/css/images/top.png');
+    background-repeat: no-repeat;
+    height: 110px;
+}
+.divU{
+    padding: 20px 0;
+    background-image: url('~@/assets/css/images/bottom.png');
+    background-repeat: no-repeat;
+    height: 110px;
+}
+.y1{
+    display: inline-block;
+    min-height: 105px;
+    width: 100%;
+    height: auto;
+}
+.headPhotos{
+    width: 105px;
+    height: 105px;
+    float: left;
+}
+.circle{
+    display: block;
+    width: 70px;
+    height: 70px;
+    background-color: #ffffff;
+    border-radius: 50%;
+    float: left;
+    margin-top: 16px;
+    margin-left: 20px;
+}
+.oCircle{
+    display: block;
+    width: 70px;
+    height: 70px;
+    background-color: #e2e2e2;
+    border-radius: 50%;
+    float: left;
+    margin-left: 13%;
+    margin-top: 3%;
+    cursor: pointer;
+}
+.photos{
+    width: 80px;
+    height: 80px;
+    float: right;
+
+}
+.pTop{
+    display: block;
+    height: 16px;
+    width: 16px;
+    background-color: #c5e8ff;
+    border-radius: 50%;
+    margin-top: 5px;
+    margin-left: 54px;
+}
+.pButtom{
+    width: 100%;
+    height: 100%;
+    margin-left: -16px;
+    margin-top: 5px;
+}
+.top{
+    width: 175px;
+    height: 105px;
+    float: left;
+}
+.top Button, .top Button:hover{
+    width: 109px;
+    height: 37px;
+    background-image: url('~@/assets/css/images/particulars.png');
+    background-repeat:no-repeat;
+    background-position: center;
+    margin-left: 20%;
+    border: 1px solid transparent;
+    outline: none;
+    background-color: transparent;
+}
+.y2{
+    width: 30%;
+    min-height: 170px;
+    float: left;
+}
+
+.y2 p{
+    font-weight: bold;
+    font-size:16px;
+    line-height:76px;
+    text-align:left;
+    padding-left: 20%;
+}
+
+.y3{
+    width:65%;
+    min-height:170px;
+    float:left;
+}
+.y3 p{
+    color: #0b93ff;
+    font-weight: bold;
+    font-size:16px;
+    line-height:76px;
+    text-align: right;
+}
+.y6{
+    width: 30%;
+    min-height: 170px;
+    float: left;
+}
+.y6 p{
+    font-weight: bold;
+    font-size:16px;
+    line-height:56px;
+    text-align:left;
+    padding-left: 20%;
+    color: #000000;
+}
+
+.y7{
+    width:65%;
+    min-height:170px;
+    float:left;
+}
+.y7 p{
+    color: #0b93ff;
+    font-weight: bold;
+    font-size:16px;
+    line-height:56px;
+    text-align: right;
+}
+.footer{
+    position: fixed;
+    /* left: 0px; */
+    bottom: 0px;
+    width: 90%;
+    height: 35px;
+    background-color: #e6e6e6;
+    z-index: 1;
+    float: right;
+}
+
+.footer ul {
+    text-align: center;
+    width: 100%;
+}
+p span{
+    margin-left: 10px;
+}
+
+.button button .ivu-icon {
+    font-size: 18px !important;
+}
+.imgCheck {
+    display: block;
+    width: 16px;
+    height: 16px;
+    float: right;
+    margin-right: 18px;
+    background-color: #c5e8ff;
+    border-radius: 50%;
+}
+
+.addBody{
+    width: 100%;
+    height: 584px;
+}
+.addBodyHead{
+    width: 100%;
+    height: 100%;
+}
+.particularsBody{
+    width: 100%;
+    height: 675px;
+    background-color: #f2f2f2;
+}
+.minBody{
+    width: 100%;
+    height: 675px;
+}
+.buttonDiv{
+    width: 100%;
+    height: 310px;
+}
+.left{
+    width: 50%;
+    height: 100%;
+    border-right: 1px solid #e1e1e1;
+    float: left;
+}
+.right{
+    width: 49%;
+    height: 100%;
+    float: left;
+}
+.box{
+    width: 100%;
+    height: 22%;
+    float: left;
+}
+.box span{
+    font-size: 18px;
+}
+
+.boxLeft{
+    width: 20%;
+    float: left;
+    text-align: right;
+    margin-top: 15%;
+}
+.boxRight{
+    width: 75%;
+    float: left;
+    margin-left: 2%;
+}
+.boxOne{
+    width: 30%;
+    height: 100%;
+    background-color: #f2f2f2;
+    float: left;
+}
+.oneTop{
+    width: 100%;
+    height: 40%;
+    background-color: #ffffff;
+}
+.pop{
+    background-image: url('~@/assets/css/images/checked.png');
+    background-repeat:no-repeat;
+    margin-top: 5px;
+    margin-left: 54px;
+    height: 16px;
+    width: 16px;
+
+
+}
+.oneButtom{
+    width: 100%;
+    height: 60%;
+    background-color: #ffffff;
+    margin-top: 4%;
+}
+.twoTop{
+    width: 100%;
+    height: 50%;
+    background-color: #ffffff;
+}
+.twoMiddle{
+    width: 100%;
+    height: 24%;
+    margin-top: 2%;
+    background-color: #ffffff;
+}
+.twoButtom{
+    width: 100%;
+    height: 24%;
+    margin-top: 2%;
+    background-color: #ffffff;
+
+}
+.boxTwo{
+    width: 36%;
+    height: 100%;
+    background-color: #f2f2f2;
+    float: left;
+    margin-left: 2%;
+}
+.boxThree{
+    width: 30%;
+    height: 100%;
+    background-color: #f2f2f2;
+    float: left;
+    margin-left: 2%;
+}
+.three{
+    width: 100%;
+    height: 100%;
+    background-color: #ffffff;
+}
+.oTop{
+    width: 100%;
+    height: 30%;
+}
+.CDiv{
+    min-height: 70px;
+    height: auto;
+}
+.oTop1{
+    width: 25%;
+    height: 100%;
+    float: left;
+}
+.oTop2{
+    width: 45%;
+    height: 100%;
+    float: left;
+}
+.oTop3{
+    width: 30%;
+    height: 100%;
+    float: left;
+}
+.top2{
+    width: 100%;
+    height: 50%;
+}
+.top2 span{
+    font-size: 15px;
+    padding-left: 7%;
+    line-height: 35px;
+    color: #000000;
+}
+.buttonTop{
+    width: 100%;
+    color: #f78803;
+    padding-top: 1%;
+    text-align: center;
+    border-bottom: 1px solid #e5f4ff;
+}
+.text{
+    width: 100%;
+    height: 42px;
+    margin-top: 3%;
+    padding-left: 6%;
+    font-size: 16px;
+    color: #000000;
+}
+.twoLeft{
+    width: 60%;
+    float: left;
+}
+.ch{
+    height: 304px;
+    overflow: auto;
+}
+.twoTextL{
+    width: 100%;
+    height: 70px;
+    /* margin-top: 3%; */
+    padding-left: 10px;
+    font-size: 16px;
+    color: #000000
+}
+.twoRight{
+    width: 40%;
+    float: left;
+}
+.twoTextR{
+    width: 100%;
+    height: 17%;
+    font-size: 16px;
+    color: #000000;
+}
+.middleHr{
+    width: 100%;
+    height: 1px;
+    background-color: #e7e7e7;
+}
+.middleHrBu{
+    width: 100%;
+    height: 1px;
+    background-color: #e5f4ff;
+}
+.middle{
+    width: 100%;
+    height: 25%;
+    padding-left: 6%;
+    font-size: 16px;
+    color: #000000;
+    margin-top: 5%;
+}
+.threeDiv{
+    width: 100%;
+    min-height: 10%;
+    padding-left: 5%;
+    padding-top: 5%;
+    height: auto;
+    border-bottom:1px solid #e7e7e7;
+}
+.uploadTop{
+    width: 100%;
+    height: 50px;
+}
+.com{
+    width: 70px;
+    height: 25px;
+    margin-left: 17px;
+    margin-top: 3px;
+    float: left;
+    text-align: center;
+    line-height: 25px;
+    border: 1px solid #d7d7d7;
+    box-shadow: 3px 3px 3px -1px #d7d7d7;
+}
+.threeDiv p{
+    margin-bottom: 2%;
+}
+.divCheck{
+    border: 1px solid #2d8cf0;
+    float: left;
+    width: 50px;
+    text-align: center;
+    height: 20px;
+    border-radius: 10px;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+.divL{
+    width: 100%;
+    height: 200px;
+    overflow-y: auto;
+}
+.divL2{
+    width: 100%;
+    height: 22px;
+    overflow-y: auto;
+}
+.zsBody{
+    width: 100%;
+    height: 100%;
+    border: 2px solid #7a90fd;
+    background-color: #eeeeee;
+}
+.zsTop{
+    height: 90%;
+}
+.zsButton{
+    height: 10%;
+}
+.zs2{
+    width: 50%;
+    float: left;
+    text-align: center;
+}
+.zs3{
+    text-align: center;
 }

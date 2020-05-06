@@ -22,7 +22,7 @@
     margin-right: 20px;
 }
 .ivu-layout-sider{
-    background-image: url('~@/assets/css/images/左侧的背景.png');
+    background-image: url('~@/assets/css/images/leftBackground.png');
     background-repeat: no-repeat;
     background-color: #f2f2f2;
 }

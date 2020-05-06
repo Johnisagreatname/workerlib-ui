@@ -58,15 +58,18 @@
                     Item 设　 置
 
         Layout(v-if="type=='homepage'")
+            Header(class="layout-header-bar")
+                div(:style="{height: '60px',lineHeight: '110px'}")
+                    span(:style="{fontSize: '24px'}") 产业工人大数据平台
             Content
-                Content
-                    router-view
+                router-view
+
         Layout(v-else)
             Header(class="layout-header-bar")
                 div(:style="{height: '60px',lineHeight: '110px'}")
                     span(:style="{fontSize: '24px'}") 产业工人大数据平台
-                Breadcrumb
-                    span 您当前的位置：
+                //Breadcrumb
+                //    span 您当前的位置：
                     //BreadcrumbItem(v-if="getMenuList()",v-for="item in getMenuList()") {{item}}
                     //BreadcrumbItem(v-if="getMenuList()",v-for="item in getMenuList()") {{item}}
             div(:style="{height: '40px'}",v-if="type === 'peopleManagement' ")
@@ -132,8 +135,10 @@
                     div(class="switchNameBule",v-if="styleClass ==='offlineTraining' ") 线下培训
                     div(class="switchBrBule",v-if="styleClass ==='offlineTraining' ")
                     div(class="switchName",v-else) 线下培训
-
-
+                div(class="switchMeun",@click="switchChecked('cultivate')")
+                    div(class="switchNameBule",v-if="styleClass ==='cultivate' ") 培训记录
+                    div(class="switchBrBule",v-if="styleClass ==='cultivate' ")
+                    div(class="switchName",v-else) 培训记录
             Content(:style="{padding: '30px',margin: '24px 24px 24px 24px', minHeight: '280px', background: '#fff',borderRadius: '40px',maxHeight: '900px'}")
                 Content
                     router-view
