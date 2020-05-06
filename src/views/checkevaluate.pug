@@ -7,9 +7,9 @@
         Icon(type="md-close" @click="clearSearch(name)")
       span(v-else-if="item && name == 'modifyBy' && item[0]") {{getTime(item[0]) + "~" + getTime(item[1])}}
         Icon(type="md-close" @click="clearSearch(name)")
-      span(v-else-if="item && name == 'project'") {{getNameOfList($store.state.CheckEvaluateStore.projectList, searchCheckeds.project)}}
+      span(v-else-if="item && name == 'company'") {{searchCheckeds.company}}
         Icon(type="md-close" @click="clearSearch(name)")
-      span(v-else-if="item && name == 'company'") {{getNameOfList($store.state.CheckEvaluateStore.companyList, searchCheckeds.company)}}
+      span(v-else-if="item && name == 'project'") {{searchCheckeds.project}}
         Icon(type="md-close" @click="clearSearch(name)")
     .search-wrap
       span.search(@click="search") 查询
@@ -21,24 +21,27 @@
       Input(v-model="searchCheckeds.rateWorkType" placeholder="请输入" style="width: 200px;margin-left: 20px;")
     span(class="title margin") 级&emsp;&emsp;别
       Select(v-model="searchCheckeds.grade" style="width:200px;margin-left: 20px;")
-        Option(v-for="item in gradeList" :value="item.id" :key="item.id") {{item.name}}
+        Option(v-for="item in gradeList" :value="item.name" :key="item.name") {{item.name}}
     span(class="title margin") 等&emsp;&emsp;级
       Select(v-model="searchCheckeds.rank" style="width:200px;margin-left: 20px;" :disabled="classDisabled")
-        Option(v-for="item in classList" :value="item.id" :key="item.id") {{item.id}}
+        Option(v-for="item in classList" :value="item.name" :key="item.name") {{item.name}}
     br
     span.title 评级时间
       DatePicker(type="daterange" show-week-numbers placement="bottom-end" placeholder="请选择" style="width: 200px;margin-left: 20px;" v-model="searchCheckeds.modifyBy")
     span(class="title margin") 所属单位
-      Select(v-model="searchCheckeds.company" style="width:200px;margin-left: 20px;")
-        Option(v-for="item in $store.state.CheckEvaluateStore.companyList" :value="item.id" :key="item.id") {{item.name}}
+      Select(v-model="searchCheckeds.company" style="width:200px;margin-left: 20px;" filterable)
+        Option(v-for="item in $store.state.WorkerStore.unitList" :value="item.unitName" :key="item.unitId") {{item.unitName}}
     span(class="title margin") 所属项目
-      Select(v-model="searchCheckeds.project" style="width:200px;margin-left: 20px;" :disabled="projectDisabled")
-        Option(v-for="item in $store.state.CheckEvaluateStore.projectList" :value="item.id" :key="item.id") {{item.name}}
+      Select(v-model="searchCheckeds.project" style="width:200px;margin-left: 20px;" filterable)
+        Option(v-for="item in $store.state.WorkerStore.projectList" :value="item.projectName" :key="item.projectId") {{item.projectName}}
   .line(@click="hiddden = hiddden === 'hiddden' ? 'all' : 'hiddden'" :class="hiddden === 'hiddden' ? '' : 'all'")
+  .button
+    p(@click="addRate")
+      Icon(type="ios-add-circle-outline")
+      span 新增评级
   .table-wrap(:class="hiddden === 'hiddden' ? '' : 'table-hiddden'")
-    Table(:columns="columns" :data="$store.state.CheckEvaluateStore.tableData")
+    Table(:columns="columns" :data="$store.state.CheckEvaluateStore.tableData" @on-select="tableSelect" @on-select-all="tableSelect" @on-select-all-cancel="tableSelect")
       template(slot-scope="{ row, index }" slot="operation")
-        span.cli(@click="addRate(row)") 新增评级
         span.cli(@click="details(row)") 查看详情
   .page
     Page(:total="$store.state.CheckEvaluateStore.total" show-total show-elevator :page-size="pageSize" @on-change="pageChange")
@@ -46,29 +49,22 @@
     .row
       p 姓&emsp;&emsp;名
         span *
-      Input(v-model="$store.state.CheckEvaluateStore.addRateObject.eafName" size="large" placeholder="请选择" style="width: 300px" disabled)
+      Input(v-model="$store.state.CheckEvaluateStore.addRateObject.userName" size="large" placeholder="请选择" style="width: 300px" disabled)
     .row
       p 评定工种
         span *
-      Input(v-model="$store.state.CheckEvaluateStore.addRateObject.rateWorkType" size="large" placeholder="请选择" style="width: 300px" disabled)
-    .row
-      p 所属项目
-        span *
-      Input(v-model="$store.state.CheckEvaluateStore.addRateObject.project" size="large" placeholder="请选择" style="width: 300px" disabled)
-    .row
-      p 所属单位
-        span *
-      Input(v-model="$store.state.CheckEvaluateStore.addRateObject.company" size="large" placeholder="请选择" style="width: 300px" disabled)
+      Select(v-model="$store.state.CheckEvaluateStore.addRateObject.rateWorkType" size="large" style="width:300px")
+        Option(v-for="item in $store.state.CheckEvaluateStore.rateWorkTypeList" :value="item.name" :key="item.name") {{item.name}}
     .row
       p 评定级别
         span *
       Select(v-model="$store.state.CheckEvaluateStore.addRateObject.grade" size="large" style="width:300px")
-        Option(v-for="item in gradeList" :value="item.id" :key="item.id") {{item.name}}
+        Option(v-for="item in gradeList" :value="item.name" :key="item.name") {{item.name}}
     .row
       p 评定等级
         span *
       Select(v-model="$store.state.CheckEvaluateStore.addRateObject.rank" size="large" style="width:300px" :disabled="classDisabledDialog")
-        Option(v-for="item in classList" :value="item.id" :key="item.id") {{item.id}}
+        Option(v-for="item in classList" :value="item.name" :key="item.name") {{item.name}}
     .row
       p 评定时间
         span *
@@ -76,8 +72,9 @@
     div(slot="footer")
       p(@click="store.submit") 提交
   Modal(v-model="$store.state.CheckEvaluateStore.examineDialog" title="评定详情" @on-cancel="store.clear" :transfer="false")
-    Table(:columns="columnsDialog" :data="$store.state.CheckEvaluateStore.tableData")
+    .dialog-table-wrap
+      Table(:columns="columnsDialog" :data="$store.state.CheckEvaluateStore.examineTableData")
     .center
-      Page(:total="100" show-total show-elevator :page-size="$store.state.CheckEvaluateStore.dialogPageSize" on-cancel="store.close" @on-change="store.pageChange")
+      Page(:total="$store.state.CheckEvaluateStore.dialogTotal" show-total show-elevator :page-size="$store.state.CheckEvaluateStore.dialogPageSize" on-cancel="store.close" @on-change="store.pageChange")
     div(slot="footer")
       p(@click="store.close") 确定

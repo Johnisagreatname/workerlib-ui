@@ -320,8 +320,9 @@ export default class CommentsStore extends VuexModule {
             "type": this.insertType,
             "description":this.insertDescription,
             "archives_id":this.selectEafId,
-            "project_name":this.insertProject,
-            "appraise_time":this.insertAppraiseTime.getFullYear()+"-"+(this.insertAppraiseTime.getMonth()+1)+"-"+this.insertAppraiseTime.getDay(),
+            "project_id":this.insertProject,
+            "project_name":this.projectList.filter(a => a.project_id == this.insertProject).map(b => b.project_name)[0],
+            "appraise_time":this.insertAppraiseTime.getFullYear()+"-"+(this.insertAppraiseTime.getMonth()+1)+"-"+this.insertAppraiseTime.getDate(),
             "punishment":this.insertPunishment
         }).then((data)=>{
             if(!data){
@@ -357,7 +358,8 @@ export default class CommentsStore extends VuexModule {
             "type": this.insertType,
             "description":this.insertDescription,
             "archives_id":this.selectEafId,
-            "project_name":this.insertProject
+            "project_name":this.projectList.filter(a => a.project_id == this.insertProject).map(b => b.project_name)[0],
+            "project_id":this.insertProject
         }).then((data)=>{
             if(!data){
                 return;
@@ -394,6 +396,7 @@ export default class CommentsStore extends VuexModule {
             item["photo"] = this.insertPhoto[i];
             this.insertPhotoList.push(item);
         }
+        if(this.insertPhoto.length>0){
         await request.put('/api/workerlib/appraise_photo',this.insertPhotoList).then((data)=>{
             if(!data){
                 this.clearInsertDataList();
@@ -420,6 +423,11 @@ export default class CommentsStore extends VuexModule {
             }
             alert.warning(e.message || e)
         });
+        }else{
+            let alert: any = Message;
+            alert.success("成功！");
+
+        }
     }
     @Action
     public async insertAppraiseScore(data){
@@ -534,8 +542,7 @@ export default class CommentsStore extends VuexModule {
         this.clearInsertDataList();
         if(data.status == 0) {
             this.search();
-            let alert: any = Message;
-            alert.warning("成功！");
+
         }
     }
     @Action

@@ -2,6 +2,7 @@
     import "@/assets/css/common.css";
     import WorkerStore from '../../../store/modules/WorkerStore';
     import CommentsStore from '../../../store/modules/CommentsStore';
+    import ProjectStore from '../../../store/modules/ProjectStore';
     import { Component, Vue, Prop, Model, Watch} from 'vue-property-decorator';
     import { getModule } from 'vuex-module-decorators';
     import { Message } from 'iview';
@@ -22,29 +23,58 @@
     })
     export default class Worker extends Vue {
         @Model('isCollapsed', { type: Boolean }) private isCollapsed !: boolean;
-
+        loading = true;
         private store: any;
-        private rowCount: number;
+        private projectStore: any;
 
         private addUser: boolean;
+        public particulars: boolean;
 
-
+        private storeComm: any;
         private checkedList : Array<any>;
+
+        public sex: string;
+        public now: Date;
+        public year :any;
+        public date:any;
+
+        public onUpload:boolean;
+        public onUploadIdCardFront:boolean;
+        public onUploadIdCardReverse:boolean;
+        public onUploadCertificate:boolean;
+
+        public importSalary:boolean;
+        public statisticalWork:boolean;
+        public statisticalWorkInfo:boolean;
+        public repeatPersonnel:boolean;
 
         constructor() {
             super();
             this.store = getModule(WorkerStore);
-            this.rowCount = 0;
+            this.storeComm = getModule(CommentsStore);
+            this.projectStore = getModule(ProjectStore);
             this.checkedList = [];
             this.addUser = false;
-
+            this.particulars = false;
+            this.onUpload = false;
+            this.onUploadIdCardFront = false;
+            this.onUploadIdCardReverse = false;
+            this.onUploadCertificate = false;
+            this.importSalary = false;
+            this.statisticalWork = false;
+            this.statisticalWorkInfo = false;
+            this.repeatPersonnel = false;
 
         }
         mounted() {
            this.store.searchUserList();     //人员列表
            this.store.searchProjectList();  //项目列表
+
            this.store.searchWorkTypeList();  //工种列表
            this.store.searchUnitList();  //参建单位列表
+
+            this.projectStore.getCompany("");
+            this.projectStore.getCompanyList();
         }
         getUserColumns(){
             return this.store.userColumns;
@@ -57,11 +87,29 @@
             this.store.searchUserList();
         }
 
+        okUpdateUpload(){
+            this.store.updateHead();
+            this.onUpload = false;
+            this.particulars = false;
+        }
+        cancelUpdateUpload(){
+            this.store.setUpdatePhoto(null);
+            this.onUpload = false;
+        }
+        getCompanyList(){
+            return this.projectStore.companyProjectList;
+        }
+        set selectParentName(data: string){
+            this.store.setSelectParentName(data);
+        }
+        get selectParentName(): string{
+            return this.store.selectParentName;
+        }
 
-        set selectProjectId(data: number){
+        set selectProjectId(data: string){
             this.store.setSelectProjectId(data);
         }
-        get selectProjectId(): number{
+        get selectProjectId(): string{
             return this.store.selectProjectId;
         }
 
@@ -163,6 +211,7 @@
         getUnitList(){
             return this.store.unitList;
         }
+
         getWorkTypeList(){
             return this.store.workTypeList;
         }
@@ -203,6 +252,9 @@
             this.store.setSelectEafUserStatus(null);
             this.store.setSelectUserId(null);
         }
+        clearSelectParentName(){
+            this.store.setSelectParentName(null);
+        }
         clearProject(){
             this.store.setSelectProjectId(null);
         }
@@ -233,7 +285,319 @@
         checkedAddUser(){
             this.addUser = !this.addUser;
         }
+        viewData(id,idNum) {
+            this.particulars=!this.particulars;
+            this.store.setSelectUserId(id);
+            this.store.searchUserInfo();
+            this.store.getEvaluateList();
 
+
+            // this.store.setInfoId(id);
+            // this.store.setInfoIdNumber(idNum);
+            //
+            // this.store.searchInfo();
+            // this.store.searchInvolvedProject();
+            // this.store.selectCultivate();
+            // this.store.selectCheckWorkce();
+            // this.store.selectCheckWorkceMonth();
+            // this.store.selectSalary();
+            // this.store.selectComments();
+            //
+            //
+            // this.storeComm.setPunishmentsId(id);
+            // this.storeComm.searchCommentSparticulars();
+        }
+        //获取性别
+        checkSex(idNumber): boolean {
+            if(!idNumber) return;
+            this.sex = idNumber.substring(16,17);
+            if(this.sex=="1"||this.sex=="3"||this.sex=="5"||this.sex=="7"||this.sex=="9"){
+                return true;
+            }else {
+                return false;
+            }
+        }
+        //获取年龄
+        getAge(idNumber): number{
+            if(!idNumber) return;
+            this.now = new Date();
+            this.year = this.now.getTime();
+            this.date = new Date(idNumber.substring(6,10)+","+idNumber.substring(10,12)+","+idNumber.substring(12,14)).getTime();
+            // return Math.floor((this.year)/(1000*60*60*24));
+            return Math.floor((this.year-this.date)/(1000*60*60*24*31*12));
+        }
+        getInvolvedProjectList():any{
+            return this.store.involvedProjectInfo;
+        }
+        getCultivateList():any{
+            return this.store.cultivateList;
+        }
+        getCommentSparticularsList():any{
+            return this.storeComm.commentSparticularsList;
+        }
+        onInPageSizeChange(pageSize){
+            this.store.setInPageIndex(pageSize);
+            this.store.setInPageIndex(1);
+            this.onInPageIndexChange(1);
+        }
+        onInPageIndexChange(pageIndex){
+            this.store.setInPageIndex(pageIndex);
+            this.store.searchInvolvedProject();
+        }
+        set inPageTotal(data:number){
+            this.store.setInPageTotal(data);
+        }
+        get inPageTotal():number{
+            return this.store.inPageTotal;
+        }
+        particularsOk() : any{
+            this.particulars = false;
+        }
+        particularsCancel():any {
+            this.particulars = false;
+        }
+        getDateFormat (d: number) : string {
+            let date = new Date(d);
+            return date.getFullYear() + "-" + (date.getMonth()+1) + "-" + date.getDate();
+        }
+        onUploadHead(){
+            this.onUpload = true;
+        }
+        handleSuccessUpdatePhoto (res, file) {
+            this.store.setUpdatePhoto(res.file);
+            let alert: any = Message;
+            alert.success('上传成功！');
+        }
+
+        handleSuccessIdCardfront (res, file) {
+            this.store.setInsertIdCardFront(res.file);
+            let alert: any = Message;
+            alert.success('上传成功！');
+        }
+        handleSuccessIdCardReverse (res, file) {
+            this.store.setInsertIdCardReverse(res.file);
+            let alert: any = Message;
+            alert.success('上传成功！');
+        }
+        handleSuccessCertificate (res, file) {
+            this.store.setInsertCertificate(res.file);
+            let alert: any = Message;
+            alert.success('上传成功！');
+        }
+        handleSuccessContract (res, file) {
+            this.store.setInsertServiceContract(res.file);
+            let alert: any = Message;
+            alert.success('上传成功！');
+        }
+        handleFormatError (file) {
+            let alert: any = Message;
+            alert.error(file.name + ' 文件格式错误！请上传jpg、jpeg、png格式文件！');
+        }
+        //新增
+        addWorker(){
+            this.addUser = true;
+        }
+        okAddUser(){
+            this.addUser = false;
+            this.store.insertUser();
+        }
+        cancelAddUser(){
+            this.addUser = false;
+        }
+        handleSuccessPhoto (res, file) {
+            this.store.setInsertPhoto(res.file);
+            let alert: any = Message;
+            alert.success('上传成功！');
+        }
+        set insertUserName(data:string){
+            this.store.setInsertUserName(data);
+        }
+        get insertUserName():string{
+            return this.store.insertUserName;
+        }
+        set insertUnitId(data:string){
+            this.store.setInsertUnitId(data);
+        }
+        get insertUnitId():string{
+            return this.store.insertUnitId;
+        }
+        set insertProjectId(data:string){
+            this.store.setInsertProjectId(data);
+        }
+        get insertProjectId():string{
+            return this.store.insertProjectId;
+        }
+        set insertWorkType(data:string){
+            this.store.setInsertWorkType(data);
+        }
+        get insertWorkType():string{
+            return this.store.insertWorkType;
+        }
+        set insertStartTime(data:string){
+            this.store.setInsertStartTime(data);
+        }
+        get insertStartTime():string{
+            return this.store.insertStartTime;
+        }
+        set insertEndTime(data:string){
+            this.store.setInsertEndTime(data);
+        }
+        get insertEndTime():string{
+            return this.store.insertEndTime;
+        }
+        set insertPhone(data:string){
+            this.store.setInsertPhone(data);
+        }
+        get insertPhone():string{
+            return this.store.insertPhone;
+        }
+        set insertIdNum(data:string){
+            this.store.setInsertIdNum(data);
+        }
+        get insertIdNum():string{
+            return this.store.insertIdNum;
+        }
+        handleSuccessUploadIdCardFront (res, file) {
+            this.store.setAmendIdCardFront(res.file);
+        }
+        uploadIdCardFront(){
+            this.onUploadIdCardFront = true;
+        }
+        okUploadIdCardFront(){
+            this.store.updateIdCardFront();
+            this.onUploadIdCardFront = false;
+            this.particulars = false;
+        }
+        cancelUploadIdCardFront(){
+            this.onUploadIdCardFront = false;
+        }
+        handleSuccessUploadIdCardReverse (res, file) {
+            this.store.setAmendIdCardReverse(res.file);
+        }
+        uploadIdCardReverse(){
+            this.onUploadIdCardReverse = true;
+        }
+
+        okUploadIdCardReverse(){
+            this.onUploadIdCardReverse = false;
+            this.particulars = false;
+            this.store.updateIdCardReverse();
+
+        }
+        cancelUploadIdCardReverse(){
+            this.onUploadIdCardReverse = false;
+        }
+
+        handleSuccessUploadCertificate (res, file) {
+            this.store.setAmendCertificate(res.file);
+        }
+        //导出
+        uploadCertificate(){
+            this.onUploadCertificate = true;
+        }
+        okUploadCertificate(){
+            this.particulars = false;
+            this.onUploadCertificate = false;
+            this.store.updateCertificate();
+        }
+        cancelUploadCertificate(){
+            this.onUploadCertificate = false;
+        }
+        handleSelectRow(selection, row) {
+            let item = {};
+            item["id"] = row.id;
+            this.store.setUploadIdList(item);
+
+        }
+        handleSelectRowCancel(selection,row){
+            for(let i = 0;i < this.store.userList.length;i++) {
+                if(this.store.tableData.filter(a => a.id == row.id ).length > 0){
+                    this.$set(this.store.userList[i], '_checked', false)
+                }
+            }
+            let index =  this.store.uploadIdList.findIndex(x => x.id == row.id);
+            this.store.uploadIdList.splice(index, 1);
+        }
+        handleSelectAll(selection) {
+            for(let i= 0;i<selection.length;i++){
+                let item = {};
+                let row = selection[i];
+                let index =  this.store.uploadIdList.findIndex(x => x.id == row.id);
+                if(index > -1){
+                    continue;
+                }
+                item["id"] = row.id;
+                this.store.setUploadIdList(item);
+            }
+        }
+        handleSelectAllCancel(selection){
+            for(let i = 0;i < this.store.userList.length;i++) {
+                if(this.store.uploadIdList.findIndex(x => x.id == this.store.userList[i].id) > -1){
+                    let index =  this.store.uploadIdList.findIndex(x => x.id == this.store.userList[i].id);
+                    this.$set(this.store.userList[i], '_checked', false);
+                    this.store.uploadIdList.splice(index, 1);
+                }
+            }
+        }
+        uploadWorker(){
+            this.store.uploadUser();
+        }
+        //导入薪资
+        clickImportSalary(){
+            this.importSalary = true;
+        }
+        okImportSalary(){
+            this.importSalary = false;
+        }
+        cancelImportSalary(){
+            this.importSalary = false;
+        }
+        handleSuccessExcel (res, file) {
+            if(res.status == 0){
+                let alert: any = Message;
+                alert.success('上传成功！');
+                this.store.search();
+            }
+        }
+        handleFormatErrorExcel (file) {
+            let alert: any = Message;
+            alert.error(file.name + ' 文件格式错误！xls、xlsx格式文件！');
+        }
+
+        //统计工种
+        clickStatisticalWork(){
+            this.statisticalWork = true;
+            this.store.statisticalWork();
+        }
+        cancelstatisticalWork(){
+            this.statisticalWork = false;
+        }
+        clickSelectStatisticalWork(){
+            this.store.statisticalWork();
+        }
+        set selectStatisticalWorkType(data:string){
+            this.store.setSelectStatisticalWorkType(data);
+        }
+        get selectStatisticalWorkType():string{
+            return this.store.selectStatisticalWorkType;
+        }
+        clickStatisticalWorkInfo(workType){
+            this.statisticalWorkInfo = true;
+            this.store.setSelectWorkTypeInfo(workType);
+            this.store.statisticalWorkInfo();
+        }
+        cancelStatisticalWorkInfo(){
+            this.statisticalWorkInfo = false;
+        }
+
+        //筛重
+        clickRepeatPersonnel(){
+            this.repeatPersonnel = true;
+            this.store.getRepeatPersonnelList();
+        }
+        cancelRepeatPersonnel(){
+            this.repeatPersonnel = false;
+        }
     }
 </script>
 <style scoped src="@/styles/worker.css" />

@@ -696,7 +696,7 @@ export default class CoursewareStore extends VuexModule {
         if(data.status == 0) {
             this.search();
             let alert: any = Message;
-            alert.warning("新建课件成功！");
+            alert.success("新建课件成功！");
         }
     }
     @Action

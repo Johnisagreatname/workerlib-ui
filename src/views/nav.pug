@@ -38,12 +38,12 @@
                     img(src="~@/assets/css/images/综合评价蓝.png",v-if="type == 'comprehensiveAssessment'",:style="{marginLeft: '12px'}")
                     img(src="~@/assets/css/images/综合评价.png",v-else)
                     Item 综合评价
-                MenuItem(name="不良记录",@click.native="clickMenu('badEvaluation','不良记录','/nav/badComments')")
+                MenuItem(name="不良记录",@click.native="clickMenu('badEvaluation','不良记录','/nav/badList')")
                     span(class="top-angle",v-if="type == 'badEvaluation'")
                     span(class="bottom-angle",v-if="type == 'badEvaluation'")
                     img(src="~@/assets/css/images/不良评价蓝.png",v-if="type == 'badEvaluation'",:style="{marginLeft: '12px'}")
                     img(src="~@/assets/css/images/不良评价.png",v-else)
-                    Item 不良评价
+                    Item 不良记录
                 MenuItem(name="技能鉴定",@click.native="clickMenu('skillAppraisal','技能鉴定','/nav/checkEvaluate')")
                     span(class="top-angle",v-if="type == 'skillAppraisal'")
                     span(class="bottom-angle",v-if="type == 'skillAppraisal'")
@@ -58,15 +58,36 @@
                     Item 设　 置
 
         Layout(v-if="type=='homepage'")
+            Header(class="layout-header-bar")
+                div(:style="{height: '60px',lineHeight: '110px'}")
+                    span(:style="{fontSize: '24px'}") 产业工人大数据平台
+                p.right(@click="goPath('login')")
+                    Icon(type="md-exit")
+                    span 退出
+                p.right(@click="goPath('account')")
+                    Icon(type="md-settings")
+                    span 设置
+                p.right(style = "cursor: auto")
+                    Icon(type="md-person")
+                    span {{name}}
             Content
-                Content
-                    router-view
+                router-view
+
         Layout(v-else)
             Header(class="layout-header-bar")
                 div(:style="{height: '60px',lineHeight: '110px'}")
                     span(:style="{fontSize: '24px'}") 产业工人大数据平台
-                Breadcrumb
-                    span 您当前的位置：
+                p.right(@click="goPath('login')")
+                    Icon(type="md-exit")
+                    span 退出
+                p.right(@click="goPath('account')")
+                    Icon(type="md-settings")
+                    span 设置
+                p.right(style = "cursor: auto")
+                    Icon(type="md-person")
+                    span {{name}}
+                //Breadcrumb
+                //    span 您当前的位置：
                     //BreadcrumbItem(v-if="getMenuList()",v-for="item in getMenuList()") {{item}}
                     //BreadcrumbItem(v-if="getMenuList()",v-for="item in getMenuList()") {{item}}
             div(:style="{height: '40px'}",v-if="type === 'peopleManagement' ")
@@ -132,8 +153,10 @@
                     div(class="switchNameBule",v-if="styleClass ==='offlineTraining' ") 线下培训
                     div(class="switchBrBule",v-if="styleClass ==='offlineTraining' ")
                     div(class="switchName",v-else) 线下培训
-
-
+                div(class="switchMeun",@click="switchChecked('cultivate')")
+                    div(class="switchNameBule",v-if="styleClass ==='cultivate' ") 培训记录
+                    div(class="switchBrBule",v-if="styleClass ==='cultivate' ")
+                    div(class="switchName",v-else) 培训记录
             Content(:style="{padding: '30px',margin: '24px 24px 24px 24px', minHeight: '280px', background: '#fff',borderRadius: '40px',maxHeight: '900px'}")
                 Content
                     router-view

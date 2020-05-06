@@ -201,7 +201,7 @@ export default class IndexVideoStore extends VuexModule {
     public successDelete(data: any) {
         if(data.status == 0) {
             let alert: any = Message;
-            alert.warning("删除成功！");
+            alert.success("删除成功！");
         }
     }
 }

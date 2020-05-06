@@ -1,3 +1,4 @@
+
 import { Module, VuexModule, Mutation, Action } from 'vuex-module-decorators';
 import store from "../index";
 import request from "../../common/HttpClient";
@@ -390,3 +391,4 @@ interface LecturerInfo {
     id?: number;
     personalreesume?:string;
 }
+

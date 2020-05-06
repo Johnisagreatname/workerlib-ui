@@ -1,5 +1,5 @@
 .layout{
-    border: 1px solid #d7dde4;
+    /* border: 1px solid #d7dde4; */
     background: #f5f7f9;
     position: relative;
     border-radius: 4px;
@@ -22,7 +22,7 @@
     margin-right: 20px;
 }
 .ivu-layout-sider{
-    background-image: url('~@/assets/css/images/左侧的背景.png');
+    background-image: url('~@/assets/css/images/leftBackground.png');
     background-repeat: no-repeat;
     background-color: #f2f2f2;
 }
@@ -101,4 +101,14 @@
     text-align: center;
     color: #000000;
     font-size: 16px;
+}
+.ivu-layout-header .right {
+    float: right;
+    font-size: 16px;
+    margin-left: 10px;
+    line-height: 1;
+    cursor: pointer;
+}
+.ivu-layout-header .right i {
+    vertical-align: text-bottom;
 }

@@ -88,7 +88,7 @@
                          span(:style={'color': 'red'}) *
                      .d2
                          Select(clearable,filterable,style="width:380px",v-model="insertProject",v-if="this.store.projectList.length>0")
-                             Option(v-for="item in getProjectList()", :value="item.project_name", :key="item.project_name") {{item.project_name}}
+                             Option(v-for="item in getProjectList()", :value="item.project_id", :key="item.project_id") {{item.project_name}}
                          Select(clearable,filterable,style="width:380px",v-model="insertProject",disabled,v-else)
                             span(:style={'color': 'red','font-size':'12px','margin-left':'10px'}) (暂无项目)
                              //Option(v-for="item in getProjectList()", :value="item.project_name", :key="item.project_name") {{item.project_name}}
@@ -131,7 +131,7 @@
                             span(:style={'color': 'red'}) *
                         .m2
                             Select(clearable,filterable,style="width:380px",v-model="insertProject",v-if="this.store.projectList.length>0")
-                                Option(v-for="item in getProjectList()", :value="item.project_name", :key="item.project_name") {{item.project_name}}
+                                Option(v-for="item in getProjectList()", :value="item.project_id", :key="item.project_id") {{item.project_name}}
                             Select(clearable,filterable,style="width:380px",v-model="insertProject",disabled,v-else)
                                 Option(v-for="item in getProjectList()", :value="item.project_name", :key="item.project_name") {{item.project_name}}
                                 span(:style={'color': 'red','font-size':'12px','margin-left':'10px'}) (暂无项目)

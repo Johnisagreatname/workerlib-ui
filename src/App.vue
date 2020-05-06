@@ -1,3 +1,9 @@
+<!--
+ * @Date         : 2020-04-27 19:40:42
+ * @LastEditors  : HaoJie
+ * @LastEditTime : 2020-05-06 23:33:54
+ * @FilePath     : \src\App.vue
+ -->
 <template lang="pug">
     #app
         router-view
@@ -14,7 +20,7 @@
 
 <style>
 body {
-    min-width: 1920px;
+    min-width: 1900px;
     overflow-x: auto;
 }
 </style>

@@ -23,8 +23,10 @@ export default class BadListStore extends VuexModule {
     public projectName:string;
     public workType:string;
     public punishmentType:string;
-    public startTime:Date
-    public endTime:Date
+    public startTime:Date;
+    public endTime:Date;
+    private pullDown: boolean;
+    public uplodId:Array<any>;
     constructor(e) {
         super(e);
         this.pageIndex=1;
@@ -34,8 +36,10 @@ export default class BadListStore extends VuexModule {
         this.projectName='';
         this.workType='';
         this.punishmentType='';
-        this.startTime=new Date();
-        this.endTime=new Date();
+        this.startTime= null;
+        this.endTime=null;
+        this.pullDown = false;
+        this.uplodId = [];
     }
 
     //工种类型
@@ -97,14 +101,14 @@ export default class BadListStore extends VuexModule {
         if(this.startTime){
             let item ={};
             item["name"]="appraiseTime";
-            item["value"]=this.startTime;
+            item["value"]=this.startTime.getFullYear()+"-"+(this.startTime.getMonth()+1)+"-"+this.startTime.getDate();
             item["algorithm"] = "GTEQ"
             conditionList.push(item);
         }
         if(this.endTime){
             let item ={};
             item["name"]="appraiseTime";
-            item["value"]=this.endTime;
+            item["value"]=this.endTime.getFullYear()+"-"+(this.endTime.getMonth()+1)+"-"+this.endTime.getDate();
             item["algorithm"] = "LTEQ"
             conditionList.push(item);
         }
@@ -120,7 +124,30 @@ export default class BadListStore extends VuexModule {
             "selectList": []
         }
     }
-
+    @Mutation
+    private setName(data : any){
+        this.name = data;
+    }
+    @Mutation
+    private setProjectName(data : any){
+        this.projectName = data;
+    }
+    @Mutation
+    private setWorkType(data : any){
+        this.workType = data;
+    }
+    @Mutation
+    private setPunishmentType(data : any){
+        this.punishmentType = data;
+    }
+    @Mutation
+    private setStartTime(data : any){
+        this.startTime = data;
+    }
+    @Mutation
+    private setEndTime(data : any){
+        this.endTime = data;
+    }
     //查询条件参数
     @Action
     public getUpdateParams(list: Array<UpdateParams> = null) {
@@ -151,60 +178,23 @@ export default class BadListStore extends VuexModule {
     //上传参数
     @Action
     public getUploadParams() : any {
-        let conditionList:Array<any>=[];
-        if(this.name){
-            let item ={};
-            item["name"]="eafName";
-            item["value"]=this.name;
-            item["algorithm"] = "Like"
-            conditionList.push(item);
-        }
-        if(this.projectName){
-            let item ={};
-            item["name"]="projectName";
-            item["value"]=this.projectName;
-            item["algorithm"] = "LIKE"
-            conditionList.push(item);
-        }
-        if(this.workType){
-            let item ={};
-            item["name"]="workType";
-            item["value"]=this.workType;
-            item["algorithm"] = "EQ"
-            conditionList.push(item);
-        }
-        if(this.punishmentType){
-            let item ={};
-            item["name"]="punishment";
-            item["value"]=this.punishmentType;
-            item["algorithm"] = "EQ"
-            conditionList.push(item);
-        }
-        if(this.startTime){
-            let item ={};
-            item["name"]="appraiseTime";
-            item["value"]=this.startTime;
-            item["algorithm"] = "GTEQ"
-            conditionList.push(item);
-        }
-        if(this.endTime){
-            let item ={};
-            item["name"]="appraiseTime";
-            item["value"]=this.endTime;
-            item["algorithm"] = "LTEQ"
-            conditionList.push(item);
-        }
         return {
-            "conditionList": conditionList,
+            "conditionList": [{
+                "name": "id",
+                "value":  this.uplodId.map(x => x.id),
+                "algorithm": "IN"
+            }
+            ],
             "keywords" : [],
             "selectList": [
                 {"field": "eafName" ,"alias":"姓名"},
-                {"field": "project_name" ,"alias":"所属项目"},
-                {"field": "work_type","alias":"工种" },
+                {"field": "projectName" ,"alias":"所属项目"},
+                {"field": "workType","alias":"工种" },
                 {"field": "punishment" ,"alias":"处罚"},
                 {"field": "appraise_time","alias":"处罚时间" },
             ]
         };
+
     }
 
 
@@ -265,6 +255,7 @@ export default class BadListStore extends VuexModule {
     @Mutation
     public setPageTotal(data: number) {
         this.pageTotal = data;
+
     }
     @Mutation
     private setUserPageSize(data : any){
@@ -276,11 +267,14 @@ export default class BadListStore extends VuexModule {
     }
 
 
+
+
     //导出
     @Action
     public async upload() {
         let alert: any = Message;
-        await request.post('/api/workerlib/appraise_bad/export',await this.getUploadParams()).then((data)=>{
+        await request.post('/api/workerlib/appraise_bad/export',await this.getUploadParams(),
+            {responseType: 'blob', params: '不良记录'}).then((data)=>{
             if(!data){
                 return;
             }
@@ -302,6 +296,54 @@ export default class BadListStore extends VuexModule {
         });
     }
 
+    public columns = [
+        {
+            type: 'selection',
+            width: 60,
+            align: 'center'
+        },
+        {
+            title: '序号',
+            width: 100,
+            slot: 'serialNumber'
+        },
+        { title: '姓名', key: 'eafName' },
+        { title: '所属项目', key: 'projectName',
+            render: (h, params) => {
+                return h('div', [
+                    h('span', {
+                        style: {
+                            display: 'inline-block',
+                            width: '100%',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            whiteSpace: 'nowrap',
+                            cursor: 'pointer'
+                        },
+                        domProps: {
+                            title: params.row.projectName
+                        }
+                    }, params.row.projectName)
+                ])
+            }},
+        { title: '工种', key: 'workType' },
+        { title: '处罚', key: 'punishment' },
+        { title: '处罚时间', key: 'appraise_time' },
+        { title: '操作', slot: 'operation' }
+    ];
+
+    @Mutation
+    private setPullDown(data : any){
+        this.pullDown = data;
+    }
+    @Mutation
+    private switchPullDown(){
+        this.pullDown = !this.pullDown;
+    }
+    @Mutation
+    private setUplodId(data: any) {
+        this.uplodId.push(data);
+    }
 
 }
 interface TableData {

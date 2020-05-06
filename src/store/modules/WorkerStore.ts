@@ -16,6 +16,7 @@ export default class WorkerStore extends VuexModule {
     private unitList:Array<any>; //单位列表
     private workTypeList:Array<any>; //工种列表
     private userList:Array<any>; //人员列表
+
     private userSalaryList: Array<any>; //工资列表
     private userTrainingRecordList: Array<any>; //培训记录列表
 
@@ -29,6 +30,7 @@ export default class WorkerStore extends VuexModule {
     private userPageTotal : number;
 
     private selectProjectId : string;
+    private selectParentName : string;
     private selectUserId : string;
     private selectUserName : string;
     private selectUnitId: string;
@@ -46,6 +48,7 @@ export default class WorkerStore extends VuexModule {
 
     private selectTrainingRecordUserId :string;
     //新增人员
+    private insertUserName: string;
     private insertUnitId: string;
     private insertProjectId: string;
     private insertTemId: string;
@@ -69,6 +72,38 @@ export default class WorkerStore extends VuexModule {
     private amendCertificate: string;
 
 
+    public infoId:number;
+    public infoIdNumber:number;
+
+    public inPageIndex: number;
+    public inPageSize: number;
+    public inPageTotal:number;
+
+    //人员详情
+    public peopleInfo : any;
+    public involvedProjectInfo : Array<any>;
+    public cultivateList : Array<any>;
+    public checkWorkceMonth : any;
+    public commentInfo : any;
+    public checkWorkce : number;
+    public salaryInfo : any;
+    public updatePhoto:string;
+
+    private userInfo:any; //人员列表
+
+    private uploadIdList: Array<any>;
+    private evaluateList: Array<any>;
+
+    //统计工种
+    private statisticalWorkList: Array<any>;
+    private statisticalWorkInfoList: Array<any>;
+    private selectStatisticalWorkType: string;
+    private selectWorkTypeInfo: string;
+    //筛重
+    private repeatPersonnelList: Array<any>;
+
+
+
     constructor(e) {
         super(e)
         this.projectList = [];
@@ -88,6 +123,7 @@ export default class WorkerStore extends VuexModule {
         this.userPageTotal = 0;
 
         this.selectProjectId = null;
+        this.selectParentName = null;
         this.selectUnitId = null;
         this.selectSex = null;
         this.selectWorkType = null;
@@ -105,12 +141,13 @@ export default class WorkerStore extends VuexModule {
 
         this.selectTrainingRecordUserId = null;
         //新增人员
+        this.insertUserName = null;
         this.insertUnitId = null;
         this.insertProjectId = null;
         this.insertTemId = null;
         this.insertWorkType = null;
         this.insertTeamGroupLeader = null;
-        this.insertLeave = null;
+        this.insertLeave = 1;
         this.insertStartTime = null;
         this.insertEndTime = null;
         this.insertPhone = null;
@@ -125,6 +162,29 @@ export default class WorkerStore extends VuexModule {
         this.amendIdCardFront = null;
         this.amendIdCardReverse = null;
         this.amendCertificate = null;
+
+        this.infoId = null;
+        this.infoIdNumber = null;
+        this.inPageIndex = null;
+        this.inPageSize = null;
+        this.inPageTotal = null;
+        this.peopleInfo = {};
+        this.involvedProjectInfo = [];
+        this.checkWorkceMonth = {};
+        this.cultivateList = [];
+        this.commentInfo = {};
+        this.checkWorkce = null;
+        this.salaryInfo = {};
+        this.updatePhoto = null;
+
+        this.userInfo = {};
+        this.uploadIdList = [];
+        this.statisticalWorkList = [];
+        this.statisticalWorkInfoList = [];
+        this.selectStatisticalWorkType = null;
+        this.selectWorkTypeInfo = null;
+        this.repeatPersonnelList = [];
+        this.evaluateList = [];
     }
     // 项目列表
     @Action
@@ -149,20 +209,7 @@ export default class WorkerStore extends VuexModule {
             }
             this.successProjectList(data);
         }).catch((e)=>{
-            console.log(e)
-            let alert: any = Message;
-            if(!e) {
-                alert.warning('未知错误！')
-                return
-            }
-            if(e.response && e.response.data && e.response.data.message) {
-                alert.warning(e.response.data.message)
-                return
-            }
-            if(!e.message) {
-                return;
-            }
-            alert.warning(e.message || e)
+            MessageUtils.warning(e);
         });
     }
     @Mutation
@@ -193,20 +240,7 @@ export default class WorkerStore extends VuexModule {
             }
             this.successUnitList(data);
         }).catch((e)=>{
-            console.log(e)
-            let alert: any = Message;
-            if(!e) {
-                alert.warning('未知错误！')
-                return
-            }
-            if(e.response && e.response.data && e.response.data.message) {
-                alert.warning(e.response.data.message)
-                return
-            }
-            if(!e.message) {
-                return;
-            }
-            alert.warning(e.message || e)
+            MessageUtils.warning(e);
         });
     }
     @Mutation
@@ -241,20 +275,7 @@ export default class WorkerStore extends VuexModule {
             }
             this.successWorkTypeList(data);
         }).catch((e)=>{
-            console.log(e)
-            let alert: any = Message;
-            if(!e) {
-                alert.warning('未知错误！')
-                return
-            }
-            if(e.response && e.response.data && e.response.data.message) {
-                alert.warning(e.response.data.message)
-                return
-            }
-            if(!e.message) {
-                return;
-            }
-            alert.warning(e.message || e)
+            MessageUtils.warning(e);
         });
     }
     @Mutation
@@ -265,6 +286,14 @@ export default class WorkerStore extends VuexModule {
     // 人员列表
     @Action
     public getUserListParams() : any{
+
+        if(this.selectParentName){
+            let item ={};
+            item["name"]="parentName";
+            item["value"]=this.selectParentName;
+            item["algorithm"] = "Like"
+            this.userConditionList.push(item);
+        }
         if(this.selectProjectId){
             let item ={};
             item["name"]="projectId";
@@ -328,13 +357,6 @@ export default class WorkerStore extends VuexModule {
             item["algorithm"] = "EQ"
             this.userConditionList.push(item);
         }
-        if(this.selectUserId){
-            let item ={};
-            item["name"]="userId";
-            item["value"]=this.selectUserId;
-            item["algorithm"] = "EQ"
-            this.userConditionList.push(item);
-        }
         return {
             "pageInfo" : {
                 "pageIndex": this.userPageIndex,
@@ -357,20 +379,7 @@ export default class WorkerStore extends VuexModule {
             this.successUserList(data);
             this.searchUserListCount();
         }).catch((e)=>{
-            console.log(e)
-            let alert: any = Message;
-            if(!e) {
-                alert.warning('未知错误！')
-                return
-            }
-            if(e.response && e.response.data && e.response.data.message) {
-                alert.warning(e.response.data.message)
-                return
-            }
-            if(!e.message) {
-                return;
-            }
-            alert.warning(e.message || e)
+            MessageUtils.warning(e);
         });
     }
     @Action
@@ -384,10 +393,64 @@ export default class WorkerStore extends VuexModule {
             MessageUtils.warning(e);
         });
     }
+    @Action
+    public getUserInfoParams() : any{
+        let userInfoList:Array<any>=[];
+        if(this.selectUserId){
+            let item ={};
+            item["name"]="userId";
+            item["value"]=this.selectUserId;
+            item["algorithm"] = "EQ"
+            userInfoList.push(item);
+        }
+        return {
+            "pageInfo" : {},
+            "conditionList": userInfoList,
+            "sortList": [],
+            "groupList" : [],
+            "keywords" : [],
+            "selectList": []
+        }
+
+    }
+    //人员详情
+    @Action
+    public async searchUserInfo(){
+        await request.post('/api/workerlib/projectuser',await this.getUserInfoParams()).then((data)=>{
+            if(!data){
+                return;
+            }
+            this.successUserInfo(data);
+        }).catch((e)=>{
+            MessageUtils.warning(e);
+        });
+    }
+    //综合评价与不良记录
+    @Action
+    public async getEvaluateList(){
+        await request.post('/api/workerlib/evaluate',await this.getUserInfoParams()).then((data)=>{
+            if(!data){
+                return;
+            }
+            this.successEvaluateList(data);
+        }).catch((e)=>{
+            MessageUtils.warning(e);
+        });
+    }
     // 回调
     @Mutation
     private successUserList(data){
         this.userList = data.data;
+
+    }
+    @Mutation
+    private successUserInfo(data){
+        this.userInfo = data.data[0];
+
+    }
+    @Mutation
+    private successEvaluateList(data){
+        this.evaluateList = data.data;
 
     }
     public userColumns = [
@@ -500,7 +563,87 @@ export default class WorkerStore extends VuexModule {
             slot: 'operation'
         }
     ];
+    public evaluateListColumns = [
+        {
+            title: '序号',
+            width: 100,
+            slot: 'serialNumber'
+        },
+        {
+            title: '姓名',
+            key: 'userName'
+        },
+        {
+            title: '所属项目',
+            key: 'projectName',
+            render: (h, params) => {
+                return h('div', [
+                    h('span', {
+                        style: {
+                            display: 'inline-block',
+                            width: '100%',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            whiteSpace: 'nowrap',
+                            cursor: 'pointer'
+                        },
+                        domProps: {
+                            title: params.row.projectName
+                        }
+                    }, params.row.projectName)
+                ])
+            }
+        },
+        {
+            title: '进场时间',
+            key: 'cwrUserIn'
+        },
+        {
+            title: '是否有不良记录',
+            slot: 'badRecord'
+        },
+        {
+            title: '工种',
+            key: 'workType',
+            render: (h, params) => {
+                return h('div', [
+                    h('span', {
+                        style: {
+                            display: 'inline-block',
+                            width: '100%',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            whiteSpace: 'nowrap',
+                            cursor: 'pointer'
+                        },
+                        domProps: {
+                            title: params.row.workType
+                        }
+                    }, params.row.workType)
+                ])
+            }
+        },
+
+        {
+            title: '状态',
+            key: 'leave'
+        },{
+            title: '离场时间',
+            key: 'cwrUserOut'
+        },
+        {
+            title: '项目评分',
+            slot: 'projectGrade'
+        },{
+            title: '备注',
+            slot: 'description'
+        }
+    ];
     // set
+    @Mutation
+    private setSelectParentName(data : any){
+        this.selectParentName = data;
+    }
     @Mutation
     private setSelectProjectId(data : any){
         this.selectProjectId = data;
@@ -567,13 +710,13 @@ export default class WorkerStore extends VuexModule {
     @Action
     public async insertUser(){
         await request.put('/api/workerlib/archives', {
+            "archives_id": null,
+            "name": this.insertUserName,
             "unit_id": this.insertUnitId,
             "project_id": this.insertProjectId,
-            "team_id": this.insertTemId,
             "work_type": this.insertWorkType,
             "cwrUserIn": this.insertStartTime.getFullYear() + "-" + (this.insertStartTime.getMonth()+1) + "-" + this.insertStartTime.getDate(),
             "cwrUserOut": this.insertEndTime.getFullYear() + "-" + (this.insertEndTime.getMonth()+1) + "-" + this.insertEndTime.getDate(),
-            "teamgroupleader": this.insertTeamGroupLeader,
             "leave": this.insertLeave,
             "phone": this.insertPhone,
             "id_number": this.insertIdNum,
@@ -589,20 +732,7 @@ export default class WorkerStore extends VuexModule {
             this.successInsertUser(data);
             this.searchUserList();
         }).catch((e)=>{
-            let alert: any = Message;
-            console.log(e)
-            if(!e) {
-                alert.warning('未知错误！');
-                return;
-            }
-            if(e.response && e.response.data && e.response.data.message) {
-                alert.warning(e.response.data.message)
-                return
-            }
-            if(!e.message) {
-                return;
-            }
-            alert.warning(e.message || e)
+            MessageUtils.warning(e);
         });
     }
     // 回调
@@ -630,6 +760,10 @@ export default class WorkerStore extends VuexModule {
         }
     }
     // set
+    @Mutation
+    private setInsertUserName(data : any){
+        this.insertUserName = data;
+    }
     @Mutation
     private setInsertUnitId(data : any){
         this.insertUnitId = data;
@@ -704,20 +838,7 @@ export default class WorkerStore extends VuexModule {
             }
             this.successUpdateServiceContract(data);
         }).catch((e)=>{
-            let alert: any = Message;
-            console.log(e)
-            if(!e) {
-                alert.warning('未知错误！');
-                return;
-            }
-            if(e.response && e.response.data && e.response.data.message) {
-                alert.warning(e.response.data.message)
-                return
-            }
-            if(!e.message) {
-                return;
-            }
-            alert.warning(e.message || e)
+            MessageUtils.warning(e);
         });
     }
     // 回调
@@ -738,28 +859,24 @@ export default class WorkerStore extends VuexModule {
     // 修改身份证正面
     @Action
     public async updateIdCardFront(){
-        await request.put('/api/workerlib/archives/'+this.id,{
-            "id_card_front": this.amendIdCardFront
+        await request.post('/api/workerlib/archives/update',{
+            "data": {
+                "id_card_front": this.amendIdCardFront
+            },
+            "conditionList": [{ //查询条件
+                "name": "archives_id",   //字段名
+                "value": this.selectUserId,   //值
+                "algorithm": "EQ" //条件: EQ(2, "="), GT(3, ">"), LT(4, "<"), GTEQ(5, ">="), LTEQ(6, "<="), NOT(7, "<>"), NOTEQ(8, "!="), LIKE(9), START(10), END(11), IN(12), NOTIN(13)
+            }],
+            "keywords" : []
+
         }).then((data)=>{
             if(!data){
                 return;
             }
             this.successUpdateIdCardFront(data);
         }).catch((e)=>{
-            let alert: any = Message;
-            console.log(e)
-            if(!e) {
-                alert.warning('未知错误！');
-                return;
-            }
-            if(e.response && e.response.data && e.response.data.message) {
-                alert.warning(e.response.data.message)
-                return
-            }
-            if(!e.message) {
-                return;
-            }
-            alert.warning(e.message || e)
+            MessageUtils.warning(e);
         });
     }
     // 回调
@@ -780,28 +897,24 @@ export default class WorkerStore extends VuexModule {
     // 修改身份证反面
     @Action
     public async updateIdCardReverse(){
-        await request.put('/api/workerlib/archives/'+this.id,{
-            "id_card_reverse": this.amendIdCardReverse
+        await request.post('/api/workerlib/archives/update',{
+            "data": {
+                "id_card_reverse": this.amendIdCardReverse
+            },
+            "conditionList": [{ //查询条件
+                "name": "archives_id",   //字段名
+                "value": this.selectUserId,   //值
+                "algorithm": "EQ" //条件: EQ(2, "="), GT(3, ">"), LT(4, "<"), GTEQ(5, ">="), LTEQ(6, "<="), NOT(7, "<>"), NOTEQ(8, "!="), LIKE(9), START(10), END(11), IN(12), NOTIN(13)
+            }],
+            "keywords" : []
+
         }).then((data)=>{
             if(!data){
                 return;
             }
             this.successUpdateIdCardReverse(data);
         }).catch((e)=>{
-            let alert: any = Message;
-            console.log(e)
-            if(!e) {
-                alert.warning('未知错误！');
-                return;
-            }
-            if(e.response && e.response.data && e.response.data.message) {
-                alert.warning(e.response.data.message)
-                return
-            }
-            if(!e.message) {
-                return;
-            }
-            alert.warning(e.message || e)
+            MessageUtils.warning(e);
         });
     }
     // 回调
@@ -822,28 +935,25 @@ export default class WorkerStore extends VuexModule {
     // 修改证书反面
     @Action
     public async updateCertificate(){
-        await request.put('/api/workerlib/archives/'+this.id,{
-            "certificate": this.amendCertificate
+        await request.post('/api/workerlib/archives/update',{
+            "data": {
+                "certificate": this.amendCertificate
+            },
+            "conditionList": [{ //查询条件
+                "name": "archives_id",   //字段名
+                "value": this.selectUserId,   //值
+                "algorithm": "EQ" //条件: EQ(2, "="), GT(3, ">"), LT(4, "<"), GTEQ(5, ">="), LTEQ(6, "<="), NOT(7, "<>"), NOTEQ(8, "!="), LIKE(9), START(10), END(11), IN(12), NOTIN(13)
+            }],
+            "keywords" : []
+
+
         }).then((data)=>{
             if(!data){
                 return;
             }
             this.successUpdateCertificate(data);
         }).catch((e)=>{
-            let alert: any = Message;
-            console.log(e)
-            if(!e) {
-                alert.warning('未知错误！');
-                return;
-            }
-            if(e.response && e.response.data && e.response.data.message) {
-                alert.warning(e.response.data.message)
-                return
-            }
-            if(!e.message) {
-                return;
-            }
-            alert.warning(e.message || e)
+            MessageUtils.warning(e);
         });
     }
     // 回调
@@ -895,20 +1005,7 @@ export default class WorkerStore extends VuexModule {
             }
             this.successUserSalary(data);
         }).catch((e)=>{
-            console.log(e)
-            let alert: any = Message;
-            if(!e) {
-                alert.warning('未知错误！')
-                return
-            }
-            if(e.response && e.response.data && e.response.data.message) {
-                alert.warning(e.response.data.message)
-                return
-            }
-            if(!e.message) {
-                return;
-            }
-            alert.warning(e.message || e)
+            MessageUtils.warning(e);
         });
     }
     // 回调
@@ -944,20 +1041,7 @@ export default class WorkerStore extends VuexModule {
             }
             this.successUserTrainingRecord(data);
         }).catch((e)=>{
-            console.log(e)
-            let alert: any = Message;
-            if(!e) {
-                alert.warning('未知错误！')
-                return
-            }
-            if(e.response && e.response.data && e.response.data.message) {
-                alert.warning(e.response.data.message)
-                return
-            }
-            if(!e.message) {
-                return;
-            }
-            alert.warning(e.message || e)
+            MessageUtils.warning(e);
         });
     }
     // 回调
@@ -967,5 +1051,650 @@ export default class WorkerStore extends VuexModule {
             this.userTrainingRecordList = data.data;
         }
     }
+
+    //人员详情
+    @Action
+    public getInParams() : any {
+        return {
+            "pageInfo" : {
+                "pageIndex": this.inPageIndex,
+                "pageSize": this.inPageSize
+            },
+
+            "conditionList": [{
+                "name": "archives_id",
+                "value": this.infoId,
+                "algorithm": "EQ"
+            }],
+            "sortList": [],
+            "groupList" : [],
+            "keywords" : [],
+            "selectList": []
+
+        }
+    }
+    @Action
+    public async searchInfo() {
+        await request.post('/api/workerlib/people_rate',{
+            "pageInfo" : {},
+
+            "conditionList": [{
+                "name": "eafId",
+                "value": this.infoId,
+                "algorithm": "EQ"
+            }
+            ],
+
+            "sortList": [ ],
+
+            "groupList" : [
+            ],
+
+            "keywords" : [],
+
+            "selectList": []
+
+        }).then((data)=>{
+            if(!data){
+                return;
+            }
+            this.successInfo(data);
+        }).catch((e)=>{
+            MessageUtils.warning(e);
+        });
+    }
+    @Action
+    public async searchInvolvedProject() {
+        await request.post('/api/workerlib/project_alluser',await this.getInParams()).then((data)=>{
+            if(!data){
+                return;
+            }
+            this.successInvolvedProject(data);
+            this.countIn();
+        }).catch((e)=>{
+            MessageUtils.warning(e);
+        });
+    }
+    @Action
+    public async countIn() {
+        await request.post('/api/workerlib/project_alluser/count', await this.getInParams()).then((total)=>{
+            if(!total){
+                return;
+            }
+            this.setInPageTotal(total.data)
+        }).catch((e)=>{
+            MessageUtils.warning(e);
+        });
+    }
+    @Action
+    public async selectCultivate(){
+        await request.post('/api/workerlib/cultivate_archives',{
+
+            "pageInfo" : {},
+            "conditionList": [{
+                "name": "archives_id",
+                "value": this.infoId,
+                "algorithm": "EQ"
+            } ],
+            "sortList": [],
+            "groupList" : [],
+            "keywords" : [],
+            "selectList": []
+        }).then((data)=>{
+            if(!data){
+                return;
+            }
+            this.successAllCultivate(data);
+
+        }).catch((e)=>{
+            MessageUtils.warning(e);
+        });
+
+    }
+    @Action
+    public async updateHead() {
+        await request.post('/api/workerlib/archives/update',{
+            "data": {
+                "photo": this.updatePhoto
+            },
+            "conditionList": [{
+                "name": "archives_id",
+                "value":  this.infoId,
+                "algorithm": "IN"
+            }
+            ],
+            "keywords" : []
+
+        }).then((data)=>{
+            if(!data){
+                return;
+            }
+
+        }).catch((e)=>{
+            let alert: any = Message;
+            MessageUtils.warning(e);
+        });
+    }
+    @Action
+    public async selectCheckWorkce() {
+        await request.post('/api/workerlib/checkworkce/count', {
+            "pageInfo" : {},
+            "conditionList": [{
+                "name": "cwrUserid",
+                "value": this.infoId,
+                "algorithm": "EQ"
+            }],
+            "sortList": [],
+            "groupList" : [],
+            "keywords" : [],
+            "selectList": []
+        }).then((data)=>{
+            if(!data){
+                return;
+            }
+            this.sucessCheckWorkce(data)
+        }).catch((e)=>{
+            MessageUtils.warning(e);
+        });
+    }
+    @Action
+    public async selectCheckWorkceMonth() {
+        await request.post('/api/workerlib/user_salary', {
+            "pageInfo" : {},
+            "conditionList": [{
+                "name": "cwrUserid",
+                "value": this.infoId,
+                "algorithm": "EQ"
+            },{
+                "name": "month",
+                "value": new Date().getMonth()+1,
+                "algorithm": "EQ"
+            }],
+            "sortList": [],
+            "groupList" : [],
+            "keywords" : [],
+            "selectList": []
+        }).then((data)=>{
+            if(!data){
+                return;
+            }
+            this.sucessCheckWorkceMonth(data)
+        }).catch((e)=>{
+            MessageUtils.warning(e);
+        });
+    }
+    @Action
+    public async selectSalary() {
+        await request.post('/api/workerlib/salary',{
+            "pageInfo" : {},
+            "conditionList": [{
+                "name": "id_number",
+                "value": this.infoIdNumber,
+                "algorithm": "EQ"
+            }],
+            "sortList": [],
+            "groupList" : [],
+            "keywords" : [],
+            "selectList": [
+                { //显示字段
+                    "field": "pay",  //字段名
+                    "alias":"pay",
+                    "function": "SUM"
+                },
+                { //显示字段
+                    "field": "income",  //字段名
+                    "alias":"income",
+                    "function": "SUM"
+                }
+            ]
+
+        }).then((data)=>{
+            if(!data){
+                return;
+            }
+            this.successSalaryInfo(data);
+        }).catch((e)=>{
+            MessageUtils.warning(e);
+        });
+    }
+    @Action
+    public async selectComments() {
+        await request.post('/api/workerlib/comments',{
+            "pageInfo" : {},
+            "conditionList": [{
+                "name": "eafId",
+                "value": this.infoId,
+                "algorithm": "EQ"
+            }
+            ],
+            "sortList": [],
+            "groupList" : [],
+            "keywords" : [],
+            "selectList": []
+
+        }).then((data)=>{
+            if(!data){
+                return;
+            }
+            this.successCommentInfo(data);
+        }).catch((e)=>{
+            MessageUtils.warning(e);
+        });
+    }
+    //回调
+    @Mutation
+    private successInfo(data: any) {
+        this.peopleInfo = data.data[0];
+    }
+    @Mutation
+    private successInvolvedProject(data: any) {
+        this.involvedProjectInfo = data.data;
+    }
+    @Mutation
+    private sucessCheckWorkceMonth(data: any) {
+        this.checkWorkceMonth = data.data;
+    }
+    @Mutation
+    private successAllCultivate(data: any) {
+        if(this.cultivateList){
+            for(let i=0;i<data.data.length;i++){
+                if(this.cultivateList.filter(a => a.cultivate_id == data.data[i].cultivate_id).length>0){
+                    continue;
+                }else {
+                    this.cultivateList.push(data.data[i]);
+                }
+            }
+        }else {
+            this.cultivateList.push(data.data);
+        }
+    }
+    @Mutation
+    private sucessCheckWorkce(data: any) {
+        this.checkWorkce = data.data;
+    }
+    @Mutation
+    private successSalaryInfo(data: any) {
+        this.salaryInfo = data.data[0];
+    }
+    //set
+    @Mutation
+    public setInPageTotal(data: number) {
+        this.inPageTotal = data;
+    }
+    @Mutation
+    public setInfoId(data: number) {
+        this.infoId = data;
+    }
+    @Mutation
+    public setInfoIdNumber(data: number) {
+        this.infoIdNumber = data;
+    }
+    @Mutation
+    private successCommentInfo(data: any) {
+        this.commentInfo = data.data[0];
+    }
+    @Mutation
+    public setInPageIndex(data: number) {
+        this.inPageIndex = data;
+    }
+    @Mutation
+    public setInPageSize(data: number) {
+        this.inPageSize = data;
+    }
+    @Mutation
+    public setUpdatePhoto(data: string) {
+        this.updatePhoto = data;
+    }
+    //导出
+    @Action
+    public async uploadUser() {
+        await request.post('/api/workerlib/projectuser/export',{
+                "conditionList": [{
+                    "name": "id",
+                    "value":  this.uploadIdList.map(a => a.id),
+                    "algorithm": "IN"
+                }],
+                "keywords" : [],
+                "selectList": [
+                    {"field": "userName","alias":"姓名" },
+                    {"field": "unitName" ,"alias":"单位"},
+                    {"field": "projectName","alias":"所在项目" },
+                    {"field": "leave","alias":"状态" },
+                    {"field": "workType","alias":"工种" },
+                    {"field": "phone","alias":"电话" },
+                    {"field": "sex","alias":"性别" },
+                    {"field": "age","alias":"年龄" },
+                    {"field": "birth","alias":"生日" },
+                    {"field": "idNum","alias":"身份证号" },
+                    {"field": "nativePlace","alias":"籍贯" }
+                ]
+
+        },{responseType: 'blob', params: '人员档案'}).then((data)=>{
+            if(!data){
+                return;
+            }
+            this.successUpload();
+        }).catch((e)=>{
+            MessageUtils.warning(e);
+        });
+    }
+    @Mutation
+    private successUpload() {
+        this.uploadIdList = new Array<any>();
+    }
+    @Mutation
+    public setUploadIdList(data: any) {
+        this.uploadIdList.push(data);
+    }
+    @Action
+    public getStatisticalWorkParams() : any{
+        let conditionList:Array<any>=[];
+        if(this.selectStatisticalWorkType){
+            let item ={};
+            item["name"]="workType";
+            item["value"]=this.selectStatisticalWorkType;
+            item["algorithm"] = "EQ"
+            conditionList.push(item);
+        }
+
+        return {
+            "groupList" : [ //分组条件
+                "workType"
+            ],
+            "conditionList": conditionList,
+            "selectList": [{ //显示字段
+                "field": "workType",
+                "alias":"total",
+                "function": "COUNT"
+            },{
+                "field": "workType",
+                "alias":"workType"
+            }],
+            "sortList": [{ //排序条件
+                "name": "total", //字段名
+                "desc": true  //true为降序，false为升序
+            }]
+        }
+
+    }
+    //统计工种
+    @Action
+    public async statisticalWork() {
+        await request.post('api/workerlib/projectuser',await this.getStatisticalWorkParams()).then((data)=>{
+            if(!data){
+                return;
+            }
+
+            this.sucessStatisticalWork(data);
+        }).catch((e)=>{
+            MessageUtils.warning(e);
+        });
+    }
+    @Action
+    public async statisticalWorkInfo() {
+        await request.post('api/workerlib/projectuser',{
+            "conditionList": [{ //查询条件
+                "name": "workType",   //字段名
+                "value": this.selectWorkTypeInfo,   //值
+                "algorithm": "EQ",   //条件: EQ(2, "="), GT(3, ">"), LT(4, "<"), GTEQ(5, ">="), LTEQ(6, "<="), NOT(7, "<>"), NOTEQ(8, "!="), LIKE(9), START(10), END(11), IN(12), NOTIN(13)
+            }],
+            "selectList": [
+                {"field": "userName"},
+                {"field": "projectName"},
+                {"field": "unitName"},
+                {"field": "workType"},
+                {"field": "sex"},
+                {"field": "phone"},
+                {"field": "IdNum"}
+            ]
+        }).then((data)=>{
+            if(!data){
+                return;
+            }
+
+            this.sucessStatisticalWorkInfo(data);
+        }).catch((e)=>{
+            MessageUtils.warning(e);
+        });
+    }
+    @Mutation
+    public setSelectStatisticalWorkType(data: any) {
+        this.selectStatisticalWorkType = data;
+    }
+    @Mutation
+    public setSelectWorkTypeInfo(data: any) {
+        this.selectWorkTypeInfo = data;
+    }
+    @Mutation
+    public sucessStatisticalWork(data: any) {
+        this.statisticalWorkList = data.data;
+    }
+    @Mutation
+    public sucessStatisticalWorkInfo(data: any) {
+        this.statisticalWorkInfoList = data.data;
+    }
+    public statisticalWorkColumns = [
+        {
+            title: '工种',
+            key: 'workType',
+            render: (h, params) => {
+                return h('div', [
+                    h('span', {
+                        style: {
+                            display: 'inline-block',
+                            width: '100%',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            whiteSpace: 'nowrap'
+                        },
+                        domProps: {
+                            title: params.row.workType
+                        }
+                    }, params.row.workType)
+                ])
+            }
+        },
+        {
+            title: '人数',
+            key: 'total'
+        },
+
+        {
+            title: '操作',
+            slot: 'operation'
+        }
+    ];
+
+    public statisticalWorkInfoColumns = [
+        {
+            title: '姓名',
+            key: 'userName'
+        },
+        {
+            title: '所属项目',
+            key: 'userName',
+            render: (h, params) => {
+                return h('div', [
+                    h('span', {
+                        style: {
+                            display: 'inline-block',
+                            width: '100%',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            whiteSpace: 'nowrap'
+                        },
+                        domProps: {
+                            title: params.row.projectName
+                        }
+                    }, params.row.projectName)
+                ])
+            }
+        },
+        {
+            title: '所属单位',
+            key: 'unitName',
+            render: (h, params) => {
+                return h('div', [
+                    h('span', {
+                        style: {
+                            display: 'inline-block',
+                            width: '100%',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            whiteSpace: 'nowrap'
+                        },
+                        domProps: {
+                            title: params.row.unitName
+                        }
+                    }, params.row.unitName)
+                ])
+            }
+        },
+        {
+            title: '工种',
+            key: 'workType'
+        },
+        {
+            title: '性别',
+            key: 'sex'
+        },
+        {
+            title: '电话',
+            key: 'phone'
+        },
+        {
+            title: '身份证号',
+            key: 'IdNum'
+        }
+    ];
+
+    // 筛重
+    @Action
+    public async getRepeatPersonnelList(){
+        await request.post('/api/workerlib/repeatpersonnel',{
+            "pageInfo" : {},
+            "conditionList": [],
+            "sortList": [],
+            "groupList" : [],
+            "keywords" : [],
+            "selectList": []
+        }).then((data)=>{
+            if(!data){
+                return;
+            }
+            this.successRepeatPersonnelList(data);
+        }).catch((e)=>{
+            MessageUtils.warning(e);
+        });
+    }
+
+    @Mutation
+    public successRepeatPersonnelList(data: any) {
+        this.repeatPersonnelList = data.data;
+    }
+    public repeatPersonnelListColumns = [
+        {
+            title: '序号',
+            width: 100,
+            slot: 'serialNumber'
+        },
+        {
+            title: '姓名',
+            key: 'userName'
+        },
+        {
+            title: '工种',
+            key: 'workType',
+            render: (h, params) => {
+                return h('div', [
+                    h('span', {
+                        style: {
+                            display: 'inline-block',
+                            width: '100%',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            whiteSpace: 'nowrap',
+                            cursor: 'pointer'
+                        },
+                        domProps: {
+                            title: params.row.workType
+                        }
+                    }, params.row.workType)
+                ])
+            }
+        },
+        {
+            title: '所属项目',
+            key: 'projectName',
+            render: (h, params) => {
+                return h('div', [
+                    h('span', {
+                        style: {
+                            display: 'inline-block',
+                            width: '100%',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            whiteSpace: 'nowrap',
+                            cursor: 'pointer'
+                        },
+                        domProps: {
+                            title: params.row.projectName
+                        }
+                    }, params.row.projectName)
+                ])
+            }
+        },
+        {
+            title: '所属单位',
+            key: 'unitName',
+            render: (h, params) => {
+                return h('div', [
+                    h('span', {
+                        style: {
+                            display: 'inline-block',
+                            width: '100%',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            whiteSpace: 'nowrap',
+                            cursor: 'pointer'
+                        },
+                        domProps: {
+                            title: params.row.unitName
+                        }
+                    }, params.row.unitName)
+                ])
+            }
+        },
+        {
+            title: '所属上级公司',
+            key: 'parentName',
+            render: (h, params) => {
+                return h('div', [
+                    h('span', {
+                        style: {
+                            display: 'inline-block',
+                            width: '100%',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            whiteSpace: 'nowrap',
+                            cursor: 'pointer'
+                        },
+                        domProps: {
+                            title: params.row.parentName
+                        }
+                    }, params.row.parentName)
+                ])
+            }
+        },
+        {
+            title: '人员状态',
+            key: 'leave'
+        },{
+            title: '手机',
+            key: 'phone'
+        }
+    ];
+
+
 
 }
