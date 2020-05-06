@@ -13,12 +13,12 @@
         p.title 外部队伍人数(人)
         p.num {{$store.state.HomePageStore.externalConstructionTeam}}
         span 查看详情
-    .video-vrap
-      video(v-if="$store.state.HomePageStore.videoData && $store.state.HomePageStore.videoData.isOk" controls="controls",autoplay,muted ,loop,width="100%",height="100%")
-        source(:src="'/api/workerlib/play/indexVideo/file/'+ $store.state.HomePageStore.videoData.id")
-      Carousel(v-else autoplay loop)
-        CarouselItem(v-for="item in $store.state.HomePageStore.iimageData" :key="imageData.id")
-            img(:src="'/api/workerlib/preview/indexVideo/file/'+ item.id" style="width: 100%; height: 100%")
+    .video-wrap
+      video(v-if="$store.state.HomePageStore.videoData && $store.state.HomePageStore.videoData.length && $store.state.HomePageStore.videoData[0].isOk" controls="controls",autoplay,muted ,loop,width="100%",height="100%")
+        source(:src="'/api/workerlib/play/indexVideo/file/'+ $store.state.HomePageStore.videoData[0].id")
+      Carousel(v-else-if="$store.state.HomePageStore.imageData && $store.state.HomePageStore.imageData.length" autoplay loop)
+        CarouselItem(v-for="item in $store.state.HomePageStore.imageData" :key="item.id")
+            img(:src="'/api/workerlib/preview/indexVideo/file/'+ item.id" style="width: 100%; height: 445px;")
     .bottom
       .small-box
         p.title 在建工程总数

@@ -1,8 +1,8 @@
 /*
  * @Date         : 2020-04-28 10:01:44
  * @LastEditors  : HaoJie
- * @LastEditTime : 2020-05-01 11:58:00
- * @FilePath     : /src/store/modules/HomePageStore.ts
+ * @LastEditTime : 2020-05-07 01:23:23
+ * @FilePath     : \src\store\modules\HomePageStore.ts
  */
 import { Module, VuexModule, Mutation, Action } from "vuex-module-decorators";
 import store from "../index";
@@ -58,7 +58,7 @@ export default class HomePageStore extends VuexModule {
   @Action
   async getVideo() {
     await this.searchData({ url: "indexVideo", conName: "type", status: "video" }).then(res => {
-      this.changeVideoData(res.data)
+      this.changeVideoData(res)
     })
   }
   @Mutation
