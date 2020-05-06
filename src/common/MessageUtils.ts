@@ -15,9 +15,9 @@ const service = {
             return
         }
 
-        if(!e.message) {
-            return;
-        }
+        // if(!e.message) {
+        //     return;
+        // }
 
         alert.warning(e.message || e)
     },

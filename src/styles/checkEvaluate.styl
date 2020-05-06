@@ -63,8 +63,22 @@
     background-repeat no-repeat
     &.all
       background-image url("~@/assets/css/images/上拉.png")
+  .button
+    p
+      display inline-block
+      border-radius 5px
+      border solid 1px #7a90fd
+      color #7a90fd
+      line-height 28px
+      font-size 12px
+      margin-right 15px
+      text-align center
+      padding 0 10px
+      i
+        margin-right 5px
+        vertical-align baseline
   .table-wrap
-    height 630px
+    height 600px
     margin-top 15px
     overflow hidden
     /deep/ .ivu-table-cell
@@ -78,7 +92,7 @@
         margin-right 5px
         border-radius 18px
     &.table-hiddden
-      height 590px
+      height 560px
   .page
     margin-top 10px
     text-align center
@@ -87,6 +101,10 @@
     .center
       padding-top 10px
       text-align center
+    .dialog-table-wrap
+      height 610px
+    .ivu-modal-header
+      background-color #2a59e1 !important
     /deep/ .ivu-modal-header-inner
       width 60%
       text-align center
