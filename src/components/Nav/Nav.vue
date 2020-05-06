@@ -33,6 +33,7 @@
         private styleClass: string;
         private menuName: string;
         private path: string;
+        private name: string = ""
 
         constructor() {
             super();
@@ -50,6 +51,8 @@
             this.menuName = sessionStorage.getItem("menuName");
             this.styleClass = null;
             this.path = sessionStorage.getItem("path");
+            let loginData = JSON.parse(sessionStorage.getItem("loginInfo"))
+            this.name = loginData.data.username
 
 
         }
@@ -112,6 +115,20 @@
 
         getMenuList(){
             return this.store.menuList;
+        }
+
+        goPath(path: string) {
+            if (path === 'account') {
+                sessionStorage.setItem("menuName", "设置")
+                sessionStorage.setItem("type", "setting")
+                this.type = sessionStorage.getItem("type");
+                this.menuName = sessionStorage.getItem("menuName");
+                this['$router'].push(path)
+                return
+            }
+
+            sessionStorage.clear()
+            this['$router'].push(path)
         }
 
     }

@@ -61,6 +61,15 @@
             Header(class="layout-header-bar")
                 div(:style="{height: '60px',lineHeight: '110px'}")
                     span(:style="{fontSize: '24px'}") 产业工人大数据平台
+                p.right(@click="goPath('login')")
+                    Icon(type="md-exit")
+                    span 退出
+                p.right(@click="goPath('account')")
+                    Icon(type="md-settings")
+                    span 设置
+                p.right(style = "cursor: auto")
+                    Icon(type="md-person")
+                    span {{name}}
             Content
                 router-view
 
@@ -68,6 +77,15 @@
             Header(class="layout-header-bar")
                 div(:style="{height: '60px',lineHeight: '110px'}")
                     span(:style="{fontSize: '24px'}") 产业工人大数据平台
+                p.right(@click="goPath('login')")
+                    Icon(type="md-exit")
+                    span 退出
+                p.right(@click="goPath('account')")
+                    Icon(type="md-settings")
+                    span 设置
+                p.right(style = "cursor: auto")
+                    Icon(type="md-person")
+                    span {{name}}
                 //Breadcrumb
                 //    span 您当前的位置：
                     //BreadcrumbItem(v-if="getMenuList()",v-for="item in getMenuList()") {{item}}

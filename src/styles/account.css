@@ -1,6 +1,6 @@
 .body{
     display: inline-block;
-    min-height: 1080px;
+    /* min-height: 1080px; */
     height: auto;
     width: 100%;
     background-color: #ffffff;
